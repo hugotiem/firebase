@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:pts/Model/Const_soir%C3%A9e.dart';
 
@@ -18,10 +17,10 @@ class _RechercherState extends State<Rechercher> {
         slivers: [
           SliverPersistentHeader(
             pinned: true,
-            floating: false,
+            floating: true,
             delegate: SearchHeader(
-              icon: Icons.party_mode,
-              title: 'Rechercher',
+              icon: Icons.search_outlined,
+              title: 'Trouver une soirée',
               search: _Search(),
             ),
           ),
@@ -37,7 +36,7 @@ class _RechercherState extends State<Rechercher> {
 
 class SearchHeader extends SliverPersistentHeaderDelegate{
   final double minTopBarHeight = 100;
-  final double maxTopBarHeight = 200;
+  final double maxTopBarHeight = 250;
   final String title;
   final IconData icon;
   final Widget search;
@@ -82,7 +81,7 @@ class SearchHeader extends SliverPersistentHeaderDelegate{
           ],
         ),
         decoration: BoxDecoration(
-            color: Colors.green,
+            color: Colors.lightBlue,
             borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(36),
               bottomRight: Radius.circular(36),
@@ -104,7 +103,7 @@ class SearchHeader extends SliverPersistentHeaderDelegate{
               child: Container(
                 alignment: Alignment.center,
                 child: search,
-                width: 200,
+                width: 300,
                 height: 50,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
@@ -126,7 +125,7 @@ class SearchHeader extends SliverPersistentHeaderDelegate{
   }
 
   @override
-  double get maxExtent => 230;
+  double get maxExtent => 330;
 
   @override
   double get minExtent => 100;
