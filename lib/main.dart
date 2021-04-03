@@ -14,6 +14,7 @@ class MyApp extends StatelessWidget {
       title: "PTS",
       //theme: ,
       home: Home(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
