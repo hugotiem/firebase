@@ -2,7 +2,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:pts/Model/Const_soir%C3%A9e.dart';
 
-
 class Rechercher extends StatefulWidget {
   @override
   _RechercherState createState() => _RechercherState();
@@ -13,7 +12,7 @@ class _RechercherState extends State<Rechercher> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: CustomScrollView(  
+      body: CustomScrollView(
         slivers: [
           SliverPersistentHeader(
             pinned: true,
@@ -24,17 +23,17 @@ class _RechercherState extends State<Rechercher> {
               search: _Search(),
             ),
           ),
-        SliverFillRemaining(
-          hasScrollBody: true,
-          child: Scroll(),
-        )
+          SliverFillRemaining(
+            hasScrollBody: true,
+            child: Scroll(),
+          )
         ],
       ),
     );
   }
 }
 
-class SearchHeader extends SliverPersistentHeaderDelegate{
+class SearchHeader extends SliverPersistentHeaderDelegate {
   final double minTopBarHeight = 100;
   final double maxTopBarHeight = 250;
   final String title;
@@ -47,7 +46,7 @@ class SearchHeader extends SliverPersistentHeaderDelegate{
     this.search,
   });
 
-  @override 
+  @override
   Widget build(
     BuildContext context,
     double shrinkOffset,
@@ -106,15 +105,16 @@ class SearchHeader extends SliverPersistentHeaderDelegate{
                 width: 300,
                 height: 50,
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        offset: Offset(0, 10),
-                        blurRadius: 10,
-                        color: Colors.green.withOpacity(0.23),
-                      )
-                    ]),
+                  borderRadius: BorderRadius.circular(20),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      offset: Offset(0, 10),
+                      blurRadius: 10,
+                      color: Colors.green.withOpacity(0.23),
+                    )
+                  ],
+                ),
               ),
             ),
           ),
@@ -134,9 +134,8 @@ class SearchHeader extends SliverPersistentHeaderDelegate{
   bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) => true;
 }
 
-
 class _Search extends StatefulWidget {
-  _Search({Key key}): super(key: key);
+  _Search({Key key}) : super(key: key);
 
   @override
   __SearchState createState() => __SearchState();
@@ -163,42 +162,36 @@ class __SearchState extends State<_Search> {
             child: TextField(
               controller: _editingController,
               onChanged: (_) => setState(() {}),
-              decoration: InputDecoration(  
+              decoration: InputDecoration(
                 hintText: "Rechercher",
-                hintStyle: TextStyle(  
+                hintStyle: TextStyle(
                   color: Colors.black,
                 ),
-              enabledBorder: InputBorder.none,
-              focusedBorder: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                focusedBorder: InputBorder.none,
               ),
             ),
           ),
           _editingController.text.trim().isEmpty
-            ? IconButton(
-              icon: Icon(
-                Icons.search,
-                color: Colors.black.withOpacity(0.5),
-              ),
-               onPressed: null)
-            : IconButton( 
-                highlightColor: Colors.transparent,
-                splashColor: Colors.transparent,
-                icon: Icon(
-                  Icons.clear,
-                  color: Colors.black.withOpacity(0.5)
-                ),
-                onPressed: () => setState(  
-                  () {
+              ? IconButton(
+                  icon: Icon(
+                    Icons.search,
+                    color: Colors.black.withOpacity(0.5),
+                  ),
+                  onPressed: null)
+              : IconButton(
+                  highlightColor: Colors.transparent,
+                  splashColor: Colors.transparent,
+                  icon: Icon(Icons.clear, color: Colors.black.withOpacity(0.5)),
+                  onPressed: () => setState(() {
                     _editingController.clear();
-                  }
-                ),
-            )
-      ],
+                  }),
+                )
+        ],
       ),
     );
   }
 }
-
 
 class Scroll extends StatefulWidget {
   @override
@@ -219,9 +212,12 @@ class _ScrollState extends State<Scroll> {
       listItems.add(Container(
           height: 150,
           margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(20.0)), color: Colors.white, boxShadow: [
-            BoxShadow(color: Colors.black.withAlpha(100), blurRadius: 10.0),
-          ]),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(20.0)),
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(color: Colors.black.withAlpha(100), blurRadius: 10.0),
+              ]),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
             child: Row(
@@ -232,7 +228,8 @@ class _ScrollState extends State<Scroll> {
                   children: <Widget>[
                     Text(
                       post["nom"],
-                      style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                          fontSize: 28, fontWeight: FontWeight.bold),
                     ),
                     Text(
                       post["theme"],
@@ -243,15 +240,22 @@ class _ScrollState extends State<Scroll> {
                     ),
                     Text(
                       post["tranche_age"],
-                      style: const TextStyle(fontSize: 25, color: Colors.black, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                          fontSize: 25,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold),
                     ),
                     Text(
                       " ${post["max"]}",
-                      style: const TextStyle(fontSize: 25, color: Colors.black, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                          fontSize: 25,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold),
                     ),
                     Text(
                       post["date_heure"],
-                      style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                          fontSize: 28, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -269,7 +273,7 @@ class _ScrollState extends State<Scroll> {
     super.initState();
     getPostsData();
     controller.addListener(() {
-      double value = controller.offset/199;
+      double value = controller.offset / 199;
 
       setState(() {
         topContainer = value;
@@ -290,13 +294,11 @@ class _ScrollState extends State<Scroll> {
             children: <Widget>[
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                ],
+                children: <Widget>[],
               ),
-              
               Expanded(
                   child: ListView.builder(
-                    controller: controller,
+                      controller: controller,
                       itemCount: itemsData.length,
                       physics: BouncingScrollPhysics(),
                       itemBuilder: (context, index) {
@@ -312,7 +314,7 @@ class _ScrollState extends State<Scroll> {
                         return Opacity(
                           opacity: scale,
                           child: Transform(
-                            transform:  Matrix4.identity()..scale(scale,scale),
+                            transform: Matrix4.identity()..scale(scale, scale),
                             alignment: Alignment.bottomCenter,
                             child: Align(
                                 heightFactor: 1.0,
@@ -328,4 +330,3 @@ class _ScrollState extends State<Scroll> {
     );
   }
 }
-
