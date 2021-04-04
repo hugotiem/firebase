@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 // containers with blue shadow
-
 class ContainerShadow extends StatelessWidget {
   final Widget child;
   final EdgeInsetsGeometry margin;
@@ -45,31 +44,22 @@ class ContainerShadow extends StatelessWidget {
   }
 }
 
+// Cupertino transition navigation
 class CupertinoNavigator extends CupertinoPageRoute {
-  //final Widget child;
-  CupertinoNavigator() : super(builder: (BuildContext context) => new GoTo());
+  final Widget child;
+  CupertinoNavigator({
+    this.child,
+  }) : super(builder: (BuildContext context) => new GoTo(child: child));
 }
 
 class GoTo extends StatelessWidget {
-  //final Widget child;
-  const GoTo({Key key}) : super(key: key);
+  final Widget child;
+  const GoTo({Key key, this.child}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: GestureDetector(
-        // onTap: () => Navigator.pop(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => Profil(),
-        //   ),
-        // ),
-        child: new Container(
-          height: 100,
-          width: 100,
-        ),
-      ),
-    );
+    return child;
   }
 }
+
+// Clickable container

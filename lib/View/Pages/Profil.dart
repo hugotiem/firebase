@@ -24,7 +24,11 @@ class _ProfilState extends State<Profil> {
             children: <Widget>[
               GestureDetector(
                 onTap: () => {
-                  Navigator.of(context).push(new CupertinoNavigator()),
+                  Navigator.of(context).push(
+                    new CupertinoNavigator(
+                      child: new Container(color: Colors.white),
+                    ),
+                  ),
                 },
                 onTapDown: (_) {
                   setState(() {
@@ -166,6 +170,54 @@ class _ProfilState extends State<Profil> {
           ),
         ),
       ),
+    );
+  }
+}
+
+// Class non utlisée, à revoir
+class ClickableContainer extends StatefulWidget {
+  final Widget child;
+  ClickableContainer({Key key, this.child}) : super(key: key);
+
+  @override
+  _ClickableContainerState createState() =>
+      _ClickableContainerState(child: child);
+}
+
+class _ClickableContainerState extends State<ClickableContainer> {
+  final Widget child;
+
+  _ClickableContainerState({this.child});
+
+  // ignore: unused_field
+  Color _color = Colors.white;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => {
+        Navigator.of(context).push(
+          new CupertinoNavigator(
+            child: new Container(color: Colors.white),
+          ),
+        ),
+      },
+      onTapDown: (_) {
+        setState(() {
+          _color = Color(0xFFE7E7E7);
+        });
+      },
+      onTapUp: (_) {
+        setState(() {
+          _color = Colors.white;
+        });
+      },
+      onTapCancel: () {
+        setState(() {
+          _color = Colors.white;
+        });
+      },
+      child: child,
     );
   }
 }
