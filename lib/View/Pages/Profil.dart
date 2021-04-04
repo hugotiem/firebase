@@ -8,6 +8,8 @@ class Profil extends StatefulWidget {
 }
 
 class _ProfilState extends State<Profil> {
+  Color _color = Colors.white;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,36 +22,57 @@ class _ProfilState extends State<Profil> {
         child: Center(
           child: Column(
             children: <Widget>[
-              new ContainerShadow(
-                child: Row(
-                  children: <Widget>[
-                    new Container(
-                      height: 60,
-                      width: 60,
-                      clipBehavior: Clip.antiAlias,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
+              GestureDetector(
+                onTap: () => {
+                  Navigator.of(context).push(new CupertinoNavigator()),
+                },
+                onTapDown: (_) {
+                  setState(() {
+                    _color = Color(0xFFE7E7E7);
+                  });
+                },
+                onTapUp: (_) {
+                  setState(() {
+                    _color = Colors.white;
+                  });
+                },
+                onTapCancel: () => {
+                  setState(() {
+                    _color = Colors.white;
+                  }),
+                },
+                child: new ContainerShadow(
+                  color: _color,
+                  child: Row(
+                    children: <Widget>[
+                      new Container(
+                        height: 60,
+                        width: 60,
+                        clipBehavior: Clip.antiAlias,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                        ),
+                        child: Image.network(
+                            'https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png'),
                       ),
-                      child: Image.network(
-                          'https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png'),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(left: 20),
-                      child: new Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          new Text(
-                            "Name",
-                            style: new TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
+                      Container(
+                        margin: EdgeInsets.only(left: 20),
+                        child: new Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            new Text(
+                              "Name",
+                              style: new TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                              ),
                             ),
-                          ),
-                          new Text("show profile"),
-                        ],
+                            new Text("show profile"),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
               new ContainerShadow(
