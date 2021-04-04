@@ -25,6 +25,7 @@ class _RechercherState extends State<Rechercher> {
           ),
           SliverFillRemaining(
             hasScrollBody: true,
+            fillOverscroll: true,
             child: Scroll(),
           )
         ],
@@ -58,10 +59,10 @@ class SearchHeader extends SliverPersistentHeaderDelegate {
       top: 0,
       left: 0,
       right: 0,
+      bottom: 0,
       child: Container(
         alignment: Alignment.center,
-        height:
-            max(maxTopBarHeight * (1 - shrinkFactor * 1.45), minTopBarHeight),
+        height: 250,
         width: 100,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -70,34 +71,28 @@ class SearchHeader extends SliverPersistentHeaderDelegate {
                 style: Theme.of(context).textTheme.headline4.copyWith(
                     color: Colors.white, fontWeight: FontWeight.bold)),
             SizedBox(
-              width: 20,
+              width: 0,
             ),
-            Icon(
-              icon,
-              size: 40,
-              color: Colors.white,
-            )
           ],
         ),
         decoration: BoxDecoration(
             color: Colors.lightGreen,
             borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(36),
-              bottomRight: Radius.circular(36),
+              bottomLeft: Radius.circular(30),
+              bottomRight: Radius.circular(30),
             )),
       ),
     );
     return Container(
       height: max(maxExtent - shrinkOffset, minExtent),
       child: Stack(
-        fit: StackFit.loose,
         children: [
-          if (shrinkFactor <= 0.5) topBar,
+          if (shrinkFactor <= 1) topBar,
           Align(
             alignment: Alignment.bottomCenter,
             child: Padding(
               padding: EdgeInsets.only(
-                bottom: 10,
+                bottom: 80,
               ),
               child: Container(
                 alignment: Alignment.center,
@@ -210,7 +205,7 @@ class _ScrollState extends State<Scroll> {
     List<Widget> listItems = [];
     responseList.forEach((post) {
       listItems.add(Container(
-          height: 150,
+          height: 160,
           margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(20.0)),
