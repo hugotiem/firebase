@@ -11,9 +11,9 @@ class _ProfilState extends State<Profil> {
   Widget build(BuildContext context) {
     return Scaffold(
       // appbar pour eviter certains bug d'affichage avec le haut de l'écran
-      // couleur de fond à changer
       appBar: new AppBar(
         toolbarHeight: 0,
+        backgroundColor: Colors.white,
       ),
       body: Container(
         child: Center(
