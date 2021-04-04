@@ -43,23 +43,27 @@ class Creer extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 32.0),
                 child: Container( 
-                  child: RaisedButton( 
-                    color: Colors.amber,
+                  child: ElevatedButton( 
                     child: new Text( 
                       'Suivant',
-                    style: TextStyle(  
-                      color: Colors.black,
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold,
+                    style: 
+                      TextStyle(  
+                        color: Colors.black,
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                    ),
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => Theme())
-                    );
-                  },
-                  shape: RoundedRectangleBorder(  
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.amber,
+                    shape: RoundedRectangleBorder(  
                     borderRadius: BorderRadius.circular(30.0),
                     ),
+                  ),
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => Theme())
+                    ); 
+                  },
+                  
                   ),
                 )
               ),
@@ -147,8 +151,7 @@ class _ThemeState extends State<Theme> {
                 Padding(
                   padding: const EdgeInsets.only(top: 32.0),
                   child: Container( 
-                    child: RaisedButton( 
-                      color: Colors.amber,
+                    child: ElevatedButton( 
                       child: new Text('Suivant',
                       style: TextStyle(
                         color: Colors.black,
@@ -156,13 +159,17 @@ class _ThemeState extends State<Theme> {
                         fontWeight: FontWeight.bold,
                       ),
                       ),
+                      style: ElevatedButton.styleFrom(
+                    primary: Colors.amber, 
+                    shape: RoundedRectangleBorder(  
+                    borderRadius: BorderRadius.circular(30.0),
+                    ),
+                    ),
                       onPressed: () {
                         Navigator.push(context, MaterialPageRoute(builder: (context) => Nombre()),
                         );
                       },
-                      shape: RoundedRectangleBorder(  
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
+                      
                       ),
                       )
                   ),
@@ -265,8 +272,7 @@ class Nombre extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 32.0),
                 child: Container( 
-                  child: RaisedButton( 
-                    color: Colors.amber,
+                  child: ElevatedButton( 
                     child: new Text('Suivant',
                     style: TextStyle(  
                       color: Colors.black,
@@ -274,13 +280,16 @@ class Nombre extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                     ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.amber, 
+                      shape: RoundedRectangleBorder(  
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                  ),
                     onPressed: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => TrancheAge())
                       );
                     },
-                    shape: RoundedRectangleBorder(  
-                      borderRadius: BorderRadius.circular(30.0)
-                    ),
                     ),
                   ),
                 ),
@@ -361,8 +370,7 @@ class _TrancheAgeState extends State<TrancheAge> {
             Padding(
               padding: const EdgeInsets.only(top: 32.0),
               child: Container( 
-                child: RaisedButton( 
-                  color: Colors.amber,
+                child: ElevatedButton( 
                   child: new Text(
                     'Suivant',
                     style: TextStyle(  
@@ -371,13 +379,16 @@ class _TrancheAgeState extends State<TrancheAge> {
                       fontWeight: FontWeight.bold,
                     ),
                     ),
+                  style: ElevatedButton.styleFrom(
+                      primary: Colors.amber, 
+                      shape: RoundedRectangleBorder(  
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                  ),
                   onPressed: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => Heure())
                     );
                   },
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                  ),
                   ),
                 ),
               ),
@@ -451,8 +462,7 @@ class _HeureState extends State<Heure> {
             Padding(
               padding: const EdgeInsets.only(top: 32.0),
               child: Container( 
-                child: RaisedButton( 
-                  color: Colors.amber,
+                child: ElevatedButton( 
                   child: new Text(
                     'Suivant',
                     style: TextStyle(  
@@ -461,13 +471,16 @@ class _HeureState extends State<Heure> {
                       fontWeight: FontWeight.bold
                       ),
                       ),
+                      style: ElevatedButton.styleFrom(
+                      primary: Colors.amber, 
+                      shape: RoundedRectangleBorder(  
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                  ),
                       onPressed: () {
                         Navigator.push(context, MaterialPageRoute(builder: (context) => Fin())
                         );
                     },
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0)
-                    )
                   ),
                 ),
               ),
@@ -514,8 +527,7 @@ class _FinState extends State<Fin> {
             Padding(
               padding: const EdgeInsets.only(top: 32.0),
               child: Container( 
-                child: RaisedButton( 
-                  color: Colors.amber,
+                child: ElevatedButton( 
                   child: new Text(
                     'Fin',
                     style: TextStyle(  
@@ -523,14 +535,17 @@ class _FinState extends State<Fin> {
                       fontSize: 18.0,
                       fontWeight: FontWeight.bold),
                     ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.amber, 
+                      shape: RoundedRectangleBorder(  
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                  ),
                     onPressed: () {
                       // save data to firebase
                       
                       Navigator.of(context).popUntil((route) => route.isFirst);
                     },
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0)
-                      ),
                   ),
                 ),
               ),

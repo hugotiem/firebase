@@ -1,6 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:pts/Model/Const_soir%C3%A9e.dart';
+import 'package:pts/Model/Const_soiree.dart';
 
 class Rechercher extends StatefulWidget {
   @override
@@ -302,25 +302,10 @@ class _ScrollState extends State<Scroll> {
                       itemCount: itemsData.length,
                       physics: BouncingScrollPhysics(),
                       itemBuilder: (context, index) {
-                        double scale = 1.0;
-                        if (topContainer > 0.5) {
-                          scale = index + 0.5 - topContainer;
-                          if (scale < 0) {
-                            scale = 0;
-                          } else if (scale > 1) {
-                            scale = 1;
-                          }
-                        }
-                        return Opacity(
-                          opacity: scale,
-                          child: Transform(
-                            transform: Matrix4.identity()..scale(scale, scale),
-                            alignment: Alignment.bottomCenter,
-                            child: Align(
+                        return Align(
                                 heightFactor: 1.0,
                                 alignment: Alignment.topCenter,
-                                child: itemsData[index]),
-                          ),
+                                child: itemsData[index]
                         );
                       })),
             ],
