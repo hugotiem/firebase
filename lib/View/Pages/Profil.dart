@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pts/Model/pts_components.dart';
 
 class Profil extends StatefulWidget {
   @override
@@ -11,44 +12,115 @@ class _ProfilState extends State<Profil> {
     return Scaffold(
       body: Container(
         child: Center(
-          child: new Container(
-            height: 100,
-            width: MediaQuery.of(context).size.width - 20,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.all(
-                Radius.circular(20),
-              ),
-              boxShadow: [
-                BoxShadow(
-                  offset: Offset(0, 10),
-                  blurRadius: 10,
-                  color: Colors.blue.withOpacity(0.23),
-                )
-              ],
-            ),
-            margin: EdgeInsets.only(top: 40),
-            padding: EdgeInsets.all(20),
-            child: Row(
-              children: <Widget>[
-                new Container(
-                  margin: EdgeInsets.all(20),
-                ),
-                new Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+          child: Column(
+            children: <Widget>[
+              new ContainerShadow(
+                child: Row(
                   children: <Widget>[
-                    new Text(
-                      "Name",
-                      style: new TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
+                    new Container(
+                      height: 60,
+                      width: 60,
+                      clipBehavior: Clip.antiAlias,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                      ),
+                      child: Image.network(
+                          'https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png'),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 20),
+                      child: new Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          new Text(
+                            "Name",
+                            style: new TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
+                          ),
+                          new Text("show profile"),
+                        ],
                       ),
                     ),
-                    new Text("show profile"),
                   ],
                 ),
-              ],
-            ),
+              ),
+              new ContainerShadow(
+                child: new Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    new Text("Paramètres du compte"),
+                    new Container(
+                      padding: EdgeInsets.only(
+                        top: 20,
+                        bottom: 10,
+                      ),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom:
+                              BorderSide(color: Colors.grey.withOpacity(0.23)),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          new Text(
+                            "Informations personnelles",
+                            style: TextStyle(fontSize: 20),
+                          ),
+                          new Icon(Icons.perm_identity)
+                        ],
+                      ),
+                    ),
+                    new Container(
+                      padding: EdgeInsets.only(
+                        top: 20,
+                        bottom: 10,
+                      ),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom:
+                              BorderSide(color: Colors.grey.withOpacity(0.23)),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          new Text(
+                            "Paiements",
+                            style: TextStyle(fontSize: 20),
+                          ),
+                          new Icon(Icons.payment)
+                        ],
+                      ),
+                    ),
+                    new Container(
+                      padding: EdgeInsets.only(
+                        top: 20,
+                        bottom: 10,
+                      ),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom:
+                              BorderSide(color: Colors.grey.withOpacity(0.23)),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          new Text(
+                            "Notifications",
+                            style: TextStyle(fontSize: 20),
+                          ),
+                          new Icon(Icons.notifications_outlined)
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),
