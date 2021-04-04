@@ -10,6 +10,11 @@ class _ProfilState extends State<Profil> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // appbar pour eviter certains bug d'affichage avec le haut de l'écran
+      // couleur de fond à changer
+      appBar: new AppBar(
+        toolbarHeight: 0,
+      ),
       body: Container(
         child: Center(
           child: Column(
@@ -47,6 +52,7 @@ class _ProfilState extends State<Profil> {
                 ),
               ),
               new ContainerShadow(
+                // creer une list avec tous les elements
                 child: new Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -58,8 +64,9 @@ class _ProfilState extends State<Profil> {
                       ),
                       decoration: BoxDecoration(
                         border: Border(
-                          bottom:
-                              BorderSide(color: Colors.grey.withOpacity(0.23)),
+                          bottom: BorderSide(
+                            color: Colors.grey.withOpacity(0.23),
+                          ),
                         ),
                       ),
                       child: Row(
@@ -80,8 +87,9 @@ class _ProfilState extends State<Profil> {
                       ),
                       decoration: BoxDecoration(
                         border: Border(
-                          bottom:
-                              BorderSide(color: Colors.grey.withOpacity(0.23)),
+                          bottom: BorderSide(
+                            color: Colors.grey.withOpacity(0.23),
+                          ),
                         ),
                       ),
                       child: Row(
@@ -102,8 +110,9 @@ class _ProfilState extends State<Profil> {
                       ),
                       decoration: BoxDecoration(
                         border: Border(
-                          bottom:
-                              BorderSide(color: Colors.grey.withOpacity(0.23)),
+                          bottom: BorderSide(
+                            color: Colors.grey.withOpacity(0.23),
+                          ),
                         ),
                       ),
                       child: Row(
@@ -118,6 +127,15 @@ class _ProfilState extends State<Profil> {
                       ),
                     ),
                   ],
+                ),
+              ),
+              ContainerShadow(
+                child: Text(
+                  "Se deconnecter",
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontSize: 20,
+                  ),
                 ),
               ),
             ],
