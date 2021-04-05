@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../Constant.dart';
+
 // containers with blue shadow
 class ContainerShadow extends StatelessWidget {
   final Widget child;
@@ -63,3 +65,77 @@ class GoTo extends StatelessWidget {
 }
 
 // Clickable container
+class ClickableContainer extends StatefulWidget {
+  final Widget child;
+  final Color color;
+  final Color focusColor;
+  final bool containerShadow;
+  final bool cupertino;
+  ClickableContainer({
+    Key key,
+    this.child,
+    this.color = const Color(0xffffffff),
+    this.focusColor = FOCUS_COLOR,
+    this.cupertino = true,
+    this.containerShadow = false,
+  }) : super(key: key);
+
+  @override
+  _ClickableContainerState createState() => cupertino
+      ? _ClickableContainerState(
+          child: child,
+          color: color,
+          focusColor: focusColor,
+          containerShadow: containerShadow)
+      : null;
+}
+
+class _ClickableContainerState extends State<ClickableContainer> {
+  final Widget child;
+  final Color color;
+  final Color focusColor;
+  final bool containerShadow;
+
+  _ClickableContainerState(
+      {this.child, this.color, this.focusColor, this.containerShadow = false});
+
+  Color _color;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => {
+        Navigator.of(context).push(
+          new CupertinoNavigator(
+            child: new Container(color: Colors.white),
+          ),
+        ),
+      },
+      onTapDown: (_) {
+        setState(() {
+          _color = focusColor;
+        });
+      },
+      onTapUp: (_) {
+        setState(() {
+          _color = color;
+        });
+      },
+      onTapCancel: () {
+        setState(() {
+          _color = color;
+        });
+      },
+      child: containerShadow
+          ? ContainerShadow(
+              color: _color == null ? color : _color,
+              child: child,
+            )
+          : AnimatedContainer(
+              color: _color == null ? color : _color,
+              duration: Duration(milliseconds: 100),
+              child: child,
+            ),
+    );
+  }
+}
