@@ -69,8 +69,11 @@ class ClickableContainer extends StatefulWidget {
   final Widget child;
   final Color color;
   final Color focusColor;
+  final double radius;
   final bool containerShadow;
   final bool cupertino;
+  final EdgeInsetsGeometry padding;
+  final EdgeInsetsGeometry margin;
   ClickableContainer({
     Key key,
     this.child,
@@ -78,6 +81,9 @@ class ClickableContainer extends StatefulWidget {
     this.focusColor = FOCUS_COLOR,
     this.cupertino = true,
     this.containerShadow = false,
+    this.radius = 0.0,
+    this.padding = const EdgeInsets.all(20),
+    this.margin = const EdgeInsets.all(0),
   }) : super(key: key);
 
   @override
@@ -86,7 +92,11 @@ class ClickableContainer extends StatefulWidget {
           child: child,
           color: color,
           focusColor: focusColor,
-          containerShadow: containerShadow)
+          containerShadow: containerShadow,
+          radius: radius,
+          padding: padding,
+          margin: margin,
+        )
       : null;
 }
 
@@ -94,10 +104,20 @@ class _ClickableContainerState extends State<ClickableContainer> {
   final Widget child;
   final Color color;
   final Color focusColor;
+  final double radius;
+  final EdgeInsetsGeometry padding;
+  final EdgeInsetsGeometry margin;
   final bool containerShadow;
 
-  _ClickableContainerState(
-      {this.child, this.color, this.focusColor, this.containerShadow = false});
+  _ClickableContainerState({
+    this.child,
+    this.color,
+    this.focusColor,
+    this.containerShadow = false,
+    this.radius,
+    this.padding,
+    this.margin,
+  });
 
   Color _color;
 
@@ -129,11 +149,19 @@ class _ClickableContainerState extends State<ClickableContainer> {
       child: containerShadow
           ? ContainerShadow(
               color: _color == null ? color : _color,
+              padding: padding,
               child: child,
             )
           : AnimatedContainer(
-              color: _color == null ? color : _color,
+              padding: padding,
+              margin: margin,
               duration: Duration(milliseconds: 100),
+              decoration: BoxDecoration(
+                color: _color == null ? color : _color,
+                borderRadius: new BorderRadius.all(
+                  Radius.circular(radius),
+                ),
+              ),
               child: child,
             ),
     );

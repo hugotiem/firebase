@@ -8,8 +8,6 @@ class Profil extends StatefulWidget {
 }
 
 class _ProfilState extends State<Profil> {
-  Color _color = Colors.white;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,16 +54,27 @@ class _ProfilState extends State<Profil> {
                 ),
               ),
               new ContainerShadow(
+                padding: EdgeInsets.only(top: 20, bottom: 20),
                 // creer une list avec tous les elements
                 child: new Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    new Text("Paramètres du compte"),
+                    Container(
+                      margin: EdgeInsets.only(left: 20, bottom: 10),
+                      child: new Text("Paramètres du compte"),
+                    ),
                     ClickableContainer(
+                      margin: EdgeInsets.only(top: 10),
+                      padding: EdgeInsets.only(
+                        top: 0,
+                        bottom: 0,
+                        left: 20,
+                        right: 20,
+                      ),
                       child: new Container(
                         padding: EdgeInsets.only(
-                          top: 20,
-                          bottom: 10,
+                          top: 15,
+                          bottom: 15,
                         ),
                         decoration: BoxDecoration(
                           border: Border(
@@ -87,10 +96,16 @@ class _ProfilState extends State<Profil> {
                       ),
                     ),
                     ClickableContainer(
+                      padding: EdgeInsets.only(
+                        top: 0,
+                        bottom: 0,
+                        left: 20,
+                        right: 20,
+                      ),
                       child: new Container(
                         padding: EdgeInsets.only(
-                          top: 20,
-                          bottom: 10,
+                          top: 15,
+                          bottom: 15,
                         ),
                         decoration: BoxDecoration(
                           border: Border(
@@ -112,6 +127,12 @@ class _ProfilState extends State<Profil> {
                       ),
                     ),
                     ClickableContainer(
+                      padding: EdgeInsets.only(
+                        top: 0,
+                        bottom: 0,
+                        left: 20,
+                        right: 20,
+                      ),
                       child: new Container(
                         padding: EdgeInsets.only(
                           top: 20,
