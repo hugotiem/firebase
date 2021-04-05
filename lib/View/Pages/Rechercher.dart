@@ -70,16 +70,13 @@ class SearchHeader extends SliverPersistentHeaderDelegate {
             Text(title,
                 style: Theme.of(context).textTheme.headline4.copyWith(
                     color: Colors.white, fontWeight: FontWeight.bold)),
-            SizedBox(
-              width: 0,
-            ),
           ],
         ),
         decoration: BoxDecoration(
             color: Colors.lightGreen,
             borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(30),
-              bottomRight: Radius.circular(30),
+              bottomLeft: Radius.circular(40),
+              bottomRight: Radius.circular(40),
             )),
       ),
     );
@@ -92,7 +89,7 @@ class SearchHeader extends SliverPersistentHeaderDelegate {
             alignment: Alignment.bottomCenter,
             child: Padding(
               padding: EdgeInsets.only(
-                bottom: 80,
+                bottom: 20,
               ),
               child: Container(
                 alignment: Alignment.center,
@@ -120,13 +117,13 @@ class SearchHeader extends SliverPersistentHeaderDelegate {
   }
 
   @override
-  double get maxExtent => 330;
+  double get maxExtent => 200;
 
   @override
   double get minExtent => 100;
 
   @override
-  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) => true;
+  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) => false;
 }
 
 class _Search extends StatefulWidget {
@@ -282,6 +279,10 @@ class _ScrollState extends State<Scroll> {
     final Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.arrow_upward),
+          onPressed: scrollUp,
+        ),
         backgroundColor: Colors.white,
         body: Container(
           height: size.height,
@@ -289,7 +290,6 @@ class _ScrollState extends State<Scroll> {
             children: <Widget>[
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[],
               ),
               Expanded(
                   child: ListView.builder(
@@ -308,5 +308,10 @@ class _ScrollState extends State<Scroll> {
         ),
       ),
     );
+  }
+  void scrollUp() {
+    final double start = 0;
+
+    controller.animateTo(start, duration: Duration(seconds: 1), curve: Curves.easeIn);
   }
 }
