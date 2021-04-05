@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pts/Model/pts_components.dart';
 
+import '../../Constant.dart';
+
 class Profil extends StatefulWidget {
   @override
   _ProfilState createState() => _ProfilState();
@@ -22,61 +24,36 @@ class _ProfilState extends State<Profil> {
         child: Center(
           child: Column(
             children: <Widget>[
-              GestureDetector(
-                onTap: () => {
-                  Navigator.of(context).push(
-                    new CupertinoNavigator(
-                      child: new Container(color: Colors.white),
+              ClickableWhithContainerShadow(
+                child: Row(
+                  children: <Widget>[
+                    new Container(
+                      height: 60,
+                      width: 60,
+                      clipBehavior: Clip.antiAlias,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                      ),
+                      child: Image.network(
+                          'https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png'),
                     ),
-                  ),
-                },
-                onTapDown: (_) {
-                  setState(() {
-                    _color = Color(0xFFE7E7E7);
-                  });
-                },
-                onTapUp: (_) {
-                  setState(() {
-                    _color = Colors.white;
-                  });
-                },
-                onTapCancel: () => {
-                  setState(() {
-                    _color = Colors.white;
-                  }),
-                },
-                child: new ContainerShadow(
-                  color: _color,
-                  child: Row(
-                    children: <Widget>[
-                      new Container(
-                        height: 60,
-                        width: 60,
-                        clipBehavior: Clip.antiAlias,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                        ),
-                        child: Image.network(
-                            'https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png'),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 20),
-                        child: new Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            new Text(
-                              "Name",
-                              style: new TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                              ),
+                    Container(
+                      margin: EdgeInsets.only(left: 20),
+                      child: new Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          new Text(
+                            "Name",
+                            style: new TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
                             ),
-                            new Text("show profile"),
-                          ],
-                        ),
+                          ),
+                          new Text("show profile"),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
               new ContainerShadow(
@@ -174,26 +151,41 @@ class _ProfilState extends State<Profil> {
   }
 }
 
-// Class non utlisée, à revoir
-class ClickableContainer extends StatefulWidget {
+// to move to the pts_components file
+class ClickableWhithContainerShadow extends StatefulWidget {
   final Widget child;
-  ClickableContainer({Key key, this.child}) : super(key: key);
+  final Color color;
+  final Color focusColor;
+  final bool cupertino;
+  ClickableWhithContainerShadow({
+    Key key,
+    this.child,
+    this.color = const Color(0xffffffff),
+    this.focusColor = FOCUS_COLOR,
+    this.cupertino = true,
+  }) : super(key: key);
 
   @override
-  _ClickableContainerState createState() =>
-      _ClickableContainerState(child: child);
+  _ClickableWhithContainerShadowState createState() => cupertino == true
+      ? _ClickableWhithContainerShadowState(
+          child: child, color: color, focusColor: focusColor)
+      : null;
 }
 
-class _ClickableContainerState extends State<ClickableContainer> {
+class _ClickableWhithContainerShadowState
+    extends State<ClickableWhithContainerShadow> {
   final Widget child;
+  final Color color;
+  final Color focusColor;
 
-  _ClickableContainerState({this.child});
+  _ClickableWhithContainerShadowState(
+      {this.child, this.color, this.focusColor});
 
-  // ignore: unused_field
-  Color _color = Colors.white;
+  Color _color;
 
   @override
   Widget build(BuildContext context) {
+    print(color);
     return GestureDetector(
       onTap: () => {
         Navigator.of(context).push(
@@ -204,20 +196,23 @@ class _ClickableContainerState extends State<ClickableContainer> {
       },
       onTapDown: (_) {
         setState(() {
-          _color = Color(0xFFE7E7E7);
+          _color = focusColor;
         });
       },
       onTapUp: (_) {
         setState(() {
-          _color = Colors.white;
+          _color = color;
         });
       },
       onTapCancel: () {
         setState(() {
-          _color = Colors.white;
+          _color = color;
         });
       },
-      child: child,
+      child: ContainerShadow(
+        color: _color == null ? color : _color,
+        child: child,
+      ),
     );
   }
 }
