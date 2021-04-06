@@ -50,7 +50,10 @@ class _ProfilState extends State<Profil> {
                               fontSize: 20,
                             ),
                           ),
-                          new Text("show profile"),
+                          Opacity(
+                            opacity: 0.7,
+                            child: new Text("Afficher le profil"),
+                          ),
                         ],
                       ),
                     ),
