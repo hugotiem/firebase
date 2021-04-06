@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pts/Model/pts_components.dart';
+import 'package:pts/View/Pages/profil/details.dart';
 
 class Profil extends StatefulWidget {
   @override
@@ -21,6 +22,7 @@ class _ProfilState extends State<Profil> {
           child: Column(
             children: <Widget>[
               ClickableContainer(
+                to: ProfilDetails(),
                 containerShadow: true,
                 child: Row(
                   children: <Widget>[
@@ -160,7 +162,8 @@ class _ProfilState extends State<Profil> {
                   ],
                 ),
               ),
-              ContainerShadow(
+              ClickableContainer(
+                containerShadow: true,
                 child: Text(
                   "Se deconnecter",
                   style: TextStyle(

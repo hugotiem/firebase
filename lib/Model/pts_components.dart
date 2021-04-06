@@ -67,6 +67,7 @@ class GoTo extends StatelessWidget {
 // Clickable container
 class ClickableContainer extends StatefulWidget {
   final Widget child;
+  final Widget to;
   final Color color;
   final Color focusColor;
   final double radius;
@@ -84,6 +85,7 @@ class ClickableContainer extends StatefulWidget {
     this.radius = 0.0,
     this.padding = const EdgeInsets.all(20),
     this.margin = const EdgeInsets.all(0),
+    this.to,
   }) : super(key: key);
 
   @override
@@ -102,6 +104,7 @@ class ClickableContainer extends StatefulWidget {
 
 class _ClickableContainerState extends State<ClickableContainer> {
   final Widget child;
+  final Widget to;
   final Color color;
   final Color focusColor;
   final double radius;
@@ -111,6 +114,7 @@ class _ClickableContainerState extends State<ClickableContainer> {
 
   _ClickableContainerState({
     this.child,
+    this.to,
     this.color,
     this.focusColor,
     this.containerShadow = false,
@@ -123,11 +127,12 @@ class _ClickableContainerState extends State<ClickableContainer> {
 
   @override
   Widget build(BuildContext context) {
+    print(to);
     return GestureDetector(
       onTap: () => {
         Navigator.of(context).push(
           new CupertinoNavigator(
-            child: new Container(color: Colors.white),
+            child: to != null ? to : new Container(color: Colors.white),
           ),
         ),
       },
