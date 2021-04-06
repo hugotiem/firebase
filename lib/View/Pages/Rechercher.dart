@@ -201,59 +201,70 @@ class _ScrollState extends State<Scroll> {
     List<dynamic> responseList = SOIREE_DATA;
     List<Widget> listItems = [];
     responseList.forEach((post) {
-      listItems.add(Container(
+      listItems.add(
+        Container(
+          width: 500,
           height: 160,
-          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          margin: const EdgeInsets.symmetric(horizontal: 35, vertical: 15),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(20.0)),
               color: Colors.white,
               boxShadow: [
                 BoxShadow(color: Colors.black.withAlpha(100), blurRadius: 10.0),
               ]),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+          child: Column(
                   children: <Widget>[
-                    Text(
-                      post["nom"],
-                      style: const TextStyle(
-                          fontSize: 28, fontWeight: FontWeight.bold),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 15.0, bottom: 5),
+                      child: Text(
+                        post["nom"],
+                        style: const TextStyle(
+                        fontSize: 27, 
+                        fontWeight: FontWeight.bold
+                        ),
+                      ),
                     ),
-                    Text(
-                      post["theme"],
-                      style: const TextStyle(fontSize: 17, color: Colors.grey),
-                    ),
-                    SizedBox(
-                      height: 10,
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: Colors.blueGrey.withOpacity(0.23)
+                          )
+                        )
+                      ),
+                      child: Text(
+                          post["theme"],
+                          style: const TextStyle(
+                            fontSize: 17, 
+                            color: Colors.grey
+                            ),
+                        ),
                     ),
                     Text(
                       post["tranche_age"],
                       style: const TextStyle(
-                          fontSize: 25,
+                          fontSize: 20,
                           color: Colors.black,
-                          fontWeight: FontWeight.bold),
+                          ),
                     ),
                     Text(
-                      " ${post["max"]}",
+                      " ${post["max"]} personnes",
                       style: const TextStyle(
-                          fontSize: 25,
+                          fontSize: 20,
                           color: Colors.black,
-                          fontWeight: FontWeight.bold),
+                          ),
                     ),
                     Text(
                       post["date_heure"],
                       style: const TextStyle(
-                          fontSize: 28, fontWeight: FontWeight.bold),
+                          fontSize: 28, 
+                          ),
                     ),
                   ],
                 ),
-              ],
-            ),
-          )));
+              
+          
+          ));
     });
     setState(() {
       itemsData = listItems;
@@ -312,6 +323,6 @@ class _ScrollState extends State<Scroll> {
   void scrollUp() {
     final double start = 0;
 
-    controller.animateTo(start, duration: Duration(seconds: 1), curve: Curves.easeIn);
+    controller.animateTo(start, duration: Duration(milliseconds: 500), curve: Curves.easeIn);
   }
 }
