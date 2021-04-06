@@ -98,6 +98,7 @@ class ClickableContainer extends StatefulWidget {
           radius: radius,
           padding: padding,
           margin: margin,
+          to: to,
         )
       : null;
 }
@@ -127,7 +128,6 @@ class _ClickableContainerState extends State<ClickableContainer> {
 
   @override
   Widget build(BuildContext context) {
-    print(to);
     return GestureDetector(
       onTap: () => {
         Navigator.of(context).push(

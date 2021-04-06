@@ -13,10 +13,11 @@ class _ProfilState extends State<Profil> {
   Widget build(BuildContext context) {
     return Scaffold(
       // appbar pour eviter certains bug d'affichage avec le haut de l'écran
-      appBar: new AppBar(
-        toolbarHeight: 0,
-        backgroundColor: Colors.white,
-      ),
+      // a mettre seulement durant le scroll
+      // appBar: new AppBar(
+      //   toolbarHeight: 0,
+      //   backgroundColor: Colors.white,
+      // ),
       body: Container(
         child: Center(
           child: Column(
@@ -34,7 +35,8 @@ class _ProfilState extends State<Profil> {
                         shape: BoxShape.circle,
                       ),
                       child: Image.network(
-                          'https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png'),
+                        'https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png',
+                      ),
                     ),
                     Container(
                       margin: EdgeInsets.only(left: 20),
