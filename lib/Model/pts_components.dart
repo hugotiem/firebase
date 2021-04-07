@@ -26,7 +26,7 @@ class ContainerShadow extends StatelessWidget {
   Widget build(BuildContext context) {
     return new AnimatedContainer(
       height: height,
-      width: MediaQuery.of(context).size.width - 20,
+      width: width != null ? width : MediaQuery.of(context).size.width - 20,
       decoration: BoxDecoration(
         color: color,
         borderRadius: BorderRadius.all(
@@ -168,6 +168,7 @@ class _ClickableContainerState extends State<ClickableContainer> {
               color: _color == null ? color : _color,
               padding: padding,
               height: height,
+              width: width,
               child: child,
             )
           : AnimatedContainer(
