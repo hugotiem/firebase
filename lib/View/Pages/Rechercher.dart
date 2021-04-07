@@ -1,7 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:pts/Model/Const_soiree.dart';
-import 'package:pts/Model/pts_components.dart';
 
 class Rechercher extends StatefulWidget {
   @override
@@ -12,7 +11,6 @@ class _RechercherState extends State<Rechercher> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       body: CustomScrollView(
         slivers: [
           SliverPersistentHeader(
@@ -281,7 +279,7 @@ class _ScrollState extends State<Scroll> {
           child: Icon(Icons.arrow_upward),
           onPressed: scrollUp,
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
         body: Container(
           height: size.height,
           child: Column(
