@@ -204,7 +204,7 @@ class _ScrollState extends State<Scroll> {
     responseList.forEach((post) {
       listItems.add(ClickableContainer(
         containerShadow: true,
-        width: 400,
+        width: MediaQuery.of(context).size.width - 20,
         height: 200,
         margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
         child: Column(
