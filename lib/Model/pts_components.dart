@@ -177,7 +177,7 @@ class _ClickableContainerState extends State<ClickableContainer> {
               margin: margin,
               duration: Duration(milliseconds: 100),
               height: height != null ? height : double.infinity,
-              width: width != null ? height : double.infinity,
+              width: width != null ? width : double.infinity,
               decoration: BoxDecoration(
                 color: _color == null ? color : _color,
                 borderRadius: new BorderRadius.all(
