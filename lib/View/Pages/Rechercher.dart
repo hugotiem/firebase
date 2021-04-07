@@ -202,9 +202,8 @@ class _ScrollState extends State<Scroll> {
     List<dynamic> responseList = SOIREE_DATA;
     List<Widget> listItems = [];
     responseList.forEach((post) {
-      listItems.add(ClickableContainer(
-        containerShadow: true,
-        width: MediaQuery.of(context).size.width - 20,
+      listItems.add(Container(
+        width: 400,
         height: 200,
         margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
         child: Column(
