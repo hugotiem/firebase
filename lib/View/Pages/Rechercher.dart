@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:pts/Model/Const_soiree.dart';
+import 'package:pts/Model/pts_components.dart';
 
 class Rechercher extends StatefulWidget {
   @override
@@ -202,16 +203,11 @@ class _ScrollState extends State<Scroll> {
     List<Widget> listItems = [];
     responseList.forEach((post) {
       listItems.add(
-        Container(
-          width: 500,
-          height: 160,
+        ClickableContainer(
+          containerShadow: true,
+          width: MediaQuery.of(context).size.width - 50,
+          height: 200,
           margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(20.0)),
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(color: Colors.black.withAlpha(100), blurRadius: 10.0),
-              ]),
           child: Column(
                   children: <Widget>[
                     Padding(
