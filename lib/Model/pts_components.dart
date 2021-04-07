@@ -10,6 +10,7 @@ class ContainerShadow extends StatelessWidget {
   final EdgeInsetsGeometry padding;
   final Color color;
   final double height;
+  final double width;
 
   const ContainerShadow({
     Key key,
@@ -18,6 +19,7 @@ class ContainerShadow extends StatelessWidget {
     this.padding = const EdgeInsets.all(20),
     this.color = Colors.white,
     this.height,
+    this.width,
   }) : super(key: key);
 
   @override
@@ -75,6 +77,8 @@ class ClickableContainer extends StatefulWidget {
   final bool cupertino;
   final EdgeInsetsGeometry padding;
   final EdgeInsetsGeometry margin;
+  final double height;
+  final double width;
   ClickableContainer({
     Key key,
     this.child,
@@ -86,6 +90,8 @@ class ClickableContainer extends StatefulWidget {
     this.padding = const EdgeInsets.all(20),
     this.margin = const EdgeInsets.all(0),
     this.to,
+    this.height,
+    this.width,
   }) : super(key: key);
 
   @override
@@ -99,6 +105,8 @@ class ClickableContainer extends StatefulWidget {
           padding: padding,
           margin: margin,
           to: to,
+          height: height,
+          width: width,
         )
       : null;
 }
@@ -111,6 +119,8 @@ class _ClickableContainerState extends State<ClickableContainer> {
   final double radius;
   final EdgeInsetsGeometry padding;
   final EdgeInsetsGeometry margin;
+  final double height;
+  final double width;
   final bool containerShadow;
 
   _ClickableContainerState({
@@ -121,6 +131,8 @@ class _ClickableContainerState extends State<ClickableContainer> {
     this.containerShadow = false,
     this.radius,
     this.padding,
+    this.height,
+    this.width,
     this.margin,
   });
 
@@ -155,12 +167,15 @@ class _ClickableContainerState extends State<ClickableContainer> {
           ? ContainerShadow(
               color: _color == null ? color : _color,
               padding: padding,
+              height: height,
               child: child,
             )
           : AnimatedContainer(
               padding: padding,
               margin: margin,
               duration: Duration(milliseconds: 100),
+              height: height,
+              width: width,
               decoration: BoxDecoration(
                 color: _color == null ? color : _color,
                 borderRadius: new BorderRadius.all(
