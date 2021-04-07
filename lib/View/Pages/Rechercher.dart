@@ -205,7 +205,7 @@ class _ScrollState extends State<Scroll> {
         Container(
           width: 500,
           height: 160,
-          margin: const EdgeInsets.symmetric(horizontal: 35, vertical: 15),
+          margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(20.0)),
               color: Colors.white,
@@ -224,21 +224,30 @@ class _ScrollState extends State<Scroll> {
                         ),
                       ),
                     ),
-                    Container(
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: Colors.blueGrey.withOpacity(0.23)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 7.5),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              color: Colors.blueGrey.withOpacity(0.23)
+                            )
                           )
-                        )
-                      ),
-                      child: Text(
-                          post["theme"],
-                          style: const TextStyle(
-                            fontSize: 17, 
-                            color: Colors.grey
-                            ),
                         ),
+                        child: Text(
+                            post["theme"],
+                            style: const TextStyle(
+                              fontSize: 17, 
+                              color: Colors.grey
+                              ),
+                          ),
+                      ),
+                    ),
+                    Text(
+                      post["date_heure"],
+                      style: const TextStyle(
+                          fontSize: 28, 
+                          ),
                     ),
                     Text(
                       post["tranche_age"],
@@ -248,16 +257,10 @@ class _ScrollState extends State<Scroll> {
                           ),
                     ),
                     Text(
-                      " ${post["max"]} personnes",
+                      " Places: ${post["max"]}",
                       style: const TextStyle(
                           fontSize: 20,
                           color: Colors.black,
-                          ),
-                    ),
-                    Text(
-                      post["date_heure"],
-                      style: const TextStyle(
-                          fontSize: 28, 
                           ),
                     ),
                   ],
