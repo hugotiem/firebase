@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../Constant.dart';
+import 'components/cupertino_navigator.dart';
 
 // containers with blue shadow
 class ContainerShadow extends StatelessWidget {
@@ -45,24 +46,6 @@ class ContainerShadow extends StatelessWidget {
       duration: Duration(milliseconds: 100),
       child: child,
     );
-  }
-}
-
-// Cupertino transition navigation
-class CupertinoNavigator extends CupertinoPageRoute {
-  final Widget child;
-  CupertinoNavigator({
-    this.child,
-  }) : super(builder: (BuildContext context) => new GoTo(child: child));
-}
-
-class GoTo extends StatelessWidget {
-  final Widget child;
-  const GoTo({Key key, this.child}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return child;
   }
 }
 
@@ -168,16 +151,16 @@ class _ClickableContainerState extends State<ClickableContainer> {
           ? ContainerShadow(
               color: _color == null ? color : _color,
               padding: padding,
-              height: height != null ? height : double.infinity,
-              width: width != null ? width : double.infinity,
+              height: height != null ? height : double,
+              width: width != null ? width : double,
               child: child,
             )
           : AnimatedContainer(
               padding: padding,
               margin: margin,
               duration: Duration(milliseconds: 100),
-              height: height != null ? height : double.infinity,
-              width: width != null ? width : double.infinity,
+              height: height != null ? height : double.nan,
+              width: width != null ? width : double.nan,
               decoration: BoxDecoration(
                 color: _color == null ? color : _color,
                 borderRadius: new BorderRadius.all(
