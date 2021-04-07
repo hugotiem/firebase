@@ -202,68 +202,57 @@ class _ScrollState extends State<Scroll> {
     List<dynamic> responseList = SOIREE_DATA;
     List<Widget> listItems = [];
     responseList.forEach((post) {
-      listItems.add(
-        ClickableContainer(
-          containerShadow: true,
-          width: MediaQuery.of(context).size.width - 50,
-          height: 200,
-          margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-          child: Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(top: 15.0, bottom: 5),
-                      child: Text(
-                        post["nom"],
-                        style: const TextStyle(
-                        fontSize: 27, 
-                        fontWeight: FontWeight.bold
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 7.5),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                              color: Colors.blueGrey.withOpacity(0.23)
-                            )
-                          )
-                        ),
-                        child: Text(
-                            post["theme"],
-                            style: const TextStyle(
-                              fontSize: 17, 
-                              color: Colors.grey
-                              ),
-                          ),
-                      ),
-                    ),
-                    Text(
-                      post["date_heure"],
-                      style: const TextStyle(
-                          fontSize: 28, 
-                          ),
-                    ),
-                    Text(
-                      post["tranche_age"],
-                      style: const TextStyle(
-                          fontSize: 20,
-                          color: Colors.black,
-                          ),
-                    ),
-                    Text(
-                      " Places: ${post["max"]}",
-                      style: const TextStyle(
-                          fontSize: 20,
-                          color: Colors.black,
-                          ),
-                    ),
-                  ],
+      listItems.add(ClickableContainer(
+        containerShadow: true,
+        width: 400,
+        height: 200,
+        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+        child: Column(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(top: 15.0, bottom: 5),
+              child: Text(
+                post["nom"],
+                style:
+                    const TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 7.5),
+              child: Container(
+                decoration: BoxDecoration(
+                    border: Border(
+                        bottom: BorderSide(
+                            color: Colors.blueGrey.withOpacity(0.23)))),
+                child: Text(
+                  post["theme"],
+                  style: const TextStyle(fontSize: 17, color: Colors.grey),
                 ),
-              
-          
-          ));
+              ),
+            ),
+            Text(
+              post["date_heure"],
+              style: const TextStyle(
+                fontSize: 28,
+              ),
+            ),
+            Text(
+              post["tranche_age"],
+              style: const TextStyle(
+                fontSize: 20,
+                color: Colors.black,
+              ),
+            ),
+            Text(
+              " Places: ${post["max"]}",
+              style: const TextStyle(
+                fontSize: 20,
+                color: Colors.black,
+              ),
+            ),
+          ],
+        ),
+      ));
     });
     setState(() {
       itemsData = listItems;
@@ -308,10 +297,9 @@ class _ScrollState extends State<Scroll> {
                       physics: BouncingScrollPhysics(),
                       itemBuilder: (context, index) {
                         return Align(
-                                heightFactor: 1.0,
-                                alignment: Alignment.topCenter,
-                                child: itemsData[index]
-                        );
+                            heightFactor: 1.0,
+                            alignment: Alignment.topCenter,
+                            child: itemsData[index]);
                       })),
             ],
           ),
@@ -319,9 +307,11 @@ class _ScrollState extends State<Scroll> {
       ),
     );
   }
+
   void scrollUp() {
     final double start = 0;
 
-    controller.animateTo(start, duration: Duration(milliseconds: 500), curve: Curves.easeIn);
+    controller.animateTo(start,
+        duration: Duration(milliseconds: 500), curve: Curves.easeIn);
   }
 }

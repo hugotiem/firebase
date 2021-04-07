@@ -140,6 +140,7 @@ class _ClickableContainerState extends State<ClickableContainer> {
 
   @override
   Widget build(BuildContext context) {
+    print(width);
     return GestureDetector(
       onTap: () => {
         Navigator.of(context).push(
@@ -167,16 +168,16 @@ class _ClickableContainerState extends State<ClickableContainer> {
           ? ContainerShadow(
               color: _color == null ? color : _color,
               padding: padding,
-              height: height,
-              width: width,
+              height: height != null ? height : double.infinity,
+              width: width != null ? width : double.infinity,
               child: child,
             )
           : AnimatedContainer(
               padding: padding,
               margin: margin,
               duration: Duration(milliseconds: 100),
-              height: height,
-              width: width,
+              height: height != null ? height : double.infinity,
+              width: width != null ? height : double.infinity,
               decoration: BoxDecoration(
                 color: _color == null ? color : _color,
                 borderRadius: new BorderRadius.all(
