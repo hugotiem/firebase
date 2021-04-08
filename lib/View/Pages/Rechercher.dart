@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:pts/Model/Const_soiree.dart';
+import 'package:pts/Model/components/back_appbar.dart';
 
 class Rechercher extends StatefulWidget {
   @override
@@ -200,115 +201,155 @@ class _ScrollState extends State<Scroll> {
     List<dynamic> responseList = SOIREE_DATA;
     List<Widget> listItems = [];
     responseList.forEach((post) {
-      listItems.add(Container(
-        width: 400,
-        height: 200,
-        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top: 15.0, bottom: 5),
-              child: Text(
-                post["nom"],
-                style:
-                    const TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 7.5),
-              child: Container(
-                decoration: BoxDecoration(
-                    border: Border(
-                        bottom: BorderSide(
-                            color: Colors.blueGrey.withOpacity(0.23)))),
-                child: Text(
-                  post["theme"],
-                  style: const TextStyle(fontSize: 17, color: Colors.grey),
-                ),
-              ),
-            ),
-            Text(
-              post["date_heure"],
-              style: const TextStyle(
-                fontSize: 28,
-              ),
-            ),
-            Text(
-              post["tranche_age"],
-              style: const TextStyle(
-                fontSize: 20,
-                color: Colors.black,
-              ),
-            ),
-            Text(
-              " Places: ${post["max"]}",
-              style: const TextStyle(
-                fontSize: 20,
-                color: Colors.black,
-              ),
-            ),
-          ],
-        ),
-      ));
-    });
-    setState(() {
-      itemsData = listItems;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getPostsData();
-    controller.addListener(() {
-      double value = controller.offset / 199;
-
-      setState(() {
-        topContainer = value;
-        closeTopContainer = controller.offset > 50;
-      });
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
-    return SafeArea(
-      child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.arrow_upward),
-          onPressed: scrollUp,
-        ),
-        backgroundColor: Colors.transparent,
-        body: Container(
-          height: size.height,
+      listItems.add(
+        InkWell(
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.all(Radius.circular(36)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.5),
+                blurRadius: 10.0,
+              )
+            ]
+          ),
+          width: 400,
+          height: 200,
+          margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
           child: Column(
             children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+              Padding(
+                padding: const EdgeInsets.only(top: 15.0, bottom: 5),
+                child: Text(
+                  post["nom"],
+                  style:
+                      const TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
+                ),
               ),
-              Expanded(
-                  child: ListView.builder(
-                      controller: controller,
-                      itemCount: itemsData.length,
-                      physics: BouncingScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        return Align(
-                            heightFactor: 1.0,
-                            alignment: Alignment.topCenter,
-                            child: itemsData[index]);
-                      })),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 7.5),
+                child: Container(
+                  decoration: BoxDecoration(
+                      border: Border(
+                          bottom: BorderSide(
+                              color: Colors.blueGrey.withOpacity(0.23)))),
+                  child: Text(
+                    post["theme"],
+                    style: const TextStyle(fontSize: 17, color: Colors.grey),
+                  ),
+                ),
+              ),
+              Text(
+                post["date_heure"],
+                style: const TextStyle(
+                  fontSize: 28,
+                ),
+              ),
+              Text(
+                post["tranche_age"],
+                style: const TextStyle(
+                  fontSize: 20,
+                  color: Colors.black,
+                ),
+              ),
+              Text(
+                " Places: ${post["max"]}",
+                style: const TextStyle(
+                  fontSize: 20,
+                  color: Colors.black,
+                ),
+              ),
             ],
           ),
         ),
-      ),
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => PartyDetail())
+          );
+        },
+      )
     );
-  }
+      });
+      setState(() {
+        itemsData = listItems;
+      });
+    }
+
+    @override
+    void initState() {
+      super.initState();
+      getPostsData();
+      controller.addListener(() {
+        double value = controller.offset / 199;
+
+        setState(() {
+          topContainer = value;
+          closeTopContainer = controller.offset > 50;
+        });
+      });
+    }
+
+    @override
+    Widget build(BuildContext context) {
+      final Size size = MediaQuery.of(context).size;
+      return SafeArea(
+        child: Scaffold(
+          floatingActionButton: FloatingActionButton(
+            child: Icon(Icons.arrow_upward),
+            onPressed: scrollUp,
+          ),
+          backgroundColor: Colors.transparent,
+          body: Container(
+            height: size.height,
+            child: Column(
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                ),
+                Expanded(
+                    child: ListView.builder(
+                        controller: controller,
+                        itemCount: itemsData.length,
+                        physics: BouncingScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          return Align(
+                              heightFactor: 1.0,
+                              alignment: Alignment.topCenter,
+                              child: itemsData[index]);
+                        })),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
 
   void scrollUp() {
     final double start = 0;
 
     controller.animateTo(start,
         duration: Duration(milliseconds: 500), curve: Curves.easeIn);
+  }
+}
+
+
+
+class PartyDetail extends StatefulWidget {
+  @override
+  _PartyDetailState createState() => _PartyDetailState();
+}
+
+class _PartyDetailState extends State<PartyDetail> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(50),
+        child: BackAppBar(),
+        ),
+      body: Container( 
+
+      ),
+    );
   }
 }

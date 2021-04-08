@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/cupertino.dart';
-import '../Home.dart';
+import 'package:pts/Model/components/back_appbar.dart';
 
 // Les class sont dans l'ordre des pages pour la création de soirée
 
@@ -12,19 +12,10 @@ class Creer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_sharp,
-            color: Colors.black,
-          ),
-          onPressed: () {
-            Navigator.pop(context, MaterialPageRoute(builder: (context) => Home()));
-          },
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(50),
+        child: BackAppBar(),
         ),
-      ),
       body: Center(
         child: Container(
           padding: const EdgeInsets.all(50.0),
@@ -95,20 +86,9 @@ class _ThemeState extends State<Theme> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(  
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
-        leading: IconButton(
-          icon:  Icon(
-            Icons.arrow_back_sharp,
-            color: Colors.black,
-          ), 
-          onPressed: () {
-            Navigator.pop(context, MaterialPageRoute(builder: (context) => Creer())
-            );
-          }
-          ),
-      ),
+      appBar: PreferredSize(preferredSize: Size.fromHeight(50),
+        child: BackAppBar()
+        ),
       body: Center(
         child: Material(
           color: Colors.white,
@@ -240,20 +220,10 @@ class Nombre extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(  
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
-        leading: IconButton( 
-          icon: Icon( 
-            Icons.arrow_back_sharp,
-            color: Colors.black,
-          ),
-          onPressed: () {
-            Navigator.pop(context, MaterialPageRoute(builder: (context) => Theme())
-            );
-          },
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(50),
+        child: BackAppBar(),
         ),
-      ),
       body: Center(
         child: Container( 
           padding: const EdgeInsets.all(50.0),
@@ -321,20 +291,10 @@ class _TrancheAgeState extends State<TrancheAge> {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(  
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
-        leading: IconButton( 
-          icon: Icon(
-            Icons.arrow_back_sharp,
-            color: Colors.black,
-          ),
-          onPressed: () {
-            Navigator.pop(context, MaterialPageRoute(builder: (context) => Nombre())
-            );
-          },
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(50),
+        child: BackAppBar(),
         ),
-      ),
       body: Center(
         child: Column(  
           mainAxisAlignment: MainAxisAlignment.center,
@@ -427,20 +387,10 @@ class _HeureState extends State<Heure> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(  
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
-        leading: IconButton(
-          icon: Icon( 
-            Icons.arrow_back_sharp,
-            color: Colors.black,
-          ), 
-          onPressed: () {
-            Navigator.pop(context, MaterialPageRoute(builder: (context) => TrancheAge())
-            );
-          },
-          ),
-      ),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(50),
+        child: BackAppBar(),
+        ),
       body: Center(
         child: Column(  
           mainAxisAlignment: MainAxisAlignment.center,
@@ -503,20 +453,10 @@ class _FinState extends State<Fin> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(  
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
-        leading: IconButton( 
-          icon: Icon( 
-            Icons.arrow_back_sharp,
-            color: Colors.black,
-          ),
-          onPressed: () {
-            Navigator.pop(context, MaterialPageRoute(builder: (context) => Heure())
-            );
-          },
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(50), 
+        child: BackAppBar(),
         ),
-      ),
       body: Center(
         child: Column(  
           mainAxisAlignment: MainAxisAlignment.center,
