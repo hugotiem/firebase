@@ -1,6 +1,8 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:pts/Model/Const_soiree.dart';
+import 'package:pts/Model/components/ProfilPhoto.dart';
 import 'package:pts/Model/components/back_appbar.dart';
 
 class Rechercher extends StatefulWidget {
@@ -61,7 +63,6 @@ class SearchHeader extends SliverPersistentHeaderDelegate {
       right: 0,
       bottom: 0,
       child: Container(
-        alignment: Alignment.center,
         height: 250,
         width: 100,
         child: Row(
@@ -194,6 +195,7 @@ class _ScrollState extends State<Scroll> {
   ScrollController controller = ScrollController();
   bool closeTopContainer = false;
   double topContainer = 0;
+  final double start = 0;
 
   List<Widget> itemsData = [];
 
@@ -246,20 +248,7 @@ class _ScrollState extends State<Scroll> {
                   fontSize: 28,
                 ),
               ),
-              Text(
-                post["tranche_age"],
-                style: const TextStyle(
-                  fontSize: 20,
-                  color: Colors.black,
-                ),
-              ),
-              Text(
-                " Places: ${post["max"]}",
-                style: const TextStyle(
-                  fontSize: 20,
-                  color: Colors.black,
-                ),
-              ),
+              ProfilPhoto()
             ],
           ),
         ),
@@ -289,14 +278,19 @@ class _ScrollState extends State<Scroll> {
       });
     }
 
+
     @override
     Widget build(BuildContext context) {
       final Size size = MediaQuery.of(context).size;
       return SafeArea(
         child: Scaffold(
-          floatingActionButton: FloatingActionButton(
-            child: Icon(Icons.arrow_upward),
-            onPressed: scrollUp,
+          floatingActionButton: 
+          Visibility(
+            child : FloatingActionButton(
+              child: Icon(Icons.arrow_upward),
+              onPressed: scrollUp,
+            ),
+            visible: true,
           ),
           backgroundColor: Colors.transparent,
           body: Container(
@@ -325,14 +319,13 @@ class _ScrollState extends State<Scroll> {
     }
 
   void scrollUp() {
-    final double start = 0;
-
-    controller.animateTo(start,
-        duration: Duration(milliseconds: 500), curve: Curves.easeIn);
+    controller.animateTo(
+      start,
+      duration: Duration(milliseconds: 500), curve: Curves.easeIn);
   }
 }
 
-
+// ce qui s'affiche quand tu cliques sur un container
 
 class PartyDetail extends StatefulWidget {
   @override
