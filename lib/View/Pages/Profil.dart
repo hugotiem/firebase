@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pts/Model/components/ProfilPhoto.dart';
 import 'package:pts/Model/pts_components.dart';
+import 'package:pts/View/Pages/login/login.dart';
 import 'package:pts/View/Pages/profil/details.dart';
 
 class Profil extends StatefulWidget {
@@ -62,6 +63,7 @@ class _ProfilState extends State<Profil> {
                       child: new Text("Paramètres du compte"),
                     ),
                     ClickableContainer(
+                      to: Login(),
                       margin: EdgeInsets.only(top: 10),
                       padding: EdgeInsets.only(
                         top: 0,

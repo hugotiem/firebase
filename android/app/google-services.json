@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "60631610264",
+    "project_id": "lookbook-yog",
+    "storage_bucket": "lookbook-yog.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:60631610264:android:fe354c6b98f6cf8ca931ed",
+        "android_client_info": {
+          "package_name": "com.yog.lookbook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "60631610264-25d46vrg6q1s6qhnjih11ltmooegrjv9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHLbI3Kuy2b4AtPOb3Wvigm_8DPPJgYCs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "60631610264-25d46vrg6q1s6qhnjih11ltmooegrjv9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:60631610264:android:4591ab1400f0eea6a931ed",
+        "android_client_info": {
+          "package_name": "com.yog.pts"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "60631610264-25d46vrg6q1s6qhnjih11ltmooegrjv9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHLbI3Kuy2b4AtPOb3Wvigm_8DPPJgYCs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "60631610264-25d46vrg6q1s6qhnjih11ltmooegrjv9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
