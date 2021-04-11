@@ -31,13 +31,6 @@ class ContainerShadow extends StatelessWidget {
         borderRadius: BorderRadius.all(
           Radius.circular(20),
         ),
-        boxShadow: [
-          BoxShadow(
-            offset: Offset(0, 10),
-            blurRadius: 10,
-            color: Colors.white.withOpacity(0.23),
-          )
-        ],
       ),
       margin: EdgeInsets.only(top: 40),
       padding: padding,
