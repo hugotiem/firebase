@@ -2,8 +2,8 @@
 
 A new Flutter project.
 
-1. [Getting Started](#getting-started)
-2. [Project Architecture](#project-architecture)
+1. [Getting Started.](#getting-started)
+2. [Project Architecture.](#project-architecture)
 
 ## Getting Started
 
