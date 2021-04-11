@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:pts/Constant.dart';
 import 'package:pts/Model/Const_soiree.dart';
 import 'package:pts/Model/components/ProfilPhoto.dart';
 import 'package:pts/Model/components/back_appbar.dart';
@@ -74,7 +75,7 @@ class SearchHeader extends SliverPersistentHeaderDelegate {
           ],
         ),
         decoration: BoxDecoration(
-            color: Colors.lightGreen,
+            color: YELLOW_COLOR,
             borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(40),
               bottomRight: Radius.circular(40),
@@ -82,6 +83,7 @@ class SearchHeader extends SliverPersistentHeaderDelegate {
       ),
     );
     return Container(
+      color: BLUE_BACKGROUND,
       height: max(maxExtent - shrinkOffset, minExtent),
       child: Stack(
         children: [
@@ -203,19 +205,17 @@ class _ScrollState extends State<Scroll> {
     List<dynamic> responseList = SOIREE_DATA;
     List<Widget> listItems = [];
     responseList.forEach((post) {
-      listItems.add(
-        InkWell(
+      listItems.add(InkWell(
         child: Container(
           decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(36)),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.5),
-                blurRadius: 10.0,
-              )
-            ]
-          ),
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(36)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.5),
+                  blurRadius: 10.0,
+                )
+              ]),
           width: 400,
           height: 200,
           margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
@@ -225,8 +225,8 @@ class _ScrollState extends State<Scroll> {
                 padding: const EdgeInsets.only(top: 15.0, bottom: 5),
                 child: Text(
                   post["nom"],
-                  style:
-                      const TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 27, fontWeight: FontWeight.bold),
                 ),
               ),
               Padding(
@@ -253,75 +253,71 @@ class _ScrollState extends State<Scroll> {
           ),
         ),
         onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => PartyDetail())
-          );
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => PartyDetail()));
         },
-      )
-    );
-      });
+      ));
+    });
+    setState(() {
+      itemsData = listItems;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getPostsData();
+    controller.addListener(() {
+      double value = controller.offset / 199;
+
       setState(() {
-        itemsData = listItems;
+        topContainer = value;
+        closeTopContainer = controller.offset > 50;
       });
-    }
+    });
+  }
 
-    @override
-    void initState() {
-      super.initState();
-      getPostsData();
-      controller.addListener(() {
-        double value = controller.offset / 199;
-
-        setState(() {
-          topContainer = value;
-          closeTopContainer = controller.offset > 50;
-        });
-      });
-    }
-
-
-    @override
-    Widget build(BuildContext context) {
-      final Size size = MediaQuery.of(context).size;
-      return SafeArea(
-        child: Scaffold(
-          floatingActionButton: 
-          Visibility(
-            child : FloatingActionButton(
-              child: Icon(Icons.arrow_upward),
-              onPressed: scrollUp,
-            ),
-            visible: true,
+  @override
+  Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
+    return SafeArea(
+      child: Scaffold(
+        floatingActionButton: Visibility(
+          child: FloatingActionButton(
+            child: Icon(Icons.arrow_upward),
+            onPressed: scrollUp,
           ),
-          backgroundColor: Colors.transparent,
-          body: Container(
-            height: size.height,
-            child: Column(
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                ),
-                Expanded(
-                    child: ListView.builder(
-                        controller: controller,
-                        itemCount: itemsData.length,
-                        physics: BouncingScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          return Align(
-                              heightFactor: 1.0,
-                              alignment: Alignment.topCenter,
-                              child: itemsData[index]);
-                        })),
-              ],
-            ),
+          visible: true,
+        ),
+        backgroundColor: BLUE_BACKGROUND,
+        body: Container(
+          height: size.height,
+          child: Column(
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+              ),
+              Expanded(
+                  child: ListView.builder(
+                      controller: controller,
+                      itemCount: itemsData.length,
+                      physics: BouncingScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        return Align(
+                            heightFactor: 1.0,
+                            alignment: Alignment.topCenter,
+                            child: itemsData[index]);
+                      })),
+            ],
           ),
         ),
-      );
-    }
+      ),
+    );
+  }
 
   void scrollUp() {
-    controller.animateTo(
-      start,
-      duration: Duration(milliseconds: 500), curve: Curves.easeIn);
+    controller.animateTo(start,
+        duration: Duration(milliseconds: 500), curve: Curves.easeIn);
   }
 }
 
@@ -339,10 +335,8 @@ class _PartyDetailState extends State<PartyDetail> {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50),
         child: BackAppBar(),
-        ),
-      body: Container( 
-
       ),
+      body: Container(),
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:pts/Constant.dart';
 import 'Pages/Creer.dart';
-import 'Pages/Profil.dart';
+import 'Pages/profil/Profil.dart';
 import 'Pages/Rechercher.dart';
 
 class Home extends StatefulWidget {
@@ -10,7 +11,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int _currentIndex = 0;
-  final List<Widget> _children =[
+  final List<Widget> _children = [
     Rechercher(),
     Profil(),
   ];
@@ -19,31 +20,39 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _children[_currentIndex],
-      floatingActionButton: FloatingActionButton( 
+      floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => Creer())
-          );
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => Creer()));
         },
-        child: Icon(Icons.add_circle_outline, color: Colors.indigo,),
+        child: Icon(
+          Icons.add_circle_outline,
+          color: Colors.indigo,
+        ),
         elevation: 4.0,
         backgroundColor: Colors.white,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: YELLOW_COLOR,
         onTap: onTabTapped,
         currentIndex: _currentIndex,
         items: [
           BottomNavigationBarItem(
-            icon: new Icon(Icons.search, size: 30,),
-            label: "Rechercher"
-          ),
+              icon: new Icon(
+                Icons.search,
+                size: 30,
+              ),
+              label: "Rechercher"),
           BottomNavigationBarItem(
-            icon: new Icon(Icons.account_circle_outlined, size: 30,),
-            label: "Profil"
-          ),
+              icon: new Icon(
+                Icons.account_circle_outlined,
+                size: 30,
+              ),
+              label: "Profil"),
         ],
         backgroundColor: Colors.white,
-        ),
+      ),
     );
   }
 
