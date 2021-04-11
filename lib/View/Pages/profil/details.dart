@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:pts/Model/components/back_appbar.dart';
 import 'package:pts/Model/pts_components.dart';
 
 class ProfilDetails extends StatefulWidget {
@@ -13,27 +14,22 @@ class _ProfilDetailsState extends State<ProfilDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: new AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        leading: CupertinoButton(
-          child: Icon(Icons.arrow_back_ios, color: Colors.black),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        actions: <Widget>[
-          CupertinoButton(
-            onPressed: () {},
-            child: Text(
-              "Modifier",
-              style: TextStyle(
-                decoration: TextDecoration.underline,
-                color: Colors.black,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(50),
+        child: BackAppBar(
+          actions: <Widget>[
+            CupertinoButton(
+              onPressed: () {},
+              child: Text(
+                "Modifier",
+                style: TextStyle(
+                  decoration: TextDecoration.underline,
+                  color: Colors.black,
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       body: Center(
         child: Container(
