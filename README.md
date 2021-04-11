@@ -2,6 +2,9 @@
 
 A new Flutter project.
 
+1. [Getting Started](#getting-started)
+2. [Project Architecture](#project-architecture)
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
