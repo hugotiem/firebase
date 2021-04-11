@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pts/Constant.dart';
 import 'package:pts/Model/components/ProfilPhoto.dart';
 import 'package:pts/Model/pts_components.dart';
 import 'package:pts/View/Pages/login/login.dart';
@@ -21,6 +22,7 @@ class _ProfilState extends State<Profil> {
       //   backgroundColor: Colors.white,
       // ),
       body: Container(
+        color: BLUE_BACKGROUND,
         child: Center(
           child: Column(
             children: <Widget>[
