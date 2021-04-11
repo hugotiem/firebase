@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pts/Constant.dart';
 
 class BackAppBar extends PreferredSize {
   final Widget title;
@@ -15,7 +16,7 @@ class BackAppBar extends PreferredSize {
       leading: CupertinoButton(
         child: Icon(
           Icons.arrow_back_sharp,
-          color: Colors.black,
+          color: YELLOW_COLOR,
         ),
         onPressed: () {
           Navigator.pop(context);

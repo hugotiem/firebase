@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:pts/Constant.dart';
 import 'package:pts/Model/components/back_appbar.dart';
 import 'package:pts/Model/pts_components.dart';
 
@@ -14,6 +15,7 @@ class _ProfilDetailsState extends State<ProfilDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: BLUE_BACKGROUND,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50),
         child: BackAppBar(
@@ -24,7 +26,7 @@ class _ProfilDetailsState extends State<ProfilDetails> {
                 "Modifier",
                 style: TextStyle(
                   decoration: TextDecoration.underline,
-                  color: Colors.black,
+                  color: YELLOW_COLOR,
                 ),
               ),
             ),
