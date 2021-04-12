@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/Model/components/back_appbar.dart';
 import 'package:pts/Model/components/pts_box.dart';
-import 'package:pts/Model/pts_components.dart';
 
 class ProfilDetails extends StatefulWidget {
   ProfilDetails({Key key}) : super(key: key);

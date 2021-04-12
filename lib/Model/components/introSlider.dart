@@ -10,6 +10,7 @@ class IntroScreen extends StatefulWidget {
 }
 
 class IntroScreenState extends State<IntroScreen> {
+  // ignore: deprecated_member_use
   List<Slide> slides = new List();
 
   @override
