@@ -8,24 +8,21 @@ class SearchBar extends StatefulWidget {
 class _SearchBarState extends State<SearchBar> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration:BoxDecoration( 
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(30),
-          bottomRight: Radius.circular(30),
-        )
-      ),
-        padding: EdgeInsets.only(
-          left: 30,
-          right: 30,
-        ),
-        child: TextField(
-          textAlign: TextAlign.center,
-          decoration: InputDecoration(
-            hintText: 'Rechercher'
-            )
-        )
+    return Padding(
+      padding: const EdgeInsets.only(top: 38.0),
+      child: Container(
+                padding: EdgeInsets.only(
+                  left: 30,
+                  right: 30,
+                ),
+                child: TextField(
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                    hintText: 'Rechercher',
+                    suffixIcon: Icon(Icons.search_rounded)
+                    ),
+                )
+            ),
     );
   }
 }
