@@ -6,6 +6,7 @@ import 'package:pts/Model/components/pts_box.dart';
 import 'package:pts/Model/pts_components.dart';
 import 'package:pts/View/Pages/login/login.dart';
 import 'package:pts/View/Pages/profil/details.dart';
+import 'package:pts/View/Pages/tests/api.dart';
 
 class Profil extends StatefulWidget {
   @override
@@ -101,6 +102,7 @@ class _ProfilState extends State<Profil> {
                       ),
                     ),
                     ClickableContainer(
+                      to: API(),
                       padding: EdgeInsets.only(
                         top: 0,
                         bottom: 0,
