@@ -23,11 +23,15 @@ class _HomeState extends State<Home> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => Creer()));
+            context,
+            MaterialPageRoute(
+              builder: (context) => Creer(),
+            ),
+          );
         },
         child: Icon(
           Icons.add_circle_outline,
-          color: Colors.indigo,
+          color: YELLOW_COLOR,
         ),
         elevation: 4.0,
         backgroundColor: Colors.white,
