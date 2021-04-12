@@ -26,7 +26,7 @@ PTS
 ├── ios/ (ios app builder)
 ├── lib/
 │    ├── Model/
-│    │    │ components/ (customs components)
+│    │    ├── components/ (customs components)
 │    │    └── soiree.dart
 │    ├── View/
 │    │    ├── Pages/
