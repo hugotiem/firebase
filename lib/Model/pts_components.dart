@@ -13,7 +13,6 @@ class ClickableContainer extends StatefulWidget {
   final Widget to;
   final Color color;
   final Color focusColor;
-  final double radius;
   final bool containerShadow;
   final bool cupertino;
   final EdgeInsetsGeometry padding;
@@ -25,7 +24,6 @@ class ClickableContainer extends StatefulWidget {
     this.focusColor = FOCUS_COLOR,
     this.cupertino = true,
     this.containerShadow = false,
-    this.radius = 0.0,
     this.padding = const EdgeInsets.all(20),
     this.margin = const EdgeInsets.all(0),
     this.to,
@@ -38,7 +36,6 @@ class ClickableContainer extends StatefulWidget {
           color: color,
           focusColor: focusColor,
           containerShadow: containerShadow,
-          radius: radius,
           padding: padding,
           margin: margin,
           to: to,
@@ -51,7 +48,6 @@ class _ClickableContainerState extends State<ClickableContainer> {
   final Widget to;
   final Color color;
   final Color focusColor;
-  final double radius;
   final EdgeInsetsGeometry padding;
   final EdgeInsetsGeometry margin;
   final bool containerShadow;
@@ -62,7 +58,6 @@ class _ClickableContainerState extends State<ClickableContainer> {
     this.color,
     this.focusColor,
     this.containerShadow = false,
-    this.radius,
     this.padding,
     this.margin,
   });
@@ -106,9 +101,6 @@ class _ClickableContainerState extends State<ClickableContainer> {
               duration: Duration(milliseconds: 100),
               decoration: BoxDecoration(
                 color: _color == null ? color : _color,
-                borderRadius: new BorderRadius.all(
-                  Radius.circular(radius),
-                ),
               ),
               child: child,
             ),
