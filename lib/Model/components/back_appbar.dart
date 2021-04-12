@@ -5,8 +5,9 @@ import 'package:pts/Constant.dart';
 class BackAppBar extends PreferredSize {
   final Widget title;
   final List<Widget> actions;
+  final Brightness brightness;
 
-  BackAppBar({this.title, this.actions});
+  BackAppBar({this.title, this.actions, this.brightness});
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +25,7 @@ class BackAppBar extends PreferredSize {
       ),
       title: title,
       actions: actions,
+      brightness: brightness != null ? brightness : Brightness.light,
     );
   }
 }

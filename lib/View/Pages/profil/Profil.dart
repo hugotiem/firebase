@@ -18,10 +18,12 @@ class _ProfilState extends State<Profil> {
     return Scaffold(
       // appbar pour eviter certains bug d'affichage avec le haut de l'écran
       // a mettre seulement durant le scroll
-      // appBar: new AppBar(
-      //   toolbarHeight: 0,
-      //   backgroundColor: Colors.white,
-      // ),
+      appBar: new AppBar(
+        toolbarHeight: 0,
+        elevation: 0,
+        backgroundColor: BLUE_BACKGROUND,
+        brightness: Brightness.dark,
+      ),
       body: Container(
         color: BLUE_BACKGROUND,
         child: Center(

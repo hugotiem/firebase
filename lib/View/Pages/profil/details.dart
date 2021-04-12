@@ -32,6 +32,7 @@ class _ProfilDetailsState extends State<ProfilDetails> {
               ),
             ),
           ],
+          brightness: Brightness.dark,
         ),
       ),
       body: Center(
