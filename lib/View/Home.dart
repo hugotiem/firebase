@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
 import 'Pages/Creer.dart';
 import 'Pages/profil/Profil.dart';
-import 'Pages/Rechercher.dart';
+import 'Pages/search.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -12,7 +12,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int _currentIndex = 0;
   final List<Widget> _children = [
-    Rechercher(),
+    Search(),
     Profil(),
   ];
 
