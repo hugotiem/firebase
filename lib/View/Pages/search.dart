@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pts/Constant.dart';
+import 'package:pts/Model/components/SearchBar.dart';
 
 class Search extends StatefulWidget {
   @override
@@ -10,16 +12,13 @@ class _SearchState extends State<Search> {
     return CustomScrollView(
       slivers: <Widget>[
         SliverAppBar(
+          backgroundColor: YELLOW_COLOR,
           expandedHeight: 150.0,
-          floating: false,
+          floating: true,
           pinned: true,
           flexibleSpace: FlexibleSpaceBar(
             centerTitle: true,
-            title: TextField(
-              decoration: InputDecoration(
-                hintText: 'Rechercher',
-              ),
-            ),
+            title: SearchBar()
           ),
         ),
         SliverList(
@@ -28,6 +27,7 @@ class _SearchState extends State<Search> {
               padding: const EdgeInsets.all(8.0),
               child: Card(
                 color: Colors.white,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                 child: Container(
                   height: 75,
                 ),
@@ -44,6 +44,7 @@ class _SearchState extends State<Search> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _customScrollView(),
+      backgroundColor: BLUE_BACKGROUND,
     );
   }
 }
