@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../Constant.dart';
-import 'components/container_shadow.dart';
+import 'components/pts_box.dart';
 import 'components/cupertino_navigator.dart';
 
 // containers with blue shadow
@@ -95,7 +95,7 @@ class _ClickableContainerState extends State<ClickableContainer> {
         });
       },
       child: containerShadow
-          ? ContainerShadow(
+          ? PTSBox(
               color: _color == null ? color : _color,
               padding: padding,
               child: child,

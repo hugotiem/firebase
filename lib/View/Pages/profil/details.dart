@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/Model/components/back_appbar.dart';
-import 'package:pts/Model/components/container_shadow.dart';
+import 'package:pts/Model/components/pts_box.dart';
 import 'package:pts/Model/pts_components.dart';
 
 class ProfilDetails extends StatefulWidget {
@@ -38,7 +38,7 @@ class _ProfilDetailsState extends State<ProfilDetails> {
         child: Container(
           child: Column(
             children: <Widget>[
-              ContainerShadow(
+              PTSBox(
                 child: Column(
                   children: <Widget>[
                     Container(
@@ -140,7 +140,7 @@ class _ProfilDetailsState extends State<ProfilDetails> {
                   ],
                 ),
               ),
-              ContainerShadow(),
+              PTSBox(),
             ],
           ),
         ),

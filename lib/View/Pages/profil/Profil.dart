@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/Model/components/ProfilPhoto.dart';
-import 'package:pts/Model/components/container_shadow.dart';
+import 'package:pts/Model/components/pts_box.dart';
 import 'package:pts/Model/pts_components.dart';
 import 'package:pts/View/Pages/login/login.dart';
 import 'package:pts/View/Pages/profil/details.dart';
@@ -55,7 +55,7 @@ class _ProfilState extends State<Profil> {
                   ],
                 ),
               ),
-              new ContainerShadow(
+              PTSBox(
                 padding: EdgeInsets.only(top: 20, bottom: 20),
                 // creer une list avec tous les elements
                 child: new Column(
