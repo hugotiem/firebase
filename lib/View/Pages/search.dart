@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/Model/components/SearchBar.dart';
+import 'package:pts/Model/components/backgroundtitle.dart';
 
 class Search extends StatefulWidget {
   @override
@@ -13,12 +14,13 @@ class _SearchState extends State<Search> {
       slivers: <Widget>[
         SliverAppBar(
           backgroundColor: YELLOW_COLOR,
-          expandedHeight: 150.0,
-          floating: true,
+          expandedHeight: MediaQuery.of(context).size.height * 0.45,
+          floating: false,
           pinned: true,
           flexibleSpace: FlexibleSpaceBar(
             centerTitle: true,
             title: SearchBar(),
+            background: BackGroundtitle(),
           ),
         ),
         SliverList(
