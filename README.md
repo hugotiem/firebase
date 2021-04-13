@@ -33,7 +33,7 @@ PTS
 │    │    │     ├── login/
 │    │    │     ├── profil/
 │    │    │     ├── Creer.dart
-│    │    │     └── Rechercher.dart
+│    │    │     └── search.dart
 │    │    └── Home.dart
 │    ├── Constant.dart
 │    └── main.dart (main page to run the app)
