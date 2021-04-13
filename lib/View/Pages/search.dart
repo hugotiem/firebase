@@ -13,14 +13,24 @@ class _SearchState extends State<Search> {
     return CustomScrollView(
       slivers: <Widget>[
         SliverAppBar(
-          backgroundColor: YELLOW_COLOR,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
           expandedHeight: MediaQuery.of(context).size.height * 0.45,
           floating: false,
           pinned: true,
           flexibleSpace: FlexibleSpaceBar(
             centerTitle: true,
             title: SearchBar(),
-            background: BackGroundtitle(),
+            background: Container(
+              decoration: BoxDecoration(
+                color: YELLOW_COLOR,
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(36),
+                  bottomRight: Radius.circular(36),
+                ),
+              ),
+              child: BackGroundtitle(),
+            ),
           ),
         ),
         SliverList(
