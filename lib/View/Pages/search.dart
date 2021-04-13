@@ -18,19 +18,30 @@ class _SearchState extends State<Search> {
           pinned: true,
           flexibleSpace: FlexibleSpaceBar(
             centerTitle: true,
-            title: SearchBar()
+            title: SearchBar(),
           ),
         ),
         SliverList(
           delegate: SliverChildBuilderDelegate(
             (context, index) => Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Card(
-                color: Colors.white,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                child: Container(
-                  height: 75,
+              child: GestureDetector(
+                child: Card(
+                  color: Colors.white,
+                  child: Container(
+                    child: Stack(
+                      children: <Widget>[
+                        openContent(),
+                        closeContent(_isOpen ? 300 : 150),
+                      ],
+                    ), //_isOpen ?  : ,
+                  ),
                 ),
+                onTap: () {
+                  setState(() {
+                    _isOpen = !_isOpen;
+                  });
+                },
               ),
             ),
             childCount: 10,
@@ -38,6 +49,183 @@ class _SearchState extends State<Search> {
         )
       ],
     );
+  }
+
+  bool _isOpen = false;
+
+  Widget closeContent(double _height) {
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 200),
+      curve: Curves.ease,
+      height: _height,
+      padding: EdgeInsets.all(10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Expanded(
+            flex: 2,
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  right: BorderSide(color: Colors.grey),
+                ),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    child: Text(
+                      "\$14",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ),
+                  Container(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          child: Opacity(
+                            opacity: 0.6,
+                            child: Text("TODAY"),
+                          ),
+                        ),
+                        Container(
+                          child: Text(
+                            "05:50 PM",
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 5,
+            child: Container(
+              padding: EdgeInsets.only(left: 10),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          child: Text(
+                            "Nom de l'organisateur",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          child: Opacity(
+                            opacity: 0.6,
+                            child: Text(
+                              "Catégorie de la soirée",
+                              style: TextStyle(fontSize: 15),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Container(
+                              child: Opacity(
+                                opacity: 0.6,
+                                child: Text(
+                                  "PERSONNES",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ),
+                            Row(
+                              children: <Widget>[
+                                Container(
+                                  child: Icon(Icons.person),
+                                ),
+                                Container(
+                                  child: Text("14"),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Container(
+                              child: Opacity(
+                                opacity: 0.6,
+                                child: Text(
+                                  "prix".toUpperCase(),
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ),
+                            Row(
+                              children: <Widget>[
+                                Container(
+                                  child: Icon(Icons.attach_money_outlined),
+                                ),
+                                Container(
+                                  child: Text("14"),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Container(
+                              child: Opacity(
+                                opacity: 0.6,
+                                child: Text(
+                                  "lieu".toUpperCase(),
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ),
+                            Row(
+                              children: <Widget>[
+                                Container(
+                                  child: Icon(Icons.location_on),
+                                ),
+                                Container(
+                                  child: Text("Caen"),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget openContent() {
+    return Container();
   }
 
   @override

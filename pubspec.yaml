@@ -30,6 +30,7 @@ dependencies:
   firebase_core: ^1.0.3
   firebase_auth: ^1.0.3
   intro_slider: ^2.3.3
+  expansion_card: ^0.1.0
 
 dev_dependencies:
   flutter_test:
