@@ -31,7 +31,6 @@ dependencies:
   firebase_auth: ^1.0.3
   intro_slider: ^2.3.3
   expansion_card: ^0.1.0
-  flutter_svg: ^0.21.0+1
 
 dev_dependencies:
   flutter_test:
