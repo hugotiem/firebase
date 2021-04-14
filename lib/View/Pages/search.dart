@@ -15,7 +15,7 @@ class _SearchState extends State<Search> {
         SliverAppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          expandedHeight: MediaQuery.of(context).size.height * 0.45,
+          expandedHeight: MediaQuery.of(context).size.height * 0.415,
           floating: false,
           pinned: true,
           flexibleSpace: FlexibleSpaceBar(
