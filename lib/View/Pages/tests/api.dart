@@ -28,7 +28,6 @@ class _APIState extends State<API> {
     return Scaffold(
       body: NotificationListener<ScrollNotification>(
         onNotification: (notification) {
-          print(notification.metrics.pixels);
           setState(() {
             if (notification.metrics.pixels <= 300 &&
                 (300 - notification.metrics.pixels) >= 100) {
@@ -63,8 +62,8 @@ class _APIState extends State<API> {
               decoration: BoxDecoration(
                 color: Colors.blue,
                 borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(_size / 10),
-                  bottomRight: Radius.circular((_size / 10)),
+                  bottomLeft: Radius.circular(36 * (_size - 100) / 200),
+                  bottomRight: Radius.circular(36 * (_size - 100) / 200),
                 ),
               ),
             ),
