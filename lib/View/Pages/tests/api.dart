@@ -40,15 +40,17 @@ class _APIState extends State<API> {
       body: NotificationListener<ScrollNotification>(
         onNotification: (notification) {
           setState(() {
-            if (notification.metrics.pixels <= 300 &&
-                (300 - notification.metrics.pixels) >= 100) {
-              _size = 300 - notification.metrics.pixels;
-              _opacity = (_size - 100) / 200;
-              _barSizeWidth = 350 - (notification.metrics.pixels / 3);
-              _barSizeHeight = 60 - (notification.metrics.pixels / 9);
-            } else if (notification.metrics.pixels > 300) {
-              _size = 100;
-              _opacity = 0;
+            if (!(notification is ScrollStartNotification)) {
+              double _pixels = notification.metrics.pixels;
+              if (_pixels <= 300 && (300 - _pixels) >= 100) {
+                _size = 300 - _pixels;
+                _opacity = (_size - 100) / 200;
+                _barSizeWidth = 350 - (_pixels / 3);
+                _barSizeHeight = 60 - (_pixels / 9);
+              } else if (_pixels > 300) {
+                _size = 100;
+                _opacity = 0;
+              }
             }
           });
           return null;
@@ -72,7 +74,7 @@ class _APIState extends State<API> {
                               Container(),
                               closeContent(_isOpen ? 300 : 150),
                             ],
-                          ), //_isOpen ?  : ,
+                          ),
                         ),
                       ),
                       onTap: () {
@@ -91,8 +93,8 @@ class _APIState extends State<API> {
               decoration: BoxDecoration(
                 color: YELLOW_COLOR.withOpacity(_opacity),
                 borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(36 * ((_size - 100) / 200)),
-                  bottomRight: Radius.circular(36 * ((_size - 100) / 200)),
+                  bottomLeft: Radius.circular(36),
+                  bottomRight: Radius.circular(36),
                 ),
                 // image: DecorationImage(
                 //   alignment: Alignment.topCenter,
@@ -100,7 +102,7 @@ class _APIState extends State<API> {
                 // ),
               ),
               child: Container(
-                height: _size,
+                //height: _size,
                 child: Stack(
                   children: [
                     Positioned(
