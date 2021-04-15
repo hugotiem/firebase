@@ -23,16 +23,15 @@ class _SearchState extends State<Search> {
             title: SearchBar(),
             background: Container(
               decoration: BoxDecoration(
-                color: YELLOW_COLOR,
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(36),
-                  bottomRight: Radius.circular(36),
-                ),
-                image: DecorationImage(  
-                  alignment: Alignment.topCenter,
-                  image: AssetImage("assets/images/abstract-1268.png"),
-                )
-              ),
+                  color: YELLOW_COLOR,
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(36),
+                    bottomRight: Radius.circular(36),
+                  ),
+                  image: DecorationImage(
+                    alignment: Alignment.topCenter,
+                    image: AssetImage("assets/images/abstract-1268.png"),
+                  )),
               child: BackGroundtitle(),
             ),
           ),

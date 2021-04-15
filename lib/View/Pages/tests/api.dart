@@ -1,4 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pts/Model/components/backgroundtitle.dart';
+import 'package:pts/Model/components/searchbar.dart';
+
+import '../../../Constant.dart';
 
 class API extends StatefulWidget {
   API({Key key}) : super(key: key);
@@ -10,7 +15,8 @@ class API extends StatefulWidget {
 class _APIState extends State<API> {
   double _size;
   double current;
-
+  double _opacity;
+  bool _isOpen = false;
   ScrollController _scrollController;
 
   @override
@@ -18,6 +24,7 @@ class _APIState extends State<API> {
     setState(() {
       _size = 300;
       current = 0;
+      _opacity = 1;
       _scrollController = ScrollController();
     });
     super.initState();
@@ -26,12 +33,17 @@ class _APIState extends State<API> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: BLUE_BACKGROUND,
       body: NotificationListener<ScrollNotification>(
         onNotification: (notification) {
           setState(() {
             if (notification.metrics.pixels <= 300 &&
                 (300 - notification.metrics.pixels) >= 100) {
               _size = 300 - notification.metrics.pixels;
+              _opacity = (_size - 100) / 200;
+            } else if (notification.metrics.pixels > 300) {
+              _size = 100;
+              _opacity = 0;
             }
           });
           return null;
@@ -42,33 +54,242 @@ class _APIState extends State<API> {
               child: ListView.builder(
                 itemCount: 30,
                 controller: _scrollController,
-                //physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
                   return Container(
-                    margin: EdgeInsets.only(
-                      top: index == 0 ? 300 : 10,
-                      bottom: 10,
-                      left: 10,
-                      right: 10,
+                    padding: const EdgeInsets.all(8.0),
+                    margin: EdgeInsets.only(top: index == 0 ? 300 : 0),
+                    child: GestureDetector(
+                      child: Card(
+                        color: Colors.white,
+                        child: Container(
+                          child: Stack(
+                            children: <Widget>[
+                              Container(),
+                              closeContent(_isOpen ? 300 : 150),
+                            ],
+                          ), //_isOpen ?  : ,
+                        ),
+                      ),
+                      onTap: () {
+                        setState(() {
+                          _isOpen = !_isOpen;
+                        });
+                      },
                     ),
-                    height: 100,
-                    color: Colors.red,
                   );
                 },
               ),
             ),
             Container(
               height: _size,
+              width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
-                color: Colors.blue,
+                color: YELLOW_COLOR.withOpacity(_opacity),
                 borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(36 * (_size - 100) / 200),
-                  bottomRight: Radius.circular(36 * (_size - 100) / 200),
+                  bottomLeft: Radius.circular(36 * ((_size - 100) / 200)),
+                  bottomRight: Radius.circular(36 * ((_size - 100) / 200)),
+                ),
+                // image: DecorationImage(
+                //   alignment: Alignment.topCenter,
+                //   image: AssetImage("assets/images/abstract-1268.png"),
+                // ),
+              ),
+              child: Container(
+                height: _size,
+                child: Stack(
+                  children: [
+                    Positioned(
+                      top: (_size - 100) / 2,
+                      width: MediaQuery.of(context).size.width,
+                      child: Opacity(
+                        opacity: _opacity,
+                        child: Center(child: BackGroundtitle()),
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      width: MediaQuery.of(context).size.width,
+                      child: Center(
+                        child: SearchBar(),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget closeContent(double _height) {
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 200),
+      curve: Curves.ease,
+      height: _height,
+      padding: EdgeInsets.all(10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Expanded(
+            flex: 2,
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  right: BorderSide(color: Colors.grey),
+                ),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    child: Text(
+                      "\$14",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ),
+                  Container(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          child: Opacity(
+                            opacity: 0.6,
+                            child: Text("TODAY"),
+                          ),
+                        ),
+                        Container(
+                          child: Text(
+                            "05:50 PM",
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 5,
+            child: Container(
+              padding: EdgeInsets.only(left: 10),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          child: Text(
+                            "Nom de l'organisateur",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          child: Opacity(
+                            opacity: 0.6,
+                            child: Text(
+                              "Catégorie de la soirée",
+                              style: TextStyle(fontSize: 15),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Container(
+                              child: Opacity(
+                                opacity: 0.6,
+                                child: Text(
+                                  "PERSONNES",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ),
+                            Row(
+                              children: <Widget>[
+                                Container(
+                                  child: Icon(Icons.person),
+                                ),
+                                Container(
+                                  child: Text("14"),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Container(
+                              child: Opacity(
+                                opacity: 0.6,
+                                child: Text(
+                                  "prix".toUpperCase(),
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ),
+                            Row(
+                              children: <Widget>[
+                                Container(
+                                  child: Icon(Icons.attach_money_outlined),
+                                ),
+                                Container(
+                                  child: Text("14"),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Container(
+                              child: Opacity(
+                                opacity: 0.6,
+                                child: Text(
+                                  "lieu".toUpperCase(),
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ),
+                            Row(
+                              children: <Widget>[
+                                Container(
+                                  child: Icon(Icons.location_on),
+                                ),
+                                Container(
+                                  child: Text("Caen"),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -11,16 +11,13 @@ class BackGroundtitle extends StatefulWidget {
 class _BackGroundtitleState extends State<BackGroundtitle> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 120, left: 20),
-      child: Container(
-        child: Text(
-          'Soirée proche',
-          style: TextStyle(
-            color: BLUE_BACKGROUND,
-            fontSize: 60,
-            fontWeight: FontWeight.w900,
-          ),
+    return Container(
+      child: Text(
+        'Soirée proche',
+        style: TextStyle(
+          color: BLUE_BACKGROUND,
+          fontSize: 60,
+          fontWeight: FontWeight.w900,
         ),
       ),
     );
