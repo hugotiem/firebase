@@ -20,7 +20,7 @@ class _QuestionDeBaseState extends State<QuestionDeBase> {
         child: BackAppBar(
           leading: CupertinoButton(
             child: Icon(
-              Icons.cancel_sharp,
+              Icons.close,
               color: YELLOW_COLOR,
             ),
             onPressed: () {
