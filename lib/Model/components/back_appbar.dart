@@ -7,8 +7,14 @@ class BackAppBar extends PreferredSize {
   final Widget title;
   final List<Widget> actions;
   final Brightness brightness;
+  final Widget leading;
 
-  BackAppBar({this.title, this.actions, this.brightness});
+  BackAppBar({
+    this.title, 
+    this.actions, 
+    this.brightness, 
+    this.leading,
+  });
 
   @override
   Widget build(BuildContext context) {
