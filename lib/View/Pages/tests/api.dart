@@ -171,13 +171,14 @@ class _APIState extends State<API> {
 
   List<Widget> list = [];
 
-  getList() {
+  List<Widget> getList() {
     for (int i = 0; i < 10; i++) {
       list.add(
         Container(
           padding: const EdgeInsets.all(8.0),
           margin: EdgeInsets.only(top: i == 0 ? 300 : 0),
           child: GestureDetector(
+            behavior: HitTestBehavior.translucent,
             child: Card(
               color: Colors.white,
               child: Container(
