@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pts/Model/components/backgroundtitle.dart';
-import 'package:pts/Model/components/searchbar.dart';
 
 import '../../../Constant.dart';
 
@@ -16,6 +15,8 @@ class _APIState extends State<API> {
   double _size;
   double current;
   double _opacity;
+  double _barSizeWidth;
+  double _barSizeHeight;
   bool _isOpen = false;
   ScrollController _scrollController;
 
@@ -25,6 +26,8 @@ class _APIState extends State<API> {
       _size = 300;
       current = 0;
       _opacity = 1;
+      _barSizeWidth = 350;
+      _barSizeHeight = 60;
       _scrollController = ScrollController();
     });
     super.initState();
@@ -41,6 +44,8 @@ class _APIState extends State<API> {
                 (300 - notification.metrics.pixels) >= 100) {
               _size = 300 - notification.metrics.pixels;
               _opacity = (_size - 100) / 200;
+              _barSizeWidth = 350 - (notification.metrics.pixels / 3);
+              _barSizeHeight = 60 - (notification.metrics.pixels / 9);
             } else if (notification.metrics.pixels > 300) {
               _size = 100;
               _opacity = 0;
@@ -110,8 +115,42 @@ class _APIState extends State<API> {
                       bottom: 0,
                       width: MediaQuery.of(context).size.width,
                       child: Center(
-                        child: SearchBar(),
-                      ),
+                          child: Padding(
+                        padding: const EdgeInsets.only(bottom: 15),
+                        child: Container(
+                          width: _barSizeWidth,
+                          height: _barSizeHeight,
+                          padding: EdgeInsets.symmetric(
+                            vertical: 10,
+                            horizontal: 15,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(29.5),
+                            boxShadow: [
+                              BoxShadow(
+                                color: BLUE_BACKGROUND.withOpacity(0.3),
+                                offset: Offset(1, 2),
+                                blurRadius: 4,
+                                spreadRadius: 2,
+                              )
+                            ],
+                          ),
+                          child: TextField(
+                            decoration: InputDecoration(
+                              hintText: 'Rechercher',
+                              hintStyle: TextStyle(
+                                fontSize: 11,
+                              ),
+                              icon: Icon(
+                                Icons.search_rounded,
+                                size: 20,
+                              ),
+                              border: InputBorder.none,
+                            ),
+                          ),
+                        ),
+                      )),
                     ),
                   ],
                 ),
