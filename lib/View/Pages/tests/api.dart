@@ -18,7 +18,6 @@ class _APIState extends State<API> {
   double _barSizeWidth;
   double _barSizeHeight;
   bool _isOpen = false;
-  ScrollController _scrollController;
 
   @override
   void initState() {
@@ -28,7 +27,7 @@ class _APIState extends State<API> {
       _opacity = 1;
       _barSizeWidth = 350;
       _barSizeHeight = 60;
-      _scrollController = ScrollController();
+      getList();
     });
     super.initState();
   }
@@ -57,38 +56,41 @@ class _APIState extends State<API> {
         },
         child: Stack(
           children: <Widget>[
-            SingleChildScrollView(
-              child: Container(
-                height: 2000,
-                // child: ListView.builder(
-                //   itemCount: 10,
-                //   controller: _scrollController,
-                //   itemBuilder: (context, index) {
-                //     return Container(
-                //       padding: const EdgeInsets.all(8.0),
-                //       margin: EdgeInsets.only(top: index == 0 ? 300 : 0),
-                //       child: GestureDetector(
-                //         child: Card(
-                //           color: Colors.white,
-                //           child: Container(
-                //             child: Stack(
-                //               children: <Widget>[
-                //                 Container(),
-                //                 closeContent(_isOpen ? 300 : 150),
-                //               ],
-                //             ),
-                //           ),
-                //         ),
-                //         onTap: () {
-                //           setState(() {
-                //             _isOpen = !_isOpen;
-                //           });
-                //         },
-                //       ),
-                //     );
-                //   },
-                // ),
+            Container(
+              //height: 2000,
+              height: MediaQuery.of(context).size.height,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: list,
+                ),
               ),
+              // child: ListView.builder(
+              //   itemCount: 2,
+              //   itemBuilder: (context, index) {
+              //     return Container(
+              //       padding: const EdgeInsets.all(8.0),
+              //       margin: EdgeInsets.only(top: index == 0 ? 300 : 0),
+              //       child: GestureDetector(
+              //         child: Card(
+              //           color: Colors.white,
+              //           child: Container(
+              //             child: Stack(
+              //               children: <Widget>[
+              //                 Container(),
+              //                 closeContent(_isOpen ? 300 : 150),
+              //               ],
+              //             ),
+              //           ),
+              //         ),
+              //         onTap: () {
+              //           setState(() {
+              //             _isOpen = !_isOpen;
+              //           });
+              //         },
+              //       ),
+              //     );
+              //   },
+              // ),
             ),
             Container(
               height: _size,
@@ -165,6 +167,38 @@ class _APIState extends State<API> {
         ),
       ),
     );
+  }
+
+  List<Widget> list = [];
+
+  getList() {
+    for (int i = 0; i < 10; i++) {
+      list.add(
+        Container(
+          padding: const EdgeInsets.all(8.0),
+          margin: EdgeInsets.only(top: i == 0 ? 300 : 0),
+          child: GestureDetector(
+            child: Card(
+              color: Colors.white,
+              child: Container(
+                child: Stack(
+                  children: <Widget>[
+                    Container(),
+                    closeContent(_isOpen ? 300 : 150),
+                  ],
+                ),
+              ),
+            ),
+            onTap: () {
+              setState(() {
+                _isOpen = !_isOpen;
+              });
+            },
+          ),
+        ),
+      );
+    }
+    return list;
   }
 
   Widget closeContent(double _height) {
