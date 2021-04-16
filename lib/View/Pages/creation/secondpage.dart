@@ -18,7 +18,7 @@ class _SecondPageState extends State<SecondPage> {
       ),
       body: SingleChildScrollView(
         child: Column(
-
+          
         ),
       ),
     );

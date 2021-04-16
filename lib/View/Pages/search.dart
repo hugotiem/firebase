@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pts/Model/components/backgroundtitle.dart';
 import 'package:pts/Model/components/custom_sliver.dart';
+import 'package:pts/View/Pages/tests/api.dart';
 
 import '../../../Constant.dart';
 
@@ -73,38 +74,32 @@ class _SearchState extends State<Search> {
                 child: Center(
                     child: Padding(
                   padding: const EdgeInsets.only(bottom: 15),
-                  child: Container(
-                    width: _barSizeWidth,
-                    height: _barSizeHeight,
-                    padding: EdgeInsets.symmetric(
-                      vertical: 10,
-                      horizontal: 15,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(29.5),
-                      boxShadow: [
-                        BoxShadow(
-                          color: BLUE_BACKGROUND.withOpacity(0.3),
-                          offset: Offset(1, 2),
-                          blurRadius: 4,
-                          spreadRadius: 2,
-                        )
-                      ],
-                    ),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: 'Rechercher',
-                        hintStyle: TextStyle(
-                          fontSize: 11,
+                  child: GestureDetector(
+                    onTap: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => API()));
+                          print("object");
+                        },
+                      child: Hero(
+                        tag: "test",
+                        child: Container(
+                        width: _barSizeWidth,
+                        height: _barSizeHeight,
+                        
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(29.5),
+                          boxShadow: [
+                            BoxShadow(
+                              color: BLUE_BACKGROUND.withOpacity(0.3),
+                              offset: Offset(1, 2),
+                              blurRadius: 4,
+                              spreadRadius: 2,
+                            )
+                          ],
                         ),
-                        icon: Icon(
-                          Icons.search_rounded,
-                          size: 20,
-                        ),
-                        border: InputBorder.none,
+                        child: Container()
+                    ),
                       ),
-                    ),
                   ),
                 )),
               ),
