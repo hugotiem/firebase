@@ -2,13 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/Model/components/back_appbar.dart';
+import 'package:pts/View/Pages/creation/secondpage.dart';
 
-class QuestionDeBase extends StatefulWidget {
+class FirstPage extends StatefulWidget {
   @override
-  _QuestionDeBaseState createState() => _QuestionDeBaseState();
+  _FirstPageState createState() => _FirstPageState();
 }
 
-class _QuestionDeBaseState extends State<QuestionDeBase> {
+class _FirstPageState extends State<FirstPage> {
   String _themeValue;
   bool _choixSwitch = true;
   String _inviteValue;
@@ -122,7 +123,7 @@ class _QuestionDeBaseState extends State<QuestionDeBase> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 20),
+                padding: const EdgeInsets.only(top: 15),
                 child: Switch(
                   value: _choixSwitch, 
                   activeColor: YELLOW_COLOR,
@@ -227,8 +228,35 @@ class _QuestionDeBaseState extends State<QuestionDeBase> {
                     ),
                   ),
                 ),
-                  ],
-                ),
+              ],
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 30),
+                child: Container( 
+                  child: ElevatedButton( 
+                    child: new Text( 
+                      'Suivant',
+                    style: 
+                      TextStyle(  
+                        color: BLUE_BACKGROUND,
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  style: ElevatedButton.styleFrom(
+                    primary: YELLOW_COLOR,
+                    shape: RoundedRectangleBorder(  
+                    borderRadius: BorderRadius.circular(30.0),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => SecondPage())
+                    ); 
+                  },
+                  
+                  ),
+                )
+              ),
             ]
           ),
       ),
