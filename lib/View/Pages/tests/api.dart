@@ -54,6 +54,16 @@ class _APIState extends State<API> {
           child: Stack(
             children: [
               Positioned(
+                top: -150 + _size / 2,
+                width: MediaQuery.of(context).size.width,
+                child: Opacity(
+                  opacity: _opacity,
+                  child: Image(
+                    image: AssetImage("assets/images/abstract-1268.png"),
+                  ),
+                ),
+              ),
+              Positioned(
                 top: (_size - 100) / 2,
                 width: MediaQuery.of(context).size.width,
                 child: Opacity(
@@ -107,7 +117,8 @@ class _APIState extends State<API> {
         ),
       ),
       body: ListView.builder(
-        itemCount: 10,
+        //physics: const AlwaysScrollableScrollPhysics(),
+        itemCount: 5,
         itemBuilder: (context, index) {
           return Container(
             padding: const EdgeInsets.all(8.0),
@@ -138,12 +149,15 @@ class _APIState extends State<API> {
             double _pixels = notification.metrics.pixels;
             if (_pixels <= 300 && (300 - _pixels) >= 100) {
               _size = 300 - _pixels;
-              _opacity = (_size - 100) / 200;
+
+              if (_pixels >= 150) {
+                _opacity = (_size - 100) / 50;
+              }
               _barSizeWidth = 350 - (_pixels / 3);
               _barSizeHeight = 60 - (_pixels / 9);
             } else if (_pixels > 300) {
               _size = 100;
-              _opacity = 0;
+              // _opacity = 0;
             }
           }
         });
