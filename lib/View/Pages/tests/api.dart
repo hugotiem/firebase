@@ -152,12 +152,14 @@ class _APIState extends State<API> {
 
               if (_pixels >= 150) {
                 _opacity = (_size - 100) / 50;
+              } else if (_pixels <= 150) {
+                _opacity = 1;
               }
               _barSizeWidth = 350 - (_pixels / 3);
               _barSizeHeight = 60 - (_pixels / 9);
             } else if (_pixels > 300) {
               _size = 100;
-              // _opacity = 0;
+              _opacity = 0;
             }
           }
         });
