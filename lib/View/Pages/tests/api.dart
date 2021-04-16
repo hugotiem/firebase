@@ -10,6 +10,13 @@ class API extends StatefulWidget {
 class _APIState extends State<API> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Container(
+      child: AnimatedBuilder(
+        builder: (context, child) {
+          return child;
+        },
+        animation: null,
+      ),
+    );
   }
 }
