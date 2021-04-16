@@ -1,72 +1,173 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pts/Constant.dart';
-import 'package:pts/Model/components/SearchBar.dart';
 import 'package:pts/Model/components/backgroundtitle.dart';
+import 'package:pts/Model/components/custom_sliver.dart';
+
+import '../../../Constant.dart';
 
 class Search extends StatefulWidget {
+  Search({Key key}) : super(key: key);
+
   @override
   _SearchState createState() => _SearchState();
 }
 
 class _SearchState extends State<Search> {
-  Widget _customScrollView() {
-    return CustomScrollView(
-      slivers: <Widget>[
-        SliverAppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          expandedHeight: MediaQuery.of(context).size.height * 0.415,
-          floating: false,
-          pinned: true,
-          flexibleSpace: FlexibleSpaceBar(
-            centerTitle: true,
-            title: SearchBar(),
-            background: Container(
-              decoration: BoxDecoration(
-                  color: YELLOW_COLOR,
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(36),
-                    bottomRight: Radius.circular(36),
-                  ),
-                  image: DecorationImage(
-                    alignment: Alignment.topCenter,
-                    image: AssetImage("assets/images/abstract-1268.png"),
-                  )),
-              child: BackGroundtitle(),
-            ),
+  double _size;
+  double current;
+  double _opacity;
+  double _barSizeWidth;
+  double _barSizeHeight;
+  bool _isOpen = false;
+
+  @override
+  void initState() {
+    setState(() {
+      _size = 300;
+      current = 0;
+      _opacity = 1;
+      _barSizeWidth = 350;
+      _barSizeHeight = 60;
+    });
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomSliver(
+      backgroundColor: BLUE_BACKGROUND,
+      appBar: Container(
+        height: _size,
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
+          color: YELLOW_COLOR.withOpacity(_opacity),
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(36),
+            bottomRight: Radius.circular(36),
           ),
         ),
-        SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (context, index) => Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: GestureDetector(
-                child: Card(
-                  color: Colors.white,
-                  child: Container(
-                    child: Stack(
-                      children: <Widget>[
-                        openContent(),
-                        closeContent(_isOpen ? 300 : 150),
-                      ],
-                    ), //_isOpen ?  : ,
+        child: Container(
+          child: Stack(
+            children: [
+              Positioned(
+                top: -150 + _size / 2,
+                width: MediaQuery.of(context).size.width,
+                child: Opacity(
+                  opacity: _opacity,
+                  child: Image(
+                    image: AssetImage("assets/images/abstract-1268.png"),
                   ),
                 ),
-                onTap: () {
-                  setState(() {
-                    _isOpen = !_isOpen;
-                  });
-                },
               ),
-            ),
-            childCount: 10,
+              Positioned(
+                top: (_size - 100) / 2,
+                width: MediaQuery.of(context).size.width,
+                child: Opacity(
+                  opacity: _opacity,
+                  child: Center(child: BackGroundtitle()),
+                ),
+              ),
+              Positioned(
+                bottom: 0,
+                width: MediaQuery.of(context).size.width,
+                child: Center(
+                    child: Padding(
+                  padding: const EdgeInsets.only(bottom: 15),
+                  child: Container(
+                    width: _barSizeWidth,
+                    height: _barSizeHeight,
+                    padding: EdgeInsets.symmetric(
+                      vertical: 10,
+                      horizontal: 15,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(29.5),
+                      boxShadow: [
+                        BoxShadow(
+                          color: BLUE_BACKGROUND.withOpacity(0.3),
+                          offset: Offset(1, 2),
+                          blurRadius: 4,
+                          spreadRadius: 2,
+                        )
+                      ],
+                    ),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintText: 'Rechercher',
+                        hintStyle: TextStyle(
+                          fontSize: 11,
+                        ),
+                        icon: Icon(
+                          Icons.search_rounded,
+                          size: 20,
+                        ),
+                        border: InputBorder.none,
+                      ),
+                    ),
+                  ),
+                )),
+              ),
+            ],
           ),
-        )
-      ],
+        ),
+      ),
+      body: ListView.builder(
+        itemCount: 5,
+        itemBuilder: (context, index) {
+          return Container(
+            padding: const EdgeInsets.all(8.0),
+            margin: EdgeInsets.only(top: index == 0 ? 300 : 0),
+            child: GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              child: Card(
+                color: Colors.white,
+                child: Container(
+                  child: Stack(
+                    children: <Widget>[
+                      Container(),
+                      closeContent(this._isOpen ? 300 : 150),
+                    ],
+                  ),
+                ),
+              ),
+              onTap: () {
+                open();
+              },
+            ),
+          );
+        },
+      ),
+      onNotification: (notification) {
+        setState(() {
+          if (!(notification is ScrollStartNotification)) {
+            double _pixels = notification.metrics.pixels;
+            if (_pixels <= 300 && (300 - _pixels) >= 100) {
+              _size = 300 - _pixels;
+
+              if (_pixels >= 150) {
+                _opacity = (_size - 100) / 50;
+              } else if (_pixels <= 150) {
+                _opacity = 1;
+              }
+              _barSizeWidth = 350 - (_pixels / 3);
+              _barSizeHeight = 60 - (_pixels / 9);
+            } else if (_pixels > 300) {
+              _size = 100;
+              _opacity = 0;
+            }
+          }
+        });
+        return true;
+      },
     );
   }
 
-  bool _isOpen = false;
+  void open() {
+    setState(() {
+      _isOpen = !_isOpen;
+    });
+  }
 
   Widget closeContent(double _height) {
     return AnimatedContainer(
@@ -236,18 +337,6 @@ class _SearchState extends State<Search> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget openContent() {
-    return Container();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: _customScrollView(),
-      backgroundColor: BLUE_BACKGROUND,
     );
   }
 }
