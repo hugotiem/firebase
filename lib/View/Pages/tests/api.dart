@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pts/Model/components/backgroundtitle.dart';
+import 'package:pts/Model/components/custom_sliver.dart';
 
 import '../../../Constant.dart';
 
@@ -27,179 +28,134 @@ class _APIState extends State<API> {
       _opacity = 1;
       _barSizeWidth = 350;
       _barSizeHeight = 60;
-      getList();
     });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return CustomSliver(
       backgroundColor: BLUE_BACKGROUND,
-      body: NotificationListener<ScrollNotification>(
-        onNotification: (notification) {
-          setState(() {
-            if (!(notification is ScrollStartNotification)) {
-              double _pixels = notification.metrics.pixels;
-              if (_pixels <= 300 && (300 - _pixels) >= 100) {
-                _size = 300 - _pixels;
-                _opacity = (_size - 100) / 200;
-                _barSizeWidth = 350 - (_pixels / 3);
-                _barSizeHeight = 60 - (_pixels / 9);
-              } else if (_pixels > 300) {
-                _size = 100;
-                _opacity = 0;
-              }
-            }
-          });
-          return true;
-        },
-        child: Stack(
-          children: <Widget>[
-            Container(
-              //height: 2000,
-              height: MediaQuery.of(context).size.height,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: list,
+      appBar: Container(
+        height: _size,
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
+          color: YELLOW_COLOR.withOpacity(_opacity),
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(36),
+            bottomRight: Radius.circular(36),
+          ),
+          // image: DecorationImage(
+          //   alignment: Alignment.topCenter,
+          //   image: AssetImage("assets/images/abstract-1268.png"),
+          // ),
+        ),
+        child: Container(
+          child: Stack(
+            children: [
+              Positioned(
+                top: (_size - 100) / 2,
+                width: MediaQuery.of(context).size.width,
+                child: Opacity(
+                  opacity: _opacity,
+                  child: Center(child: BackGroundtitle()),
                 ),
               ),
-              // child: ListView.builder(
-              //   itemCount: 2,
-              //   itemBuilder: (context, index) {
-              //     return Container(
-              //       padding: const EdgeInsets.all(8.0),
-              //       margin: EdgeInsets.only(top: index == 0 ? 300 : 0),
-              //       child: GestureDetector(
-              //         child: Card(
-              //           color: Colors.white,
-              //           child: Container(
-              //             child: Stack(
-              //               children: <Widget>[
-              //                 Container(),
-              //                 closeContent(_isOpen ? 300 : 150),
-              //               ],
-              //             ),
-              //           ),
-              //         ),
-              //         onTap: () {
-              //           setState(() {
-              //             _isOpen = !_isOpen;
-              //           });
-              //         },
-              //       ),
-              //     );
-              //   },
-              // ),
-            ),
-            Container(
-              height: _size,
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                color: YELLOW_COLOR.withOpacity(_opacity),
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(36),
-                  bottomRight: Radius.circular(36),
-                ),
-                // image: DecorationImage(
-                //   alignment: Alignment.topCenter,
-                //   image: AssetImage("assets/images/abstract-1268.png"),
-                // ),
-              ),
-              child: Container(
-                //height: _size,
-                child: Stack(
-                  children: [
-                    Positioned(
-                      top: (_size - 100) / 2,
-                      width: MediaQuery.of(context).size.width,
-                      child: Opacity(
-                        opacity: _opacity,
-                        child: Center(child: BackGroundtitle()),
+              Positioned(
+                bottom: 0,
+                width: MediaQuery.of(context).size.width,
+                child: Center(
+                    child: Padding(
+                  padding: const EdgeInsets.only(bottom: 15),
+                  child: Container(
+                    width: _barSizeWidth,
+                    height: _barSizeHeight,
+                    padding: EdgeInsets.symmetric(
+                      vertical: 10,
+                      horizontal: 15,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(29.5),
+                      boxShadow: [
+                        BoxShadow(
+                          color: BLUE_BACKGROUND.withOpacity(0.3),
+                          offset: Offset(1, 2),
+                          blurRadius: 4,
+                          spreadRadius: 2,
+                        )
+                      ],
+                    ),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintText: 'Rechercher',
+                        hintStyle: TextStyle(
+                          fontSize: 11,
+                        ),
+                        icon: Icon(
+                          Icons.search_rounded,
+                          size: 20,
+                        ),
+                        border: InputBorder.none,
                       ),
                     ),
-                    Positioned(
-                      bottom: 0,
-                      width: MediaQuery.of(context).size.width,
-                      child: Center(
-                          child: Padding(
-                        padding: const EdgeInsets.only(bottom: 15),
-                        child: Container(
-                          width: _barSizeWidth,
-                          height: _barSizeHeight,
-                          padding: EdgeInsets.symmetric(
-                            vertical: 10,
-                            horizontal: 15,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(29.5),
-                            boxShadow: [
-                              BoxShadow(
-                                color: BLUE_BACKGROUND.withOpacity(0.3),
-                                offset: Offset(1, 2),
-                                blurRadius: 4,
-                                spreadRadius: 2,
-                              )
-                            ],
-                          ),
-                          child: TextField(
-                            decoration: InputDecoration(
-                              hintText: 'Rechercher',
-                              hintStyle: TextStyle(
-                                fontSize: 11,
-                              ),
-                              icon: Icon(
-                                Icons.search_rounded,
-                                size: 20,
-                              ),
-                              border: InputBorder.none,
-                            ),
-                          ),
-                        ),
-                      )),
-                    ),
-                  ],
-                ),
+                  ),
+                )),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
+      body: ListView.builder(
+        itemCount: 10,
+        itemBuilder: (context, index) {
+          return Container(
+            padding: const EdgeInsets.all(8.0),
+            margin: EdgeInsets.only(top: index == 0 ? 300 : 0),
+            child: GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              child: Card(
+                color: Colors.white,
+                child: Container(
+                  child: Stack(
+                    children: <Widget>[
+                      Container(),
+                      closeContent(this._isOpen ? 300 : 150),
+                    ],
+                  ),
+                ),
+              ),
+              onTap: () {
+                open();
+              },
+            ),
+          );
+        },
+      ),
+      onNotification: (notification) {
+        setState(() {
+          if (!(notification is ScrollStartNotification)) {
+            double _pixels = notification.metrics.pixels;
+            if (_pixels <= 300 && (300 - _pixels) >= 100) {
+              _size = 300 - _pixels;
+              _opacity = (_size - 100) / 200;
+              _barSizeWidth = 350 - (_pixels / 3);
+              _barSizeHeight = 60 - (_pixels / 9);
+            } else if (_pixels > 300) {
+              _size = 100;
+              _opacity = 0;
+            }
+          }
+        });
+        return true;
+      },
     );
   }
 
-  List<Widget> list = [];
-
-  List<Widget> getList() {
-    for (int i = 0; i < 10; i++) {
-      list.add(
-        Container(
-          padding: const EdgeInsets.all(8.0),
-          margin: EdgeInsets.only(top: i == 0 ? 300 : 0),
-          child: GestureDetector(
-            behavior: HitTestBehavior.translucent,
-            child: Card(
-              color: Colors.white,
-              child: Container(
-                child: Stack(
-                  children: <Widget>[
-                    Container(),
-                    closeContent(_isOpen ? 300 : 150),
-                  ],
-                ),
-              ),
-            ),
-            onTap: () {
-              setState(() {
-                _isOpen = !_isOpen;
-              });
-            },
-          ),
-        ),
-      );
-    }
-    return list;
+  void open() {
+    setState(() {
+      _isOpen = !_isOpen;
+    });
   }
 
   Widget closeContent(double _height) {
