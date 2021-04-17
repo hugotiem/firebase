@@ -35,6 +35,7 @@ class _SearchBarState extends State<SearchBar> {
           icon: Icon(
             Icons.search_rounded,
             size: 20,
+            color: YELLOW_COLOR,
           ),
           border: InputBorder.none,
         ),
