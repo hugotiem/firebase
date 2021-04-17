@@ -36,9 +36,11 @@ class _SecondPageState extends State<SecondPage> {
                 _selectionheure();
               },
             ),
-            Text(_heure == null
-                ? 'Aucune heure choisie'
-                : "${_heure.format(context)} ")
+            Text(
+              _heure == null
+                  ? 'Aucune heure choisie'
+                  : "${_heure.format(context)} ",
+            ),
           ],
         ),
       ),
