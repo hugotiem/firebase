@@ -2,9 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pts/Model/components/backgroundtitle.dart';
 import 'package:pts/Model/components/custom_sliver.dart';
+import 'package:pts/View/Pages/search/searchbar_page.dart';
 import 'package:pts/View/Pages/tests/api.dart';
 
-import '../../../Constant.dart';
+import '../../../../Constant.dart';
 
 class Search extends StatefulWidget {
   Search({Key key}) : super(key: key);
@@ -79,7 +80,7 @@ class _SearchState extends State<Search> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => API(),
+                            builder: (context) => SearchBarPage(),
                           ),
                         );
                       },

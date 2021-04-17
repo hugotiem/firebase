@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/View/Pages/creation/firstpage.dart';
 import 'Pages/profil/Profil.dart';
-import 'Pages/search.dart';
+import 'Pages/search/search.dart';
 
 class Home extends StatefulWidget {
   @override
