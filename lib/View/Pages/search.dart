@@ -101,7 +101,29 @@ class _SearchState extends State<Search> {
                               )
                             ],
                           ),
-                          child: Container(),
+                          child: Container(
+                            child: Row(
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 20),
+                                  child: Icon(
+                                    Icons.search_rounded,
+                                    size: 20,
+                                  ),
+                                ),
+                                Opacity(
+                                  opacity: 0.7,
+                                  child: Container(
+                                    padding: EdgeInsets.only(left: 20),
+                                    child: Text(
+                                      "Rechercher",
+                                      style: TextStyle(fontSize: 18),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                       ),
                     ),
