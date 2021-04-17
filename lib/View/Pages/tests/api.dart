@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pts/Constant.dart';
 
 class API extends StatelessWidget {
   API({Key key, this.child}) : super(key: key);
@@ -7,7 +8,7 @@ class API extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: BLUE_BACKGROUND,
       body: Searchbar1()
     );
   }
