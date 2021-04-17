@@ -16,33 +16,33 @@ class _SecondPageState extends State<SecondPage> {
     return Scaffold(
       backgroundColor: BLUE_BACKGROUND,
       appBar: PreferredSize(
-          preferredSize: Size.fromHeight(50), child: BackAppBar()),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            ElevatedButton(
-                child: Text('Choisir une Date'),
-                onPressed: () {
-                  _selectiondate();
-                }),
-            Text(
-              _date == null
-                  ? 'Aucune date choisie'
-                  : '${_date.day}/${_date.month}/${_date.year} ',
-            ),
-            ElevatedButton(
-              child: Text('choisir une heure'),
+        preferredSize: Size.fromHeight(50),
+        child: BackAppBar(),
+      ),
+      body: Column(
+        children: <Widget>[
+          ElevatedButton(
+              child: Text('Choisir une Date'),
               onPressed: () {
-                _selectionheure();
-              },
-            ),
-            Text(
-              _heure == null
-                  ? 'Aucune heure choisie'
-                  : "${_heure.format(context)} ",
-            ),
-          ],
-        ),
+                _selectiondate();
+              }),
+          Text(
+            _date == null
+                ? 'Aucune date choisie'
+                : '${_date.day}/${_date.month}/${_date.year} ',
+          ),
+          ElevatedButton(
+            child: Text('choisir une heure'),
+            onPressed: () {
+              _selectionheure();
+            },
+          ),
+          Text(
+            _heure == null
+                ? 'Aucune heure choisie'
+                : "${_heure.format(context)} ",
+          ),
+        ],
       ),
     );
   }
