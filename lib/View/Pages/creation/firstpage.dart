@@ -4,6 +4,11 @@ import 'package:pts/Constant.dart';
 import 'package:pts/Model/components/back_appbar.dart';
 import 'package:pts/View/Pages/creation/secondpage.dart';
 
+// Dans cette première page du formulaire de création on retrouve : 
+// le nom
+// le thème
+// le nombre d'invité
+
 class FirstPage extends StatefulWidget {
   @override
   _FirstPageState createState() => _FirstPageState();
