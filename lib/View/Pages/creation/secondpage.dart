@@ -8,7 +8,6 @@ class SecondPage extends StatefulWidget {
 }
 
 class _SecondPageState extends State<SecondPage> {
-
   var _date;
   var _heure;
 
@@ -17,22 +16,19 @@ class _SecondPageState extends State<SecondPage> {
     return Scaffold(
       backgroundColor: BLUE_BACKGROUND,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(50),
-        child: BackAppBar()
-      ),
+          preferredSize: Size.fromHeight(50), child: BackAppBar()),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
             ElevatedButton(
-              child: Text('Choisir une Date'),
-              onPressed: () {
-                _selectiondate();
-              }
-            ),
-            Text( 
-              _date == null 
-                ? 'Aucune date choisie'
-                : '${_date.day}/${_date.month}/${_date.year} ',
+                child: Text('Choisir une Date'),
+                onPressed: () {
+                  _selectiondate();
+                }),
+            Text(
+              _date == null
+                  ? 'Aucune date choisie'
+                  : '${_date.day}/${_date.month}/${_date.year} ',
             ),
             ElevatedButton(
               child: Text('choisir une heure'),
@@ -40,16 +36,15 @@ class _SecondPageState extends State<SecondPage> {
                 _selectionheure();
               },
             ),
-            Text( 
-              _date == null
-              ? 'Aucune heure choisie'
-              : "${_heure.format(context)} "
-            )
+            Text(_heure == null
+                ? 'Aucune heure choisie'
+                : "${_heure.format(context)} ")
           ],
         ),
       ),
     );
-  } 
+  }
+
   Future<Null> _selectiondate() async {
     DateTime _dateChoisie = await showDatePicker(
       context: context,
@@ -66,11 +61,9 @@ class _SecondPageState extends State<SecondPage> {
   }
 
   Future<Null> _selectionheure() async {
-    TimeOfDay _heureChoisie = await showTimePicker(  
-      context: context,
-      initialTime: TimeOfDay.now()
-    );
-    
+    TimeOfDay _heureChoisie =
+        await showTimePicker(context: context, initialTime: TimeOfDay.now());
+
     if (_heureChoisie != null) {
       setState(() {
         _heure = _heureChoisie;
