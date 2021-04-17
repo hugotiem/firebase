@@ -72,36 +72,63 @@ class _SearchState extends State<Search> {
                 bottom: 0,
                 width: MediaQuery.of(context).size.width,
                 child: Center(
-                    child: Padding(
-                  padding: const EdgeInsets.only(bottom: 15),
-                  child: GestureDetector(
-                    onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => API()));
-                          print("object");
-                        },
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 15),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => API(),
+                          ),
+                        );
+                        print("object");
+                      },
                       child: Hero(
                         tag: "test",
                         child: Container(
-                        width: _barSizeWidth,
-                        height: _barSizeHeight,
-                        
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(29.5),
-                          boxShadow: [
-                            BoxShadow(
-                              color: BLUE_BACKGROUND.withOpacity(0.3),
-                              offset: Offset(1, 2),
-                              blurRadius: 4,
-                              spreadRadius: 2,
-                            )
-                          ],
+                          width: _barSizeWidth,
+                          height: _barSizeHeight,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(29.5),
+                            boxShadow: [
+                              BoxShadow(
+                                color: BLUE_BACKGROUND.withOpacity(0.3),
+                                offset: Offset(1, 2),
+                                blurRadius: 4,
+                                spreadRadius: 2,
+                              )
+                            ],
+                          ),
+                          child: Container(
+                            child: Row(
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 20),
+                                  child: Icon(
+                                    Icons.search_rounded,
+                                    size: 20,
+                                  ),
+                                ),
+                                Opacity(
+                                  opacity: 0.7,
+                                  child: Container(
+                                    padding: EdgeInsets.only(left: 20),
+                                    child: Text(
+                                      "Rechercher",
+                                      style: TextStyle(fontSize: 18),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                        child: Container()
-                    ),
                       ),
+                    ),
                   ),
-                )),
+                ),
               ),
             ],
           ),
