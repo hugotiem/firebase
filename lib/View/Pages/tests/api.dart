@@ -8,6 +8,11 @@ class API extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        toolbarHeight: 0,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
       body: Searchbar1(),
     );
   }
@@ -26,14 +31,14 @@ class Searchbar1 extends StatelessWidget {
               child: Hero(
                 tag: "test",
                 child: Container(
-                  margin: EdgeInsets.only(top: 50),
+                  margin: EdgeInsets.only(top: 10),
                   child: SearchBar(),
                 ),
               ),
             ),
           ),
           Container(
-            padding: EdgeInsets.only(top: 140),
+            padding: EdgeInsets.only(top: 100),
             child: ListView.builder(
               itemCount: 20,
               itemBuilder: (context, index) {
