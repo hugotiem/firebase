@@ -82,7 +82,6 @@ class _SearchState extends State<Search> {
                             builder: (context) => API(),
                           ),
                         );
-                        print("object");
                       },
                       child: Hero(
                         tag: "test",

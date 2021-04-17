@@ -9,9 +9,14 @@ class API extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: BLUE_BACKGROUND,
-      body: Searchbar1()
-    );
+        backgroundColor: BLUE_BACKGROUND,
+        appBar: AppBar(
+          brightness: Brightness.dark,
+          toolbarHeight: 0,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+        ),
+        body: Searchbar1());
   }
 }
 
@@ -36,16 +41,46 @@ class Searchbar1 extends StatelessWidget {
           ),
           Container(
             padding: EdgeInsets.only(top: 100),
-            child: ListView.builder(
-              itemCount: 20,
-              itemBuilder: (context, index) {
-                return Container(
-                  margin: EdgeInsets.symmetric(vertical: 1),
-                  height: 100,
-                  width: 300,
-                  color: Colors.red,
-                );
-              },
+            child: Container(
+              clipBehavior: Clip.antiAlias,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(36),
+                  topRight: Radius.circular(36),
+                ),
+              ),
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    height: 80,
+                    width: MediaQuery.of(context).size.width,
+                    color: Colors.white,
+                    padding: EdgeInsets.only(top: 30, left: 30),
+                    child: Text(
+                      "Resultats de la recherche",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: 20,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          height: 80,
+                          color: Colors.white,
+                          child: Center(
+                              child: Text(
+                            "RESULT",
+                          )),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
