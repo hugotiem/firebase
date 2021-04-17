@@ -10,7 +10,7 @@ class SecondPage extends StatefulWidget {
 class _SecondPageState extends State<SecondPage> {
 
   var _date;
-  TimeOfDay _heure;
+  var _heure;
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +23,18 @@ class _SecondPageState extends State<SecondPage> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
+            Padding(
+                padding: const EdgeInsets.only(top: 30, bottom: 20),
+                child: Center(
+                  child: Text(
+                    '1- Quelle jour voulez-vous faire votre soirée ?',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.white,
+                      ),
+                    ),
+                ),
+              ),
             ElevatedButton(
               child: Text('Choisir une Date'),
               onPressed: () {
@@ -34,6 +46,18 @@ class _SecondPageState extends State<SecondPage> {
                 ? 'Aucune date choisie'
                 : '${_date.day}/${_date.month}/${_date.year} ',
             ),
+            Padding(
+                padding: const EdgeInsets.only(top: 30, bottom: 20),
+                child: Center(
+                  child: Text(
+                    '2- A quelle heure votre soirée commence-t\'elle ?',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.white,
+                      ),
+                    ),
+                ),
+              ),
             ElevatedButton(
               child: Text('choisir une heure'),
               onPressed: () {
@@ -43,7 +67,7 @@ class _SecondPageState extends State<SecondPage> {
             Text( 
               _date == null
               ? 'Aucune heure choisie'
-              : "${_heure.format(context)}",
+              : "${_heure.format(context)} "
             )
           ],
         ),

@@ -250,15 +250,13 @@ class _FirstPageState extends State<FirstPage> {
                     ),
                   ),
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => SecondPage())
-                    ); 
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => SecondPage())); 
                   },
-                  
-                  ),
-                )
-              ),
-            ]
-          ),
+                ),
+              )
+            ),
+          ]
+        ),
       ),
     );
   }
