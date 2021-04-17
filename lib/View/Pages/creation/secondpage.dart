@@ -23,18 +23,6 @@ class _SecondPageState extends State<SecondPage> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            Padding(
-                padding: const EdgeInsets.only(top: 30, bottom: 20),
-                child: Center(
-                  child: Text(
-                    '1- Quelle jour voulez-vous faire votre soirée ?',
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.white,
-                      ),
-                    ),
-                ),
-              ),
             ElevatedButton(
               child: Text('Choisir une Date'),
               onPressed: () {
@@ -46,18 +34,6 @@ class _SecondPageState extends State<SecondPage> {
                 ? 'Aucune date choisie'
                 : '${_date.day}/${_date.month}/${_date.year} ',
             ),
-            Padding(
-                padding: const EdgeInsets.only(top: 30, bottom: 20),
-                child: Center(
-                  child: Text(
-                    '2- A quelle heure votre soirée commence-t\'elle ?',
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.white,
-                      ),
-                    ),
-                ),
-              ),
             ElevatedButton(
               child: Text('choisir une heure'),
               onPressed: () {
