@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/Model/components/back_appbar.dart';
-
-import 'lastpage.dart';
+import 'confirmationpage.dart';
 
 
 // Dans cette quatrième page du formulaire de création on retrouve : 
@@ -15,6 +14,8 @@ class Fourthpage extends StatefulWidget {
 
 class _FourthpageState extends State<Fourthpage> {
   bool _paiement = true;
+  String _prix;
+  String _gratuit = 'gratuit';
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +42,7 @@ class _FourthpageState extends State<Fourthpage> {
               Switch(
                 value: _paiement,
                 activeColor: YELLOW_COLOR,
-                inactiveTrackColor: YELLOW_COLOR,
+                inactiveTrackColor: BLUE_BACKGROUND,
                 onChanged: (value) {
                   setState(() {
                      _paiement = value;
@@ -78,6 +79,11 @@ class _FourthpageState extends State<Fourthpage> {
                         border: InputBorder.none,
                         icon: Icon(Icons.euro_symbol_outlined)
                         ),
+                      onSubmitted: (value) {
+                        setState(() {
+                          _prix = value;
+                        });
+                      },
                       ),
                     ),
                   ),
@@ -123,7 +129,8 @@ class _FourthpageState extends State<Fourthpage> {
                 ),
               )
             ),
-            ]
+            Text('prix : ${_paiement == true ? _prix : _gratuit} ')
+          ]
         )
       );
   }

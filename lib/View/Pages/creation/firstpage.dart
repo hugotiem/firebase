@@ -18,6 +18,8 @@ class _FirstPageState extends State<FirstPage> {
   String _themeValue;
   bool _choixSwitch = true;
   String _inviteValue;
+  String _name;
+  String _nombre;
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +70,9 @@ class _FirstPageState extends State<FirstPage> {
                         border: InputBorder.none,
                         icon: Icon(Icons.create_outlined)
                         ),
+                      onSubmitted: (value) {
+                        _name = value;
+                      },
                       ),
                     ),
                   ),
@@ -191,7 +196,9 @@ class _FirstPageState extends State<FirstPage> {
                       isExpanded: true,
                       onChanged: (String value) {
                         setState(() {
-                          _inviteValue = value;
+                          setState(() {
+                            _inviteValue = value;
+                          });
                         });
                       },
                     ),
@@ -229,6 +236,11 @@ class _FirstPageState extends State<FirstPage> {
                         border: InputBorder.none,
                         icon: Icon(Icons.person_add_alt_1_outlined)
                         ),
+                      onSubmitted: (value) {
+                        setState(() {
+                          _nombre = value;
+                        });
+                      },
                       ),
                     ),
                   ),
@@ -260,6 +272,7 @@ class _FirstPageState extends State<FirstPage> {
                 ),
               )
             ),
+            Text('le nom : $_name, le thème : $_themeValue, le nombre : ${_nombre == null ? _inviteValue : _nombre}')
           ]
         ),
       ),

@@ -22,7 +22,7 @@ class _LastPageState extends State<LastPage> {
             Padding(
               padding: const EdgeInsets.only(top: 30),
               child: Text(
-                '',
+                'Récapitulatif :',
                 style: TextStyle(
                   fontSize: 20,
                   color: Colors.white,

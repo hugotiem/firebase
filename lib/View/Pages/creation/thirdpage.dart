@@ -14,6 +14,10 @@ class ThirdPage extends StatefulWidget {
 }
 
 class _ThirdPageState extends State<ThirdPage> {
+  String _adresse;
+  String _ville;
+  String _codepostal;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,106 +26,124 @@ class _ThirdPageState extends State<ThirdPage> {
         child: BackAppBar(),
         ),
       backgroundColor: BLUE_BACKGROUND,
-      body: Column(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(top: 30),
-            child: Text(
-              'Où voulez-vous la faire ?',
-              style: TextStyle(
-                fontSize: 20,
-                color: Colors.white,
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(top: 30),
+              child: Text(
+                'Où voulez-vous la faire ?',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.white,
+                  ),
                 ),
               ),
-            ),
-          Padding(
-            padding: const EdgeInsets.only(top: 15, left: 30, right: 30, bottom: 20),
-            child: Container( 
-              width: MediaQuery.of(context).size.width * 0.9,
-              height: 50,
-              decoration: BoxDecoration(  
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(30)
-                ),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 30),
-                child: TextField(
-                  decoration: InputDecoration(  
-                    labelText: "Adresse :",
-                    border: InputBorder.none,
-                    icon: Icon(Icons.house_outlined)
+            Padding(
+              padding: const EdgeInsets.only(top: 15, left: 30, right: 30, bottom: 20),
+              child: Container( 
+                width: MediaQuery.of(context).size.width * 0.9,
+                height: 50,
+                decoration: BoxDecoration(  
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(30)
+                  ),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 30),
+                  child: TextField(
+                    decoration: InputDecoration(  
+                      labelText: "Adresse :",
+                      border: InputBorder.none,
+                      icon: Icon(Icons.house_outlined)
+                    ),
+                    onSubmitted: (value) {
+                      setState(() {
+                        _adresse = value;
+                      });
+                    },
                   ),
                 ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 15, left: 30, right: 30, bottom: 20),
-            child: Container( 
-              width: MediaQuery.of(context).size.width * 0.9,
-              height: 50,
-              decoration: BoxDecoration(  
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(30)
-                ),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 30),
-                child: TextField(
-                  decoration: InputDecoration(  
-                    labelText: "ville :",
-                    border: InputBorder.none,
-                    icon: Icon(Icons.location_city_outlined)
+            Padding(
+              padding: const EdgeInsets.only(top: 15, left: 30, right: 30, bottom: 20),
+              child: Container( 
+                width: MediaQuery.of(context).size.width * 0.9,
+                height: 50,
+                decoration: BoxDecoration(  
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(30)
+                  ),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 30),
+                  child: TextField(
+                    decoration: InputDecoration(  
+                      labelText: "ville :",
+                      border: InputBorder.none,
+                      icon: Icon(Icons.location_city_outlined)
+                    ),
+                    onSubmitted: (value) {
+                      setState(() {
+                        _ville = value;
+                      });
+                    },
                   ),
                 ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 15, left: 30, right: 30, bottom: 20),
-            child: Container( 
-              width: MediaQuery.of(context).size.width * 0.9,
-              height: 50,
-              decoration: BoxDecoration(  
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(30)
-                ),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 30),
-                child: TextField(
-                  decoration: InputDecoration(  
-                    labelText: "Code postal :",
-                    border: InputBorder.none,
-                    icon: Icon(Icons.location_on_outlined)
+            Padding(
+              padding: const EdgeInsets.only(top: 15, left: 30, right: 30, bottom: 20),
+              child: Container( 
+                width: MediaQuery.of(context).size.width * 0.9,
+                height: 50,
+                decoration: BoxDecoration(  
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(30)
+                  ),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 30),
+                  child: TextField(
+                    decoration: InputDecoration(  
+                      labelText: "Code postal :",
+                      border: InputBorder.none,
+                      icon: Icon(Icons.location_on_outlined)
+                    ),
+                    onSubmitted: (value) {
+                      setState(() {
+                        _codepostal = value;
+                      });
+                    },
                   ),
                 ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 30),
-            child: Container( 
-              child: ElevatedButton( 
-                child: new Text( 
-                  'Suivant',
-                  style: TextStyle(  
-                    color: BLUE_BACKGROUND,
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
+            Padding(
+              padding: const EdgeInsets.only(top: 30),
+              child: Container( 
+                child: ElevatedButton( 
+                  child: new Text( 
+                    'Suivant',
+                    style: TextStyle(  
+                      color: BLUE_BACKGROUND,
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                style: ElevatedButton.styleFrom(
-                  primary: YELLOW_COLOR,
-                  shape: RoundedRectangleBorder(  
-                  borderRadius: BorderRadius.circular(30.0),
+                  style: ElevatedButton.styleFrom(
+                    primary: YELLOW_COLOR,
+                    shape: RoundedRectangleBorder(  
+                    borderRadius: BorderRadius.circular(30.0),
+                    ),
                   ),
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => Fourthpage())); 
+                  },
                 ),
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => Fourthpage())); 
-                },
-              ),
-            )
-          ),
-        ]
+              )
+            ),
+            Text('adresse : $_adresse, ville : $_ville, codepostal : $_codepostal ')
+          ]
+        ),
       ),
     );
   }
