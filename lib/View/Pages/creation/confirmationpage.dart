@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/Model/components/back_appbar.dart';
+import 'package:pts/Model/soiree.dart';
 
 class LastPage extends StatefulWidget {
   @override
@@ -21,13 +22,21 @@ class _LastPageState extends State<LastPage> {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(top: 30),
-              child: Text(
-                'Récapitulatif :',
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.white,
+              child: Center(
+                child: Text(
+                  'Récapitulatif :',
+                  style: TextStyle(
+                    fontSize: 50,
+                    color: Colors.white,
+                  ),
                 ),
               ),
+            ),
+            Text('le nom : ${Soiree.nom}, le thème : ${Soiree.theme}, le nombre : ${Soiree.nombre}',
+            style: TextStyle(  
+              fontSize: 20,
+              color: Colors.white,
+            ),
             ),
           ]
         )

@@ -86,6 +86,12 @@ class _SecondPageState extends State<SecondPage> {
                       ),
                     ),
                     onPressed: () {
+
+                      Soiree.setDataSecondPage(
+                        _date,
+                        _heure
+                        );
+
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) => ThirdPage()));
                     },

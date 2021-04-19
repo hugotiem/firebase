@@ -17,7 +17,6 @@ class FirstPage extends StatefulWidget {
 
 class _FirstPageState extends State<FirstPage> {
   String _themeValue;
-  bool _choixSwitch = true;
   String _inviteValue;
   String _name;
   String _nombre;
@@ -124,81 +123,8 @@ class _FirstPageState extends State<FirstPage> {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 15),
-            child: Switch(
-              value: _choixSwitch,
-              activeColor: YELLOW_COLOR,
-              inactiveTrackColor: YELLOW_COLOR,
-              onChanged: (value) {
-                setState(() {
-                  _choixSwitch = value;
-                });
-              },
-            ),
-          ),
-          _choixSwitch
-              ? Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 15),
-                      child: Text(
-                        '3- Vous voulez recevoir entre :',
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: 30, right: 30, bottom: 20),
-                      child: Container(
-                        width: MediaQuery.of(context).size.width * 0.9,
-                        height: 50,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(30)),
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 30, right: 20),
-                          child: DropdownButtonFormField<String>(
-                            value: _inviteValue,
-                            items: [
-                              '1 et 5 personnes',
-                              '6 et 10 personnes',
-                              '11 et 20 personnes',
-                              '21 et 50 personnes',
-                              '51 et plus'
-                            ].map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(
-                                  value,
-                                ),
-                              );
-                            }).toList(),
-                            hint: Text(
-                              "Choissez une intervalle",
-                            ),
-                            decoration: InputDecoration(
-                                enabledBorder: UnderlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Colors.white))),
-                            isExpanded: true,
-                            onChanged: (String value) {
-                              setState(() {
-                                setState(() {
-                                  _inviteValue = value;
-                                });
-                              });
-                            },
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                )
-              : Column(
+          
+               Column(
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(bottom: 15),
@@ -256,11 +182,10 @@ class _FirstPageState extends State<FirstPage> {
                     ),
                   ),
                   onPressed: () {
-                    
                     Soiree.setDataFistPage(
                       _name,
                       _themeValue,
-                      8,
+                      int.parse(_nombre),
                     );
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => SecondPage()));
@@ -268,7 +193,7 @@ class _FirstPageState extends State<FirstPage> {
                 ),
               )),
           Text(
-              'le nom : $_name, le thème : $_themeValue, le nombre : ${_nombre == null ? _inviteValue : _nombre}')
+              'le nom : ${Soiree.nom}, le thème : ${Soiree.theme}, le nombre : ${Soiree.nombre == null ? _inviteValue : Soiree.nombre}')
         ]),
       ),
     );
