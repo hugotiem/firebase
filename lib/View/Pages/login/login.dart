@@ -58,14 +58,14 @@ class _LoginState extends State<Login> {
                         width: size.width - 100,
                         padding: EdgeInsets.symmetric(vertical: 20),
                         decoration: BoxDecoration(
-                          color: YELLOW_COLOR,
+                          color: Colors.black,
                           borderRadius: BorderRadius.all(
                             Radius.circular(200),
                           ),
                         ),
                         child: Align(
                           child: Text(
-                            "connexion".toUpperCase(),
+                            "déjà un compte ? clique ici".toUpperCase(),
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 18,
@@ -79,10 +79,10 @@ class _LoginState extends State<Login> {
                 ),
               ),
               onPanelSlide: (position) => {
-                print(position),
+                //print(position),
               },
               maxHeight: size.height - 150,
-              minHeight: 200,
+              minHeight: 150,
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(36),
                 topRight: Radius.circular(36),
@@ -109,10 +109,10 @@ class _LoginState extends State<Login> {
                           ),
                         ),
                       ),
+                      SizedBox(
+                        height: 200,
+                      ),
                       GestureDetector(
-                        onTap: () {
-                          _controller.close();
-                        },
                         child: Container(
                           width: size.width - 100,
                           padding: EdgeInsets.symmetric(vertical: 20),
@@ -125,6 +125,34 @@ class _LoginState extends State<Login> {
                           child: Align(
                             child: Text(
                               "connexion".toUpperCase(),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          _controller.close();
+                        },
+                        child: Container(
+                          width: size.width - 100,
+                          padding: EdgeInsets.symmetric(vertical: 20),
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(200),
+                            ),
+                          ),
+                          child: Align(
+                            child: Text(
+                              "pas de compte ? s'inscrire".toUpperCase(),
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 18,
