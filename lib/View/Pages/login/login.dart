@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pts/Constant.dart';
 
 class Login extends StatefulWidget {
   Login({Key key}) : super(key: key);
@@ -14,50 +15,44 @@ class _LoginState extends State<Login> {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        leading: CupertinoButton(
-          child: Icon(
-            Icons.arrow_back_ios,
-            color: Colors.black,
-          ),
-          onPressed: () => Navigator.pop(context),
-        ),
-        backgroundColor: Colors.transparent,
-        title: Text(
-          "Connexion",
-          style: TextStyle(color: Colors.black),
-        ),
-      ),
       body: Container(
-        height: size.height - 40,
-        width: size.width,
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.only(right: 20, left: 20),
-                width: size.width - 40,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(20),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      offset: Offset(0, 10),
-                      blurRadius: 10,
-                      color: Colors.blue.withOpacity(0.23),
-                    )
-                  ],
-                ),
-                child: TextField(
-                  decoration: InputDecoration(border: InputBorder.none),
+        child: Stack(
+          children: <Widget>[
+            Positioned(
+              top: 0,
+              height: size.height,
+              width: size.width,
+              child: Container(
+                child: Column(
+                  children: <Widget>[],
                 ),
               ),
-            ],
-          ),
+            ),
+            Positioned(
+              bottom: 0,
+              height: size.height * 0.8,
+              width: size.width,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(36),
+                    topRight: Radius.circular(36),
+                  ),
+                  color: BLUE_BACKGROUND,
+                ),
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(
+                      height: 50,
+                    ),
+                    Container(
+                      child: Text('LOGIN'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
