@@ -11,6 +11,14 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  PanelController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = new PanelController();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -30,8 +38,7 @@ class _LoginState extends State<Login> {
               ),
             ),
             SlidingUpPanel(
-              parallaxEnabled: true,
-            
+              controller: _controller,
               collapsed: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
@@ -44,6 +51,9 @@ class _LoginState extends State<Login> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     GestureDetector(
+                      onTap: () {
+                        _controller.open();
+                      },
                       child: Container(
                         width: size.width - 100,
                         padding: EdgeInsets.symmetric(vertical: 20),
@@ -100,6 +110,9 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                       GestureDetector(
+                        onTap: () {
+                          _controller.close();
+                        },
                         child: Container(
                           width: size.width - 100,
                           padding: EdgeInsets.symmetric(vertical: 20),
