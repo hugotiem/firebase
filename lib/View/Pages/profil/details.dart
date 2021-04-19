@@ -15,7 +15,7 @@ class _ProfilDetailsState extends State<ProfilDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: BLUE_BACKGROUND,
+      backgroundColor: PRIMARY_COLOR,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50),
         child: BackAppBar(
@@ -26,7 +26,7 @@ class _ProfilDetailsState extends State<ProfilDetails> {
                 "Modifier",
                 style: TextStyle(
                   decoration: TextDecoration.underline,
-                  color: YELLOW_COLOR,
+                  color: SECONDARY_COLOR,
                 ),
               ),
             ),

@@ -15,7 +15,7 @@ class _BackGroundtitleState extends State<BackGroundtitle> {
       child: Text(
         'Soirée proche',
         style: TextStyle(
-          color: BLUE_BACKGROUND,
+          color: PRIMARY_COLOR,
           fontSize: 60,
           fontWeight: FontWeight.w900,
         ),

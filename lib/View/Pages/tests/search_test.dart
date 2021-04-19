@@ -75,7 +75,7 @@ class SearchHeader extends SliverPersistentHeaderDelegate {
           ],
         ),
         decoration: BoxDecoration(
-            color: YELLOW_COLOR,
+            color: SECONDARY_COLOR,
             borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(40),
               bottomRight: Radius.circular(40),
@@ -83,7 +83,7 @@ class SearchHeader extends SliverPersistentHeaderDelegate {
       ),
     );
     return Container(
-      color: BLUE_BACKGROUND,
+      color: PRIMARY_COLOR,
       height: max(maxExtent - shrinkOffset, minExtent),
       child: Stack(
         children: [
@@ -289,7 +289,7 @@ class _ScrollState extends State<Scroll> {
           ),
           visible: true,
         ),
-        backgroundColor: BLUE_BACKGROUND,
+        backgroundColor: PRIMARY_COLOR,
         body: Container(
           height: size.height,
           child: Column(

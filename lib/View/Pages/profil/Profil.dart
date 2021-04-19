@@ -22,11 +22,11 @@ class _ProfilState extends State<Profil> {
       appBar: new AppBar(
         toolbarHeight: 0,
         elevation: 0,
-        backgroundColor: BLUE_BACKGROUND,
+        backgroundColor: PRIMARY_COLOR,
         brightness: Brightness.dark,
       ),
       body: Container(
-        color: BLUE_BACKGROUND,
+        color: PRIMARY_COLOR,
         child: Center(
           child: Column(
             children: <Widget>[

@@ -20,7 +20,7 @@ class _SecondPageState extends State<SecondPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: BLUE_BACKGROUND,
+      backgroundColor: PRIMARY_COLOR,
       appBar: PreferredSize(
           preferredSize: Size.fromHeight(50), child: BackAppBar()),
       body: SingleChildScrollView(
@@ -74,13 +74,13 @@ class _SecondPageState extends State<SecondPage> {
                     child: new Text(
                       'Suivant',
                       style: TextStyle(
-                        color: BLUE_BACKGROUND,
+                        color: PRIMARY_COLOR,
                         fontSize: 20.0,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     style: ElevatedButton.styleFrom(
-                      primary: YELLOW_COLOR,
+                      primary: SECONDARY_COLOR,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.0),
                       ),

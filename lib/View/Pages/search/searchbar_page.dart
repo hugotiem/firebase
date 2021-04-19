@@ -13,7 +13,7 @@ class _SearchBarPageState extends State<SearchBarPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: BLUE_BACKGROUND,
+        backgroundColor: PRIMARY_COLOR,
         appBar: AppBar(
           brightness: Brightness.dark,
           toolbarHeight: 0,

@@ -18,7 +18,7 @@ class _SearchBarState extends State<SearchBar> {
         borderRadius: BorderRadius.circular(29.5),
         boxShadow: [
           BoxShadow(
-            color: BLUE_BACKGROUND.withOpacity(0.3),
+            color: PRIMARY_COLOR.withOpacity(0.3),
             offset: Offset(1, 2),
             blurRadius: 4,
             spreadRadius: 2,
@@ -35,7 +35,7 @@ class _SearchBarState extends State<SearchBar> {
           icon: Icon(
             Icons.search_rounded,
             size: 20,
-            color: YELLOW_COLOR,
+            color: SECONDARY_COLOR,
           ),
           border: InputBorder.none,
         ),

@@ -36,12 +36,12 @@ class _SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
     return CustomSliver(
-      backgroundColor: BLUE_BACKGROUND,
+      backgroundColor: PRIMARY_COLOR,
       appBar: Container(
         height: _size,
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
-          color: YELLOW_COLOR.withOpacity(_opacity),
+          color: SECONDARY_COLOR.withOpacity(_opacity),
           borderRadius: BorderRadius.only(
             bottomLeft: Radius.circular(36),
             bottomRight: Radius.circular(36),
@@ -50,16 +50,6 @@ class _SearchState extends State<Search> {
         child: Container(
           child: Stack(
             children: [
-              Positioned(
-                top: -150 + _size / 2,
-                width: MediaQuery.of(context).size.width,
-                child: Opacity(
-                  opacity: _opacity,
-                  child: Image(
-                    image: AssetImage("assets/images/abstract-1268.png"),
-                  ),
-                ),
-              ),
               Positioned(
                 top: (_size - 100) / 2,
                 width: MediaQuery.of(context).size.width,
@@ -93,7 +83,7 @@ class _SearchState extends State<Search> {
                             borderRadius: BorderRadius.circular(29.5),
                             boxShadow: [
                               BoxShadow(
-                                color: BLUE_BACKGROUND.withOpacity(0.3),
+                                color: PRIMARY_COLOR.withOpacity(0.3),
                                 offset: Offset(1, 2),
                                 blurRadius: 4,
                                 spreadRadius: 2,

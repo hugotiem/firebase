@@ -31,14 +31,14 @@ class _HomeState extends State<Home> {
         },
         child: Icon(
           Icons.add_circle_outline,
-          color: YELLOW_COLOR,
+          color: SECONDARY_COLOR,
         ),
         elevation: 4.0,
         backgroundColor: Colors.white,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: YELLOW_COLOR,
+        selectedItemColor: Colors.orange,
         onTap: onTabTapped,
         currentIndex: _currentIndex,
         items: [

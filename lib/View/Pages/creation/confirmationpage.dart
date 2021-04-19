@@ -12,7 +12,7 @@ class _LastPageState extends State<LastPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: BLUE_BACKGROUND,
+      backgroundColor: PRIMARY_COLOR,
       appBar: PreferredSize( 
         preferredSize: Size.fromHeight(50),
         child: BackAppBar(),

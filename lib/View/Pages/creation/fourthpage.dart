@@ -20,7 +20,7 @@ class _FourthpageState extends State<Fourthpage> {
   @override
   Widget build(BuildContext context) {
         return Scaffold(
-          backgroundColor: BLUE_BACKGROUND,
+          backgroundColor: PRIMARY_COLOR,
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(50),
             child: BackAppBar(),
@@ -41,8 +41,8 @@ class _FourthpageState extends State<Fourthpage> {
               ),
               Switch(
                 value: _paiement,
-                activeColor: YELLOW_COLOR,
-                inactiveTrackColor: BLUE_BACKGROUND,
+                activeColor: SECONDARY_COLOR,
+                inactiveTrackColor: PRIMARY_COLOR,
                 onChanged: (value) {
                   setState(() {
                      _paiement = value;
@@ -112,13 +112,13 @@ class _FourthpageState extends State<Fourthpage> {
                       'Suivant',
                     style: 
                       TextStyle(  
-                        color: BLUE_BACKGROUND,
+                        color: PRIMARY_COLOR,
                         fontSize: 20.0,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   style: ElevatedButton.styleFrom(
-                    primary: YELLOW_COLOR,
+                    primary: SECONDARY_COLOR,
                     shape: RoundedRectangleBorder(  
                     borderRadius: BorderRadius.circular(30.0),
                     ),

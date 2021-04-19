@@ -26,7 +26,7 @@ class BackAppBar extends PreferredSize {
           : CupertinoButton(
               child: Icon(
                 Icons.arrow_back_sharp,
-                color: YELLOW_COLOR,
+                color: SECONDARY_COLOR,
               ),
               onPressed: () {
                 Navigator.pop(context);

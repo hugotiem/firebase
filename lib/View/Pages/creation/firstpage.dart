@@ -24,14 +24,14 @@ class _FirstPageState extends State<FirstPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: BLUE_BACKGROUND,
+      backgroundColor: PRIMARY_COLOR,
       appBar: PreferredSize(
           preferredSize: Size.fromHeight(50),
           child: BackAppBar(
             leading: CupertinoButton(
               child: Icon(
                 Icons.close,
-                color: YELLOW_COLOR,
+                color: SECONDARY_COLOR,
               ),
               onPressed: () {
                 Navigator.pop(context);
@@ -170,13 +170,13 @@ class _FirstPageState extends State<FirstPage> {
                   child: new Text(
                     'Suivant',
                     style: TextStyle(
-                      color: BLUE_BACKGROUND,
+                      color: PRIMARY_COLOR,
                       fontSize: 20.0,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   style: ElevatedButton.styleFrom(
-                    primary: YELLOW_COLOR,
+                    primary: SECONDARY_COLOR,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0),
                     ),

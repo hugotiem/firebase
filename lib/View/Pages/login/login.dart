@@ -45,7 +45,7 @@ class _LoginState extends State<Login> {
                     topLeft: Radius.circular(36),
                     topRight: Radius.circular(36),
                   ),
-                  color: BLUE_BACKGROUND,
+                  color: PRIMARY_COLOR,
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -93,7 +93,7 @@ class _LoginState extends State<Login> {
                     topLeft: Radius.circular(36),
                     topRight: Radius.circular(36),
                   ),
-                  color: BLUE_BACKGROUND,
+                  color: PRIMARY_COLOR,
                 ),
                 child: Container(
                   child: Column(
@@ -117,7 +117,7 @@ class _LoginState extends State<Login> {
                           width: size.width - 100,
                           padding: EdgeInsets.symmetric(vertical: 20),
                           decoration: BoxDecoration(
-                            color: YELLOW_COLOR,
+                            color: SECONDARY_COLOR,
                             borderRadius: BorderRadius.all(
                               Radius.circular(200),
                             ),
