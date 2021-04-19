@@ -30,10 +30,11 @@ PTS
 │    │    └── soiree.dart
 │    ├── View/
 │    │    ├── Pages/
+│    │    │     ├── creation
 │    │    │     ├── login/
 │    │    │     ├── profil/
-│    │    │     ├── Creer.dart
-│    │    │     └── search.dart
+│    │    │     ├── search/
+│    │    │     └── tests/
 │    │    └── Home.dart
 │    ├── Constant.dart
 │    └── main.dart (main page to run the app)
