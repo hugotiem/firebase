@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
+import 'package:pts/Model/services/auth.dart';
+import 'package:pts/View/Home.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class Login extends StatefulWidget {
@@ -12,18 +15,40 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   PanelController _controller;
+  TextEditingController _editingController;
   double _slideUp;
+
+  String _name;
+  String _email;
+  String _password;
+
+  // Firebase auth
+  AuthService _auth;
 
   @override
   void initState() {
     super.initState();
     _controller = new PanelController();
+    _editingController = new TextEditingController();
     _slideUp = 0;
+    _name = "";
+    _email = "";
+    _password = "";
+    _auth = AuthService();
   }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
+    _auth.auth.authStateChanges().listen((User user) {
+      if (user != null) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Home()),
+        );
+      }
+    });
 
     return Scaffold(
       body: Container(
@@ -63,6 +88,9 @@ class _LoginState extends State<Login> {
                             border: InputBorder.none,
                             //icon: Icon(Icons.create_outlined),
                           ),
+                          onChanged: (value) {
+                            _name = value;
+                          },
                         ),
                       ),
                     ),
@@ -83,6 +111,9 @@ class _LoginState extends State<Login> {
                             border: InputBorder.none,
                             //icon: Icon(Icons.create_outlined),
                           ),
+                          onChanged: (value) {
+                            _email = value;
+                          },
                         ),
                       ),
                     ),
@@ -98,11 +129,14 @@ class _LoginState extends State<Login> {
                       child: Padding(
                         padding: const EdgeInsets.only(left: 30),
                         child: TextField(
+                          obscureText: true,
                           decoration: InputDecoration(
                             labelText: "Mot de passe :",
                             border: InputBorder.none,
-                            //icon: Icon(Icons.create_outlined),
                           ),
+                          onChanged: (value) {
+                            _password = value;
+                          },
                         ),
                       ),
                     ),
@@ -110,9 +144,6 @@ class _LoginState extends State<Login> {
                       height: 50,
                     ),
                     GestureDetector(
-                      onTap: () {
-                        _controller.open();
-                      },
                       child: Container(
                         width: size.width - 100,
                         padding: EdgeInsets.symmetric(vertical: 20),
@@ -133,6 +164,11 @@ class _LoginState extends State<Login> {
                           ),
                         ),
                       ),
+                      onTap: () {
+                        _auth.register(_email, _password);
+                        _auth.auth.currentUser
+                            .updateProfile(displayName: _name);
+                      },
                     ),
                   ],
                 ),
@@ -154,6 +190,9 @@ class _LoginState extends State<Login> {
                     GestureDetector(
                       onTap: () {
                         _controller.open();
+                        _editingController.clear();
+                        _email = "";
+                        _password = "";
                       },
                       child: Container(
                         width: size.width - 100,
@@ -179,6 +218,7 @@ class _LoginState extends State<Login> {
                   ],
                 ),
               ),
+              // PANEL CONTENT
               onPanelSlide: (position) {
                 setState(() {
                   _slideUp = position;
@@ -234,6 +274,9 @@ class _LoginState extends State<Login> {
                                     border: InputBorder.none,
                                     //icon: Icon(Icons.create_outlined),
                                   ),
+                                  onChanged: (value) {
+                                    _email = value;
+                                  },
                                 ),
                               ),
                             ),
@@ -249,11 +292,14 @@ class _LoginState extends State<Login> {
                               child: Padding(
                                 padding: const EdgeInsets.only(left: 30),
                                 child: TextField(
+                                  obscureText: true,
                                   decoration: InputDecoration(
                                     labelText: "Mot de passe :",
                                     border: InputBorder.none,
-                                    //icon: Icon(Icons.create_outlined),
                                   ),
+                                  onChanged: (value) {
+                                    _password = value;
+                                  },
                                 ),
                               ),
                             ),
@@ -284,6 +330,9 @@ class _LoginState extends State<Login> {
                             ),
                           ),
                         ),
+                        onTap: () {
+                          _auth.signIn(_email, _password);
+                        },
                       ),
                       SizedBox(
                         height: 20,
@@ -291,6 +340,9 @@ class _LoginState extends State<Login> {
                       GestureDetector(
                         onTap: () {
                           _controller.close();
+                          _editingController.clear();
+                          _email = "";
+                          _password = "";
                         },
                         child: Container(
                           width: size.width - 100,
