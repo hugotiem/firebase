@@ -12,11 +12,13 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   PanelController _controller;
+  double _slideUp;
 
   @override
   void initState() {
     super.initState();
     _controller = new PanelController();
+    _slideUp = 0;
   }
 
   @override
@@ -28,12 +30,111 @@ class _LoginState extends State<Login> {
         child: Stack(
           children: <Widget>[
             Positioned(
-              top: 0,
+              top: 150 + (100 * _slideUp),
               height: size.height,
               width: size.width,
               child: Container(
                 child: Column(
-                  children: <Widget>[],
+                  children: <Widget>[
+                    Container(
+                      child: Text(
+                        "sign-up".toUpperCase(),
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 80,
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      height: 50,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(30)),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 30),
+                        child: TextField(
+                          decoration: InputDecoration(
+                            labelText: "Nom d'utilisateur :",
+                            border: InputBorder.none,
+                            //icon: Icon(Icons.create_outlined),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 50,
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      height: 50,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(30)),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 30),
+                        child: TextField(
+                          decoration: InputDecoration(
+                            labelText: "Email :",
+                            border: InputBorder.none,
+                            //icon: Icon(Icons.create_outlined),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 50,
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      height: 50,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(30)),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 30),
+                        child: TextField(
+                          decoration: InputDecoration(
+                            labelText: "Mot de passe :",
+                            border: InputBorder.none,
+                            //icon: Icon(Icons.create_outlined),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 50,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        _controller.open();
+                      },
+                      child: Container(
+                        width: size.width - 100,
+                        padding: EdgeInsets.symmetric(vertical: 20),
+                        decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(200),
+                          ),
+                        ),
+                        child: Align(
+                          child: Text(
+                            "s'inscrire".toUpperCase(),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -45,7 +146,7 @@ class _LoginState extends State<Login> {
                     topLeft: Radius.circular(36),
                     topRight: Radius.circular(36),
                   ),
-                  color: PRIMARY_COLOR,
+                  color: SECONDARY_COLOR,
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -78,8 +179,10 @@ class _LoginState extends State<Login> {
                   ],
                 ),
               ),
-              onPanelSlide: (position) => {
-                //print(position),
+              onPanelSlide: (position) {
+                setState(() {
+                  _slideUp = position;
+                });
               },
               maxHeight: size.height - 150,
               minHeight: 150,
@@ -93,7 +196,7 @@ class _LoginState extends State<Login> {
                     topLeft: Radius.circular(36),
                     topRight: Radius.circular(36),
                   ),
-                  color: PRIMARY_COLOR,
+                  color: SECONDARY_COLOR,
                 ),
                 child: Container(
                   child: Column(
@@ -106,18 +209,66 @@ class _LoginState extends State<Login> {
                           'LOGIN',
                           style: TextStyle(
                             color: Colors.white,
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
                       SizedBox(
-                        height: 200,
+                        height: 100,
+                      ),
+                      Container(
+                        child: Column(
+                          children: <Widget>[
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.9,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(30)),
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 30),
+                                child: TextField(
+                                  decoration: InputDecoration(
+                                    labelText: "Email :",
+                                    border: InputBorder.none,
+                                    //icon: Icon(Icons.create_outlined),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 50,
+                            ),
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.9,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(30)),
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 30),
+                                child: TextField(
+                                  decoration: InputDecoration(
+                                    labelText: "Mot de passe :",
+                                    border: InputBorder.none,
+                                    //icon: Icon(Icons.create_outlined),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 50,
                       ),
                       GestureDetector(
                         child: Container(
                           width: size.width - 100,
                           padding: EdgeInsets.symmetric(vertical: 20),
                           decoration: BoxDecoration(
-                            color: SECONDARY_COLOR,
+                            color: PRIMARY_COLOR,
                             borderRadius: BorderRadius.all(
                               Radius.circular(200),
                             ),
@@ -126,7 +277,7 @@ class _LoginState extends State<Login> {
                             child: Text(
                               "connexion".toUpperCase(),
                               style: TextStyle(
-                                color: Colors.white,
+                                //color: Colors.white,
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                               ),

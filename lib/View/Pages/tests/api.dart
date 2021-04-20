@@ -42,21 +42,21 @@ class API extends StatelessWidget {
   }
 
   Future<List<Post>> getPosts() async {
-    http.Response res = await http.get(
-      Uri.parse("https://api-adresse.data.gouv.fr/search/?q=blainville"),
-    );
+    http.Response res = await http.post(
+        Uri.parse("https://countriesnow.space/api/v0.1/countries/cities"),
+        body: {"country": "france"});
+
+    print(res.body);
 
     if (res.statusCode == 200) {
       Map<String, dynamic> map = json.decode(res.body);
-      List<dynamic> data = map["features"];
+      List<dynamic> data = map["data"];
       for (int i = 0; i < data.length; i++) {
-        print(data[i]["properties"]["name"] +
-            " et " +
-            data[i]["properties"]["postcode"]);
+        print(data[i]);
       }
-      List<Post> posts =
-          data.map((dynamic item) => Post.fromJson(item)).toList();
-      return posts;
+      // List<Post> posts =
+      //     data.map((dynamic item) => Post.fromJson(item)).toList();
+      // return posts;
     }
     return null;
   }

@@ -62,9 +62,10 @@ class _FirstPageState extends State<FirstPage> {
                 padding: const EdgeInsets.only(left: 30),
                 child: TextField(
                   decoration: InputDecoration(
-                      labelText: "Votre soirée s'appelera :",
-                      border: InputBorder.none,
-                      icon: Icon(Icons.create_outlined)),
+                    labelText: "Votre soirée s'appelera :",
+                    border: InputBorder.none,
+                    icon: Icon(Icons.create_outlined),
+                  ),
                   onSubmitted: (value) {
                     _name = value;
                   },
@@ -123,46 +124,44 @@ class _FirstPageState extends State<FirstPage> {
               ),
             ),
           ),
-          
-               Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 15),
-                      child: Text(
-                        '3- Combien de personne voulez-vous inviter ?',
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: 30, right: 30, bottom: 20),
-                      child: Container(
-                        width: MediaQuery.of(context).size.width * 0.9,
-                        height: 50,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(30)),
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 30),
-                          child: TextField(
-                            decoration: InputDecoration(
-                                labelText: "Le nombre d'inviter sera de :",
-                                border: InputBorder.none,
-                                icon: Icon(Icons.person_add_alt_1_outlined)),
-                            onSubmitted: (value) {
-                              setState(() {
-                                _nombre = value;
-                              });
-                            },
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+          Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 15),
+                child: Text(
+                  '3- Combien de personne voulez-vous inviter ?',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.white,
+                  ),
                 ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 30, right: 30, bottom: 20),
+                child: Container(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  height: 50,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(30)),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 30),
+                    child: TextField(
+                      decoration: InputDecoration(
+                          labelText: "Le nombre d'inviter sera de :",
+                          border: InputBorder.none,
+                          icon: Icon(Icons.person_add_alt_1_outlined)),
+                      onSubmitted: (value) {
+                        setState(() {
+                          _nombre = value;
+                        });
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
           Padding(
               padding: const EdgeInsets.only(top: 30),
               child: Container(
