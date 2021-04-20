@@ -17,7 +17,6 @@ class FirstPage extends StatefulWidget {
 
 class _FirstPageState extends State<FirstPage> {
   String _themeValue;
-  String _inviteValue;
   String _name;
   String _nombre;
 
@@ -46,13 +45,13 @@ class _FirstPageState extends State<FirstPage> {
               '1- Comment voulez-vous appeler votre soirée ?',
               style: TextStyle(
                 fontSize: 20,
-                color: Colors.white,
+                color: SECONDARY_COLOR,
               ),
             ),
           ),
           Padding(
             padding:
-                const EdgeInsets.only(top: 15, left: 30, right: 30, bottom: 20),
+                const EdgeInsets.only(top: 15, left: 30, right: 30),
             child: Container(
               width: MediaQuery.of(context).size.width * 0.9,
               height: 50,
@@ -74,12 +73,12 @@ class _FirstPageState extends State<FirstPage> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 30, bottom: 15),
+            padding: const EdgeInsets.only(top: 20, bottom: 15),
             child: Text(
               '2- Choisissez le thème qui vous plaît :',
               style: TextStyle(
                 fontSize: 20,
-                color: Colors.white,
+                color: SECONDARY_COLOR,
               ),
             ),
           ),
@@ -132,12 +131,12 @@ class _FirstPageState extends State<FirstPage> {
                   '3- Combien de personne voulez-vous inviter ?',
                   style: TextStyle(
                     fontSize: 20,
-                    color: Colors.white,
+                    color: SECONDARY_COLOR,
                   ),
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 30, right: 30, bottom: 20),
+                padding: const EdgeInsets.only(left: 30, right: 30, bottom: 15),
                 child: Container(
                   width: MediaQuery.of(context).size.width * 0.9,
                   height: 50,
@@ -163,7 +162,7 @@ class _FirstPageState extends State<FirstPage> {
             ],
           ),
           Padding(
-              padding: const EdgeInsets.only(top: 30),
+              padding: const EdgeInsets.only(),
               child: Container(
                 child: ElevatedButton(
                   child: new Text(
@@ -191,8 +190,6 @@ class _FirstPageState extends State<FirstPage> {
                   },
                 ),
               )),
-          Text(
-              'le nom : ${Soiree.nom}, le thème : ${Soiree.theme}, le nombre : ${Soiree.nombre == null ? _inviteValue : Soiree.nombre}')
         ]),
       ),
     );

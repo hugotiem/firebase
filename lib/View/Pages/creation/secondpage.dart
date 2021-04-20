@@ -33,7 +33,7 @@ class _SecondPageState extends State<SecondPage> {
                   '1- Quel jour voulez-vous faire votre soirée ?',
                   style: TextStyle(
                     fontSize: 20,
-                    color: Colors.white,
+                    color: SECONDARY_COLOR,
                   ),
                 ),
               ),
@@ -54,7 +54,7 @@ class _SecondPageState extends State<SecondPage> {
                 '2- A quelle heure commence-t\'elle ?',
                 style: TextStyle(
                   fontSize: 20,
-                  color: Colors.white,
+                  color: SECONDARY_COLOR,
                 ),
               ),
             ),

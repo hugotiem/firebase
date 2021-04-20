@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/Model/components/back_appbar.dart';
+import 'package:pts/Model/soiree.dart';
 import 'package:pts/View/Pages/creation/fourthpage.dart';
 
 // Dans cette troisième page du formualaire on retrouve : 
@@ -35,7 +36,7 @@ class _ThirdPageState extends State<ThirdPage> {
                 'Où voulez-vous la faire ?',
                 style: TextStyle(
                   fontSize: 20,
-                  color: Colors.white,
+                  color: SECONDARY_COLOR,
                   ),
                 ),
               ),
@@ -92,7 +93,7 @@ class _ThirdPageState extends State<ThirdPage> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 15, left: 30, right: 30, bottom: 20),
+              padding: const EdgeInsets.only(top: 15, left: 30, right: 30, bottom: 15),
               child: Container( 
                 width: MediaQuery.of(context).size.width * 0.9,
                 height: 50,
@@ -118,7 +119,7 @@ class _ThirdPageState extends State<ThirdPage> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 30),
+              padding: const EdgeInsets.only(top: 15),
               child: Container( 
                 child: ElevatedButton( 
                   child: new Text( 
@@ -136,12 +137,16 @@ class _ThirdPageState extends State<ThirdPage> {
                     ),
                   ),
                   onPressed: () {
+                    Soiree.setDataThirdPage(
+                      _adresse,
+                      _ville,
+                      _codepostal,
+                    );
                     Navigator.push(context, MaterialPageRoute(builder: (context) => Fourthpage())); 
                   },
                 ),
               )
             ),
-            Text('adresse : $_adresse, ville : $_ville, codepostal : $_codepostal ')
           ]
         ),
       ),

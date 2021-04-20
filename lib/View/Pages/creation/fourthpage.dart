@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/Model/components/back_appbar.dart';
+import 'package:pts/Model/soiree.dart';
 import 'confirmationpage.dart';
 
 
@@ -34,7 +35,7 @@ class _FourthpageState extends State<Fourthpage> {
                     'Votre soirée sera :',
                     style: TextStyle(
                       fontSize: 20,
-                      color: Colors.white,
+                      color: SECONDARY_COLOR,
                       ),
                     ),
                 ),
@@ -58,7 +59,7 @@ class _FourthpageState extends State<Fourthpage> {
                         'Payante',
                         style: TextStyle(  
                           fontSize: 20,
-                          color: Colors.white,
+                          color: SECONDARY_COLOR,
                         ),
                       ),
                     ),
@@ -98,14 +99,14 @@ class _FourthpageState extends State<Fourthpage> {
                         'Gratuite',
                         style: TextStyle(  
                           fontSize: 20,
-                          color: Colors.white,
+                          color: SECONDARY_COLOR,
                         ),
                       ),
                     ),
                   ] 
                 ),
               Padding(
-                padding: const EdgeInsets.only(top: 30),
+                padding: const EdgeInsets.only(top: 15),
                 child: Container( 
                   child: ElevatedButton( 
                     child: new Text( 
@@ -124,12 +125,16 @@ class _FourthpageState extends State<Fourthpage> {
                     ),
                   ),
                   onPressed: () {
+                    Soiree.setDataFourthPage(
+                      _paiement,
+                      _prix,
+                      _gratuit,
+                    );
                     Navigator.push(context, MaterialPageRoute(builder: (context) => LastPage())); 
                   },
                 ),
               )
             ),
-            Text('prix : ${_paiement == true ? _prix : _gratuit} ')
           ]
         )
       );
