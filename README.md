@@ -27,6 +27,7 @@ PTS
 ├── lib/
 │    ├── Model/
 │    │    ├── components/ (customs components)
+│    │    ├── services/ (db services)
 │    │    └── soiree.dart
 │    ├── View/
 │    │    ├── Pages/
