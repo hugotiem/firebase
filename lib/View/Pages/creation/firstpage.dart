@@ -50,8 +50,7 @@ class _FirstPageState extends State<FirstPage> {
             ),
           ),
           Padding(
-            padding:
-                const EdgeInsets.only(top: 15, left: 30, right: 30),
+            padding: const EdgeInsets.only(top: 15, left: 30, right: 30),
             child: Container(
               width: MediaQuery.of(context).size.width * 0.9,
               height: 50,
@@ -65,7 +64,7 @@ class _FirstPageState extends State<FirstPage> {
                     border: InputBorder.none,
                     icon: Icon(Icons.create_outlined),
                   ),
-                  onSubmitted: (value) {
+                  onChanged: (value) {
                     _name = value;
                   },
                 ),
@@ -150,7 +149,7 @@ class _FirstPageState extends State<FirstPage> {
                           labelText: "Le nombre d'inviter sera de :",
                           border: InputBorder.none,
                           icon: Icon(Icons.person_add_alt_1_outlined)),
-                      onSubmitted: (value) {
+                      onChanged: (value) {
                         setState(() {
                           _nombre = value;
                         });

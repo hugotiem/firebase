@@ -40,6 +40,7 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    //FocusScopeNode currentFocus = FocusScope.of(context);
 
     _auth.auth.authStateChanges().listen((User user) {
       if (user != null) {
@@ -51,259 +52,98 @@ class _LoginState extends State<Login> {
     });
 
     return Scaffold(
-      body: Container(
-        child: Stack(
-          children: <Widget>[
-            Positioned(
-              top: 150 + (100 * _slideUp),
-              height: size.height,
-              width: size.width,
-              child: Container(
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      child: Text(
-                        "sign-up".toUpperCase(),
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 80,
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.9,
-                      height: 50,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(30)),
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 30),
-                        child: TextField(
-                          decoration: InputDecoration(
-                            labelText: "Nom d'utilisateur :",
-                            border: InputBorder.none,
-                            //icon: Icon(Icons.create_outlined),
-                          ),
-                          onChanged: (value) {
-                            _name = value;
-                          },
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 50,
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.9,
-                      height: 50,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(30)),
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 30),
-                        child: TextField(
-                          decoration: InputDecoration(
-                            labelText: "Email :",
-                            border: InputBorder.none,
-                            //icon: Icon(Icons.create_outlined),
-                          ),
-                          onChanged: (value) {
-                            _email = value;
-                          },
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 50,
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.9,
-                      height: 50,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(30)),
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 30),
-                        child: TextField(
-                          obscureText: true,
-                          decoration: InputDecoration(
-                            labelText: "Mot de passe :",
-                            border: InputBorder.none,
-                          ),
-                          onChanged: (value) {
-                            _password = value;
-                          },
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 50,
-                    ),
-                    GestureDetector(
-                      child: Container(
-                        width: size.width - 100,
-                        padding: EdgeInsets.symmetric(vertical: 20),
-                        decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(200),
-                          ),
-                        ),
-                        child: Align(
-                          child: Text(
-                            "s'inscrire".toUpperCase(),
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                      onTap: () {
-                        _auth.register(_email, _password);
-                        _auth.auth.currentUser
-                            .updateProfile(displayName: _name);
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SlidingUpPanel(
-              controller: _controller,
-              collapsed: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(36),
-                    topRight: Radius.circular(36),
-                  ),
-                  color: SECONDARY_COLOR,
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        _controller.open();
-                        _editingController.clear();
-                        _email = "";
-                        _password = "";
-                      },
-                      child: Container(
-                        width: size.width - 100,
-                        padding: EdgeInsets.symmetric(vertical: 20),
-                        decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(200),
-                          ),
-                        ),
-                        child: Align(
-                          child: Text(
-                            "déjà un compte ? clique ici".toUpperCase(),
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              // PANEL CONTENT
-              onPanelSlide: (position) {
-                setState(() {
-                  _slideUp = position;
-                });
-              },
-              maxHeight: size.height - 150,
-              minHeight: 150,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(36),
-                topRight: Radius.circular(36),
-              ),
-              panel: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(36),
-                    topRight: Radius.circular(36),
-                  ),
-                  color: SECONDARY_COLOR,
-                ),
+      body: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: Container(
+          child: Stack(
+            children: <Widget>[
+              Positioned(
+                top: 150 + (100 * _slideUp),
+                height: size.height,
+                width: size.width,
                 child: Container(
                   child: Column(
                     children: <Widget>[
-                      SizedBox(
-                        height: 50,
-                      ),
                       Container(
                         child: Text(
-                          'LOGIN',
+                          "sign-up".toUpperCase(),
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Colors.black,
                             fontSize: 30,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
                       SizedBox(
-                        height: 100,
+                        height: 80,
                       ),
                       Container(
-                        child: Column(
-                          children: <Widget>[
-                            Container(
-                              width: MediaQuery.of(context).size.width * 0.9,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(30)),
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 30),
-                                child: TextField(
-                                  decoration: InputDecoration(
-                                    labelText: "Email :",
-                                    border: InputBorder.none,
-                                    //icon: Icon(Icons.create_outlined),
-                                  ),
-                                  onChanged: (value) {
-                                    _email = value;
-                                  },
-                                ),
-                              ),
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        height: 50,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(30)),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 30),
+                          child: TextField(
+                            decoration: InputDecoration(
+                              labelText: "Nom d'utilisateur :",
+                              border: InputBorder.none,
+                              //icon: Icon(Icons.create_outlined),
                             ),
-                            SizedBox(
-                              height: 50,
+                            onChanged: (value) {
+                              _name = value;
+                            },
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 50,
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        height: 50,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(30)),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 30),
+                          child: TextField(
+                            decoration: InputDecoration(
+                              labelText: "Email :",
+                              border: InputBorder.none,
+                              //icon: Icon(Icons.create_outlined),
                             ),
-                            Container(
-                              width: MediaQuery.of(context).size.width * 0.9,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(30)),
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 30),
-                                child: TextField(
-                                  obscureText: true,
-                                  decoration: InputDecoration(
-                                    labelText: "Mot de passe :",
-                                    border: InputBorder.none,
-                                  ),
-                                  onChanged: (value) {
-                                    _password = value;
-                                  },
-                                ),
-                              ),
+                            onChanged: (value) {
+                              _email = value;
+                            },
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 50,
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        height: 50,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(30)),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 30),
+                          child: TextField(
+                            obscureText: true,
+                            decoration: InputDecoration(
+                              labelText: "Mot de passe :",
+                              border: InputBorder.none,
                             ),
-                          ],
+                            onChanged: (value) {
+                              _password = value;
+                            },
+                          ),
                         ),
                       ),
                       SizedBox(
@@ -314,16 +154,16 @@ class _LoginState extends State<Login> {
                           width: size.width - 100,
                           padding: EdgeInsets.symmetric(vertical: 20),
                           decoration: BoxDecoration(
-                            color: PRIMARY_COLOR,
+                            color: Colors.black,
                             borderRadius: BorderRadius.all(
                               Radius.circular(200),
                             ),
                           ),
                           child: Align(
                             child: Text(
-                              "connexion".toUpperCase(),
+                              "s'inscrire".toUpperCase(),
                               style: TextStyle(
-                                //color: Colors.white,
+                                color: Colors.white,
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -331,16 +171,33 @@ class _LoginState extends State<Login> {
                           ),
                         ),
                         onTap: () {
-                          _auth.signIn(_email, _password);
+                          _auth.register(_email, _password);
+                          _auth.auth.currentUser
+                              .updateProfile(displayName: _name);
                         },
                       ),
-                      SizedBox(
-                        height: 20,
-                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SlidingUpPanel(
+                controller: _controller,
+                collapsed: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(36),
+                      topRight: Radius.circular(36),
+                    ),
+                    color: SECONDARY_COLOR,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
                       GestureDetector(
                         onTap: () {
-                          _controller.close();
+                          _controller.open();
                           _editingController.clear();
+
                           _email = "";
                           _password = "";
                         },
@@ -355,7 +212,7 @@ class _LoginState extends State<Login> {
                           ),
                           child: Align(
                             child: Text(
-                              "pas de compte ? s'inscrire".toUpperCase(),
+                              "déjà un compte ? clique ici".toUpperCase(),
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 18,
@@ -368,9 +225,160 @@ class _LoginState extends State<Login> {
                     ],
                   ),
                 ),
+                // PANEL CONTENT
+                onPanelSlide: (position) {
+                  setState(() {
+                    _slideUp = position;
+                  });
+                },
+                maxHeight: size.height - 150,
+                minHeight: 150,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(36),
+                  topRight: Radius.circular(36),
+                ),
+                panel: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(36),
+                      topRight: Radius.circular(36),
+                    ),
+                    color: SECONDARY_COLOR,
+                  ),
+                  child: Container(
+                    child: Column(
+                      children: <Widget>[
+                        SizedBox(
+                          height: 50,
+                        ),
+                        Container(
+                          child: Text(
+                            'LOGIN',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 100,
+                        ),
+                        Container(
+                          child: Column(
+                            children: <Widget>[
+                              Container(
+                                width: MediaQuery.of(context).size.width * 0.9,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(30)),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 30),
+                                  child: TextField(
+                                    decoration: InputDecoration(
+                                      labelText: "Email :",
+                                      border: InputBorder.none,
+                                      //icon: Icon(Icons.create_outlined),
+                                    ),
+                                    onChanged: (value) {
+                                      _email = value;
+                                    },
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 50,
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width * 0.9,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(30)),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 30),
+                                  child: TextField(
+                                    obscureText: true,
+                                    decoration: InputDecoration(
+                                      labelText: "Mot de passe :",
+                                      border: InputBorder.none,
+                                    ),
+                                    onChanged: (value) {
+                                      _password = value;
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 50,
+                        ),
+                        GestureDetector(
+                          child: Container(
+                            width: size.width - 100,
+                            padding: EdgeInsets.symmetric(vertical: 20),
+                            decoration: BoxDecoration(
+                              color: PRIMARY_COLOR,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(200),
+                              ),
+                            ),
+                            child: Align(
+                              child: Text(
+                                "connexion".toUpperCase(),
+                                style: TextStyle(
+                                  //color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                          onTap: () {
+                            _auth.signIn(_email, _password);
+                          },
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            _controller.close();
+                            _editingController.clear();
+                            _email = "";
+                            _password = "";
+                          },
+                          child: Container(
+                            width: size.width - 100,
+                            padding: EdgeInsets.symmetric(vertical: 20),
+                            decoration: BoxDecoration(
+                              color: Colors.black,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(200),
+                              ),
+                            ),
+                            child: Align(
+                              child: Text(
+                                "pas de compte ? s'inscrire".toUpperCase(),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
