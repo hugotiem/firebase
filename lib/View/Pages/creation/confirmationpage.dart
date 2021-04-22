@@ -23,6 +23,16 @@ class _LastPageState extends State<LastPage> {
       body:Container(
         child: Column(  
           children: [
+            Container(
+              child: Text(
+                'Récapitulatif',
+                style: TextStyle(
+                  fontSize: 50,
+                  fontWeight: FontWeight.bold
+                  ),
+                )
+              ),
+            // premiere page
             Center(
               child: PTSBox(
                 child: Column(
@@ -162,6 +172,23 @@ class _LastPageState extends State<LastPage> {
                   ],
                 )
               ),
+            ),
+            // deuxieme page
+            PTSBox(
+              child: Column(  
+                children: [
+                  Container(
+                    child: Row(  
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          child: Text('Date et Heure')
+                        ),
+                      ]
+                    )
+                  )
+                ]
+              )
             )
           ]
         )
