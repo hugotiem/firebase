@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/Model/components/back_appbar.dart';
+import 'package:pts/Model/components/pts_box.dart';
 import 'package:pts/Model/soiree.dart';
+import 'package:pts/View/Pages/creation/firstpage.dart';
 
 class LastPage extends StatefulWidget {
   @override
@@ -17,101 +20,152 @@ class _LastPageState extends State<LastPage> {
         preferredSize: Size.fromHeight(50),
         child: BackAppBar(),
       ),
-      body: SingleChildScrollView(
+      body:Container(
         child: Column(  
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top: 30),
-              child: Center(
-                child: Text(
-                  'Récapitulatif :',
-                  style: TextStyle(
-                    fontSize: 50,
-                    color: SECONDARY_COLOR,
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 20, bottom: 15),
-              child: Container(
-                width: MediaQuery.of(context).size.width - 30,
-                height: 200,
-                decoration: BoxDecoration(  
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(30)
-                ),
+          children: [
+            Center(
+              child: PTSBox(
                 child: Column(
                   children: [
-                    Expanded(
-                      flex: 2,
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 9, top: 15, left: 10),
-                        child: Row(  
-                          children: <Widget>[
-                            Container(
-                              alignment: Alignment.topLeft,
-                              child: Text('Première page :')
-                              ),
-                            Container(
-                                alignment: Alignment.topRight,
-                                child: Icon(Icons.edit)
-                                  ),
-                          ]
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 10),
+                      child: Container( 
+                        decoration: BoxDecoration(  
+                          border: Border(  
+                            bottom: BorderSide(  
+                              color: Colors.grey
+                            )
+                          )
                         ),
-                      )
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: Row(  
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container( 
+                                child: Text(
+                                  'Première page',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 25, 
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => FirstPage()));
+                                  },
+                                  child: Icon(
+                                    Icons.edit,
+                                    size: 25,
+                                  )
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
-                    Expanded(
-                      flex: 3,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            child: Text('le nom : ${Soiree.nom}')
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: Container(  
+                        decoration: BoxDecoration(  
+                          border: Border(
+                            bottom: BorderSide(  
+                              color: Colors.grey.withOpacity(0.23)
+                            )
+                          )
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 5),
+                          child: Opacity(
+                            opacity: 0.75,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container( 
+                                  child: Text(
+                                    'Nom: ${Soiree.nom}',
+                                    style: TextStyle(  
+                                      fontSize: 16,
+                                    ),
+                                  )
+                                ),
+                              Container(
+                                child: Icon(Icons.create_outlined,
+                                  size: 20,)
+                                ),
+                              ],
                             ),
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            child: Text('le thème : ${Soiree.theme}')
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: Container(  
+                        decoration: BoxDecoration(  
+                          border: Border(
+                            bottom: BorderSide(  
+                              color: Colors.grey.withOpacity(0.23)
+                            )
+                          )
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 5),
+                          child: Opacity(
+                            opacity: 0.75,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container( 
+                                  child: Text(
+                                    'Thème: ${Soiree.theme}',
+                                    style: TextStyle(  
+                                      fontSize: 16
+                                    ),
+                                  )
+                                ),
+                                Container(
+                                  child: Icon(Icons.party_mode_outlined,
+                                  size: 20,)
+                                )
+                              ],
                             ),
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            child: Text('le nombre : ${Soiree.nombre}')
+                          ),
+                        ),
+                      ),
+                    ),
+                    Container(  
+                      child: Opacity(
+                        opacity: 0.75,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container( 
+                              child: Text(
+                                'Nombre: ${Soiree.nombre}',
+                                style: TextStyle(  
+                                  fontSize: 16
+                                ),
+                              )
                             ),
-                        ],
-                      )
-                    )
-                  ]
+                            Container(
+                              child: Icon(Icons.person_add_alt_1_outlined,
+                              size: 20,)
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 )
               ),
-            ),
-            Text('le nom : ${Soiree.nom}, le thème : ${Soiree.theme}, le nombre : ${Soiree.nombre}',
-            style: TextStyle(  
-              fontSize: 20,
-              color: SECONDARY_COLOR,
-            ),
-            ),
-            Text('La date: ${Soiree.date.day}/${Soiree.date.month}/${Soiree.date.year} , L\'heure: ${Soiree.heure.format(context)} ',
-            style: TextStyle(  
-              fontSize: 20,
-              color: SECONDARY_COLOR,
-            ),
-            ),
-            Text('L\'adresse: ${Soiree.adresse}, la ville: ${Soiree.ville}, le code postal: ${Soiree.codepostal} ',
-            style: TextStyle(  
-              fontSize: 20,
-              color: SECONDARY_COLOR,
-              ),
-            ),
-            Text('prix : ${Soiree.paiement == true ? Soiree.prix : Soiree.gratuit} ',
-            style: TextStyle(  
-              fontSize: 20,
-              color: SECONDARY_COLOR,
-              ),
-            ),
+            )
           ]
         )
-      ),
-    ); 
+      ) 
+    );
   }
 }
