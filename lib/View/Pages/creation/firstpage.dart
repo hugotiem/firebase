@@ -182,7 +182,7 @@ class _FirstPageState extends State<FirstPage> {
                     Soiree.setDataFistPage(
                       _name,
                       _themeValue,
-                      int.parse(_nombre),
+                      _nombre,
                     );
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => SecondPage()));

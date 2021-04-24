@@ -1,7 +1,7 @@
 class Soiree {
   static String nom;
   static String theme;
-  static var nombre;
+  static String nombre;
   static DateTime date;
   static var heure;
   static String adresse;
@@ -11,7 +11,7 @@ class Soiree {
   static var prix;
   static String gratuit; 
 
-  static void setDataFistPage(String _nom, String _theme, var _nombre) {
+  static void setDataFistPage(String _nom, String _theme, String _nombre) {
     nom = _nom;
     theme = _theme;
     nombre = _nombre;
