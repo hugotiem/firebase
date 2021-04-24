@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'package:flutter/foundation.dart';
+import 'package:pts/blocs/application_bloc.dart';
 
 class API extends StatefulWidget {
   @override
@@ -10,30 +11,46 @@ class API extends StatefulWidget {
 }
 
 class _APIState extends State<API> {
+  final ApplicationBloc applicationBloc = new ApplicationBloc();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView(
-        children: [
+        children: <Widget>[
           TextField(
-            decoration: InputDecoration(  
-              hintText: 'recherche'
-            ),
+            decoration: InputDecoration(hintText: 'recherche'),
+            onChanged: (value) {
+              setState(() {
+                applicationBloc.searchPlaces(value);
+              });
+            },
           ),
           Container(
-            height: 300,
-            child: GoogleMap(
-              mapType: MapType.normal,
-              myLocationEnabled: true,
-              initialCameraPosition: CameraPosition(  
-                target: LatLng(41.8781, -87.6298)
-              ),
+            height: 400,
+            child: ListView.builder(
+              itemCount: applicationBloc.searchResults.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(
+                    applicationBloc.searchResults[index].description,
+                    style: TextStyle(color: Colors.black),
+                  ),
+                );
+              },
             ),
-          )
-      ], 
-      )
+            // height: 300,
+            // child: GoogleMap(
+            //   mapType: MapType.normal,
+            //   myLocationEnabled: true,
+            //   initialCameraPosition:
+            //       CameraPosition(target: LatLng(41.8781, -87.6298)),
+            // ),
+          ),
+        ],
+      ),
     );
-}
+  }
 
   // FutureBuilder<dynamic> buildFutureBuilder() {
   //   return FutureBuilder(
