@@ -13,6 +13,8 @@ class API extends StatefulWidget {
 class _APIState extends State<API> {
   final ApplicationBloc applicationBloc = new ApplicationBloc();
 
+  String _search = "";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,31 +24,37 @@ class _APIState extends State<API> {
             decoration: InputDecoration(hintText: 'recherche'),
             onChanged: (value) {
               setState(() {
-                applicationBloc.searchPlaces(value);
+                _search = value;
+                //applicationBloc.searchPlaces(value);
               });
             },
           ),
-          Container(
-            height: 400,
-            child: ListView.builder(
-              itemCount: applicationBloc.searchResults.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(
-                    applicationBloc.searchResults[index].description,
-                    style: TextStyle(color: Colors.black),
-                  ),
-                );
-              },
-            ),
-            // height: 300,
-            // child: GoogleMap(
-            //   mapType: MapType.normal,
-            //   myLocationEnabled: true,
-            //   initialCameraPosition:
-            //       CameraPosition(target: LatLng(41.8781, -87.6298)),
-            // ),
-          ),
+          FutureBuilder(
+            future: applicationBloc.searchPlaces(_search),
+            builder: (context, snapshots) {
+              return Container(
+                height: 400,
+                child: ListView.builder(
+                  itemCount: applicationBloc.searchResults.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Text(
+                        applicationBloc.searchResults[index].description,
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    );
+                  },
+                ),
+                // height: 300,
+                // child: GoogleMap(
+                //   mapType: MapType.normal,
+                //   myLocationEnabled: true,
+                //   initialCameraPosition:
+                //       CameraPosition(target: LatLng(41.8781, -87.6298)),
+                // ),
+              );
+            },
+        ),
         ],
       ),
     );
