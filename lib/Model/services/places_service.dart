@@ -10,7 +10,7 @@ class PlacesService {
 
   Future<List<PlaceSearch>> getAutocomplete(String search) async {
     Uri url = Uri.parse(
-      "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$search&types=(cities)&key=$key",
+      "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$search&types=(regions)&components=country:fr&key=$key",
     );
 
     try {
