@@ -20,6 +20,7 @@ class _SearchState extends State<Search> {
   double _barSizeWidth;
   double _barSizeHeight;
   bool _isOpen = false;
+  Brightness _brightness = Brightness.dark;
 
   @override
   void initState() {
@@ -37,6 +38,7 @@ class _SearchState extends State<Search> {
   Widget build(BuildContext context) {
     return CustomSliver(
       backgroundColor: PRIMARY_COLOR,
+      brightness: _brightness,
       appBar: Container(
         height: _size,
         width: MediaQuery.of(context).size.width,
@@ -166,9 +168,11 @@ class _SearchState extends State<Search> {
             } else if (_pixels > 300) {
               _size = 100;
               _opacity = 0;
+              _brightness = Brightness.light;
             }
           }
         });
+
         return true;
       },
     );
