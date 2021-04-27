@@ -12,6 +12,8 @@ class ApplicationBloc with ChangeNotifier {
     if (searchTerm.length != 0) {
       searchResults = await placesService.getAutocomplete(searchTerm);
       notifyListeners();
+    } else {
+      searchResults = [];
     }
   }
 }

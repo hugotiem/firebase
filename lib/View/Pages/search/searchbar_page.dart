@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/Model/components/searchbar.dart';
+import 'package:pts/blocs/application_bloc.dart';
 
 class SearchBarPage extends StatefulWidget {
   SearchBarPage({Key key}) : super(key: key);
@@ -10,9 +11,15 @@ class SearchBarPage extends StatefulWidget {
 }
 
 class _SearchBarPageState extends State<SearchBarPage> {
+  final ApplicationBloc applicationBloc = new ApplicationBloc();
+
+  String _search = "";
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Hero(
+      tag: 'test',
+      child: Scaffold(
         backgroundColor: PRIMARY_COLOR,
         appBar: AppBar(
           brightness: Brightness.dark,
@@ -20,7 +27,49 @@ class _SearchBarPageState extends State<SearchBarPage> {
           backgroundColor: Colors.transparent,
           elevation: 0,
         ),
-        body: Searchbar1());
+        body: ListView(
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.only(top: 10),
+              child: SearchBar(
+                onChanged: (value) {
+                  setState(() {
+                    _search = value;
+                    //applicationBloc.searchPlaces(value);
+                  });
+                },
+              ),
+            ),
+            FutureBuilder(
+              future: applicationBloc.searchPlaces(_search),
+              builder: (context, snapshots) {
+                return Container(
+                  height: 400,
+                  child: ListView.builder(
+                    itemCount: applicationBloc.searchResults.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        title: Text(
+                          applicationBloc.searchResults[index].description,
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      );
+                    },
+                  ),
+                  // height: 300,
+                  // child: GoogleMap(
+                  //   mapType: MapType.normal,
+                  //   myLocationEnabled: true,
+                  //   initialCameraPosition:
+                  //       CameraPosition(target: LatLng(41.8781, -87.6298)),
+                  // ),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 

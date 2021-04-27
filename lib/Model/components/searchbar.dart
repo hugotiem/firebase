@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
 
-class SearchBar extends StatefulWidget {
-  @override
-  _SearchBarState createState() => _SearchBarState();
-}
+class SearchBar extends StatelessWidget {
+  final void Function(String) onChanged;
 
-class _SearchBarState extends State<SearchBar> {
+  const SearchBar({Key key, this.onChanged}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -39,6 +38,7 @@ class _SearchBarState extends State<SearchBar> {
           ),
           border: InputBorder.none,
         ),
+        onChanged: onChanged,
       ),
     );
   }
