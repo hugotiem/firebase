@@ -171,7 +171,7 @@ class _FirstPageState extends State<FirstPage> {
                       fontSize: 20.0,
                       fontWeight: FontWeight.bold,
                     ),
-                  ),
+                  ), 
                   style: ElevatedButton.styleFrom(
                     primary: SECONDARY_COLOR,
                     shape: RoundedRectangleBorder(

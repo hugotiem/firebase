@@ -14,7 +14,7 @@ class Fourthpage extends StatefulWidget {
 }
 
 class _FourthpageState extends State<Fourthpage> {
-  bool _paiement = true;
+  bool _paiement = true; 
   String _prix;
   String _gratuit = 'gratuit';
 

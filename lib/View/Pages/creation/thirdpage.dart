@@ -27,7 +27,7 @@ class _ThirdPageState extends State<ThirdPage> {
         child: BackAppBar(),
       ),
       backgroundColor: PRIMARY_COLOR,
-      body: SingleChildScrollView(
+      body: SingleChildScrollView( 
         child: Column(children: <Widget>[
           Padding(
             padding: const EdgeInsets.only(top: 30),
@@ -75,7 +75,7 @@ class _ThirdPageState extends State<ThirdPage> {
                 padding: const EdgeInsets.only(left: 30),
                 child: TextField(
                   decoration: InputDecoration(
-                      labelText: "ville :",
+                      labelText: "Ville :",
                       border: InputBorder.none,
                       icon: Icon(Icons.location_city_outlined)),
                   onChanged: (value) {
