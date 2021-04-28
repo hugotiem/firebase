@@ -14,6 +14,8 @@ class _LastPageState extends State<LastPage> {
   String _name;
   String _themeValue;
   String _nombre;
+  var _date;
+  var _heure;
 
   @override
   Widget build(BuildContext context) {
@@ -219,7 +221,7 @@ class _LastPageState extends State<LastPage> {
                                 children: [
                                   Container( 
                                     child: Text(
-                                      'Date: ${Soiree.date}',
+                                      'Date: ${Soiree.date.day}/${Soiree.date.month}/${Soiree.date.year} ',
                                       style: TextStyle(  
                                         fontSize: 16,
                                       ),
@@ -254,7 +256,7 @@ class _LastPageState extends State<LastPage> {
                                 children: [
                                   Container( 
                                     child: Text(
-                                      'Heure: ${Soiree.heure}',
+                                      'Heure: ${Soiree.heure.format(context)}',
                                       style: TextStyle(  
                                         fontSize: 16
                                       ),
@@ -559,6 +561,26 @@ class _LastPageState extends State<LastPage> {
                       });
                     },
                    ),
+                   // second page
+                   // n'arrive pas a afficher les nouvelles valeurs saisies
+                  ElevatedButton(
+                    child: Text( _selectiondate != null
+                      ? '${Soiree.date.day}/${Soiree.date.month}/${Soiree.date.year}'
+                      : '$_selectiondate'
+                      ),
+                      onPressed: () {
+                        _selectiondate();
+                    }),
+                  ElevatedButton(
+                    child: Text( _selectionheure == null 
+                      ?'${Soiree.heure.format(context)}'
+                      : '$_selectionheure'
+                      ),
+                      onPressed: () {
+                        _selectionheure();
+                      },
+                  ),
+
                   ElevatedButton(
                     child: new Text(
                       'Valider',
@@ -580,6 +602,10 @@ class _LastPageState extends State<LastPage> {
                         _themeValue,
                         _nombre,
                       );
+                      Soiree.setDataSecondPage(
+                        _date,
+                        _heure
+                      );
                       Navigator.pop(context);
                     },
                   ),
@@ -589,5 +615,31 @@ class _LastPageState extends State<LastPage> {
         );
       }
     );
+  }
+
+  Future<Null> _selectiondate() async {
+    DateTime _dateChoisie = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2030),
+    );
+
+    if (_dateChoisie != null) {
+      setState(() {
+        _date = _dateChoisie;
+      });
+    }
+  }
+
+  Future<Null> _selectionheure() async {
+    TimeOfDay _heureChoisie =
+        await showTimePicker(context: context, initialTime: TimeOfDay.now());
+
+    if (_heureChoisie != null) {
+      setState(() {
+        _heure = _heureChoisie;
+      });
+    }
   }
 }
