@@ -25,7 +25,7 @@ class _SearchState extends State<Search> {
   @override
   void initState() {
     setState(() {
-      _size = 300;
+      _size = 400;
       current = 0;
       _opacity = 1;
       _barSizeWidth = 350;
@@ -130,7 +130,7 @@ class _SearchState extends State<Search> {
         itemBuilder: (context, index) {
           return Container(
             padding: const EdgeInsets.all(8.0),
-            margin: EdgeInsets.only(top: index == 0 ? 300 : 0),
+            margin: EdgeInsets.only(top: index == 0 ? 350 : 0),
             child: GestureDetector(
               behavior: HitTestBehavior.translucent,
               child: Card(
@@ -139,7 +139,7 @@ class _SearchState extends State<Search> {
                   child: Stack(
                     children: <Widget>[
                       Container(),
-                      closeContent(this._isOpen ? 300 : 150),
+                      closeContent(this._isOpen ? 400 : 150),
                     ],
                   ),
                 ),
@@ -155,16 +155,16 @@ class _SearchState extends State<Search> {
         setState(() {
           if (!(notification is ScrollStartNotification)) {
             double _pixels = notification.metrics.pixels;
-            if (_pixels <= 300 && (300 - _pixels) >= 100) {
-              _size = 300 - _pixels;
+            if (_pixels <= 400 && (400 - _pixels) >= 100) {
+              _size = 400 - _pixels;
 
-              if (_pixels >= 150) {
+              if (_pixels >= 250) {
                 _opacity = (_size - 100) / 50;
-              } else if (_pixels <= 150) {
+              } else if (_pixels <= 250) {
                 _opacity = 1;
               }
-              _barSizeWidth = 350 - (_pixels / 3);
-              _barSizeHeight = 60 - (_pixels / 9);
+              _barSizeWidth = 350 - (_pixels / 8);
+              _barSizeHeight = 60 - (_pixels / 15);
             } else if (_pixels > 300) {
               _size = 100;
               _opacity = 0;
