@@ -4,7 +4,7 @@ A new Flutter project.
 
 1. [Getting Started.](#getting-started)
 2. [Project Architecture.](#project-architecture)
-3. [Backlogs.](#backlogs)
+3. [BackLogs.](#backlogs)
 
 ## Getting Started
 
