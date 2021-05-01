@@ -41,7 +41,7 @@ PTS
 │    └── main.dart (main page to run the app)
 ├── test/
 ├── web/
-├── windows/
+├── backlogs.xlsx (fichier Exel contenant les backlogs de l'app)
 ├── .gitignore
 ├── .metadata
 ├── README.md
