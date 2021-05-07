@@ -61,3 +61,6 @@ Backlogs list comming soon.
 
 ### probably used later :
 - ZignSec for Online ID Verification
+- Sumsub Identity Verification Services
+- Jumio ID Verification
+- IDCheck.io ID Verification
