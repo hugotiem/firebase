@@ -5,6 +5,7 @@ A new Flutter project.
 1. [Getting Started.](#getting-started)
 2. [Project Architecture.](#project-architecture)
 3. [BackLogs.](#backlogs)
+4. [APIs](#api)
 
 ## Getting Started
 
@@ -53,3 +54,10 @@ PTS
 ## BackLogs
 
 Backlogs list comming soon.
+
+## APIs
+
+- Firebase -> DataBase, credencials
+
+### probably used later :
+- ZignSec for Online ID Verification
