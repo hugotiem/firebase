@@ -60,7 +60,7 @@ Backlogs list comming soon.
 - Firebase -> DataBase, credencials
 
 ### probably used later :
-- ZignSec for Online ID Verification
-- Sumsub Identity Verification Services
-- Jumio ID Verification
-- IDCheck.io ID Verification
+- [ZignSec for Online ID Verification](https://zignsec.com/products/online-id-verification/)
+- [Sumsub Identity Verification Services](https://sumsub.com/identity-verification/?utm_source=google&utm_medium=cpc&utm_campaign=Target_search_requests_Germany_France_Israel_Spain&utm_term=identity%20verification&utm_content=119238569925||)
+- [Jumio ID Verification](https://www.jumio.com/fr/produits/id-verification/)
+- [IDCheck.io ID Verification](https://fr.idcheck.io/)
