@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pts/Constant.dart';
 
 class CustomSliver extends StatelessWidget {
   final Widget appBar, body;
