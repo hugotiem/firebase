@@ -57,67 +57,8 @@ class _SearchState extends State<Search> {
                 width: MediaQuery.of(context).size.width,
                 child: Opacity(
                   opacity: _opacity,
-                  child: Center(child: BackGroundtitle()),
-                ),
-              ),
-              Positioned(
-                bottom: 0,
-                width: MediaQuery.of(context).size.width,
-                child: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 15),
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SearchBarPage(),
-                          ),
-                        );
-                      },
-                      child: Hero(
-                        tag: "test",
-                        child: Container(
-                          width: _barSizeWidth,
-                          height: _barSizeHeight,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(29.5),
-                            boxShadow: [
-                              BoxShadow(
-                                color: PRIMARY_COLOR.withOpacity(0.3),
-                                offset: Offset(1, 2),
-                                blurRadius: 4,
-                                spreadRadius: 2,
-                              )
-                            ],
-                          ),
-                          child: Container(
-                            child: Row(
-                              children: <Widget>[
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 20),
-                                  child: Icon(
-                                    Icons.search_rounded,
-                                    size: 20,
-                                  ),
-                                ),
-                                Opacity(
-                                  opacity: 0.7,
-                                  child: Container(
-                                    padding: EdgeInsets.only(left: 20),
-                                    child: Text(
-                                      "Rechercher",
-                                      style: TextStyle(fontSize: 18),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+                  child: Center(
+                    child: BackGroundtitle(),
                   ),
                 ),
               ),
@@ -125,40 +66,48 @@ class _SearchState extends State<Search> {
           ),
         ),
       ),
-      body: Column(
-        children: [
-           SizedBox(
-              height: 350,
-            ),
-          SizedBox.expand(
-            child: ListView.builder(
-              itemCount: 5,
-              itemBuilder: (context, index) {
-                return Container(
-                  padding: const EdgeInsets.all(8.0),
-                  //margin: EdgeInsets.only(top: index == 0 ? 350 : 0),
-                  child: GestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    child: Card(
-                      color: Colors.white,
-                      child: Container(
-                        child: Stack(
-                          children: <Widget>[
-                            Container(),
-                            closeContent(this._isOpen ? 400 : 150),
-                          ],
-                        ),
-                      ),
+      body: SizedBox.expand(
+        child: ListView.builder(
+          itemCount: 5,
+          itemBuilder: (context, index) {
+            Widget _container = Container(
+              padding: const EdgeInsets.all(8.0),
+              //margin: EdgeInsets.only(top: index == 0 ? 350 : 0),
+              child: GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                child: Card(
+                  color: Colors.white,
+                  child: Container(
+                    child: Stack(
+                      children: <Widget>[
+                        Container(),
+                        closeContent(this._isOpen ? 400 : 150),
+                      ],
                     ),
-                    onTap: () {
-                      open();
-                    },
                   ),
-                );
-              },
-            ),
-          ),
-        ],
+                ),
+                onTap: () {
+                  open();
+                },
+              ),
+            );
+            if (index == 0) {
+              return Stack(
+                children: <Widget>[
+                  Column(
+                    children: <Widget>[
+                      SizedBox(
+                        height: 350,
+                      ),
+                      _container,
+                    ],
+                  ),
+                ],
+              );
+            }
+            return _container;
+          },
+        ),
       ),
       onNotification: (notification) {
         setState(() {
@@ -184,6 +133,67 @@ class _SearchState extends State<Search> {
 
         return true;
       },
+      searchBar: Column(
+        children: [
+          SizedBox(
+            height: (_size - 80) > 50 ? _size - 80 : 50,
+          ),
+          Center(
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SearchBarPage(),
+                  ),
+                );
+              },
+              child: Hero(
+                tag: "test",
+                child: Container(
+                  width: _barSizeWidth,
+                  height: _barSizeHeight,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(29.5),
+                    boxShadow: [
+                      BoxShadow(
+                        color: PRIMARY_COLOR.withOpacity(0.3),
+                        offset: Offset(1, 2),
+                        blurRadius: 4,
+                        spreadRadius: 2,
+                      )
+                    ],
+                  ),
+                  child: Container(
+                    child: Row(
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20),
+                          child: Icon(
+                            Icons.search_rounded,
+                            size: 20,
+                          ),
+                        ),
+                        Opacity(
+                          opacity: 0.7,
+                          child: Container(
+                            padding: EdgeInsets.only(left: 20),
+                            child: Text(
+                              "Rechercher",
+                              style: TextStyle(fontSize: 18),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
