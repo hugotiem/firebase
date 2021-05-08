@@ -80,7 +80,7 @@ class _FourthpageState extends State<Fourthpage> {
                         border: InputBorder.none,
                         icon: Icon(Icons.euro_symbol_outlined)
                         ),
-                      onSubmitted: (value) {
+                      onChanged: (value) {
                         setState(() {
                           _prix = value;
                         });
