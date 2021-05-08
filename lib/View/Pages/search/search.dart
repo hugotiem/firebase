@@ -125,31 +125,40 @@ class _SearchState extends State<Search> {
           ),
         ),
       ),
-      body: ListView.builder(
-        itemCount: 5,
-        itemBuilder: (context, index) {
-          return Container(
-            padding: const EdgeInsets.all(8.0),
-            margin: EdgeInsets.only(top: index == 0 ? 350 : 0),
-            child: GestureDetector(
-              behavior: HitTestBehavior.translucent,
-              child: Card(
-                color: Colors.white,
-                child: Container(
-                  child: Stack(
-                    children: <Widget>[
-                      Container(),
-                      closeContent(this._isOpen ? 400 : 150),
-                    ],
+      body: Column(
+        children: [
+           SizedBox(
+              height: 350,
+            ),
+          SizedBox.expand(
+            child: ListView.builder(
+              itemCount: 5,
+              itemBuilder: (context, index) {
+                return Container(
+                  padding: const EdgeInsets.all(8.0),
+                  //margin: EdgeInsets.only(top: index == 0 ? 350 : 0),
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    child: Card(
+                      color: Colors.white,
+                      child: Container(
+                        child: Stack(
+                          children: <Widget>[
+                            Container(),
+                            closeContent(this._isOpen ? 400 : 150),
+                          ],
+                        ),
+                      ),
+                    ),
+                    onTap: () {
+                      open();
+                    },
                   ),
-                ),
-              ),
-              onTap: () {
-                open();
+                );
               },
             ),
-          );
-        },
+          ),
+        ],
       ),
       onNotification: (notification) {
         setState(() {
