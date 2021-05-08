@@ -3,8 +3,8 @@ import 'package:flutter/rendering.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/Model/components/back_appbar.dart';
 import 'package:pts/Model/components/pts_box.dart';
+import 'package:pts/Model/services/firestore_service.dart';
 import 'package:pts/Model/soiree.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class LastPage extends StatefulWidget {
   @override
@@ -15,7 +15,7 @@ class _LastPageState extends State<LastPage> {
   String _name;
   String _themeValue;
   String _nombre;
-  final soireedb = FirebaseFirestore.instance;
+  FireStoreServices _firestore = FireStoreServices();
 
   @override
   Widget build(BuildContext context) {
@@ -436,34 +436,30 @@ class _LastPageState extends State<LastPage> {
                 onPressed: () {
                   _edit(context);
                 },
-              child: Text('Modifier')
-            ),
+                child: Text('Modifier')),
             TextButton(
-              onPressed: () async {
-                await soireedb.collection("Soirée").add(
-                  {
-                    'Name': Soiree.nom,
-                    'Theme': Soiree.theme,
-                    'Number': Soiree.nombre,
-                    'Date': Soiree.date,
-                    'Hour': Soiree.heure.format(context),
-                    'Adress': Soiree.adresse,
-                    'City': Soiree.ville,
-                    'Postal dode': Soiree.codepostal,
-                    'Price': Soiree.prix, 
-                    'free' : Soiree.gratuit,
-                  }
-                );
+                onPressed: () {
+                  _firestore.add(
+                    collection: "Soirée",
+                    data: ({
+                      'Name': Soiree.nom,
+                      'Theme': Soiree.theme,
+                      'Number': Soiree.nombre,
+                      'Date': Soiree.date,
+                      'Hour': Soiree.heure.format(context),
+                      'Adress': Soiree.adresse,
+                      'City': Soiree.ville,
+                      'Postal dode': Soiree.codepostal,
+                      'Price': Soiree.prix,
+                      'free': Soiree.gratuit,
+                    }),
+                  );
 
-                Navigator.of(context).popUntil((route) => route.isFirst);
-              }, 
-            child: Text('valider')
-          ),
-        ]
-      )
-    ),
-  )
-);
+                  Navigator.of(context).popUntil((route) => route.isFirst);
+                },
+                child: Text('valider')),
+          ])),
+        ));
   }
 
   Future<Null> _edit(context) async {
@@ -547,18 +543,15 @@ class _LastPageState extends State<LastPage> {
                 onPressed: () {
                   setState(() {
                     Soiree.setDataFistPage(
-                    _name,
-                    _themeValue,
-                    _nombre,
-                  );
+                      _name,
+                      _themeValue,
+                      _nombre,
+                    );
                   });
-                  
                 },
               ),
             ]),
           ));
         });
   }
-
-
 }
