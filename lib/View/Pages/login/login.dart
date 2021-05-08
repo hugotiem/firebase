@@ -92,7 +92,6 @@ class _LoginState extends State<Login> {
                             decoration: InputDecoration(
                               labelText: "Nom d'utilisateur :",
                               border: InputBorder.none,
-                              //icon: Icon(Icons.create_outlined),
                             ),
                             onChanged: (value) {
                               _name = value;
