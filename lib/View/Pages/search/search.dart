@@ -24,7 +24,7 @@ class _SearchState extends State<Search> {
   Brightness _brightness;
   Color _toolbarColor;
 
-  FireStoreServices _firestore = new FireStoreServices();
+  FireStoreServices _firestore = new FireStoreServices("Soirée");
 
   @override
   void initState() {
@@ -75,7 +75,7 @@ class _SearchState extends State<Search> {
       ),
       body: SizedBox.expand(
         child: StreamBuilder(
-          stream: _firestore.getSnapshots("Soirée"),
+          stream: _firestore.getSnapshots(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) return CircularProgressIndicator();
             //print(snapshot.data.docs[1].id);

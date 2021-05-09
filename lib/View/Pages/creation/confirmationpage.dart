@@ -15,7 +15,7 @@ class _LastPageState extends State<LastPage> {
   String _name;
   String _themeValue;
   String _nombre;
-  FireStoreServices _firestore = FireStoreServices();
+  FireStoreServices _firestore = FireStoreServices("Soirée");
 
   @override
   Widget build(BuildContext context) {
@@ -440,7 +440,6 @@ class _LastPageState extends State<LastPage> {
             TextButton(
                 onPressed: () {
                   _firestore.add(
-                    collection: "Soirée",
                     data: ({
                       'Name': Soiree.nom,
                       'Theme': Soiree.theme,
