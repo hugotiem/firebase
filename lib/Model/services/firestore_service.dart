@@ -7,7 +7,11 @@ class FireStoreServices {
 
   Future add({String collection, Map<String, dynamic> data}) async {
     await this._firestore.collection(collection).add(data);
+
+    _firestore.collection(collection).snapshots();
   }
 
-  //Future<> etData()
+  Stream<QuerySnapshot<Map<String, dynamic>>> getSnapshots(String collection) {
+    return this._firestore.collection(collection).snapshots();
+  }
 }

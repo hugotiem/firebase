@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pts/Model/components/backgroundtitle.dart';
 import 'package:pts/Model/components/custom_sliver.dart';
+import 'package:pts/Model/services/firestore_service.dart';
 import 'package:pts/View/Pages/search/searchbar_page.dart';
 
 import '../../../../Constant.dart';
@@ -22,6 +23,8 @@ class _SearchState extends State<Search> {
   bool _isOpen = false;
   Brightness _brightness;
   Color _toolbarColor;
+
+  FireStoreServices _firestore = new FireStoreServices();
 
   @override
   void initState() {
@@ -71,45 +74,53 @@ class _SearchState extends State<Search> {
         ),
       ),
       body: SizedBox.expand(
-        child: ListView.builder(
-          itemCount: 5,
-          itemBuilder: (context, index) {
-            Widget _container = Container(
-              padding: const EdgeInsets.all(8.0),
-              //margin: EdgeInsets.only(top: index == 0 ? 350 : 0),
-              child: GestureDetector(
-                behavior: HitTestBehavior.translucent,
-                child: Card(
-                  color: Colors.white,
-                  child: Container(
-                    child: Stack(
-                      children: <Widget>[
-                        Container(),
-                        closeContent(this._isOpen ? 400 : 150),
-                      ],
-                    ),
-                  ),
-                ),
-                onTap: () {
-                  open();
-                },
-              ),
-            );
-            if (index == 0) {
-              return Stack(
-                children: <Widget>[
-                  Column(
-                    children: <Widget>[
-                      SizedBox(
-                        height: 350,
+        child: StreamBuilder(
+          stream: _firestore.getSnapshots("Soirée"),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) return CircularProgressIndicator();
+            //print(snapshot.data.docs[1].id);
+            return ListView.builder(
+              itemCount: snapshot.data.docs.length,
+              itemBuilder: (context, index) {
+                Widget _container = Container(
+                  padding: const EdgeInsets.all(8.0),
+                  //margin: EdgeInsets.only(top: index == 0 ? 350 : 0),
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    child: Card(
+                      color: Colors.white,
+                      child: Container(
+                        child: Stack(
+                          children: <Widget>[
+                            Container(),
+                            closeContent(
+                                this._isOpen ? 400 : 150, index, snapshot),
+                          ],
+                        ),
                       ),
-                      _container,
-                    ],
+                    ),
+                    onTap: () {
+                      open();
+                    },
                   ),
-                ],
-              );
-            }
-            return _container;
+                );
+                if (index == 0) {
+                  return Stack(
+                    children: <Widget>[
+                      Column(
+                        children: <Widget>[
+                          SizedBox(
+                            height: 350,
+                          ),
+                          _container,
+                        ],
+                      ),
+                    ],
+                  );
+                }
+                return _container;
+              },
+            );
           },
         ),
       ),
@@ -210,7 +221,7 @@ class _SearchState extends State<Search> {
     });
   }
 
-  Widget closeContent(double _height) {
+  Widget closeContent(double _height, index, snapshot) {
     return AnimatedContainer(
       duration: Duration(milliseconds: 200),
       curve: Curves.ease,
@@ -285,7 +296,7 @@ class _SearchState extends State<Search> {
                           child: Opacity(
                             opacity: 0.6,
                             child: Text(
-                              "Catégorie de la soirée",
+                              snapshot.data.docs[index]["Theme"],
                               style: TextStyle(fontSize: 15),
                             ),
                           ),
