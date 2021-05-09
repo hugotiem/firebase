@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/Model/services/auth_service.dart';
@@ -52,6 +53,7 @@ class _LoginState extends State<Login> {
     });
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: () {
@@ -71,14 +73,14 @@ class _LoginState extends State<Login> {
                         child: Text(
                           "sign-up".toUpperCase(),
                           style: TextStyle(
-                            color: Colors.black,
+                            color: SECONDARY_COLOR,
                             fontSize: 30,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
                       SizedBox(
-                        height: 80,
+                        height: 70,
                       ),
                       Container(
                         width: MediaQuery.of(context).size.width * 0.9,
@@ -89,6 +91,7 @@ class _LoginState extends State<Login> {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 30),
                           child: TextField(
+                            keyboardAppearance: Brightness.light,
                             decoration: InputDecoration(
                               labelText: "Nom d'utilisateur :",
                               border: InputBorder.none,
@@ -100,7 +103,7 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                       SizedBox(
-                        height: 50,
+                        height: 40,
                       ),
                       Container(
                         width: MediaQuery.of(context).size.width * 0.9,
@@ -123,7 +126,7 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                       SizedBox(
-                        height: 50,
+                        height: 40,
                       ),
                       Container(
                         width: MediaQuery.of(context).size.width * 0.9,
@@ -153,7 +156,7 @@ class _LoginState extends State<Login> {
                           width: size.width - 100,
                           padding: EdgeInsets.symmetric(vertical: 20),
                           decoration: BoxDecoration(
-                            color: Colors.black,
+                            color: ICONCOLOR,
                             borderRadius: BorderRadius.all(
                               Radius.circular(200),
                             ),
@@ -175,11 +178,80 @@ class _LoginState extends State<Login> {
                               .updateProfile(displayName: _name);
                         },
                       ),
+                      Container(
+                        padding: EdgeInsets.only(top: 20),
+                        child: RichText(
+                          textAlign: TextAlign.center,
+                          text: TextSpan(
+                            style: TextStyle(color: Colors.black),
+                            children: [
+                              TextSpan(
+                                text:
+                                    "*En cliquant sur \"S'inscrire\" je déclare avoir accepté les ",
+                              ),
+                              TextSpan(
+                                text: "Conditions Générales d'Utilisations ",
+                                style: TextStyle(color: ICONCOLOR),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => Container(
+                                          color: Colors.white,
+                                          child: Center(
+                                            child: Text(
+                                              "Conditions Générales d'Utilisations",
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                              ),
+                              TextSpan(
+                                text: "et avoir pris connaissance de la ",
+                              ),
+                              TextSpan(
+                                text: "Politique de confidentialité ",
+                                style: TextStyle(color: ICONCOLOR),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => Container(
+                                          color: Colors.white,
+                                          child: Center(
+                                            child: Text(
+                                              "Politique de confidentialité",
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                              ),
+                              TextSpan(
+                                text: "de PTS.",
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ),
               SlidingUpPanel(
+                renderPanelSheet: false,
+
                 controller: _controller,
                 collapsed: Container(
                   decoration: BoxDecoration(
@@ -200,25 +272,31 @@ class _LoginState extends State<Login> {
                           _email = "";
                           _password = "";
                         },
-                        child: Container(
-                          width: size.width - 100,
-                          padding: EdgeInsets.symmetric(vertical: 20),
-                          decoration: BoxDecoration(
-                            color: Colors.black,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(200),
-                            ),
-                          ),
-                          child: Align(
-                            child: Text(
-                              "déjà un compte ? clique ici".toUpperCase(),
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
+                        child: Column(
+                          children: <Widget>[
+                            Container(
+                              //padding: EdgeInsets.only(bottom: 50),
+                              child: Align(
+                                child: Text(
+                                  "déjà un compte ? clique ici".toUpperCase(),
+                                  style: TextStyle(
+                                    color: ICONCOLOR,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
+                            Container(
+                              padding: EdgeInsets.only(top: 20),
+                              child: Center(
+                                child: Icon(
+                                  Icons.arrow_upward,
+                                  color: ICONCOLOR,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
@@ -231,7 +309,7 @@ class _LoginState extends State<Login> {
                   });
                 },
                 maxHeight: size.height - 150,
-                minHeight: 150,
+                minHeight: 120,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(36),
                   topRight: Radius.circular(36),
@@ -353,17 +431,11 @@ class _LoginState extends State<Login> {
                           child: Container(
                             width: size.width - 100,
                             padding: EdgeInsets.symmetric(vertical: 20),
-                            decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(200),
-                              ),
-                            ),
                             child: Align(
                               child: Text(
                                 "pas de compte ? s'inscrire".toUpperCase(),
                                 style: TextStyle(
-                                  color: Colors.white,
+                                  color: ICONCOLOR,
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
                                 ),

@@ -38,7 +38,7 @@ class _HomeState extends State<Home> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Colors.orange,
+        selectedItemColor: ICONCOLOR,
         onTap: onTabTapped,
         currentIndex: _currentIndex,
         items: [

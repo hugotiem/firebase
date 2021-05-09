@@ -174,14 +174,6 @@ class _SearchState extends State<Search> {
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(29.5),
-                    boxShadow: [
-                      BoxShadow(
-                        color: PRIMARY_COLOR.withOpacity(0.3),
-                        offset: Offset(1, 2),
-                        blurRadius: 4,
-                        spreadRadius: 2,
-                      )
-                    ],
                   ),
                   child: Container(
                     child: Row(
@@ -191,6 +183,7 @@ class _SearchState extends State<Search> {
                           child: Icon(
                             Icons.search_rounded,
                             size: 20,
+                            color: ICONCOLOR,
                           ),
                         ),
                         Opacity(
