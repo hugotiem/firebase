@@ -188,7 +188,7 @@ class _LoginState extends State<Login> {
                         },
                       ),
                       Container(
-                        padding: EdgeInsets.only(top: 20),
+                        padding: EdgeInsets.only(top: 20, left: 10, right: 10),
                         child: RichText(
                           textAlign: TextAlign.center,
                           text: TextSpan(
