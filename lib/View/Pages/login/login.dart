@@ -91,6 +91,7 @@ class _LoginState extends State<Login> {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 30),
                           child: TextField(
+                            // controller: _editingController,
                             keyboardAppearance: Brightness.light,
                             decoration: InputDecoration(
                               labelText: "Nom d'utilisateur :",
@@ -114,10 +115,16 @@ class _LoginState extends State<Login> {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 30),
                           child: TextField(
+                            // controller: _editingController,
+                            keyboardAppearance: Brightness.light,
+                            keyboardType: TextInputType.emailAddress,
                             decoration: InputDecoration(
+                              suffix: Container(
+                                padding: EdgeInsets.only(right: 10),
+                                child: Icon(Icons.person, color: Colors.black),
+                              ),
                               labelText: "Email :",
                               border: InputBorder.none,
-                              //icon: Icon(Icons.create_outlined),
                             ),
                             onChanged: (value) {
                               _email = value;
@@ -137,7 +144,9 @@ class _LoginState extends State<Login> {
                         child: Padding(
                           padding: const EdgeInsets.only(left: 30),
                           child: TextField(
+                            // controller: _editingController,
                             obscureText: true,
+                            keyboardAppearance: Brightness.light,
                             decoration: InputDecoration(
                               labelText: "Mot de passe :",
                               border: InputBorder.none,
@@ -353,10 +362,10 @@ class _LoginState extends State<Login> {
                                 child: Padding(
                                   padding: const EdgeInsets.only(left: 30),
                                   child: TextField(
+                                    // controller: _editingController,
                                     decoration: InputDecoration(
                                       labelText: "Email :",
                                       border: InputBorder.none,
-                                      //icon: Icon(Icons.create_outlined),
                                     ),
                                     onChanged: (value) {
                                       _email = value;
@@ -376,6 +385,7 @@ class _LoginState extends State<Login> {
                                 child: Padding(
                                   padding: const EdgeInsets.only(left: 30),
                                   child: TextField(
+                                    // controller: _editingController,
                                     obscureText: true,
                                     decoration: InputDecoration(
                                       labelText: "Mot de passe :",
@@ -447,6 +457,16 @@ class _LoginState extends State<Login> {
                     ),
                   ),
                 ),
+                onPanelOpened: () {
+                  _editingController.clear();
+                  _email = "";
+                  _password = "";
+                },
+                onPanelClosed: () {
+                  _editingController.clear();
+                  _email = "";
+                  _password = "";
+                },
               ),
             ],
           ),
