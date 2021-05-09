@@ -23,7 +23,7 @@ class _ProfilState extends State<Profil> {
         toolbarHeight: 0,
         elevation: 0,
         backgroundColor: PRIMARY_COLOR,
-        brightness: Brightness.dark,
+        brightness: Brightness.light,
       ),
       body: Container(
         color: PRIMARY_COLOR,

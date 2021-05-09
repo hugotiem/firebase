@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class CustomSliver extends StatelessWidget {
   final Widget appBar, body, searchBar;
-  final Color backgroundColor;
+  final Color backgroundColor, toolbarColor;
   final Brightness brightness;
   final Function(ScrollNotification) onNotification;
   CustomSliver({
@@ -11,6 +11,7 @@ class CustomSliver extends StatelessWidget {
     @required this.body,
     this.onNotification,
     this.backgroundColor,
+    this.toolbarColor,
     this.brightness,
     @required this.searchBar,
   }) : super(key: key);
@@ -22,10 +23,9 @@ class CustomSliver extends StatelessWidget {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         brightness: brightness,
-        toolbarHeight: 0,
         backgroundColor: Colors.transparent,
+        toolbarHeight: 0,
         elevation: 0,
-        backwardsCompatibility: false,
       ),
       body: NotificationListener<ScrollNotification>(
         onNotification: onNotification,
@@ -33,6 +33,10 @@ class CustomSliver extends StatelessWidget {
           children: <Widget>[
             appBar,
             body,
+            Container(
+              height: toolbarColor == Colors.transparent ? 0 : 100,
+              color: toolbarColor,
+            ),
             searchBar,
           ],
         ),

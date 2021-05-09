@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 import '../Constant.dart';
 import 'components/pts_box.dart';
-import 'components/cupertino_navigator.dart';
 
 // containers with blue shadow
 
@@ -69,8 +68,9 @@ class _ClickableContainerState extends State<ClickableContainer> {
     return GestureDetector(
       onTap: () => {
         Navigator.of(context).push(
-          new CupertinoNavigator(
-            child: to != null ? to : new Container(color: Colors.white),
+          MaterialPageRoute(
+            builder: (context) =>
+                to != null ? to : new Container(color: Colors.white),
           ),
         ),
       },

@@ -1,18 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:pts/Constant.dart';
 
 class BackAppBar extends PreferredSize {
   final Widget title;
   final List<Widget> actions;
-  final Brightness brightness;
+  //final Brightness brightness;
   final Widget leading;
 
   BackAppBar({
     this.title,
     this.actions,
-    this.brightness,
+    //this.brightness,
     this.leading,
   });
 
@@ -34,7 +33,8 @@ class BackAppBar extends PreferredSize {
             ),
       title: title,
       actions: actions,
-      brightness: brightness != null ? brightness : Brightness.light,
+      brightness: Brightness.light,
+      //brightness: brightness != null ? brightness : Brightness.light,
     );
   }
 }

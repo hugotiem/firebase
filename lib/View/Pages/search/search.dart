@@ -20,7 +20,8 @@ class _SearchState extends State<Search> {
   double _barSizeWidth;
   double _barSizeHeight;
   bool _isOpen = false;
-  Brightness _brightness = Brightness.dark;
+  Brightness _brightness;
+  Color _toolbarColor;
 
   @override
   void initState() {
@@ -30,6 +31,8 @@ class _SearchState extends State<Search> {
       _opacity = 1;
       _barSizeWidth = 350;
       _barSizeHeight = 60;
+      _brightness = Brightness.dark;
+      _toolbarColor = Colors.transparent;
     });
     super.initState();
   }
@@ -39,6 +42,7 @@ class _SearchState extends State<Search> {
     return CustomSliver(
       backgroundColor: PRIMARY_COLOR,
       brightness: _brightness,
+      toolbarColor: _toolbarColor,
       appBar: Container(
         height: _size,
         width: MediaQuery.of(context).size.width,
@@ -115,6 +119,8 @@ class _SearchState extends State<Search> {
             double _pixels = notification.metrics.pixels;
             if (_pixels <= 400 && (400 - _pixels) >= 100) {
               _size = 400 - _pixels;
+              _brightness = Brightness.dark;
+              _toolbarColor = Colors.transparent;
 
               if (_pixels >= 250) {
                 _opacity = (_size - 100) / 50;
@@ -127,6 +133,7 @@ class _SearchState extends State<Search> {
               _size = 100;
               _opacity = 0;
               _brightness = Brightness.light;
+              _toolbarColor = PRIMARY_COLOR;
             }
           }
         });

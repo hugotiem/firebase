@@ -8,4 +8,6 @@ class FireStoreServices {
   Future add({String collection, Map<String, dynamic> data}) async {
     await this._firestore.collection(collection).add(data);
   }
+
+  //Future<> etData()
 }
