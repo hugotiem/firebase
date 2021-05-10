@@ -374,7 +374,7 @@ class _LoginState extends State<Login> {
                                 ),
                               ),
                               SizedBox(
-                                height: 50,
+                                height: 40,
                               ),
                               Container(
                                 width: MediaQuery.of(context).size.width * 0.9,
@@ -401,7 +401,7 @@ class _LoginState extends State<Login> {
                           ),
                         ),
                         SizedBox(
-                          height: 50,
+                          height: 60,
                         ),
                         GestureDetector(
                           child: Container(
