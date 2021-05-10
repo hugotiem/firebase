@@ -14,6 +14,7 @@ class _HomeState extends State<Home> {
   int _currentIndex = 0;
   final List<Widget> _children = [
     Search(),
+    null,
     Profil(),
   ];
 
@@ -21,23 +22,23 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _children[_currentIndex],
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => FirstPage(),
-            ),
-          );
-        },
-        child: Icon(
-          Icons.add_circle_outline,
-          color: SECONDARY_COLOR,
-        ),
-        elevation: 4.0,
-        backgroundColor: Colors.white,
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     Navigator.push(
+      //       context,
+      //       MaterialPageRoute(
+      //         builder: (context) => FirstPage(),
+      //       ),
+      //     );
+      //   },
+      //   child: Icon(
+      //     Icons.add_circle_outline,
+      //     color: SECONDARY_COLOR,
+      //   ),
+      //   elevation: 4.0,
+      //   backgroundColor: Colors.white,
+      // ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: ICONCOLOR,
         onTap: onTabTapped,
@@ -50,26 +51,20 @@ class _HomeState extends State<Home> {
             ),
             label: "Rechercher",
           ),
-          // BottomNavigationBarItem(
-          //   icon: Container(
-          //     child: new CupertinoButton(
-          //       padding: EdgeInsets.only(bottom: 0),
-          //       onPressed: () {
-          //         Navigator.of(context).push(
-          //           MaterialPageRoute(
-          //             builder: (context) => FirstPage(),
-          //           ),
-          //         );
-          //       },
-          //       child: new Icon(
-          //         Icons.add,
-          //         size: 50,
-          //         color: Colors.grey,
-          //       ),
-          //     ),
-          //   ),
-          //   label: "",
-          // ),
+          BottomNavigationBarItem(
+            icon: GestureDetector(
+              child: Icon(
+                Icons.add,
+                size: 30,
+              ),
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => FirstPage(),
+                ),
+              ),
+            ),
+            label: "",
+          ),
           BottomNavigationBarItem(
             icon: new Icon(
               Icons.account_circle_outlined,
