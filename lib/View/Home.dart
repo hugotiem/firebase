@@ -53,9 +53,11 @@ class _HomeState extends State<Home> {
           ),
           BottomNavigationBarItem(
             icon: GestureDetector(
-              child: Icon(
-                Icons.add,
-                size: 30,
+              child: Container(
+                child: Icon(
+                  Icons.add,
+                  size: 30,
+                ),
               ),
               onTap: () => Navigator.of(context).push(
                 MaterialPageRoute(

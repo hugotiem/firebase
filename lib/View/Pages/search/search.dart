@@ -74,59 +74,254 @@ class _SearchState extends State<Search> {
         ),
       ),
       body: SizedBox.expand(
-        child: StreamBuilder(
-          stream: _firestore.getSnapshots(),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) return CircularProgressIndicator();
-            //print(snapshot.data.docs[1].id);
-            return ListView.builder(
-              itemCount: snapshot.data.docs.length,
-              itemBuilder: (context, index) {
-                Widget _container = Container(
-                  padding: const EdgeInsets.all(8.0),
-                  //margin: EdgeInsets.only(top: index == 0 ? 350 : 0),
-                  child: GestureDetector(
-                    behavior: HitTestBehavior.translucent,
-                    child: Card(
-                      color: Colors.white,
-                      child: Container(
-                        child: Stack(
-                          children: <Widget>[
-                            Container(),
-                            closeContent(
-                                this._isOpen ? 400 : 150, index, snapshot),
-                          ],
-                        ),
+        child: ListView(
+          children: <Widget>[
+            SizedBox(
+              height: 350,
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.only(top: 20, left: 20),
+                    child: Text(
+                      "Rechercher par thème :",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w900,
+                        fontSize: 20,
+                        color: SECONDARY_COLOR,
                       ),
                     ),
-                    onTap: () {
-                      open();
-                    },
                   ),
-                );
-                if (index == 0) {
-                  return Stack(
-                    children: <Widget>[
-                      Column(
+                  Container(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
                         children: <Widget>[
-                          SizedBox(
-                            height: 350,
+                          Container(
+                            margin: EdgeInsets.only(top: 20, left: 20),
+                            height: 140,
+                            width: 100,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                            ),
                           ),
-                          _container,
+                          Container(
+                            margin: EdgeInsets.only(top: 20, left: 20),
+                            height: 140,
+                            width: 100,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 20, left: 20),
+                            height: 140,
+                            width: 100,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 20, left: 20),
+                            height: 140,
+                            width: 100,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 20, left: 20),
+                            height: 140,
+                            width: 100,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                            ),
+                          ),
                         ],
                       ),
-                    ],
-                  );
-                }
-                return _container;
-              },
-            );
-          },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.only(top: 20, left: 20),
+                    child: Text(
+                      "Soirées étudiantes :",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w900,
+                        fontSize: 20,
+                        color: SECONDARY_COLOR,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: <Widget>[
+                          Container(
+                            margin: EdgeInsets.only(top: 20, left: 20),
+                            height: 140,
+                            width: 100,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 20, left: 20),
+                            height: 140,
+                            width: 100,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 20, left: 20),
+                            height: 140,
+                            width: 100,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 20, left: 20),
+                            height: 140,
+                            width: 100,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 20, left: 20),
+                            height: 140,
+                            width: 100,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 40, vertical: 60),
+              height: 500,
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                color: SECONDARY_COLOR,
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.all(20),
+                    child: Text(
+                      "Organise ta propre soirée !",
+                      style: TextStyle(
+                        color: ICONCOLOR,
+                        fontSize: 40,
+                        fontWeight: FontWeight.w900,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  GestureDetector(
+                    child: Container(
+                      //width: MediaQuery.of(context).size.width - 100,
+                      margin: EdgeInsets.only(bottom: 20),
+                      padding: EdgeInsets.symmetric(
+                        vertical: 20,
+                        horizontal: 20,
+                      ),
+                      decoration: BoxDecoration(
+                        color: ICONCOLOR,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(200),
+                        ),
+                      ),
+                      child: Text(
+                        "Créer maintenant !".toUpperCase(),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
+        // child: StreamBuilder(
+        //   stream: _firestore.getSnapshots(),
+        //   builder: (context, snapshot) {
+        //     if (!snapshot.hasData) return CircularProgressIndicator();
+        //     //print(snapshot.data.docs[1].id);
+        //     return ListView.builder(
+        //       itemCount: snapshot.data.docs.length,
+        //       itemBuilder: (context, index) {
+        //         Widget _container = Container(
+        //           padding: const EdgeInsets.all(8.0),
+        //           //margin: EdgeInsets.only(top: index == 0 ? 350 : 0),
+        //           child: GestureDetector(
+        //             behavior: HitTestBehavior.translucent,
+        //             child: Card(
+        //               color: Colors.white,
+        //               child: Container(
+        //                 child: Stack(
+        //                   children: <Widget>[
+        //                     Container(),
+        //                     closeContent(
+        //                         this._isOpen ? 400 : 150, index, snapshot),
+        //                   ],
+        //                 ),
+        //               ),
+        //             ),
+        //             onTap: () {
+        //               open();
+        //             },
+        //           ),
+        //         );
+        //         if (index == 0) {
+        //           return Stack(
+        //             children: <Widget>[
+        //               Column(
+        //                 children: <Widget>[
+        //                   SizedBox(
+        //                     height: 350,
+        //                   ),
+        //                   _container,
+        //                 ],
+        //               ),
+        //             ],
+        //           );
+        //         }
+        //         return _container;
+        //       },
+        //     );
+        //   },
+        // ),
       ),
       onNotification: (notification) {
         setState(() {
-          if (!(notification is ScrollStartNotification)) {
+          if (!(notification is ScrollStartNotification) &&
+              notification.metrics.axis != Axis.horizontal) {
             double _pixels = notification.metrics.pixels;
             if (_pixels <= 400 && (400 - _pixels) >= 100) {
               _size = 400 - _pixels;

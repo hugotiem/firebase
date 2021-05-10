@@ -170,15 +170,14 @@ class _LoginState extends State<Login> {
                               Radius.circular(200),
                             ),
                           ),
-                          child: Align(
-                            child: Text(
-                              "s'inscrire".toUpperCase(),
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
+                          child: Text(
+                            "s'inscrire".toUpperCase(),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
                             ),
+                            textAlign: TextAlign.center,
                           ),
                         ),
                         onTap: () {
