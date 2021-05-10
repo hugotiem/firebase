@@ -9,8 +9,9 @@ class ApplicationBloc with ChangeNotifier {
   List<PlaceSearch> searchResults = [];
 
   searchPlaces(String searchTerm) async {
-    if (searchTerm.length != 0) {
-      searchResults = await placesService.getAutocomplete(searchTerm);
+    String _search = searchTerm.trimLeft();
+    if (_search.length != 0) {
+      searchResults = await placesService.getAutocomplete(_search);
       notifyListeners();
     } else {
       searchResults = [];

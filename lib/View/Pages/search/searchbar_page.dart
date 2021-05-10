@@ -35,7 +35,6 @@ class _SearchBarPageState extends State<SearchBarPage> {
                 onChanged: (value) {
                   setState(() {
                     _search = value;
-                    //applicationBloc.searchPlaces(value);
                   });
                 },
               ),
