@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/View/Pages/creation/firstpage.dart';
@@ -43,17 +44,39 @@ class _HomeState extends State<Home> {
         currentIndex: _currentIndex,
         items: [
           BottomNavigationBarItem(
-              icon: new Icon(
-                Icons.search,
-                size: 30,
-              ),
-              label: "Rechercher"),
+            icon: new Icon(
+              Icons.search,
+              size: 30,
+            ),
+            label: "Rechercher",
+          ),
+          // BottomNavigationBarItem(
+          //   icon: Container(
+          //     child: new CupertinoButton(
+          //       padding: EdgeInsets.only(bottom: 0),
+          //       onPressed: () {
+          //         Navigator.of(context).push(
+          //           MaterialPageRoute(
+          //             builder: (context) => FirstPage(),
+          //           ),
+          //         );
+          //       },
+          //       child: new Icon(
+          //         Icons.add,
+          //         size: 50,
+          //         color: Colors.grey,
+          //       ),
+          //     ),
+          //   ),
+          //   label: "",
+          // ),
           BottomNavigationBarItem(
-              icon: new Icon(
-                Icons.account_circle_outlined,
-                size: 30,
-              ),
-              label: "Profil"),
+            icon: new Icon(
+              Icons.account_circle_outlined,
+              size: 30,
+            ),
+            label: "Profil",
+          ),
         ],
         backgroundColor: Colors.white,
       ),

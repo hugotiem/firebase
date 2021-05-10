@@ -26,7 +26,7 @@ class _ProfilState extends State<Profil> {
         brightness: Brightness.light,
       ),
       body: ListView(
-        children: [
+        children: <Widget>[
           Container(
             color: PRIMARY_COLOR,
             child: Center(
@@ -171,12 +171,21 @@ class _ProfilState extends State<Profil> {
                   ),
                   ClickableContainer(
                     containerShadow: true,
-                    child: Text(
-                      "Se deconnecter",
-                      style: TextStyle(
-                        color: Colors.red,
-                        fontSize: 20,
-                      ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          "Se deconnecter",
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontSize: 20,
+                          ),
+                        ),
+                        Icon(
+                          Icons.logout,
+                          color: Colors.red,
+                        ),
+                      ],
                     ),
                   ),
                 ],
