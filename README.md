@@ -6,6 +6,7 @@ A new Flutter project.
 2. [Project Architecture.](#project-architecture)
 3. [BackLogs.](#backlogs)
 4. [APIs](#apis)
+5. [future ideas](#future-ideas)
 
 ## Getting Started
 
@@ -64,3 +65,7 @@ Backlogs list comming soon.
 - [Sumsub Identity Verification Services](https://sumsub.com/identity-verification/?utm_source=google&utm_medium=cpc&utm_campaign=Target_search_requests_Germany_France_Israel_Spain&utm_term=identity%20verification&utm_content=119238569925||)
 - [Jumio ID Verification](https://www.jumio.com/fr/produits/id-verification/)
 - [IDCheck.io ID Verification](https://fr.idcheck.io/)
+
+## Future ideas
+
+assurance risque
