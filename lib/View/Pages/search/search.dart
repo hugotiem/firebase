@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:pts/Model/components/backgroundtitle.dart';
 import 'package:pts/Model/components/custom_sliver.dart';
 import 'package:pts/Model/services/firestore_service.dart';
-import 'package:pts/View/Pages/search/searchbar_page.dart';
+import 'package:pts/View/Pages/search/searchbar_screen.dart';
 
 import '../../../../Constant.dart';
 
@@ -357,7 +357,7 @@ class _SearchState extends State<Search> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => SearchBarPage(),
+                    builder: (context) => SearchBarScreen(),
                   ),
                 );
               },

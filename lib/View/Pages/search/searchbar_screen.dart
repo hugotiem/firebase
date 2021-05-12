@@ -3,14 +3,14 @@ import 'package:pts/Constant.dart';
 import 'package:pts/Model/components/searchbar.dart';
 import 'package:pts/blocs/application_bloc.dart';
 
-class SearchBarPage extends StatefulWidget {
-  SearchBarPage({Key key}) : super(key: key);
+class SearchBarScreen extends StatefulWidget {
+  SearchBarScreen({Key key}) : super(key: key);
 
   @override
-  _SearchBarPageState createState() => _SearchBarPageState();
+  _SearchBarScreenState createState() => _SearchBarScreenState();
 }
 
-class _SearchBarPageState extends State<SearchBarPage> {
+class _SearchBarScreenState extends State<SearchBarScreen> {
   final ApplicationBloc applicationBloc = new ApplicationBloc();
 
   String _search = "";
@@ -22,7 +22,7 @@ class _SearchBarPageState extends State<SearchBarPage> {
       child: Scaffold(
         backgroundColor: PRIMARY_COLOR,
         appBar: AppBar(
-          brightness: Brightness.dark,
+          brightness: Brightness.light,
           toolbarHeight: 0,
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -52,6 +52,7 @@ class _SearchBarPageState extends State<SearchBarPage> {
                           applicationBloc.searchResults[index].description,
                           style: TextStyle(color: Colors.black),
                         ),
+                        onTap: () => print("searching..."),
                       );
                     },
                   ),
