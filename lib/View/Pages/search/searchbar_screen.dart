@@ -17,20 +17,24 @@ class _SearchBarScreenState extends State<SearchBarScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Size _size = MediaQuery.of(context).size;
     return Hero(
       tag: 'test',
       child: Scaffold(
         backgroundColor: PRIMARY_COLOR,
+        extendBodyBehindAppBar: true,
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           brightness: Brightness.light,
           toolbarHeight: 0,
           backgroundColor: Colors.transparent,
           elevation: 0,
         ),
-        body: ListView(
+        body: Column(
           children: <Widget>[
             Container(
-              margin: EdgeInsets.only(top: 10),
+              width: _size.width,
+              padding: EdgeInsets.only(top: 50, bottom: 40),
               child: SearchBar(
                 onChanged: (value) {
                   setState(() {
@@ -43,8 +47,11 @@ class _SearchBarScreenState extends State<SearchBarScreen> {
               future: applicationBloc.searchPlaces(_search),
               builder: (context, snapshots) {
                 return Container(
-                  height: 400,
+                  height: _size.height - 150,
                   child: ListView.builder(
+                    padding: EdgeInsets.all(0),
+                    keyboardDismissBehavior:
+                        ScrollViewKeyboardDismissBehavior.onDrag,
                     itemCount: applicationBloc.searchResults.length,
                     itemBuilder: (context, index) {
                       return ListTile(
@@ -56,87 +63,11 @@ class _SearchBarScreenState extends State<SearchBarScreen> {
                       );
                     },
                   ),
-                  // height: 300,
-                  // child: GoogleMap(
-                  //   mapType: MapType.normal,
-                  //   myLocationEnabled: true,
-                  //   initialCameraPosition:
-                  //       CameraPosition(target: LatLng(41.8781, -87.6298)),
-                  // ),
                 );
               },
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class Searchbar1 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Stack(
-        children: [
-          Positioned(
-            width: MediaQuery.of(context).size.width,
-            top: 0,
-            child: Center(
-              child: Hero(
-                tag: "test",
-                child: Container(
-                  margin: EdgeInsets.only(top: 10),
-                  child: SearchBar(),
-                ),
-              ),
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.only(top: 100),
-            child: Container(
-              clipBehavior: Clip.antiAlias,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(36),
-                  topRight: Radius.circular(36),
-                ),
-              ),
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    height: 80,
-                    width: MediaQuery.of(context).size.width,
-                    color: Colors.white,
-                    padding: EdgeInsets.only(top: 30, left: 30),
-                    child: Text(
-                      "Resultats de la recherche",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: 20,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          height: 80,
-                          color: Colors.white,
-                          child: Center(
-                              child: Text(
-                            "RESULT",
-                          )),
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }
