@@ -101,18 +101,50 @@ class _SearchState extends State<Search> {
                     child: PageView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: 10,
-                      controller: PageController(viewportFraction: 0.7),
+                      controller: PageController(
+                        viewportFraction: 0.75
+                        ),
                       onPageChanged: (int index) =>
                           setState(() => _index = index),
                       itemBuilder: (_, i) {
                         return Transform.scale(
                           scale: i == _index ? 1 : 0.95,
                           child: Container(
-                            margin: EdgeInsets.only(top: 20, left: 20),
+                            margin: EdgeInsets.only(
+                              top: 20, 
+                              left: 5
+                            ),
                             height: 320,
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20),
                             ),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    height: 250,
+                                    decoration: BoxDecoration(  
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: Colors.white
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      top: 15,
+                                      left: 5
+                                      ),
+                                    child: Container(
+                                      alignment: Alignment.bottomLeft,
+                                      child: Text(
+                                        'Thème',
+                                        style: TextStyle(  
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                           ),
                         );
                       },
