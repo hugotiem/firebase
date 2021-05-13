@@ -96,52 +96,19 @@ class _SearchState extends State<Search> {
                     ),
                   ),
                   Container(
-                    child: SingleChildScrollView(
+                    child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: <Widget>[
-                          Container(
-                            margin: EdgeInsets.only(top: 20, left: 20),
-                            height: 140,
-                            width: 100,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                            ),
+                      itemCount: 20,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          margin: EdgeInsets.only(top: 20, left: 20),
+                          height: 140,
+                          width: 100,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
                           ),
-                          Container(
-                            margin: EdgeInsets.only(top: 20, left: 20),
-                            height: 140,
-                            width: 100,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(top: 20, left: 20),
-                            height: 140,
-                            width: 100,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(top: 20, left: 20),
-                            height: 140,
-                            width: 100,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(top: 20, left: 20),
-                            height: 140,
-                            width: 100,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
+                        );
+                      },
                     ),
                   ),
                 ],
