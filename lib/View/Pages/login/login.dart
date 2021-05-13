@@ -15,10 +15,15 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  //controllers
   PanelController _controller;
   TextEditingController _editingController;
+
+  Brightness _brightness;
+
   double _slideUp;
 
+  // strings variables
   String _name;
   String _email;
   String _password;
@@ -31,6 +36,7 @@ class _LoginState extends State<Login> {
     super.initState();
     _controller = new PanelController();
     _editingController = new TextEditingController();
+    _brightness = Brightness.light;
     _slideUp = 0;
     _name = "";
     _email = "";
@@ -54,6 +60,13 @@ class _LoginState extends State<Login> {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        toolbarHeight: 0,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        brightness: _brightness,
+      ),
       body: GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: () {
@@ -316,12 +329,16 @@ class _LoginState extends State<Login> {
                     _slideUp = position;
                   });
                 },
+
                 maxHeight: size.height - 150,
                 minHeight: 120,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(36),
                   topRight: Radius.circular(36),
                 ),
+                backdropEnabled: true,
+                backdropColor: SECONDARY_COLOR,
+                backdropOpacity: 1,
                 panel: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
@@ -457,11 +474,13 @@ class _LoginState extends State<Login> {
                   ),
                 ),
                 onPanelOpened: () {
+                  _brightness = Brightness.dark;
                   _editingController.clear();
                   _email = "";
                   _password = "";
                 },
                 onPanelClosed: () {
+                  _brightness = Brightness.light;
                   _editingController.clear();
                   _email = "";
                   _password = "";

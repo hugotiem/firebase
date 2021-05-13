@@ -26,6 +26,7 @@ class SearchBar extends StatelessWidget {
       ),
       child: TextField(
         autofocus: true,
+        keyboardAppearance: Brightness.light,
         decoration: InputDecoration(
           hintText: 'Rechercher',
           hintStyle: TextStyle(
