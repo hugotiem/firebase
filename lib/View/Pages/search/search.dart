@@ -95,7 +95,8 @@ class _SearchState extends State<Search> {
                       ),
                     ),
                   ),
-                  Container(
+                  SizedBox(
+                    height: 200,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: 20,
