@@ -23,18 +23,19 @@ class _SearchBarScreenState extends State<SearchBarScreen> {
 
   double _factor = 0;
 
+  Brightness _brightness = Brightness.light;
+
   @override
   Widget build(BuildContext context) {
     Size _size = MediaQuery.of(context).size;
     return Hero(
       tag: 'test',
       child: Scaffold(
-        //backgroundColor: PRIMARY_COLOR,
-        backgroundColor: Colors.white,
+        backgroundColor: SECONDARY_COLOR,
         extendBodyBehindAppBar: true,
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          brightness: Brightness.light,
+          brightness: _brightness,
           toolbarHeight: 0,
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -56,6 +57,7 @@ class _SearchBarScreenState extends State<SearchBarScreen> {
             Container(
               height: _size.height - 150,
               child: SlidingUpPanel(
+                isDraggable: _results,
                 defaultPanelState: PanelState.OPEN,
                 controller: _panelController,
                 snapPoint: 0.5,
@@ -91,7 +93,12 @@ class _SearchBarScreenState extends State<SearchBarScreen> {
                               return Container(
                                 margin: EdgeInsets.all(20),
                                 height: 100,
-                                color: Colors.red,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(10),
+                                  ),
+                                  color: Colors.white,
+                                ),
                               );
                             },
                           ),
@@ -135,8 +142,10 @@ class _SearchBarScreenState extends State<SearchBarScreen> {
                   setState(() {
                     if (position >= 0.8) {
                       _factor = 1 - ((position * 5) - 4);
+                      _brightness = Brightness.light;
                     } else if (position < 0.8) {
                       _factor = 1;
+                      _brightness = Brightness.dark;
                     }
                   });
                 },
