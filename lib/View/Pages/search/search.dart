@@ -23,6 +23,7 @@ class _SearchState extends State<Search> {
   bool _isOpen = false;
   Brightness _brightness;
   Color _toolbarColor;
+  int _index = 0;
 
   FireStoreServices _firestore = new FireStoreServices("Soirée");
 
@@ -96,17 +97,21 @@ class _SearchState extends State<Search> {
                     ),
                   ),
                   SizedBox(
-                    height: 200,
-                    child: ListView.builder(
+                    height: 320,
+                    child: PageView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: 20,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          margin: EdgeInsets.only(top: 20, left: 20),
-                          height: 140,
-                          width: 100,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
+                      itemCount: 10,
+                      controller: PageController(viewportFraction: 0.7),
+                      onPageChanged: (int index) => setState(() => _index = index),
+                      itemBuilder: (_, i) {
+                        return Transform.scale(
+                          scale: i == _index ? 1 : 0.95,
+                          child: Container(
+                            margin: EdgeInsets.only(top: 20, left: 20),
+                            height: 320,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                            ),
                           ),
                         );
                       },
