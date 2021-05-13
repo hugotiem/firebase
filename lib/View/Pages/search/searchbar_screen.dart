@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/Model/components/searchbar.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
-import 'package:pts/View/Pages/search/resluts_screen.dart';
+
 import 'package:pts/blocs/application_bloc.dart';
 
 class SearchBarScreen extends StatefulWidget {
@@ -22,6 +22,11 @@ class _SearchBarScreenState extends State<SearchBarScreen> {
   bool _results = false;
 
   double _factor = 0;
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -134,7 +139,7 @@ class _SearchBarScreenState extends State<SearchBarScreen> {
                 onPanelSlide: (position) {
                   setState(() {
                     if (position > 0.5) {
-                      _factor = 0.5 - position;
+                      _factor = 0;
                     }
                   });
                 },
