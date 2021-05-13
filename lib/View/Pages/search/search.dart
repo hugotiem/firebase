@@ -116,6 +116,7 @@ class _SearchState extends State<Search> {
                             ),
                             height: 320,
                             decoration: BoxDecoration(
+                              color: Colors.transparent,
                               borderRadius: BorderRadius.circular(20),
                             ),
                               child: Column(
