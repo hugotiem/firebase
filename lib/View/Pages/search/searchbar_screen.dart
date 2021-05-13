@@ -24,11 +24,6 @@ class _SearchBarScreenState extends State<SearchBarScreen> {
   double _factor = 0;
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     Size _size = MediaQuery.of(context).size;
     return Hero(
@@ -138,8 +133,10 @@ class _SearchBarScreenState extends State<SearchBarScreen> {
 
                 onPanelSlide: (position) {
                   setState(() {
-                    if (position > 0.5) {
-                      _factor = 0;
+                    if (position >= 0.8) {
+                      _factor = 1 - ((position * 5) - 4);
+                    } else if (position < 0.8) {
+                      _factor = 1;
                     }
                   });
                 },
