@@ -1,10 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
-  static FirebaseAuth _auth = FirebaseAuth.instance;
+  static FirebaseAuth _auth;
   static bool isLogged;
 
   static FirebaseAuth get auth => _auth;
+
+  static void setAuth() {
+    _auth = FirebaseAuth.instance;
+  }
 
   static set logged(bool val) {
     isLogged = val;

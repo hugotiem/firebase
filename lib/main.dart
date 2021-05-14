@@ -29,13 +29,14 @@ class MyApp extends StatelessWidget {
       home: FutureBuilder(
         future: _fbApp,
         builder: (context, snapshot) {
-          AuthService.auth.authStateChanges().listen((User user) {
-            AuthService.logged = user != null;
-          });
           if (snapshot.hasError) {
             print("ERROR");
             return Text("ERROR");
           } else if (snapshot.hasData) {
+            AuthService.setAuth();
+            AuthService.auth.authStateChanges().listen((User user) {
+              AuthService.logged = user != null;
+            });
             return Home();
           } else {
             return Center(
