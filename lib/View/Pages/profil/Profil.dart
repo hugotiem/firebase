@@ -31,7 +31,7 @@ class _ProfilState extends State<Profil> {
   @override
   Widget build(BuildContext context) {
     AuthService.auth.authStateChanges().listen((User user) {
-      setState(() {
+      setState(() { 
         AuthService.logged = user != null;
         _isLogged = AuthService.isLogged;
       });
