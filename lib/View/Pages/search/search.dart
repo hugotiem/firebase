@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pts/Model/components/backgroundtitle.dart';
 import 'package:pts/Model/components/custom_sliver.dart';
+import 'package:pts/Model/components/text_materials.dart';
 import 'package:pts/Model/services/firestore_service.dart';
 import 'package:pts/View/Pages/search/searchbar_screen.dart';
 import 'package:animations/animations.dart';
@@ -88,14 +89,7 @@ class _SearchState extends State<Search> {
                   children: <Widget>[
                     Container(
                       margin: EdgeInsets.only(top: 20, left: 20, bottom: 10),
-                      child: Text(
-                        'A proximité',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w900,
-                          fontSize: 20,
-                          color: SECONDARY_COLOR,
-                        ),
-                      ),
+                      child: BoldText(text: "A proximité"),
                     ),
                     SizedBox(
                       height: 200,
@@ -242,13 +236,8 @@ class _SearchState extends State<Search> {
                 children: <Widget>[
                   Container(
                     margin: EdgeInsets.only(top: 20, left: 20, bottom: 10),
-                    child: Text(
-                      "Thèmes",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w900,
-                        fontSize: 20,
-                        color: SECONDARY_COLOR,
-                      ),
+                    child: BoldText(
+                      text: "Thèmes",
                     ),
                   ),
                   SizedBox(
@@ -311,13 +300,8 @@ class _SearchState extends State<Search> {
                 children: <Widget>[
                   Container(
                     margin: EdgeInsets.only(top: 20, left: 20),
-                    child: Text(
-                      "Soirées étudiantes :",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w900,
-                        fontSize: 20,
-                        color: SECONDARY_COLOR,
-                      ),
+                    child: BoldText(
+                      text: "Soirées étudiantes :",
                     ),
                   ),
                   Container(
@@ -738,3 +722,5 @@ class _SearchState extends State<Search> {
     );
   }
 }
+
+

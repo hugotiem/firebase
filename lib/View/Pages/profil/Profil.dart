@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/Model/components/ProfilPhoto.dart';
 import 'package:pts/Model/components/pts_box.dart';
+import 'package:pts/Model/components/text_materials.dart';
 import 'package:pts/Model/pts_components.dart';
 import 'package:pts/View/Pages/login/login.dart';
 import 'package:pts/View/Pages/profil/details.dart';
@@ -42,13 +43,7 @@ class _ProfilState extends State<Profil> {
                       child: new Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          new Text(
-                            "Name",
-                            style: new TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                            ),
-                          ),
+                          new BoldText(text: "Name"),
                           Opacity(
                             opacity: 0.7,
                             child: new Text("Afficher le profil"),
@@ -67,7 +62,10 @@ class _ProfilState extends State<Profil> {
                   children: <Widget>[
                     Container(
                       margin: EdgeInsets.only(left: 20, bottom: 10),
-                      child: new Text("Paramètres du compte"),
+                      child: BoldText(
+                        text: "Paramètres du compte",
+                        fontSize: 15,
+                      ),
                     ),
                     ClickableContainer(
                       to: Login(),
