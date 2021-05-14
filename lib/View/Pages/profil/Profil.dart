@@ -20,23 +20,18 @@ class Profil extends StatefulWidget {
 class _ProfilState extends State<Profil> {
   //FireAuth
 
-  bool _isLogged;
-
   @override
   void initState() {
-    _isLogged = AuthService.isLogged;
+    AuthService.auth.authStateChanges().listen((User user) {
+      setState(() {
+        AuthService.logged = user != null;
+      });
+    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    AuthService.auth.authStateChanges().listen((User user) {
-      setState(() {
-        AuthService.logged = user != null;
-        _isLogged = AuthService.isLogged;
-      });
-    });
-
     return Scaffold(
       // appbar pour eviter certains bug d'affichage avec le haut de l'écran
       // a mettre seulement durant le scroll
@@ -47,7 +42,7 @@ class _ProfilState extends State<Profil> {
         brightness: Brightness.light,
       ),
       backgroundColor: PRIMARY_COLOR,
-      body: _isLogged
+      body: AuthService.isLogged
           ? Container(
               color: PRIMARY_COLOR,
               child: Center(
