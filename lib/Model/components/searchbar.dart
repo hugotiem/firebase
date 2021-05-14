@@ -3,13 +3,14 @@ import 'package:pts/Constant.dart';
 
 class SearchBar extends StatelessWidget {
   final void Function(String) onChanged;
+  final void Function() onTap;
 
-  const SearchBar({Key key, this.onChanged}) : super(key: key);
+  const SearchBar({Key key, this.onChanged, this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      //width: 350,
+      
       height: 60,
       padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
       decoration: BoxDecoration(
@@ -40,6 +41,7 @@ class SearchBar extends StatelessWidget {
           border: InputBorder.none,
         ),
         onChanged: onChanged,
+        onTap: onTap,
       ),
     );
   }
