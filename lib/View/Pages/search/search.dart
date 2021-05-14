@@ -92,7 +92,7 @@ class _SearchState extends State<Search> {
                       bottom: 10
                     ),
                     child: Text(
-                      'A proximité :',
+                      'A proximité',
                       style: TextStyle(  
                         fontWeight: FontWeight.w900,
                         fontSize: 20,
@@ -101,7 +101,7 @@ class _SearchState extends State<Search> {
                     ),
                   ),
                   SizedBox(
-                    height: 600,
+                    height: 200,
                     child: PageView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: 10,
@@ -114,32 +114,125 @@ class _SearchState extends State<Search> {
                         return Transform.scale(
                           scale: 1,
                           child: GridView.count(
+                            childAspectRatio: (100 / 320),
                             crossAxisCount: 2,
                             scrollDirection: Axis.horizontal,
                             children: [
-                              Container(
-                                padding: EdgeInsets.all(8),
-                                decoration: BoxDecoration(  
-                                  color: Colors.transparent,
-                                ),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    color: Colors.white,
-                                  )
-                                ),
+                              Stack(
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.all(8),
+                                    decoration: BoxDecoration(  
+                                      color: Colors.transparent
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 80,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(15),
+                                            color: Colors.white,
+                                          )
+                                        ),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Container(
+                                                  padding: EdgeInsets.only(
+                                                    left:8
+                                                  ),
+                                                  child: Text(
+                                                    'Nom',
+                                                    style: TextStyle(
+                                                      fontWeight: FontWeight.bold,
+                                                      fontSize: 20,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            Container(
+                                              padding: EdgeInsets.only(
+                                                left: 8
+                                              ),
+                                              child: Opacity(
+                                                opacity: 0.7,
+                                                child: Text(
+                                                'description',
+                                                style: TextStyle(
+                                                  fontSize: 15,
+                                                  ),
+                                                ),
+                                              )
+                                            ) 
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ]
                               ),
-                              Container(
-                                padding: EdgeInsets.all(8),
-                                decoration: BoxDecoration(  
-                                  color: Colors.transparent,
-                                ),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    color: Colors.white,
-                                  )
-                                ),
+                              Stack(
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.all(8),
+                                    decoration: BoxDecoration(  
+                                      color: Colors.transparent
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 80,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(15),
+                                            color: Colors.white,
+                                          )
+                                        ),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Container(
+                                                  padding: EdgeInsets.only(
+                                                    left:8
+                                                  ),
+                                                  child: Text(
+                                                    'Nom',
+                                                    style: TextStyle(
+                                                      fontWeight: FontWeight.bold,
+                                                      fontSize: 20,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            Container(
+                                              padding: EdgeInsets.only(
+                                                left: 8
+                                              ),
+                                              child: Opacity(
+                                                opacity: 0.7,
+                                                child: Text(
+                                                'description',
+                                                style: TextStyle(
+                                                  fontSize: 15,
+                                                  ),
+                                                ),
+                                              )
+                                            ) 
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ]
                               ),
                              ],
                           ),
@@ -162,7 +255,7 @@ class _SearchState extends State<Search> {
                       bottom: 10
                     ),
                     child: Text(
-                      "Rechercher par thème :",
+                      "Thèmes",
                       style: TextStyle(
                         fontWeight: FontWeight.w900,
                         fontSize: 20,
@@ -187,17 +280,37 @@ class _SearchState extends State<Search> {
                             crossAxisCount: 1,
                             scrollDirection: Axis.horizontal,
                             children: [
-                              Container(
-                                padding: EdgeInsets.all(8),
-                                decoration: BoxDecoration(  
-                                  color: Colors.transparent,
-                                ),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    color: Colors.white,
+                              Column(
+                                children: [
+                                  Container(
+                                    height: 300,
+                                    padding: EdgeInsets.all(8),
+                                    decoration: BoxDecoration(  
+                                      color: Colors.transparent,
+                                    ),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(15),
+                                        color: Colors.white,
+                                      )
+                                    ),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.only(
+                                      left: 8
+                                    ),
+                                    alignment: Alignment.bottomLeft,
+                                    child: Opacity(
+                                      opacity: 0.7,
+                                      child: Text(
+                                        'Thème',
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                    )
                                   )
-                                ),
+                                ],
                               ),
                             ]
                           )
