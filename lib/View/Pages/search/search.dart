@@ -82,11 +82,85 @@ class _SearchState extends State<Search> {
             ),
             Container(
               margin: EdgeInsets.only(top: 20),
+              child: Column(  
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.only(
+                      top: 20, 
+                      left: 20, 
+                      bottom: 10
+                    ),
+                    child: Text(
+                      'A proximité :',
+                      style: TextStyle(  
+                        fontWeight: FontWeight.w900,
+                        fontSize: 20,
+                        color: SECONDARY_COLOR,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 600,
+                    child: PageView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: 10,
+                      controller: PageController(
+                        viewportFraction: 0.85
+                      ),
+                      onPageChanged: (int index) => 
+                        setState(() => _index = index),
+                      itemBuilder: (_, i) {
+                        return Transform.scale(
+                          scale: 1,
+                          child: GridView.count(
+                            crossAxisCount: 2,
+                            scrollDirection: Axis.horizontal,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.all(8),
+                                decoration: BoxDecoration(  
+                                  color: Colors.transparent,
+                                ),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color: Colors.white,
+                                  )
+                                ),
+                              ),
+                              Container(
+                                padding: EdgeInsets.all(8),
+                                decoration: BoxDecoration(  
+                                  color: Colors.transparent,
+                                ),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color: Colors.white,
+                                  )
+                                ),
+                              ),
+                             ],
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              )
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Container(
-                    margin: EdgeInsets.only(top: 20, left: 20),
+                    margin: EdgeInsets.only(
+                      top: 20, 
+                      left: 20, 
+                      bottom: 10
+                    ),
                     child: Text(
                       "Rechercher par thème :",
                       style: TextStyle(
@@ -102,51 +176,31 @@ class _SearchState extends State<Search> {
                       scrollDirection: Axis.horizontal,
                       itemCount: 10,
                       controller: PageController(
-                        viewportFraction: 0.75
+                        viewportFraction: 0.85
                         ),
                       onPageChanged: (int index) =>
                           setState(() => _index = index),
                       itemBuilder: (_, i) {
                         return Transform.scale(
                           scale: i == _index ? 1 : 0.95,
-                          child: Container(
-                            margin: EdgeInsets.only(
-                              top: 20, 
-                              left: 5
-                            ),
-                            height: 320,
-                            decoration: BoxDecoration(
-                              color: Colors.transparent,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                              child: Column(
-                                children: [
-                                  Container(
-                                    width: MediaQuery.of(context).size.width,
-                                    height: 250,
-                                    decoration: BoxDecoration(  
-                                      borderRadius: BorderRadius.circular(20),
-                                      color: Colors.white
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                      top: 15,
-                                      left: 5
-                                      ),
-                                    child: Container(
-                                      alignment: Alignment.bottomLeft,
-                                      child: Text(
-                                        'Thème',
-                                        style: TextStyle(  
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                          child: GridView.count(
+                            crossAxisCount: 1,
+                            scrollDirection: Axis.horizontal,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.all(8),
+                                decoration: BoxDecoration(  
+                                  color: Colors.transparent,
+                                ),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color: Colors.white,
+                                  )
+                                ),
                               ),
-                          ),
+                            ]
+                          )
                         );
                       },
                     ),
