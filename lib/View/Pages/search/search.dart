@@ -151,7 +151,7 @@ class _SearchState extends State<Search> {
                   Container(
                     margin: EdgeInsets.only(top: 20, left: 20, bottom: 10),
                     child: Text(
-                      "Rechercher par thème :",
+                      "Thèmes",
                       style: TextStyle(
                         fontWeight: FontWeight.w900,
                         fontSize: 20,
@@ -174,16 +174,34 @@ class _SearchState extends State<Search> {
                                 crossAxisCount: 1,
                                 scrollDirection: Axis.horizontal,
                                 children: [
-                                  Container(
-                                    padding: EdgeInsets.all(8),
-                                    decoration: BoxDecoration(
-                                      color: Colors.transparent,
-                                    ),
-                                    child: Container(
+                                  Column(
+                                    children: [
+                                      Container(
+                                        height: 300,
+                                        padding: EdgeInsets.all(8),
                                         decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(15),
-                                      color: Colors.white,
-                                    )),
+                                          color: Colors.transparent,
+                                        ),
+                                        child: Container(
+                                            decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          color: Colors.white,
+                                        )),
+                                      ),
+                                      Container(
+                                          padding: EdgeInsets.only(left: 8),
+                                          alignment: Alignment.bottomLeft,
+                                          child: Opacity(
+                                            opacity: 0.7,
+                                            child: Text(
+                                              'Thème',
+                                              style: TextStyle(
+                                                fontSize: 15,
+                                              ),
+                                            ),
+                                          ))
+                                    ],
                                   ),
                                 ]));
                       },
