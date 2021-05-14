@@ -241,90 +241,65 @@ class _SearchState extends State<Search> {
                     ),
                   ),
                   SizedBox(
-                    height: 310,
+                    //height: 310,
                     width: MediaQuery.of(context).size.width,
                     child: Column(
-                      children: <Widget> [
-                        Row(  
-                          children: [
-                            Container( 
-                              margin: EdgeInsets.only(
-                                bottom: 10,
-                                left: 40,
-                                right: 10
-                              ),
-                              height: 145,
-                              width: 145,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: Colors.white
-                              ),
-                              child: Center(
-                                child: Text(
-                                  'Classiques'
+                      children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.only(bottom: 40),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: <Widget>[
+                              Container(
+                                height: 145,
+                                width: 145,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: Colors.white),
+                                child: Center(
+                                  child: Text('Classiques'),
                                 ),
                               ),
-                            ),
-                            Container( 
-                              margin: EdgeInsets.only(
-                                bottom: 10,
-                                left: 40,
-                                right: 10
-                              ),
-                              height: 145,
-                              width: 145,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: Colors.white
-                              ),
-                              child: Center(
-                                child: Text(
-                                  'Gamings'
+                              Container(
+                                height: 145,
+                                width: 145,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: Colors.white),
+                                child: Center(
+                                  child: Text('Gamings'),
                                 ),
                               ),
-                            ),
-                          ]
+                            ],
+                          ),
                         ),
-                        Row(  
-                          children: [
-                            Container( 
-                              margin: EdgeInsets.only(
-                                left: 40,
-                                right: 10
-                              ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: <Widget>[
+                            Container(
                               height: 145,
                               width: 145,
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: Colors.white
-                              ),
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: Colors.white),
                               child: Center(
-                                child: Text(
-                                  'Soirées à thèmes'
-                                ),
+                                child: Text('Soirées à thèmes'),
                               ),
                             ),
-                            Container( 
-                              margin: EdgeInsets.only(
-                                left: 40,
-                                right: 10
-                              ),
+                            Container(
                               height: 145,
                               width: 145,
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: Colors.white
-                              ),
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: Colors.white),
                               child: Center(
-                                child: Text(
-                                  'Jeux de sociétés'
-                                ),
+                                child: Text('Jeux de sociétés'),
                               ),
                             ),
-                          ]
+                          ],
                         ),
-                      ]
-                    )
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -581,5 +556,3 @@ class _SearchState extends State<Search> {
     );
   }
 }
-
-
