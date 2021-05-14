@@ -235,60 +235,96 @@ class _SearchState extends State<Search> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Container(
-                    margin: EdgeInsets.only(top: 20, left: 20, bottom: 10),
+                    margin: EdgeInsets.only(top: 20, left: 20, bottom: 20),
                     child: BoldText(
                       text: "Thèmes",
                     ),
                   ),
                   SizedBox(
-                    height: 320,
-                    child: PageView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 10,
-                      controller: PageController(viewportFraction: 0.85),
-                      onPageChanged: (int index) =>
-                          setState(() => _index = index),
-                      itemBuilder: (_, i) {
-                        return Transform.scale(
-                          scale: 1,
-                          child: GridView.count(
-                            crossAxisCount: 1,
-                            scrollDirection: Axis.horizontal,
-                            children: [
-                              Column(
-                                children: [
-                                  Container(
-                                    height: 300,
-                                    padding: EdgeInsets.all(8),
-                                    decoration: BoxDecoration(
-                                      color: Colors.transparent,
-                                    ),
-                                    child: Container(
-                                        decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(15),
-                                      color: Colors.white,
-                                    )),
-                                  ),
-                                  Container(
-                                    padding: EdgeInsets.only(left: 8),
-                                    alignment: Alignment.bottomLeft,
-                                    child: Opacity(
-                                      opacity: 0.7,
-                                      child: Text(
-                                        'Thème',
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                ],
+                    height: 310,
+                    width: MediaQuery.of(context).size.width,
+                    child: Column(
+                      children: <Widget> [
+                        Row(  
+                          children: [
+                            Container( 
+                              margin: EdgeInsets.only(
+                                bottom: 10,
+                                left: 40,
+                                right: 10
                               ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
+                              height: 145,
+                              width: 145,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: Colors.white
+                              ),
+                              child: Center(
+                                child: Text(
+                                  'Classiques'
+                                ),
+                              ),
+                            ),
+                            Container( 
+                              margin: EdgeInsets.only(
+                                bottom: 10,
+                                left: 40,
+                                right: 10
+                              ),
+                              height: 145,
+                              width: 145,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: Colors.white
+                              ),
+                              child: Center(
+                                child: Text(
+                                  'Gamings'
+                                ),
+                              ),
+                            ),
+                          ]
+                        ),
+                        Row(  
+                          children: [
+                            Container( 
+                              margin: EdgeInsets.only(
+                                left: 40,
+                                right: 10
+                              ),
+                              height: 145,
+                              width: 145,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: Colors.white
+                              ),
+                              child: Center(
+                                child: Text(
+                                  'Soirées à thèmes'
+                                ),
+                              ),
+                            ),
+                            Container( 
+                              margin: EdgeInsets.only(
+                                left: 40,
+                                right: 10
+                              ),
+                              height: 145,
+                              width: 145,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: Colors.white
+                              ),
+                              child: Center(
+                                child: Text(
+                                  'Jeux de sociétés'
+                                ),
+                              ),
+                            ),
+                          ]
+                        ),
+                      ]
+                    )
                   ),
                 ],
               ),
