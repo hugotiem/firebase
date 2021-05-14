@@ -1,9 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  static FirebaseAuth _auth = FirebaseAuth.instance;
+  static bool isLogged;
 
-  FirebaseAuth get auth => _auth;
+  static FirebaseAuth get auth => _auth;
+
+  static set logged(bool val) {
+    isLogged = val;
+  }
 
   Future register(String _email, String _password) async {
     try {

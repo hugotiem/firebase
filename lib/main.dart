@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:pts/Model/services/auth_service.dart';
 import 'View/Home.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -20,6 +22,11 @@ class MyApp extends StatelessWidget {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
+
+    AuthService.auth.authStateChanges().listen((User user) {
+      AuthService.logged = user != null;
+    });
+
     return MaterialApp(
       title: "PTS",
       //theme: ,

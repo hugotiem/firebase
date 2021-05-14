@@ -49,23 +49,21 @@ class _LoginState extends State<Login> {
     Size size = MediaQuery.of(context).size;
     //FocusScopeNode currentFocus = FocusScope.of(context);
 
-    _auth.auth.authStateChanges().listen((User user) {
-      if (user != null) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => Home()),
-        );
-      }
-    });
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        toolbarHeight: 0,
+        // toolbarHeight: 0,
         backgroundColor: Colors.transparent,
         elevation: 0,
         brightness: _brightness,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: ICONCOLOR,
+          ),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
       ),
       body: GestureDetector(
         behavior: HitTestBehavior.translucent,
@@ -195,8 +193,8 @@ class _LoginState extends State<Login> {
                         ),
                         onTap: () {
                           _auth.register(_email, _password);
-                          _auth.auth.currentUser
-                              .updateProfile(displayName: _name);
+                          // _auth.auth.currentUser
+                          //     .updateProfile(displayName: _name);
                         },
                       ),
                       Container(
@@ -441,7 +439,9 @@ class _LoginState extends State<Login> {
                             ),
                           ),
                           onTap: () {
-                            _auth.signIn(_email, _password);
+                            _auth
+                                .signIn(_email, _password)
+                                .then((value) => Navigator.of(context).pop());
                           },
                         ),
                         SizedBox(

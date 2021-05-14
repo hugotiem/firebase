@@ -22,23 +22,6 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _children[_currentIndex],
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     Navigator.push(
-      //       context,
-      //       MaterialPageRoute(
-      //         builder: (context) => FirstPage(),
-      //       ),
-      //     );
-      //   },
-      //   child: Icon(
-      //     Icons.add_circle_outline,
-      //     color: SECONDARY_COLOR,
-      //   ),
-      //   elevation: 4.0,
-      //   backgroundColor: Colors.white,
-      // ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: ICONCOLOR,
         onTap: onTabTapped,
