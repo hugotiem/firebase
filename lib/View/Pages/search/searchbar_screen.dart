@@ -46,12 +46,31 @@ class _SearchBarScreenState extends State<SearchBarScreen> {
               width: _size.width,
               color: PRIMARY_COLOR.withOpacity(1 - _factor),
               padding: EdgeInsets.only(top: 50, bottom: 40),
-              child: SearchBar(
-                onChanged: (value) {
-                  setState(() {
-                    _search = value;
-                  });
-                },
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.arrow_back,
+                        color: _factor == 1 ? ICONCOLOR : SECONDARY_COLOR,
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
+                  Expanded(
+                    flex: 8,
+                    child: SearchBar(
+                      onChanged: (value) {
+                        setState(() {
+                          _search = value;
+                        });
+                      },
+                    ),
+                  ),
+                ],
               ),
             ),
             Container(

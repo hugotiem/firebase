@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import 'package:pts/Model/components/backgroundtitle.dart';
 import 'package:pts/Model/components/custom_sliver.dart';
 import 'package:pts/Model/services/firestore_service.dart';
+import 'package:animations/animations.dart';
 import 'package:pts/View/Pages/search/searchbar_screen.dart';
 
 import '../../../../Constant.dart';
@@ -81,86 +83,73 @@ class _SearchState extends State<Search> {
               height: 350,
             ),
             Container(
-              margin: EdgeInsets.only(top: 20),
-              child: Column(  
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(
-                      top: 20, 
-                      left: 20, 
-                      bottom: 10
-                    ),
-                    child: Text(
-                      'A proximité :',
-                      style: TextStyle(  
-                        fontWeight: FontWeight.w900,
-                        fontSize: 20,
-                        color: SECONDARY_COLOR,
+                margin: EdgeInsets.only(top: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.only(top: 20, left: 20, bottom: 10),
+                      child: Text(
+                        'A proximité :',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w900,
+                          fontSize: 20,
+                          color: SECONDARY_COLOR,
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 600,
-                    child: PageView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 10,
-                      controller: PageController(
-                        viewportFraction: 0.85
+                    SizedBox(
+                      height: 600,
+                      child: PageView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 10,
+                        controller: PageController(viewportFraction: 0.85),
+                        onPageChanged: (int index) =>
+                            setState(() => _index = index),
+                        itemBuilder: (_, i) {
+                          return Transform.scale(
+                            scale: 1,
+                            child: GridView.count(
+                              crossAxisCount: 2,
+                              scrollDirection: Axis.horizontal,
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                    color: Colors.transparent,
+                                  ),
+                                  child: Container(
+                                      decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color: Colors.white,
+                                  )),
+                                ),
+                                Container(
+                                  padding: EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                    color: Colors.transparent,
+                                  ),
+                                  child: Container(
+                                      decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color: Colors.white,
+                                  )),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
                       ),
-                      onPageChanged: (int index) => 
-                        setState(() => _index = index),
-                      itemBuilder: (_, i) {
-                        return Transform.scale(
-                          scale: 1,
-                          child: GridView.count(
-                            crossAxisCount: 2,
-                            scrollDirection: Axis.horizontal,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.all(8),
-                                decoration: BoxDecoration(  
-                                  color: Colors.transparent,
-                                ),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    color: Colors.white,
-                                  )
-                                ),
-                              ),
-                              Container(
-                                padding: EdgeInsets.all(8),
-                                decoration: BoxDecoration(  
-                                  color: Colors.transparent,
-                                ),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    color: Colors.white,
-                                  )
-                                ),
-                              ),
-                             ],
-                          ),
-                        );
-                      },
                     ),
-                  ),
-                ],
-              )
-            ),
+                  ],
+                )),
             Container(
               margin: EdgeInsets.only(top: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Container(
-                    margin: EdgeInsets.only(
-                      top: 20, 
-                      left: 20, 
-                      bottom: 10
-                    ),
+                    margin: EdgeInsets.only(top: 20, left: 20, bottom: 10),
                     child: Text(
                       "Rechercher par thème :",
                       style: TextStyle(
@@ -175,33 +164,28 @@ class _SearchState extends State<Search> {
                     child: PageView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: 10,
-                      controller: PageController(
-                        viewportFraction: 0.85
-                        ),
+                      controller: PageController(viewportFraction: 0.85),
                       onPageChanged: (int index) =>
                           setState(() => _index = index),
                       itemBuilder: (_, i) {
                         return Transform.scale(
-                          scale: 1,
-                          child: GridView.count(
-                            crossAxisCount: 1,
-                            scrollDirection: Axis.horizontal,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.all(8),
-                                decoration: BoxDecoration(  
-                                  color: Colors.transparent,
-                                ),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    color: Colors.white,
-                                  )
-                                ),
-                              ),
-                            ]
-                          )
-                        );
+                            scale: 1,
+                            child: GridView.count(
+                                crossAxisCount: 1,
+                                scrollDirection: Axis.horizontal,
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      color: Colors.transparent,
+                                    ),
+                                    child: Container(
+                                        decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15),
+                                      color: Colors.white,
+                                    )),
+                                  ),
+                                ]));
                       },
                     ),
                   ),
@@ -413,23 +397,21 @@ class _SearchState extends State<Search> {
             height: (_size - 80) > 50 ? _size - 80 : 50,
           ),
           Center(
-            child: GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => SearchBarScreen(),
-                  ),
-                );
-              },
-              child: Hero(
-                tag: "test",
-                child: Container(
+            child: OpenContainer(
+              tappable: true,
+              transitionDuration: Duration(milliseconds: 500),
+              closedColor: Colors.white,
+              openColor: Colors.white,
+              closedElevation: 0,
+              closedShape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(29.5),
+              ),
+              closedBuilder: (context, returnValue) {
+                return Container(
                   width: _barSizeWidth,
                   height: _barSizeHeight,
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(29.5),
                   ),
                   child: Container(
                     child: Row(
@@ -455,8 +437,11 @@ class _SearchState extends State<Search> {
                       ],
                     ),
                   ),
-                ),
-              ),
+                );
+              },
+              openBuilder: (context, returnValue) {
+                return SearchBarScreen();
+              },
             ),
           ),
         ],
