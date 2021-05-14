@@ -153,17 +153,17 @@ class _SearchState extends State<Search> {
                                               ],
                                             ),
                                             Container(
-                                                padding:
-                                                    EdgeInsets.only(left: 8),
-                                                child: Opacity(
-                                                  opacity: 0.7,
-                                                  child: Text(
-                                                    'description',
-                                                    style: TextStyle(
-                                                      fontSize: 15,
-                                                    ),
+                                              padding: EdgeInsets.only(left: 8),
+                                              child: Opacity(
+                                                opacity: 0.7,
+                                                child: Text(
+                                                  'description',
+                                                  style: TextStyle(
+                                                    fontSize: 15,
                                                   ),
-                                                ))
+                                                ),
+                                              ),
+                                            ),
                                           ],
                                         ),
                                       ],
@@ -210,17 +210,17 @@ class _SearchState extends State<Search> {
                                               ],
                                             ),
                                             Container(
-                                                padding:
-                                                    EdgeInsets.only(left: 8),
-                                                child: Opacity(
-                                                  opacity: 0.7,
-                                                  child: Text(
-                                                    'description',
-                                                    style: TextStyle(
-                                                      fontSize: 15,
-                                                    ),
+                                              padding: EdgeInsets.only(left: 8),
+                                              child: Opacity(
+                                                opacity: 0.7,
+                                                child: Text(
+                                                  'description',
+                                                  style: TextStyle(
+                                                    fontSize: 15,
                                                   ),
-                                                ))
+                                                ),
+                                              ),
+                                            )
                                           ],
                                         ),
                                       ],
@@ -261,41 +261,43 @@ class _SearchState extends State<Search> {
                           setState(() => _index = index),
                       itemBuilder: (_, i) {
                         return Transform.scale(
-                            scale: 1,
-                            child: GridView.count(
-                                crossAxisCount: 1,
-                                scrollDirection: Axis.horizontal,
+                          scale: 1,
+                          child: GridView.count(
+                            crossAxisCount: 1,
+                            scrollDirection: Axis.horizontal,
+                            children: [
+                              Column(
                                 children: [
-                                  Column(
-                                    children: [
-                                      Container(
-                                        height: 300,
-                                        padding: EdgeInsets.all(8),
+                                  Container(
+                                    height: 300,
+                                    padding: EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      color: Colors.transparent,
+                                    ),
+                                    child: Container(
                                         decoration: BoxDecoration(
-                                          color: Colors.transparent,
-                                        ),
-                                        child: Container(
-                                            decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                          color: Colors.white,
-                                        )),
-                                      ),
-                                      Container(
-                                          padding: EdgeInsets.only(left: 8),
-                                          alignment: Alignment.bottomLeft,
-                                          child: Opacity(
-                                            opacity: 0.7,
-                                            child: Text(
-                                              'Thème',
-                                              style: TextStyle(
-                                                fontSize: 15,
-                                              ),
-                                            ),
-                                          ))
-                                    ],
+                                      borderRadius: BorderRadius.circular(15),
+                                      color: Colors.white,
+                                    )),
                                   ),
-                                ]));
+                                  Container(
+                                    padding: EdgeInsets.only(left: 8),
+                                    alignment: Alignment.bottomLeft,
+                                    child: Opacity(
+                                      opacity: 0.7,
+                                      child: Text(
+                                        'Thème',
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                        );
                       },
                     ),
                   ),
