@@ -371,12 +371,15 @@ class _LoginState extends State<Login> {
                                 width: MediaQuery.of(context).size.width * 0.9,
                                 height: 50,
                                 decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(30)),
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(30),
+                                ),
                                 child: Padding(
                                   padding: const EdgeInsets.only(left: 30),
                                   child: TextField(
                                     // controller: _editingController,
+                                    keyboardType: TextInputType.emailAddress,
+                                    keyboardAppearance: Brightness.dark,
                                     decoration: InputDecoration(
                                       labelText: "Email :",
                                       border: InputBorder.none,
@@ -394,13 +397,15 @@ class _LoginState extends State<Login> {
                                 width: MediaQuery.of(context).size.width * 0.9,
                                 height: 50,
                                 decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(30)),
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(30),
+                                ),
                                 child: Padding(
                                   padding: const EdgeInsets.only(left: 30),
                                   child: TextField(
                                     // controller: _editingController,
                                     obscureText: true,
+                                    keyboardAppearance: Brightness.dark,
                                     decoration: InputDecoration(
                                       labelText: "Mot de passe :",
                                       border: InputBorder.none,
