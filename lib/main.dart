@@ -23,16 +23,15 @@ class MyApp extends StatelessWidget {
       DeviceOrientation.portraitDown,
     ]);
 
-    AuthService.auth.authStateChanges().listen((User user) {
-      AuthService.logged = user != null;
-    });
-
     return MaterialApp(
       title: "PTS",
       //theme: ,
       home: FutureBuilder(
         future: _fbApp,
         builder: (context, snapshot) {
+          AuthService.auth.authStateChanges().listen((User user) {
+            AuthService.logged = user != null;
+          });
           if (snapshot.hasError) {
             print("ERROR");
             return Text("ERROR");
