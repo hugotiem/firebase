@@ -182,7 +182,7 @@ class _SearchState extends State<Search> {
                           setState(() => _index = index),
                       itemBuilder: (_, i) {
                         return Transform.scale(
-                          scale: i == _index ? 1 : 0.95,
+                          scale: 1,
                           child: GridView.count(
                             crossAxisCount: 1,
                             scrollDirection: Axis.horizontal,
