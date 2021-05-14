@@ -509,7 +509,7 @@ class _SearchState extends State<Search> {
           Center(
             child: OpenContainer(
               tappable: true,
-              transitionDuration: Duration(milliseconds: 500),
+              transitionDuration: Duration(milliseconds: 400),
               closedColor: Colors.white,
               openColor: Colors.white,
               closedElevation: 0,
