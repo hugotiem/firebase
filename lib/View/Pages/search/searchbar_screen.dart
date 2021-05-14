@@ -176,3 +176,4 @@ class _SearchBarScreenState extends State<SearchBarScreen> {
     );
   }
 }
+
