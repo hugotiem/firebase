@@ -106,89 +106,94 @@ class _SearchState extends State<Search> {
                               childAspectRatio: (100 / 320),
                               crossAxisCount: 2,
                               scrollDirection: Axis.horizontal,
-                              children: [
-                                Stack(children: [
-                                  Container(
-                                    padding: EdgeInsets.all(8),
-                                    decoration: BoxDecoration(
-                                        color: Colors.transparent),
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                            width: 80,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(15),
-                                              color: Colors.white,
-                                            )),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Container(
-                                                  padding:
-                                                      EdgeInsets.only(left: 8),
+                              children: <Widget>[
+                                Stack(
+                                  children: <Widget>[
+                                    Container(
+                                      padding: EdgeInsets.all(8),
+                                      decoration: BoxDecoration(
+                                          color: Colors.transparent),
+                                      child: Row(
+                                        children: <Widget>[
+                                          Container(
+                                              width: 80,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(15),
+                                                color: Colors.white,
+                                              )),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: <Widget>[
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Container(
+                                                    padding: EdgeInsets.only(
+                                                        left: 8),
+                                                    child: Text(
+                                                      'Nom',
+                                                      style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 20,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Container(
+                                                padding:
+                                                    EdgeInsets.only(left: 8),
+                                                child: Opacity(
+                                                  opacity: 0.7,
                                                   child: Text(
-                                                    'Nom',
+                                                    'description',
                                                     style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 20,
+                                                      fontSize: 15,
                                                     ),
                                                   ),
                                                 ),
-                                              ],
-                                            ),
-                                            Container(
-                                              padding: EdgeInsets.only(left: 8),
-                                              child: Opacity(
-                                                opacity: 0.7,
-                                                child: Text(
-                                                  'description',
-                                                  style: TextStyle(
-                                                    fontSize: 15,
-                                                  ),
-                                                ),
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                ]),
+                                  ],
+                                ),
                                 Stack(children: [
                                   Container(
                                     padding: EdgeInsets.all(8),
                                     decoration: BoxDecoration(
-                                        color: Colors.transparent),
+                                      color: Colors.transparent,
+                                    ),
                                     child: Row(
-                                      children: [
+                                      children: <Widget>[
                                         Container(
-                                            width: 80,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(15),
-                                              color: Colors.white,
-                                            )),
+                                          width: 80,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            color: Colors.white,
+                                          ),
+                                        ),
                                         Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
-                                          children: [
+                                          children: <Widget>[
                                             Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment
                                                       .spaceBetween,
-                                              children: [
+                                              children: <Widget>[
                                                 Container(
                                                   padding:
                                                       EdgeInsets.only(left: 8),
@@ -241,7 +246,7 @@ class _SearchState extends State<Search> {
                     ),
                   ),
                   SizedBox(
-                    height: 310,
+                    //height: 310,
                     width: MediaQuery.of(context).size.width,
                     child: Column(
                       children: <Widget> [
@@ -296,13 +301,15 @@ class _SearchState extends State<Search> {
                                   'Gamings'
                                 ),
                               ),
-                            ),
-                          ]
+                            )
+                          ],
                         ),
-                        Row(  
-                          children: [
-                            Container( 
+                        Row(
+                          
+                          children: <Widget>[
+                            Container(
                               margin: EdgeInsets.only(
+                                bottom: 10,
                                 left: 40,
                                 right: 10
                               ),
@@ -325,8 +332,9 @@ class _SearchState extends State<Search> {
                                 ),
                               ),
                             ),
-                            Container( 
+                            Container(
                               margin: EdgeInsets.only(
+                                bottom: 10,
                                 left: 40,
                                 right: 10
                               ),
@@ -349,10 +357,10 @@ class _SearchState extends State<Search> {
                                 ),
                               ),
                             ),
-                          ]
+                          ],
                         ),
-                      ]
-                    )
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -609,5 +617,3 @@ class _SearchState extends State<Search> {
     );
   }
 }
-
-
