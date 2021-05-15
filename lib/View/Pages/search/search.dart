@@ -257,7 +257,14 @@ class _SearchState extends State<Search> {
                               width: 145,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
-                                color: Colors.white
+                                gradient: LinearGradient(  
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    Color(0xFFf12711),
+                                    Color(0xFFf5af19)
+                                  ]
+                                ),
                               ),
                               child: Center(
                                 child: Text(
@@ -275,7 +282,14 @@ class _SearchState extends State<Search> {
                               width: 145,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
-                                color: Colors.white
+                                gradient: LinearGradient(  
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    Color(0xFF1c92d2),
+                                    Color(0xFFf2fcfe)
+                                  ]
+                                ),
                               ),
                               child: Center(
                                 child: Text(
@@ -296,11 +310,18 @@ class _SearchState extends State<Search> {
                               width: 145,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
-                                color: Colors.white
+                                gradient: LinearGradient(  
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    Color(0xFFa8ff78),
+                                    Color(0xFF78ffd6)
+                                  ]
+                                ),
                               ),
                               child: Center(
                                 child: Text(
-                                  'Soirées à thèmes'
+                                  'Jeux de sociétés'
                                 ),
                               ),
                             ),
@@ -313,11 +334,18 @@ class _SearchState extends State<Search> {
                               width: 145,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
-                                color: Colors.white
+                                gradient: LinearGradient(  
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    Color(0xFFb24592),
+                                    Color(0xFFf15f79)
+                                  ]
+                                ),
                               ),
                               child: Center(
                                 child: Text(
-                                  'Jeux de sociétés'
+                                  'Soirées à thèmes'
                                 ),
                               ),
                             ),
