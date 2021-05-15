@@ -15,9 +15,9 @@ class SearchBarScreen extends StatefulWidget {
 class _SearchBarScreenState extends State<SearchBarScreen>
     with TickerProviderStateMixin {
   final ApplicationBloc applicationBloc = new ApplicationBloc();
-  PanelController _panelController = PanelController();
+  PanelController _resultsPanelController = PanelController();
+  PanelController _searchPanelController = PanelController();
   AnimationController _animationController;
-  ScrollController _sc;
 
   String _search = "";
   bool _hasResults = false;
@@ -35,6 +35,12 @@ class _SearchBarScreenState extends State<SearchBarScreen>
       duration: Duration(milliseconds: 300),
     );
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
   }
 
   @override
@@ -69,18 +75,19 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                         color: _factor == 1 ? ICONCOLOR : SECONDARY_COLOR,
                       ),
                       onPressed: () async {
-                        if (!_isDissmissed || _rotation == 0)
+                        if (!_isDissmissed || _hasResults)
                           Navigator.of(context).pop();
                         else {
                           FocusScope.of(context).unfocus();
 
-                          _hasResults = true;
+                          _searchPanelController.close().whenComplete(
+                                () => setState(
+                                  () {
+                                    _hasResults = true;
+                                  },
+                                ),
+                              );
 
-                          _panelController.animatePanelToPosition(
-                            0.5,
-                            duration: Duration(milliseconds: 300),
-                            curve: Curves.ease,
-                          );
                           _animationController.animateTo(0, curve: Curves.ease);
                           _animationController.addListener(() {
                             setState(() {
@@ -102,13 +109,14 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                         });
                       },
                       onTap: () {
-                        _hasResults = false;
-                        _panelController.animatePanelToPosition(
-                          1,
-                          duration: Duration(milliseconds: 300),
-                          curve: Curves.ease,
-                        );
+                        setState(() {
+                          _hasResults = false;
+                        });
+
+                        _searchPanelController.open();
+
                         _animationController.animateTo(1, curve: Curves.ease);
+                        // _animationController.forward();
                         _animationController.addListener(() {
                           setState(() {
                             _rotation = _animationController.value;
@@ -121,111 +129,165 @@ class _SearchBarScreenState extends State<SearchBarScreen>
               ],
             ),
           ),
-          Container(
-            height: _size.height - 150,
-            child: SlidingUpPanel(
-              isDraggable: _hasResults,
-              defaultPanelState: PanelState.OPEN,
-              controller: _panelController,
-              snapPoint: 0.5,
-              minHeight: 100,
-              maxHeight: _size.height - 150,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(36 * _factor),
-                topRight: Radius.circular(36 * _factor),
-              ),
-              boxShadow: <BoxShadow>[
-                BoxShadow(
-                  blurRadius: 8.0 * _factor,
-                  color: Color.fromRGBO(0, 0, 0, 0.25),
-                ),
-              ],
-              panelBuilder: (ScrollController sc) {
-                _sc = sc;
-                return _hasResults
-                    ? Container(
-                        clipBehavior: Clip.antiAlias,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(36 * _factor),
-                            topRight: Radius.circular(36 * _factor),
-                          ),
-                          color: PRIMARY_COLOR,
-                        ),
-                        child: ListView.builder(
-                          controller: sc,
-                          itemCount: 10,
-                          itemBuilder: (context, index) {
-                            return Container(
-                              margin: EdgeInsets.all(20),
-                              height: 100,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(10),
-                                ),
-                                color: Colors.white,
+          Stack(
+            children: <Widget>[
+              Container(
+                height: _size.height - 150,
+                child: SlidingUpPanel(
+                  isDraggable: _hasResults,
+                  defaultPanelState: PanelState.OPEN,
+                  controller: _resultsPanelController,
+                  snapPoint: 0.5,
+                  minHeight: 100,
+                  maxHeight: _size.height - 150,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(36 * _factor),
+                    topRight: Radius.circular(36 * _factor),
+                  ),
+                  boxShadow: <BoxShadow>[
+                    BoxShadow(
+                      blurRadius: 8.0 * _factor,
+                      color: Color.fromRGBO(0, 0, 0, 0.25),
+                    ),
+                  ],
+                  panelBuilder: (ScrollController sc) {
+                    return _isDissmissed
+                        ? Container(
+                            clipBehavior: Clip.antiAlias,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(36 * _factor),
+                                topRight: Radius.circular(36 * _factor),
                               ),
-                            );
-                          },
-                        ),
-                      )
-                    : FutureBuilder(
-                        future: applicationBloc.searchPlaces(_search),
-                        builder: (context, snapshots) {
-                          return Container(
-                            color: PRIMARY_COLOR,
+                              color: PRIMARY_COLOR,
+                            ),
                             child: ListView.builder(
-                              padding: EdgeInsets.all(0),
-                              itemCount: applicationBloc.searchResults.length,
+                              controller: sc,
+                              itemCount: 10,
                               itemBuilder: (context, index) {
-                                return ListTile(
-                                  title: Text(
-                                    applicationBloc
-                                        .searchResults[index].description,
-                                    style: TextStyle(color: Colors.black),
+                                return Container(
+                                  margin: EdgeInsets.all(20),
+                                  height: 100,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(10),
+                                    ),
+                                    color: Colors.white,
                                   ),
-                                  onTap: () {
-                                    FocusScope.of(context).unfocus();
-                                    setState(() {
-                                      _hasResults = true;
-
-                                      _panelController
-                                          .animatePanelToSnapPoint(
-                                            duration:
-                                                Duration(milliseconds: 300),
-                                            curve: Curves.ease,
-                                          )
-                                          .whenComplete(
-                                              () => _isDissmissed = true);
-                                      _animationController.animateTo(0,
-                                          curve: Curves.ease);
-                                      _animationController.addListener(() {
-                                        setState(() {
-                                          _rotation =
-                                              _animationController.value;
-                                        });
-                                      });
-                                    });
-                                  },
                                 );
                               },
                             ),
+                          )
+                        : FutureBuilder(
+                            future: applicationBloc.searchPlaces(_search),
+                            builder: (context, snapshots) {
+                              return Container(
+                                color: PRIMARY_COLOR,
+                                child: ListView.builder(
+                                  padding: EdgeInsets.all(0),
+                                  itemCount:
+                                      applicationBloc.searchResults.length,
+                                  itemBuilder: (context, index) {
+                                    return ListTile(
+                                      title: Text(
+                                        applicationBloc
+                                            .searchResults[index].description,
+                                        style: TextStyle(color: Colors.black),
+                                      ),
+                                      onTap: () {
+                                        FocusScope.of(context).unfocus();
+                                        setState(() {
+                                          _hasResults = true;
+
+                                          _resultsPanelController
+                                              .animatePanelToSnapPoint(
+                                            duration:
+                                                Duration(milliseconds: 300),
+                                            curve: Curves.ease,
+                                          );
+                                          _isDissmissed = true;
+                                          _animationController.animateTo(0,
+                                              curve: Curves.ease);
+                                          _animationController.addListener(() {
+                                            setState(() {
+                                              _rotation =
+                                                  _animationController.value;
+                                            });
+                                          });
+                                        });
+                                      },
+                                    );
+                                  },
+                                ),
+                              );
+                            },
                           );
-                        },
+                  },
+                  onPanelSlide: (position) {
+                    setState(() {
+                      if (position >= 0.8) {
+                        _factor = 1 - ((position * 5) - 4);
+                        _brightness = Brightness.light;
+                      } else if (position < 0.8) {
+                        _factor = 1;
+                        _brightness = Brightness.dark;
+                      }
+                    });
+                  },
+                ),
+              ),
+              Container(
+                height: _hasResults ? 0 : _size.height - 150,
+                child: SlidingUpPanel(
+                  minHeight: 0,
+                  maxHeight: _size.height - 150,
+                  controller: _searchPanelController,
+                  boxShadow: [],
+                  panel: FutureBuilder(
+                    future: applicationBloc
+                        .searchPlaces(_isDissmissed ? _search : ""),
+                    builder: (context, snapshots) {
+                      return Container(
+                        color: PRIMARY_COLOR,
+                        child: ListView.builder(
+                          padding: EdgeInsets.all(0),
+                          itemCount: applicationBloc.searchResults.length,
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                              title: Text(
+                                applicationBloc
+                                    .searchResults[index].description,
+                                style: TextStyle(color: Colors.black),
+                              ),
+                              onTap: () {
+                                FocusScope.of(context).unfocus();
+                                setState(() {
+                                  _hasResults = true;
+
+                                  _resultsPanelController
+                                      .animatePanelToSnapPoint(
+                                    duration: Duration(milliseconds: 300),
+                                    curve: Curves.ease,
+                                  );
+                                  _isDissmissed = true;
+                                  _animationController.animateTo(0,
+                                      curve: Curves.ease);
+                                  _animationController.addListener(() {
+                                    setState(() {
+                                      _rotation = _animationController.value;
+                                    });
+                                  });
+                                });
+                              },
+                            );
+                          },
+                        ),
                       );
-              },
-              onPanelSlide: (position) {
-                setState(() {
-                  if (position >= 0.8) {
-                    _factor = 1 - ((position * 5) - 4);
-                    _brightness = Brightness.light;
-                  } else if (position < 0.8) {
-                    _factor = 1;
-                    _brightness = Brightness.dark;
-                  }
-                });
-              },
-            ),
+                    },
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
