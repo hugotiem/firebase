@@ -22,7 +22,6 @@ class _SearchState extends State<Search> {
   double _opacity;
   double _barSizeWidth;
   double _barSizeHeight;
-  bool _isOpen = false;
   Brightness _brightness;
   Color _toolbarColor;
   int _index = 0;
@@ -249,112 +248,87 @@ class _SearchState extends State<Search> {
                     //height: 310,
                     width: MediaQuery.of(context).size.width,
                     child: Column(
-                      children: <Widget> [
-                        Row(  
+                      children: <Widget>[
+                        Row(
                           children: [
-                            Container( 
+                            Container(
                               margin: EdgeInsets.only(
-                                bottom: 10,
-                                left: 40,
-                                right: 10
-                              ),
+                                  bottom: 10, left: 40, right: 10),
                               height: 145,
                               width: 145,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
-                                gradient: LinearGradient(  
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                  colors: [
-                                    Color(0xFFf12711),
-                                    Color(0xFFf5af19)
-                                  ]
-                                ),
+                                gradient: LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      Color(0xFFf12711),
+                                      Color(0xFFf5af19)
+                                    ]),
                               ),
                               child: Center(
-                                child: Text(
-                                  'Classiques'
-                                ),
+                                child: Text('Classiques'),
                               ),
                             ),
-                            Container( 
+                            Container(
                               margin: EdgeInsets.only(
-                                bottom: 10,
-                                left: 40,
-                                right: 10
-                              ),
+                                  bottom: 10, left: 40, right: 10),
                               height: 145,
                               width: 145,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
-                                gradient: LinearGradient(  
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                  colors: [
-                                    Color(0xFF1c92d2),
-                                    Color(0xFFf2fcfe)
-                                  ]
-                                ),
+                                gradient: LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      Color(0xFF1c92d2),
+                                      Color(0xFFf2fcfe)
+                                    ]),
                               ),
                               child: Center(
-                                child: Text(
-                                  'Gamings'
-                                ),
+                                child: Text('Gamings'),
                               ),
                             )
                           ],
                         ),
                         Row(
-                          
                           children: <Widget>[
                             Container(
                               margin: EdgeInsets.only(
-                                bottom: 10,
-                                left: 40,
-                                right: 10
-                              ),
+                                  bottom: 10, left: 40, right: 10),
                               height: 145,
                               width: 145,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
-                                gradient: LinearGradient(  
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                  colors: [
-                                    Color(0xFFa8ff78),
-                                    Color(0xFF78ffd6)
-                                  ]
-                                ),
+                                gradient: LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      Color(0xFFa8ff78),
+                                      Color(0xFF78ffd6)
+                                    ]),
                               ),
                               child: Center(
-                                child: Text(
-                                  'Jeux de sociétés'
-                                ),
+                                child: Text('Jeux de sociétés'),
                               ),
                             ),
                             Container(
                               margin: EdgeInsets.only(
-                                bottom: 10,
-                                left: 40,
-                                right: 10
-                              ),
+                                  bottom: 10, left: 40, right: 10),
                               height: 145,
                               width: 145,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
-                                gradient: LinearGradient(  
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                  colors: [
-                                    Color(0xFFb24592),
-                                    Color(0xFFf15f79)
-                                  ]
-                                ),
+                                gradient: LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      Color(0xFFb24592),
+                                      Color(0xFFf15f79)
+                                    ]),
                               ),
                               child: Center(
-                                child: Text(
-                                  'Soirées à thèmes'
-                                ),
+                                child: Text('Soirées à thèmes'),
                               ),
                             ),
                           ],

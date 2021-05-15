@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/Model/components/searchbar.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
-
+import 'dart:math' as math;
 import 'package:pts/blocs/application_bloc.dart';
 
 class SearchBarScreen extends StatefulWidget {
@@ -12,16 +12,30 @@ class SearchBarScreen extends StatefulWidget {
   _SearchBarScreenState createState() => _SearchBarScreenState();
 }
 
-class _SearchBarScreenState extends State<SearchBarScreen> {
+class _SearchBarScreenState extends State<SearchBarScreen>
+    with TickerProviderStateMixin {
   final ApplicationBloc applicationBloc = new ApplicationBloc();
   PanelController _panelController = PanelController();
+  AnimationController _animationController;
+  ScrollController _sc;
 
   String _search = "";
   bool _hasResults = false;
+  bool _isDissmissed = false;
 
   double _factor = 0;
+  double _rotation = 0;
 
   Brightness _brightness = Brightness.light;
+
+  @override
+  void initState() {
+    _animationController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 300),
+    );
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,32 +60,62 @@ class _SearchBarScreenState extends State<SearchBarScreen> {
               children: [
                 Expanded(
                   flex: 1,
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.arrow_back,
-                      color: _factor == 1 ? ICONCOLOR : SECONDARY_COLOR,
+                  child: Transform.rotate(
+                    angle:
+                        _isDissmissed ? (-90 * _rotation) * math.pi / 180 : 0,
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.arrow_back,
+                        color: _factor == 1 ? ICONCOLOR : SECONDARY_COLOR,
+                      ),
+                      onPressed: () async {
+                        if (!_isDissmissed || _rotation == 0)
+                          Navigator.of(context).pop();
+                        else {
+                          FocusScope.of(context).unfocus();
+
+                          _hasResults = true;
+
+                          _panelController.animatePanelToPosition(
+                            0.5,
+                            duration: Duration(milliseconds: 300),
+                            curve: Curves.ease,
+                          );
+                          _animationController.animateTo(0, curve: Curves.ease);
+                          _animationController.addListener(() {
+                            setState(() {
+                              _rotation = _animationController.value;
+                            });
+                          });
+                        }
+                      },
                     ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
                   ),
                 ),
                 Expanded(
                   flex: 8,
-                  child: SearchBar(
-                    onChanged: (value) {
-                      setState(() {
-                        _search = value;
-                      });
-                    },
-                    onTap: () {
-                      _hasResults = false;
-                      _panelController.animatePanelToPosition(
-                        1,
-                        duration: Duration(milliseconds: 300),
-                        curve: Curves.ease,
-                      );
-                    },
+                  child: Container(
+                    child: SearchBar(
+                      onChanged: (value) {
+                        setState(() {
+                          _search = value;
+                        });
+                      },
+                      onTap: () {
+                        _hasResults = false;
+                        _panelController.animatePanelToPosition(
+                          1,
+                          duration: Duration(milliseconds: 300),
+                          curve: Curves.ease,
+                        );
+                        _animationController.animateTo(1, curve: Curves.ease);
+                        _animationController.addListener(() {
+                          setState(() {
+                            _rotation = _animationController.value;
+                          });
+                        });
+                      },
+                    ),
                   ),
                 ),
               ],
@@ -96,12 +140,11 @@ class _SearchBarScreenState extends State<SearchBarScreen> {
                   color: Color.fromRGBO(0, 0, 0, 0.25),
                 ),
               ],
-              // collapsed: Container(
-              //   color: Colors.transparent,
-              // ),
               panelBuilder: (ScrollController sc) {
+                _sc = sc;
                 return _hasResults
                     ? Container(
+                        clipBehavior: Clip.antiAlias,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(36 * _factor),
@@ -145,10 +188,23 @@ class _SearchBarScreenState extends State<SearchBarScreen> {
                                     FocusScope.of(context).unfocus();
                                     setState(() {
                                       _hasResults = true;
-                                      _panelController.animatePanelToSnapPoint(
-                                        duration: Duration(milliseconds: 300),
-                                        curve: Curves.ease,
-                                      );
+
+                                      _panelController
+                                          .animatePanelToSnapPoint(
+                                            duration:
+                                                Duration(milliseconds: 300),
+                                            curve: Curves.ease,
+                                          )
+                                          .whenComplete(
+                                              () => _isDissmissed = true);
+                                      _animationController.animateTo(0,
+                                          curve: Curves.ease);
+                                      _animationController.addListener(() {
+                                        setState(() {
+                                          _rotation =
+                                              _animationController.value;
+                                        });
+                                      });
                                     });
                                   },
                                 );
@@ -158,7 +214,6 @@ class _SearchBarScreenState extends State<SearchBarScreen> {
                         },
                       );
               },
-
               onPanelSlide: (position) {
                 setState(() {
                   if (position >= 0.8) {

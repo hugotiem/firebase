@@ -94,7 +94,7 @@ class IntroScreenState extends State<IntroScreen> {
       renderDoneBtn: this.renderDoneBtn(),
       onDonePress: this.onDonePress,
 
-      shouldHideStatusBar: true,
+      hideStatusBar: true,
 
       sizeDot: 8.0,
     );

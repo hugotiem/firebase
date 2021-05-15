@@ -23,6 +23,8 @@ class _HomeState extends State<Home> {
     return Scaffold(
       body: _children[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
         selectedItemColor: ICONCOLOR,
         onTap: onTabTapped,
         currentIndex: _currentIndex,
