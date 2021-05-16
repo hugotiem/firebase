@@ -186,9 +186,22 @@ class _LoginState extends State<Login> {
                           ),
                         ),
                         onTap: () {
-                          _auth.register(_email, _password);
-                          // _auth.auth.currentUser
-                          //     .updateProfile(displayName: _name);
+                          _auth.register(_email, _password).then((value) => {
+                                if (value.containsKey("success"))
+                                  {
+                                    Navigator.of(context).push(
+                                      CupertinoPageRoute(
+                                        builder: (context) => Container(),
+                                      ),
+                                    )
+                                  }
+                                else
+                                  {
+                                    value.forEach((key, value) {
+                                      print(key);
+                                    })
+                                  }
+                              });
                         },
                       ),
                       Container(
@@ -207,9 +220,8 @@ class _LoginState extends State<Login> {
                                 style: TextStyle(color: ICONCOLOR),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
+                                    Navigator.of(context).push(
+                                      CupertinoPageRoute(
                                         builder: (context) => Container(
                                           color: Colors.white,
                                           child: Center(
@@ -233,9 +245,8 @@ class _LoginState extends State<Login> {
                                 style: TextStyle(color: ICONCOLOR),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
+                                    Navigator.of(context).push(
+                                      CupertinoPageRoute(
                                         builder: (context) => Container(
                                           color: Colors.white,
                                           child: Center(
@@ -437,10 +448,21 @@ class _LoginState extends State<Login> {
                               ),
                             ),
                           ),
-                          onTap: () {
-                            _auth
-                                .signIn(_email, _password)
-                                .then((value) => Navigator.of(context).pop());
+                          onTap: () async {
+                            _auth.signIn(_email, _password).then(
+                                  (value) => {
+                                    if (value.containsKey("success"))
+                                      {
+                                        Navigator.of(context).pop(),
+                                      }
+                                    else
+                                      {
+                                        value.forEach((key, value) {
+                                          print(key);
+                                        }),
+                                      }
+                                  },
+                                );
                           },
                         ),
                         SizedBox(

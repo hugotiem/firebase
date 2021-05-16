@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
   static FirebaseAuth _auth;
-  static bool isLogged;
+  static bool isLogged = false;
 
   static FirebaseAuth get auth => _auth;
 
@@ -14,42 +14,42 @@ class AuthService {
     isLogged = val;
   }
 
-  Future register(String _email, String _password) async {
+  Future<Map<String, User>> register(String _email, String _password) async {
     try {
-      // ignore: unused_local_variable
       UserCredential userCredential =
           await _auth.createUserWithEmailAndPassword(
         email: _email,
         password: _password,
       );
+      return {"success": userCredential.user};
     } on FirebaseAuthException catch (e) {
-      print("ERR " + e.code);
       if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
+        return {'The password provided is too weak.': null};
       } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
+        return {'The account already exists for that email.': null};
+      } else if (e.code == 'invalid-email') {
+        return {'Adresse email invalide.': null};
       }
-    } catch (e) {
-      print("FireAuthERROR: " + e);
+      return {e.code: null};
     }
   }
 
-  Future signIn(String _email, String _password) async {
+  Future<Map<String, User>> signIn(String _email, String _password) async {
     try {
-      // ignore: unused_local_variable
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
         email: _email,
         password: _password,
       );
+      return {"success": userCredential.user};
     } on FirebaseAuthException catch (e) {
-      print(e);
       if (e.code == 'user-not-found') {
-        print('No user found for that email.');
+        return {'No user found for that email.': null};
       } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
+        return {'Wrong password provided for that user.': null};
+      } else if (e.code == 'invalid-email') {
+        return {'Adresse email invalide.': null};
       }
-    } catch (e) {
-      print("FireAuthERROR: " + e);
+      return {e.code: null};
     }
   }
 }

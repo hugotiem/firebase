@@ -26,70 +26,35 @@ class MyApp extends StatelessWidget {
       DeviceOrientation.portraitDown,
     ]);
 
-    // if(Platform.isAndroid)
-    // CupertinoApp();
-
-    if (Platform.isIOS)
-      return CupertinoApp(
-        title: "PTS",
-        home: FutureBuilder(
-          future: _fbApp,
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              print("ERROR");
-              return Text("ERROR");
-            } else if (snapshot.hasData) {
-              AuthService.setAuth();
-              AuthService.auth.authStateChanges().listen((User user) {
-                AuthService.logged = user != null;
-              });
-              return Home();
-            } else {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-          },
-        ),
-        debugShowCheckedModeBanner: false,
-        localizationsDelegates: [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-        ],
-        supportedLocales: [
-          const Locale('fr', 'FR'),
-        ],
-      );
-    else
-      return MaterialApp(
-        title: "PTS",
-        home: FutureBuilder(
-          future: _fbApp,
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              print("ERROR");
-              return Text("ERROR");
-            } else if (snapshot.hasData) {
-              AuthService.setAuth();
-              AuthService.auth.authStateChanges().listen((User user) {
-                AuthService.logged = user != null;
-              });
-              return Home();
-            } else {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-          },
-        ),
-        debugShowCheckedModeBanner: false,
-        localizationsDelegates: [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-        ],
-        supportedLocales: [
-          const Locale('fr', 'FR'),
-        ],
-      );
+    return MaterialApp(
+      title: "PTS",
+      home: FutureBuilder(
+        future: _fbApp,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            print("ERROR");
+            return Text("ERROR");
+          } else if (snapshot.hasData) {
+            AuthService.setAuth();
+            AuthService.auth.authStateChanges().listen((User user) {
+              AuthService.logged = user != null;
+            });
+            return Home();
+          } else {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
+      ),
+      debugShowCheckedModeBanner: false,
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('fr', 'FR'),
+      ],
+    );
   }
 }
