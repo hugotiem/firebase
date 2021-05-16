@@ -1,10 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/Model/services/auth_service.dart';
-import 'package:pts/View/Home.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class Login extends StatefulWidget {
@@ -24,7 +22,6 @@ class _LoginState extends State<Login> {
   double _slideUp;
 
   // strings variables
-  String _name;
   String _email;
   String _password;
 
@@ -38,7 +35,6 @@ class _LoginState extends State<Login> {
     _editingController = new TextEditingController();
     _brightness = Brightness.light;
     _slideUp = 0;
-    _name = "";
     _email = "";
     _password = "";
     _auth = AuthService();
@@ -108,9 +104,7 @@ class _LoginState extends State<Login> {
                               labelText: "Nom d'utilisateur :",
                               border: InputBorder.none,
                             ),
-                            onChanged: (value) {
-                              _name = value;
-                            },
+                            onChanged: (value) {},
                           ),
                         ),
                       ),
