@@ -90,8 +90,12 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                                   },
                                 ),
                               );
-                          if (!_resultsPanelController.isPanelOpen) _factor = 0;
-                          _brightness = Brightness.dark;
+                          setState(() {
+                            if (!_resultsPanelController.isPanelOpen)
+                              _factor = 0;
+                            _brightness = Brightness.dark;
+                          });
+
                           _animationController.animateTo(0, curve: Curves.ease);
                           _animationController.addListener(() {
                             setState(() {
@@ -250,12 +254,8 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                   maxHeight: _size.height - 150,
                   controller: _searchPanelController,
                   boxShadow: [],
-                  panel: FutureBuilder(
-                    future: applicationBloc.searchPlaces((_isDissmissed &&
-                            _searchPanelController.isPanelOpen &&
-                            !_searchPanelController.isPanelAnimating)
-                        ? _search
-                        : ""),
+                  panelBuilder: (sc) => FutureBuilder(
+                    future: applicationBloc.searchPlaces(_search),
                     builder: (context, snapshots) {
                       return Container(
                         color: PRIMARY_COLOR,
@@ -263,6 +263,7 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                           padding: EdgeInsets.all(0),
                           itemCount: applicationBloc.searchResults.length,
                           itemBuilder: (context, index) {
+                            print(applicationBloc.searchResults.length);
                             return ListTile(
                               title: Text(
                                 applicationBloc
@@ -273,19 +274,17 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                                 FocusScope.of(context).unfocus();
                                 setState(() {
                                   _hasResults = true;
-
-                                  _resultsPanelController
-                                      .animatePanelToSnapPoint(
-                                    duration: Duration(milliseconds: 300),
-                                    curve: Curves.ease,
-                                  );
                                   _isDissmissed = true;
-                                  _animationController.animateTo(0,
-                                      curve: Curves.ease);
-                                  _animationController.addListener(() {
-                                    setState(() {
-                                      _rotation = _animationController.value;
-                                    });
+                                });
+                                _resultsPanelController.animatePanelToSnapPoint(
+                                  duration: Duration(milliseconds: 300),
+                                  curve: Curves.ease,
+                                );
+                                _animationController.animateTo(0,
+                                    curve: Curves.ease);
+                                _animationController.addListener(() {
+                                  setState(() {
+                                    _rotation = _animationController.value;
                                   });
                                 });
                               },
