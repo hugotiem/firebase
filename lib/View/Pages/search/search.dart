@@ -305,7 +305,6 @@ class _SearchState extends State<Search> {
                           ],
                         ),
                         Row(
-                          
                           children: <Widget>[
                             Container(
                               margin: EdgeInsets.only(
