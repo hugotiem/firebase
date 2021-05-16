@@ -91,9 +91,10 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                                 ),
                               );
                           setState(() {
-                            if (!_resultsPanelController.isPanelOpen)
+                            if (!_resultsPanelController.isPanelOpen) {
                               _factor = 0;
-                            _brightness = Brightness.dark;
+                              _brightness = Brightness.dark;
+                            }
                           });
 
                           _animationController.animateTo(0, curve: Curves.ease);
