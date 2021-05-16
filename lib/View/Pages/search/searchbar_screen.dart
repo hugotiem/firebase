@@ -28,6 +28,9 @@ class _SearchBarScreenState extends State<SearchBarScreen>
 
   Brightness _brightness = Brightness.light;
 
+  // to save panel position
+  double _panelPosition;
+
   @override
   void initState() {
     _animationController = AnimationController(
@@ -87,7 +90,8 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                                   },
                                 ),
                               );
-
+                          if (!_resultsPanelController.isPanelOpen) _factor = 0;
+                          _brightness = Brightness.dark;
                           _animationController.animateTo(0, curve: Curves.ease);
                           _animationController.addListener(() {
                             setState(() {
@@ -111,14 +115,17 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                       onTap: () {
                         setState(() {
                           _hasResults = false;
+                          _brightness = Brightness.light;
                         });
 
                         _searchPanelController.open();
-
+                        _panelPosition = _resultsPanelController.panelPosition;
                         _animationController.animateTo(1, curve: Curves.ease);
-                        // _animationController.forward();
+
                         _animationController.addListener(() {
                           setState(() {
+                            if (!_resultsPanelController.isPanelOpen)
+                              _factor = 1 - _animationController.value;
                             _rotation = _animationController.value;
                           });
                         });
@@ -134,7 +141,7 @@ class _SearchBarScreenState extends State<SearchBarScreen>
               Container(
                 height: _size.height - 150,
                 child: SlidingUpPanel(
-                  isDraggable: _hasResults,
+                  isDraggable: _isDissmissed,
                   defaultPanelState: PanelState.OPEN,
                   controller: _resultsPanelController,
                   snapPoint: 0.5,
@@ -244,8 +251,11 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                   controller: _searchPanelController,
                   boxShadow: [],
                   panel: FutureBuilder(
-                    future: applicationBloc
-                        .searchPlaces(_isDissmissed ? _search : ""),
+                    future: applicationBloc.searchPlaces((_isDissmissed &&
+                            _searchPanelController.isPanelOpen &&
+                            !_searchPanelController.isPanelAnimating)
+                        ? _search
+                        : ""),
                     builder: (context, snapshots) {
                       return Container(
                         color: PRIMARY_COLOR,
