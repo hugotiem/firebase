@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
@@ -22,7 +21,7 @@ class _ProfilState extends State<Profil> {
 
   @override
   void initState() {
-    AuthService.auth.authStateChanges().listen((User user) {
+    AuthService.auth.authStateChanges().listen((user) {
       setState(() { 
         AuthService.logged = user != null;
       });
