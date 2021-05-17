@@ -28,13 +28,15 @@ PTS
 ├── android/ (android app builder)
 ├── ios/ (ios app builder)
 ├── lib/
+│    ├── blocs/
+│    │    └── application_bloc.dart
 │    ├── Model/
 │    │    ├── components/ (customs components)
 │    │    ├── services/ (db services)
 │    │    └── soiree.dart
 │    ├── View/
 │    │    ├── Pages/
-│    │    │     ├── creation
+│    │    │     ├── creation/
 │    │    │     ├── login/
 │    │    │     ├── profil/
 │    │    │     ├── search/
