@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pts/Model/components/backgroundtitle.dart';
 import 'package:pts/Model/components/custom_sliver.dart';
+import 'package:pts/Model/components/opencontainer_soiree.dart';
 import 'package:pts/Model/components/text_materials.dart';
 import 'package:pts/Model/services/firestore_service.dart';
 import 'package:pts/View/Pages/search/searchbar_screen.dart';
@@ -121,12 +122,12 @@ class _SearchState extends State<Search> {
                                           return Row(
                                           children: <Widget>[
                                             Container(
-                                                width: 80,
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(15),
-                                                  color: Colors.white,
-                                                )),
+                                              width: 80,
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(15),
+                                                color: Colors.white,
+                                              )
+                                            ),
                                             Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
@@ -171,7 +172,7 @@ class _SearchState extends State<Search> {
                                         );
                                       },
                                       openBuilder: (context, returnValue) {
-                                        return Container();
+                                        return OpenBuilderContainer();
                                       },
                                       ),
                                     ),
