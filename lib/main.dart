@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pts/Model/services/auth_service.dart';
+import 'package:pts/View/Pages/profil/Profil.dart';
 import 'View/Home.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       title: "PTS",
+     
       home: FutureBuilder(
         future: _fbApp,
         builder: (context, snapshot) {

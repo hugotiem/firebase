@@ -50,7 +50,6 @@ class _LoginState extends State<Login> {
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        // toolbarHeight: 0,
         backgroundColor: Colors.transparent,
         elevation: 0,
         brightness: _brightness,
@@ -70,14 +69,14 @@ class _LoginState extends State<Login> {
         child: Container(
           child: Stack(
             children: <Widget>[
-              Positioned(
-                top: 150 + (100 * _slideUp),
-                height: size.height,
-                width: size.width,
-                child: Container(
-                  child: Column(
-                    children: <Widget>[
-                      Container(
+              Container(
+                height: size.height - 300,
+                margin: EdgeInsets.only(top: 150 + (100 * _slideUp)),
+                child: Column(
+                  children: <Widget>[
+                    Expanded(
+                      flex: 1,
+                      child: Container(
                         child: Text(
                           "sign-up".toUpperCase(),
                           style: TextStyle(
@@ -87,192 +86,274 @@ class _LoginState extends State<Login> {
                           ),
                         ),
                       ),
-                      SizedBox(
-                        height: 70,
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.9,
-                        height: 50,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(30)),
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 30),
-                          child: TextField(
-                            // controller: _editingController,
-                            keyboardAppearance: Brightness.light,
-                            decoration: InputDecoration(
-                              labelText: "Nom d'utilisateur :",
-                              border: InputBorder.none,
-                            ),
-                            onChanged: (value) {},
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 40,
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.9,
-                        height: 50,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(30)),
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 30),
-                          child: TextField(
-                            // controller: _editingController,
-                            keyboardAppearance: Brightness.light,
-                            keyboardType: TextInputType.emailAddress,
-                            decoration: InputDecoration(
-                              suffix: Container(
-                                padding: EdgeInsets.only(right: 10),
-                                child: Icon(Icons.person, color: Colors.black),
-                              ),
-                              labelText: "Email :",
-                              border: InputBorder.none,
-                            ),
-                            onChanged: (value) {
-                              _email = value;
-                            },
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 40,
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.9,
-                        height: 50,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(30)),
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 30),
-                          child: TextField(
-                            // controller: _editingController,
-                            obscureText: true,
-                            keyboardAppearance: Brightness.light,
-                            decoration: InputDecoration(
-                              labelText: "Mot de passe :",
-                              border: InputBorder.none,
-                            ),
-                            onChanged: (value) {
-                              _password = value;
-                            },
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 50,
-                      ),
-                      GestureDetector(
+                    ),
+                    // SizedBox(
+                    //   height: 70,
+                    // ),
+                    Expanded(
+                      flex: 1,
+                      child: Center(
                         child: Container(
-                          width: size.width - 100,
-                          padding: EdgeInsets.symmetric(vertical: 20),
+                          width: MediaQuery.of(context).size.width * 0.9,
+                          height: 50,
                           decoration: BoxDecoration(
-                            color: ICONCOLOR,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(200),
-                            ),
-                          ),
-                          child: Text(
-                            "s'inscrire".toUpperCase(),
-                            style: TextStyle(
                               color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
+                              borderRadius: BorderRadius.circular(30)),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 30),
+                            child: TextField(
+                              // controller: _editingController,
+                              keyboardAppearance: Brightness.light,
+                              keyboardType: TextInputType.emailAddress,
+                              decoration: InputDecoration(
+                                suffix: Container(
+                                  padding: EdgeInsets.only(right: 10),
+                                  child:
+                                      Icon(Icons.person, color: Colors.black),
+                                ),
+                                labelText: "Email :",
+                                border: InputBorder.none,
+                              ),
+                              onChanged: (value) {
+                                _email = value;
+                              },
                             ),
-                            textAlign: TextAlign.center,
                           ),
                         ),
-                        onTap: () {
-                          _auth.register(_email, _password).then((value) => {
-                                if (value.containsKey("success"))
-                                  {
-                                    Navigator.of(context).push(
-                                      CupertinoPageRoute(
-                                        builder: (context) =>
-                                            RegisterFormScreen(),
-                                      ),
-                                    )
-                                  }
-                                else
-                                  {
-                                    value.forEach((key, value) {
-                                      print(key);
-                                    })
-                                  }
-                              });
-                        },
                       ),
-                      Container(
-                        padding: EdgeInsets.only(top: 20, left: 10, right: 10),
-                        child: RichText(
-                          textAlign: TextAlign.center,
-                          text: TextSpan(
-                            style: TextStyle(color: Colors.black),
-                            children: [
-                              TextSpan(
-                                text:
-                                    "*En cliquant sur \"S'inscrire\" je déclare avoir accepté les ",
+                    ),
+                    // SizedBox(
+                    //   height: 40,
+                    // ),
+                    Expanded(
+                      flex: 1,
+                      child: Center(
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * 0.9,
+                          height: 50,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(30)),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 30),
+                            child: TextField(
+                              // controller: _editingController,
+                              obscureText: true,
+                              keyboardAppearance: Brightness.light,
+                              decoration: InputDecoration(
+                                labelText: "Mot de passe :",
+                                border: InputBorder.none,
                               ),
-                              TextSpan(
-                                text: "Conditions Générales d'Utilisations ",
-                                style: TextStyle(color: ICONCOLOR),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    Navigator.of(context).push(
-                                      CupertinoPageRoute(
-                                        builder: (context) => Container(
-                                          color: Colors.white,
-                                          child: Center(
-                                            child: Text(
-                                              "Conditions Générales d'Utilisations",
-                                              style: TextStyle(
-                                                color: Colors.black,
+                              onChanged: (value) {
+                                _password = value;
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Center(
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * 0.9,
+                          height: 50,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(30)),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 30),
+                            child: TextField(
+                              // controller: _editingController,
+                              obscureText: true,
+                              keyboardAppearance: Brightness.light,
+                              decoration: InputDecoration(
+                                labelText: "Confirmation du mot de passe :",
+                                border: InputBorder.none,
+                              ),
+                              onChanged: (value) {
+                                _password = value;
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    Expanded(
+                      flex: 2,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          GestureDetector(
+                            child: Container(
+                              width: size.width - 100,
+                              padding: EdgeInsets.symmetric(vertical: 20),
+                              decoration: BoxDecoration(
+                                color: ICONCOLOR,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(200),
+                                ),
+                              ),
+                              child: Text(
+                                "s'inscrire".toUpperCase(),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            onTap: () {
+                              _auth
+                                  .register(_email, _password)
+                                  .then((value) => {
+                                        if (value.containsKey("success"))
+                                          {
+                                            Navigator.of(context)
+                                                .pushReplacement(
+                                              CupertinoPageRoute(
+                                                fullscreenDialog: true,
+                                                builder: (context) =>
+                                                    RegisterFormScreen(),
                                               ),
+                                            )
+                                          }
+                                        else
+                                          {
+                                            value.forEach((key, value) {
+                                              print(key);
+                                            })
+                                          }
+                                      });
+                            },
+                          ),
+                          GestureDetector(
+                            child: Container(
+                              width: size.width - 100,
+                              padding: EdgeInsets.symmetric(vertical: 20),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(200),
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: <Widget>[
+                                  Text(
+                                    "se connecter avec".toUpperCase(),
+                                    style: TextStyle(
+                                      color: ICONCOLOR,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  Container(
+                                    child: Image.asset(
+                                      "assets/images/google-logo.png",
+                                      height: 20,
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                            onTap: () {
+                              // _auth
+                              //     .register(_email, _password)
+                              //     .then((value) => {
+                              //           if (value.containsKey("success"))
+                              //             {
+                              //               Navigator.of(context)
+                              //                   .pushReplacement(
+                              //                 CupertinoPageRoute(
+                              //                   fullscreenDialog: true,
+                              //                   builder: (context) =>
+                              //                       RegisterFormScreen(),
+                              //                 ),
+                              //               )
+                              //             }
+                              //           else
+                              //             {
+                              //               value.forEach((key, value) {
+                              //                 print(key);
+                              //               })
+                              //             }
+                              //         });
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(top: 20, left: 10, right: 10),
+                      child: RichText(
+                        textAlign: TextAlign.center,
+                        text: TextSpan(
+                          style: TextStyle(color: Colors.black),
+                          children: [
+                            TextSpan(
+                              text:
+                                  "*En cliquant sur \"S'inscrire\" je déclare avoir accepté les ",
+                            ),
+                            TextSpan(
+                              text: "Conditions Générales d'Utilisations ",
+                              style: TextStyle(color: ICONCOLOR),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  Navigator.of(context).push(
+                                    CupertinoPageRoute(
+                                      builder: (context) => Container(
+                                        color: Colors.white,
+                                        child: Center(
+                                          child: Text(
+                                            "Conditions Générales d'Utilisations",
+                                            style: TextStyle(
+                                              color: Colors.black,
                                             ),
                                           ),
                                         ),
                                       ),
-                                    );
-                                  },
-                              ),
-                              TextSpan(
-                                text: "et avoir pris connaissance de la ",
-                              ),
-                              TextSpan(
-                                text: "Politique de confidentialité ",
-                                style: TextStyle(color: ICONCOLOR),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    Navigator.of(context).push(
-                                      CupertinoPageRoute(
-                                        builder: (context) => Container(
-                                          color: Colors.white,
-                                          child: Center(
-                                            child: Text(
-                                              "Politique de confidentialité",
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                              ),
+                                    ),
+                                  );
+                                },
+                            ),
+                            TextSpan(
+                              text: "et avoir pris connaissance de la ",
+                            ),
+                            TextSpan(
+                              text: "Politique de confidentialité ",
+                              style: TextStyle(color: ICONCOLOR),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  Navigator.of(context).push(
+                                    CupertinoPageRoute(
+                                      builder: (context) => Container(
+                                        color: Colors.white,
+                                        child: Center(
+                                          child: Text(
+                                            "Politique de confidentialité",
+                                            style: TextStyle(
+                                              color: Colors.black,
                                             ),
                                           ),
                                         ),
                                       ),
-                                    );
-                                  },
-                              ),
-                              TextSpan(
-                                text: "de PTS.",
-                              ),
-                            ],
-                          ),
+                                    ),
+                                  );
+                                },
+                            ),
+                            TextSpan(
+                              text: "de PTS.",
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
               SlidingUpPanel(

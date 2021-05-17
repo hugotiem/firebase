@@ -52,4 +52,8 @@ class AuthService {
       return {e.code: null};
     }
   }
+
+  Future signInWithGoogle() async {
+    
+  }
 }
