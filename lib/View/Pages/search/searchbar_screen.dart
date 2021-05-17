@@ -264,7 +264,7 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                           padding: EdgeInsets.all(0),
                           itemCount: applicationBloc.searchResults.length,
                           itemBuilder: (context, index) {
-                            print(applicationBloc.searchResults.length);
+                            
                             return ListTile(
                               title: Text(
                                 applicationBloc

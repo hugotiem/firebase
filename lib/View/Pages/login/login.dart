@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/Model/services/auth_service.dart';
+import 'package:pts/View/Pages/login/register_form_screen.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class Login extends StatefulWidget {
@@ -191,7 +192,8 @@ class _LoginState extends State<Login> {
                                   {
                                     Navigator.of(context).push(
                                       CupertinoPageRoute(
-                                        builder: (context) => Container(),
+                                        builder: (context) =>
+                                            RegisterFormScreen(),
                                       ),
                                     )
                                   }
