@@ -3,10 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/Model/components/back_appbar.dart';
 import 'package:pts/Model/components/pts_box.dart';
+import 'package:pts/Model/services/auth_service.dart';
 
 class ProfilDetails extends StatefulWidget {
   ProfilDetails({Key key}) : super(key: key);
-
   @override
   _ProfilDetailsState createState() => _ProfilDetailsState();
 }
@@ -14,6 +14,23 @@ class ProfilDetails extends StatefulWidget {
 class _ProfilDetailsState extends State<ProfilDetails> {
   @override
   Widget build(BuildContext context) {
+    var _creationDate = AuthService.auth.currentUser.metadata.creationTime;
+
+    List _month = [
+      "Janv.",
+      "Févr.",
+      "Mars",
+      "Avr.",
+      "Mai",
+      "Juin",
+      "Juill.",
+      "Août",
+      "Sept.",
+      "Oct.",
+      "Nov.",
+      "Déc."
+    ];
+
     return Scaffold(
       backgroundColor: PRIMARY_COLOR,
       appBar: PreferredSize(
@@ -50,7 +67,7 @@ class _ProfilDetailsState extends State<ProfilDetails> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(
-                                  "FullName",
+                                  AuthService.auth.currentUser.displayName,
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 22,
@@ -62,7 +79,7 @@ class _ProfilDetailsState extends State<ProfilDetails> {
                                 Opacity(
                                   opacity: 0.5,
                                   child: Text(
-                                    "A rejoint en 2021",
+                                    "A rejoint en ${_month[_creationDate.month - 1]} ${_creationDate.year}",
                                     style: TextStyle(fontSize: 18),
                                   ),
                                 ),

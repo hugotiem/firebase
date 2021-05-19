@@ -22,7 +22,7 @@ class _ProfilState extends State<Profil> {
   @override
   void initState() {
     AuthService.auth.authStateChanges().listen((user) {
-      setState(() { 
+      setState(() {
         AuthService.logged = user != null;
       });
     });
@@ -58,7 +58,10 @@ class _ProfilState extends State<Profil> {
                             child: new Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                new BoldText(text: "Name"),
+                                new BoldText(
+                                    text: AuthService
+                                        .auth.currentUser.displayName
+                                        .split(" ")[0]),
                                 Opacity(
                                   opacity: 0.7,
                                   child: new Text("Afficher le profil"),
