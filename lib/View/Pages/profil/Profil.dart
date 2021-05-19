@@ -60,7 +60,7 @@ class _ProfilState extends State<Profil> {
                               children: <Widget>[
                                 new BoldText(
                                     text: AuthService
-                                                .auth.currentUser.displayName ==
+                                                .auth.currentUser.displayName !=
                                             null
                                         ? AuthService
                                             .auth.currentUser.displayName
