@@ -60,8 +60,12 @@ class _ProfilState extends State<Profil> {
                               children: <Widget>[
                                 new BoldText(
                                     text: AuthService
-                                        .auth.currentUser.displayName
-                                        .split(" ")[0]),
+                                                .auth.currentUser.displayName ==
+                                            null
+                                        ? AuthService
+                                            .auth.currentUser.displayName
+                                            .split(" ")[0]
+                                        : ""),
                                 Opacity(
                                   opacity: 0.7,
                                   child: new Text("Afficher le profil"),
