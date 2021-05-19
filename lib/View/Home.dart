@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
-import 'package:pts/View/Pages/creation/firstpage.dart';
+import 'Pages/calendar/calendar_page.dart';
 import 'Pages/profil/Profil.dart';
 import 'Pages/search/search.dart';
 
@@ -14,7 +14,7 @@ class _HomeState extends State<Home> {
   int _currentIndex = 0;          
   final List<Widget> _children = [
     Search(), 
-    Container(),
+    CalendarPage(),
     Profil(),
   ];
 
@@ -40,20 +40,11 @@ class _HomeState extends State<Home> {
             label: "Rechercher",
           ),
           BottomNavigationBarItem(
-            icon: GestureDetector(
-              child: Container(
-                child: Icon(
-                  Icons.add,
-                  size: 30,
-                ),
-              ),
-              onTap: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => FirstPage(),
-                ),
-              ),
+            icon: new Icon(
+              Icons.calendar_today_outlined,
+              size: 30,
             ),
-            label: "",
+            label: "Calendrier",
           ),
           BottomNavigationBarItem(
             icon: new Icon(

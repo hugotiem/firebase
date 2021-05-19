@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/Model/components/back_appbar.dart';
 import 'package:pts/Model/soiree.dart';
-import 'package:pts/View/Pages/creation/thirdpage.dart';
+import 'package:pts/View/Pages/creation/test%200/thirdpage.dart';
 
 // Dans cette deuxième page du formulaire on retrouve :
 // La date

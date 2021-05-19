@@ -6,6 +6,9 @@ import 'package:pts/Model/components/pts_box.dart';
 import 'package:pts/Model/components/text_materials.dart';
 import 'package:pts/Model/pts_components.dart';
 import 'package:pts/Model/services/auth_service.dart';
+import 'package:pts/View/Pages/creation/firstpage.dart';
+import 'package:pts/View/Pages/creation/test%200/firstpage.dart';
+import 'package:pts/View/Pages/creation/test%201/firstpagetest1.dart';
 
 import 'package:pts/View/Pages/login/login.dart';
 import 'package:pts/View/Pages/profil/details.dart';
@@ -183,6 +186,72 @@ class _ProfilState extends State<Profil> {
                                     style: TextStyle(fontSize: 20),
                                   ),
                                   new Icon(Icons.notifications_outlined)
+                                ],
+                              ),
+                            ),
+                          ),
+                          ClickableContainer(
+                            to: FirstPage(),
+                            padding: EdgeInsets.only(
+                              top: 0,
+                              bottom: 0,
+                              left: 20,
+                              right: 20,
+                            ),
+                            child: new Container(
+                              padding: EdgeInsets.only(
+                                top: 20,
+                                bottom: 10,
+                              ),
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(
+                                    color: Colors.grey.withOpacity(0.23),
+                                  ),
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  new Text(
+                                    "création test 0",
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                  new Icon(Icons.add)
+                                ],
+                              ),
+                            ),
+                          ),
+                          ClickableContainer(
+                            to: FirsPageTest1(),
+                            padding: EdgeInsets.only(
+                              top: 0,
+                              bottom: 0,
+                              left: 20,
+                              right: 20,
+                            ),
+                            child: new Container(
+                              padding: EdgeInsets.only(
+                                top: 20,
+                                bottom: 10,
+                              ),
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(
+                                    color: Colors.grey.withOpacity(0.23),
+                                  ),
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  new Text(
+                                    "création test 1",
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                  new Icon(Icons.add)
                                 ],
                               ),
                             ),
