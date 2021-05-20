@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
+import 'package:pts/Model/components/CalendarWidget.dart';
 
 class CalendarPage extends StatelessWidget {
   @override
@@ -7,8 +8,14 @@ class CalendarPage extends StatelessWidget {
     return Scaffold( 
       backgroundColor: PRIMARY_COLOR, 
       appBar: AppBar(
-        backgroundColor: PRIMARY_COLOR ,
+        backgroundColor: Colors.white,
         elevation: 0,
+        title: Text(
+          'Calendrier',
+          style: TextStyle(
+            color: SECONDARY_COLOR,
+            ),
+          ),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 8.0),
@@ -16,9 +23,11 @@ class CalendarPage extends StatelessWidget {
               Icons.add,
               color: ICONCOLOR,
               size: 30,
-              ),
+            ),
           )
-      ],),
+        ],
+      ),
+      body: CalendarWidget(),
     );
   }
 }
