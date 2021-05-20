@@ -9,6 +9,7 @@ class CalendarPage extends StatelessWidget {
       backgroundColor: PRIMARY_COLOR, 
       appBar: AppBar(
         backgroundColor: Colors.white,
+        brightness: Brightness.light,
         elevation: 0,
         title: Text(
           'Calendrier',
