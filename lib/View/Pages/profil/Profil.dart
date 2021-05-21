@@ -12,6 +12,7 @@ import 'package:pts/View/Pages/creation/test%201/firstpagetest1.dart';
 
 import 'package:pts/View/Pages/login/login.dart';
 import 'package:pts/View/Pages/profil/details.dart';
+import 'package:pts/View/Pages/profil/info_screen.dart';
 import 'package:pts/View/Pages/tests/api.dart';
 
 class Profil extends StatefulWidget {
@@ -93,6 +94,7 @@ class _ProfilState extends State<Profil> {
                             ),
                           ),
                           ClickableContainer(
+                            to: InfoScreen(),
                             margin: EdgeInsets.only(top: 10),
                             padding: EdgeInsets.only(
                               top: 0,
