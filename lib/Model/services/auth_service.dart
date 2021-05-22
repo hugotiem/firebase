@@ -62,4 +62,20 @@ class AuthService with ChangeNotifier {
     await _auth.currentUser.updateProfile(displayName: name);
     notifyListeners();
   }
+
+  Future<String> updateEmail(String newEmail) async {
+    try {
+      await _auth.currentUser.updateEmail(newEmail);
+      
+    } on FirebaseAuthException catch (e) {
+      if (e.code == "invalid-email") {
+        return "Email invalide";
+      } else if (e.code == "email-already-in-use") {
+        return "Email déjà utilisé par un autre compte";
+      } else if (e.code == "requires-recent-login") {
+        return "has to confirm";
+      }
+    }
+    return "success";
+  }
 }

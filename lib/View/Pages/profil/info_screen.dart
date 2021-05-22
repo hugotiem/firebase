@@ -63,13 +63,18 @@ class _InfoScreenState extends State<InfoScreen> {
         child: BackAppBar(
           actions: <Widget>[
             CupertinoButton(
-              onPressed: () {
+              onPressed: () async {
                 _service
                     .updateDisplayName(_name + " " + _surname)
                     .then((value) => Navigator.of(context).pop());
 
                 if (_email.compareTo(_newEmail) != 0) {
-                  AuthService.auth.currentUser.updateEmail(_newEmail);
+                  var res = await _service.updateEmail(_newEmail);
+                  if (res != "success") {
+                    if (res == "has to confirm") {
+                      // AuthService.currentUser.reauthenticateWithCredential()
+                    }
+                  }
                 }
               },
               child: Text(
