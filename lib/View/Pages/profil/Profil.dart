@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
@@ -21,7 +22,7 @@ class Profil extends StatefulWidget {
 }
 
 class _ProfilState extends State<Profil> {
-  //FireAuth
+  var _user = AuthService.currentUser;
 
   @override
   void initState() {
@@ -45,8 +46,53 @@ class _ProfilState extends State<Profil> {
         brightness: Brightness.light,
       ),
       backgroundColor: PRIMARY_COLOR,
-      body: AuthService.isLogged
-          ? Container(
+      body: StreamBuilder<User>(
+          stream: AuthService.auth.userChanges(),
+          builder: (context, snapshot) {
+            if (!AuthService.isLogged) {
+              return SafeArea(
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        child: Text(
+                          "Vous n'etes pas connecté",
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            CupertinoPageRoute(
+                              fullscreenDialog: true,
+                              builder: (context) => Login(),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          margin: EdgeInsets.all(10),
+                          padding: EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            color: ICONCOLOR,
+                            borderRadius: BorderRadius.circular(100),
+                          ),
+                          child: BoldText(
+                            text: "Se connecter",
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }
+
+            if (snapshot.hasData) {
+              _user = snapshot.data;
+            }
+
+            return Container(
               color: PRIMARY_COLOR,
               child: Center(
                 child: Column(
@@ -62,13 +108,9 @@ class _ProfilState extends State<Profil> {
                             child: new Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                new BoldText(
-                                    text: AuthService
-                                                .auth.currentUser.displayName !=
-                                            null
-                                        ? AuthService
-                                            .auth.currentUser.displayName
-                                            .split(" ")[0]
+                                BoldText(
+                                    text: _user.displayName != null
+                                        ? _user.displayName.split(" ")[0]
                                         : ""),
                                 Opacity(
                                   opacity: 0.7,
@@ -292,43 +334,8 @@ class _ProfilState extends State<Profil> {
                   ],
                 ),
               ),
-            )
-          : SafeArea(
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      child: Text(
-                        "Vous n'etes pas connecté",
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          CupertinoPageRoute(
-                            fullscreenDialog: true,
-                            builder: (context) => Login(),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        margin: EdgeInsets.all(10),
-                        padding: EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          color: ICONCOLOR,
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                        child: BoldText(
-                          text: "Se connecter",
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            );
+          }),
     );
   }
 }

@@ -12,6 +12,9 @@ class InfoScreen extends StatefulWidget {
 class _InfoScreenState extends State<InfoScreen> {
   var user;
 
+  //AuthService instance
+  AuthService _service = AuthService();
+
   // Text Editing Controllers
   TextEditingController _surnameController;
   TextEditingController _nameController;
@@ -24,6 +27,9 @@ class _InfoScreenState extends State<InfoScreen> {
   String _name;
   String _email;
 
+  // has to be compared to know if password is required when save
+  String _newEmail;
+
   @override
   void initState() {
     this.user = AuthService.auth.currentUser;
@@ -31,6 +37,8 @@ class _InfoScreenState extends State<InfoScreen> {
     this._surname = user.displayName.split(" ")[1];
     this._name = user.displayName.split(" ")[0];
     this._email = user.email;
+
+    this._newEmail = _email;
 
     _surnameController = new TextEditingController(text: this._surname);
     _nameController = new TextEditingController(text: this._name);
@@ -55,7 +63,15 @@ class _InfoScreenState extends State<InfoScreen> {
         child: BackAppBar(
           actions: <Widget>[
             CupertinoButton(
-              onPressed: () {},
+              onPressed: () {
+                _service
+                    .updateDisplayName(_name + " " + _surname)
+                    .then((value) => Navigator.of(context).pop());
+
+                if (_email.compareTo(_newEmail) != 0) {
+                  AuthService.auth.currentUser.updateEmail(_newEmail);
+                }
+              },
               child: Text(
                 "Enregistrer",
                 style: TextStyle(
@@ -76,6 +92,7 @@ class _InfoScreenState extends State<InfoScreen> {
                   Text("Nom"),
                   CupertinoTextField.borderless(
                     controller: _surnameController,
+                    onChanged: (value) => _surname = value,
                   ),
                 ],
               ),
@@ -86,6 +103,7 @@ class _InfoScreenState extends State<InfoScreen> {
                   Text("Prénom"),
                   CupertinoTextField.borderless(
                     controller: _nameController,
+                    onChanged: (value) => _name = value,
                   ),
                 ],
               ),
@@ -96,6 +114,7 @@ class _InfoScreenState extends State<InfoScreen> {
                   Text("Email"),
                   CupertinoTextField.borderless(
                     controller: _emailController,
+                    onChanged: (value) => _email = value,
                   ),
                 ],
               ),

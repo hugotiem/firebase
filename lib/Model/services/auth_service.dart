@@ -1,10 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
-class AuthService {
+class AuthService with ChangeNotifier {
   static FirebaseAuth _auth;
   static bool isLogged = false;
 
   static FirebaseAuth get auth => _auth;
+
+  static User get currentUser => _auth.currentUser;
 
   static void setAuth() {
     _auth = FirebaseAuth.instance;
@@ -53,7 +56,10 @@ class AuthService {
     }
   }
 
-  Future signInWithGoogle() async {
-    
+  Future signInWithGoogle() async {}
+
+  Future<void> updateDisplayName(String name) async {
+    await _auth.currentUser.updateProfile(displayName: name);
+    notifyListeners();
   }
 }

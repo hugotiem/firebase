@@ -11,9 +11,9 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int _currentIndex = 0;          
+  int _currentIndex = 0;
   final List<Widget> _children = [
-    Search(), 
+    Search(),
     CalendarPage(),
     Profil(),
   ];
@@ -21,10 +21,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(
-        children: _children,
-        index: _currentIndex,
-      ),
+      body: _children[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         showSelectedLabels: false,
         showUnselectedLabels: false,
