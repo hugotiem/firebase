@@ -3,13 +3,15 @@ import 'package:pts/Model/components/back_appbar.dart';
 
 import '../../../../Constant.dart';
 
-class ThemePage extends StatefulWidget {
+
+
+class DateHourPage extends StatefulWidget {
   @override
-  _ThemePageState createState() => _ThemePageState();
+  _DateHourPageState createState() => _DateHourPageState();
 }
 
-class _ThemePageState extends State<ThemePage> {
-  String _theme;
+class _DateHourPageState extends State<DateHourPage> {
+  var _date;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +43,7 @@ class _ThemePageState extends State<ThemePage> {
                 width: MediaQuery.of(context).size.width * 0.9,
                 padding: EdgeInsets.only(top: 30, bottom: 40),
                 child: Text(
-                  "Choisissez un thème ",
+                  "Quel jour ? ",
                   style: TextStyle(  
                     wordSpacing: 1.5,
                     fontSize: 25,
@@ -59,45 +61,38 @@ class _ThemePageState extends State<ThemePage> {
                   color: PRIMARY_COLOR,
                   borderRadius: BorderRadius.circular(15)
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 16, right: 8),
-                  child: Center(
-                    child: DropdownButtonFormField<String>(
-                    value: _theme,
-                    items: [
-                      'Classique',
-                      'Gaming',
-                      'Jeu de société',
-                      'Thème',
-                    ].map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(
-                          value,
-                        ),
-                      );
-                    }).toList(),
-                    hint: Text(
-                      "Choisir un thème",
-                    ),
-                    elevation: 0,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder( 
-                        borderRadius: BorderRadius.circular(15)
+                child: TextButton(
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8),
+                      child: Container(
+                        child: 
+                          _date == null 
+                            ? Text(
+                              'Choisir une date',
+                              style: TextStyle(  
+                                color: Colors.grey[600],
+                                fontWeight: FontWeight.w400,
+                                fontSize: 18
+                              ),
+                            )
+                            : Text(
+                              'Le ${_date.day}/${_date.month}/${_date.year} ',
+                              style: TextStyle(  
+                                color: SECONDARY_COLOR,
+                                fontSize: 18
+                              ),
+                            ),
                       ),
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.white
-                        )
-                      )
                     ),
-                    onChanged: (String value) {
-                      setState(() {
-                        _theme = value;
-                      });
-                    },
                   ),
-                  ),
+                  onPressed: () {
+                    _selectionDate();
+                  },
+                  style: TextButton.styleFrom(
+                    primary: PRIMARY_COLOR,
+                  )
                 ),
               ),
             ),
@@ -105,5 +100,20 @@ class _ThemePageState extends State<ThemePage> {
         ),
       ),
     );
+  }
+
+  Future<Null> _selectionDate() async {
+    DateTime _dateChoisie = await showDatePicker(
+      context: context, 
+      initialDate: DateTime.now(), 
+      firstDate: DateTime.now(), 
+      lastDate: DateTime(2030),
+    );
+
+    if (_dateChoisie != null) {
+      setState(() {
+        _date = _dateChoisie;
+      });
+    }
   }
 }
