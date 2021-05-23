@@ -64,18 +64,18 @@ class _InfoScreenState extends State<InfoScreen> {
           actions: <Widget>[
             CupertinoButton(
               onPressed: () async {
-                _service
-                    .updateDisplayName(_name + " " + _surname)
-                    .then((value) => Navigator.of(context).pop());
+                _service.updateDisplayName(_name + " " + _surname);
 
                 if (_email.compareTo(_newEmail) != 0) {
                   var res = await _service.updateEmail(_newEmail);
                   if (res != "success") {
                     if (res == "has to confirm") {
-                      // AuthService.currentUser.reauthenticateWithCredential()
+                      // AuthService.currentUser.reauthenticateWithCredential();
                     }
                   }
                 }
+
+                Navigator.of(context).pop();
               },
               child: Text(
                 "Enregistrer",

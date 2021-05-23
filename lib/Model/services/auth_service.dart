@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
-class AuthService with ChangeNotifier {
+class AuthService extends ChangeNotifier {
   static FirebaseAuth _auth;
   static bool isLogged = false;
 
@@ -56,7 +57,19 @@ class AuthService with ChangeNotifier {
     }
   }
 
-  Future signInWithGoogle() async {}
+  Future<UserCredential> signInWithGoogle() async {
+    final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
+
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser.authentication;
+
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    return _auth.signInWithCredential(credential);
+  }
 
   Future<void> updateDisplayName(String name) async {
     await _auth.currentUser.updateProfile(displayName: name);
@@ -66,7 +79,6 @@ class AuthService with ChangeNotifier {
   Future<String> updateEmail(String newEmail) async {
     try {
       await _auth.currentUser.updateEmail(newEmail);
-      
     } on FirebaseAuthException catch (e) {
       if (e.code == "invalid-email") {
         return "Email invalide";

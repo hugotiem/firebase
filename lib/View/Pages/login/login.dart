@@ -261,28 +261,8 @@ class _LoginState extends State<Login> {
                                 ],
                               ),
                             ),
-                            onTap: () {
-                              // _auth
-                              //     .register(_email, _password)
-                              //     .then((value) => {
-                              //           if (value.containsKey("success"))
-                              //             {
-                              //               Navigator.of(context)
-                              //                   .pushReplacement(
-                              //                 CupertinoPageRoute(
-                              //                   fullscreenDialog: true,
-                              //                   builder: (context) =>
-                              //                       RegisterFormScreen(),
-                              //                 ),
-                              //               )
-                              //             }
-                              //           else
-                              //             {
-                              //               value.forEach((key, value) {
-                              //                 print(key);
-                              //               })
-                              //             }
-                              //         });
+                            onTap: () async {
+                              await _auth.signInWithGoogle();
                             },
                           ),
                         ],
