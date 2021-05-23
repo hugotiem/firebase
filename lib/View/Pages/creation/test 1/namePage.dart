@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/Model/components/back_appbar.dart';
+import 'package:pts/View/Pages/creation/test%201/themePage.dart';
 
-class FirsPageTest1 extends StatefulWidget {
+class NamePage extends StatefulWidget {
   @override
-  _FirsPageTest1State createState() => _FirsPageTest1State();
+  _NamePageState createState() => _NamePageState();
 }
 
-class _FirsPageTest1State extends State<FirsPageTest1> {
+class _NamePageState extends State<NamePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +24,11 @@ class _FirsPageTest1State extends State<FirsPageTest1> {
           Icons.arrow_forward_outlined,
           color: SECONDARY_COLOR,
           ),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(context, 
+            MaterialPageRoute(builder: (context) => ThemePage())
+          );
+        },
       ),
       body: SingleChildScrollView(
         child: Column(  
@@ -53,7 +58,7 @@ class _FirsPageTest1State extends State<FirsPageTest1> {
                   borderRadius: BorderRadius.circular(15)
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 8.0),
+                  padding: const EdgeInsets.only(left: 16),
                   child: Center(
                     child: TextFormField(  
                       style: TextStyle(
@@ -62,9 +67,6 @@ class _FirsPageTest1State extends State<FirsPageTest1> {
                       decoration: InputDecoration( 
                         hintText: 'ex: La fête du roi', 
                         border: InputBorder.none,
-                        icon: Icon(
-                          Icons.create_outlined
-                        )
                       )
                     ),
                   ),

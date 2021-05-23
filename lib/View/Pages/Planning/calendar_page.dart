@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/Model/components/CalendarWidget.dart';
+import 'package:pts/View/Pages/creation/test%201/namePage.dart';
 
 class CalendarPage extends StatelessWidget {
   @override
@@ -20,10 +21,17 @@ class CalendarPage extends StatelessWidget {
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 8.0),
-            child: Icon(
-              Icons.add,
-              color: ICONCOLOR,
-              size: 30,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(context, 
+                  MaterialPageRoute(builder: (context) => NamePage())
+                );
+              },
+              child: Icon(
+                Icons.add,
+                color: ICONCOLOR,
+                size: 30, 
+              ),
             ),
           )
         ],
