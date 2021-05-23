@@ -8,7 +8,7 @@ import 'package:pts/Model/components/text_materials.dart';
 import 'package:pts/Model/pts_components.dart';
 import 'package:pts/Model/services/auth_service.dart';
 import 'package:pts/View/Pages/creation/test%200/firstpage.dart';
-import 'package:pts/View/Pages/creation/test%201/firstpagetest1.dart';
+import 'package:pts/View/Pages/creation/test%201/namePage.dart';
 
 import 'package:pts/View/Pages/login/login.dart';
 import 'package:pts/View/Pages/profil/details.dart';
@@ -267,7 +267,7 @@ class _ProfilState extends State<Profil> {
                             ),
                           ),
                           ClickableContainer(
-                            to: FirsPageTest1(),
+                            to: NamePage(),
                             padding: EdgeInsets.only(
                               top: 0,
                               bottom: 0,

@@ -261,8 +261,8 @@ class _LoginState extends State<Login> {
                                 ],
                               ),
                             ),
-                            onTap: () async {
-                              await _auth.signInWithGoogle();
+                            onTap: () {
+                              _auth.signInWithGoogle().then((value) => Navigator.of(context).pop());
                             },
                           ),
                         ],
