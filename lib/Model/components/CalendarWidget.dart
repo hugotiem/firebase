@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
-class CalendarWidget extends StatelessWidget {
+class CalendarWidget extends StatefulWidget {
+  @override
+  _CalendarWidgetState createState() => _CalendarWidgetState();
+}
+
+class _CalendarWidgetState extends State<CalendarWidget> {
   @override
   Widget build(BuildContext context) {
     return SfCalendar(
