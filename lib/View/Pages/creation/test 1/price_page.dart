@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/Model/components/back_appbar.dart';
 
-import 'price_page.dart';
+import 'description_page.dart';
 
-class GuestNumber extends StatefulWidget {
+class PricePage extends StatefulWidget {
   @override
-  _GuestNumberState createState() => _GuestNumberState();
+  _PricePageState createState() => _PricePageState();
 }
 
-class _GuestNumberState extends State<GuestNumber> {
+class _PricePageState extends State<PricePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +27,7 @@ class _GuestNumberState extends State<GuestNumber> {
           ),
         onPressed: () {
           Navigator.push(context, 
-            MaterialPageRoute(builder: (context) => PricePage())
+            MaterialPageRoute(builder: (context) => DescriptionPage())
           );
         },
       ),
@@ -35,20 +35,46 @@ class _GuestNumberState extends State<GuestNumber> {
         child: Column(  
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(
-              child: Container(
-                width: MediaQuery.of(context).size.width * 0.9,
-                padding: EdgeInsets.only(top: 30, bottom: 40),
-                child: Text(
-                  "Combien d'invité ?",
-                  style: TextStyle(  
-                    wordSpacing: 1.5,
-                    fontSize: 25,
-                    color: SECONDARY_COLOR,
-                    fontWeight: FontWeight.w700
+            Row(
+              children: [
+                Center(
+                  child: Container(
+                    padding: EdgeInsets.only(
+                      top: 30, 
+                      bottom: 40,
+                      left: 20
+                      ),
+                    child: Text(
+                      "Le prix d'entré",
+                      style: TextStyle(  
+                        wordSpacing: 1.5,
+                        fontSize: 25,
+                        color: SECONDARY_COLOR,
+                        fontWeight: FontWeight.w700
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                Center(
+                  child: Container( 
+                    padding: EdgeInsets.only(
+                      top: 30, 
+                      bottom: 37,
+                      left: 5
+                      ),
+                    child: Opacity(
+                      opacity: 0.7,
+                      child: Text(
+                        '(optionnel)',
+                        style: TextStyle(  
+                          fontSize: 18,
+                          color: Colors.black
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+              ],
             ),
             Center(
               child: Container(
@@ -66,7 +92,7 @@ class _GuestNumberState extends State<GuestNumber> {
                         fontSize: 18,
                       ),
                       decoration: InputDecoration( 
-                        hintText: 'ex: 20', 
+                        hintText: 'ex: 20 €', 
                         border: InputBorder.none,
                       )
                     ),
@@ -74,9 +100,9 @@ class _GuestNumberState extends State<GuestNumber> {
                 ),
               ),
             ),
-          ],
-        ),
-      ),
+          ]
+        )
+      )
     );
   }
 }
