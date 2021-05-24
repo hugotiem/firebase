@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pts/Model/components/back_appbar.dart';
 
 import '../../../../Constant.dart';
+import 'location_page.dart';
 
 
 
@@ -30,9 +31,9 @@ class _DateHourPageState extends State<DateHourPage> {
           color: SECONDARY_COLOR,
           ),
         onPressed: () {
-          // Navigator.push(context, 
-          //   MaterialPageRoute(builder: (context) => ThemePage())
-          // );
+          Navigator.push(context, 
+            MaterialPageRoute(builder: (context) => LocationPage())
+          );
         },
       ),
       body: SingleChildScrollView(
@@ -44,12 +45,27 @@ class _DateHourPageState extends State<DateHourPage> {
                 width: MediaQuery.of(context).size.width * 0.9,
                 padding: EdgeInsets.only(top: 30, bottom: 40),
                 child: Text(
-                  "Quel jour ? ",
+                  "Quand se déroulera-t'elle ? ",
                   style: TextStyle(  
                     wordSpacing: 1.5,
                     fontSize: 25,
                     color: SECONDARY_COLOR,
                     fontWeight: FontWeight.w700
+                  ),
+                ),
+              ),
+            ),
+            Center(
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.9,
+                padding: EdgeInsets.only(bottom: 20),
+                child: Text(
+                  "Date",
+                  style: TextStyle(  
+                    wordSpacing: 1.5,
+                    fontSize: 22,
+                    color: SECONDARY_COLOR,
+                    fontWeight: FontWeight.w500
                   ),
                 ),
               ),
@@ -100,14 +116,14 @@ class _DateHourPageState extends State<DateHourPage> {
             Center(
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.9,
-                padding: EdgeInsets.only(top: 40, bottom: 40),
+                padding: EdgeInsets.only(top: 40, bottom: 20),
                 child: Text(
-                  "Quelle heure ? ",
+                  "Heure",
                   style: TextStyle(  
                     wordSpacing: 1.5,
-                    fontSize: 25,
+                    fontSize: 22,
                     color: SECONDARY_COLOR,
-                    fontWeight: FontWeight.w700
+                    fontWeight: FontWeight.w500
                   ),
                 ),
               ),
