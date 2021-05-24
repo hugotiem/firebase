@@ -169,7 +169,6 @@ class _ProfilState extends State<Profil> {
                             ),
                           ),
                           ClickableContainer(
-                            to: API(),
                             padding: EdgeInsets.only(
                               top: 0,
                               bottom: 0,

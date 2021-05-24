@@ -463,94 +463,98 @@ class _LastPageState extends State<LastPage> {
 
   Future<Null> _edit(context) async {
     showModalBottomSheet(
-        context: context,
-        builder: (BuildContext bc) {
-          return Container(
-              child: SingleChildScrollView(
-            child: Column(children: <Widget>[
-              // first page
-              TextFormField(
-                initialValue: Soiree.nom,
-                decoration: InputDecoration(
-                  labelText: "Votre soirée s'appelera :",
-                  border: InputBorder.none,
-                  icon: Icon(Icons.create_outlined),
-                ),
-                onChanged: (value) {
-                  setState(() {
-                    _name = value;
-                  });
-                },
-              ),
-              DropdownButtonFormField<String>(
-                value: Soiree.theme,
-                items: [
-                  'Classique',
-                  'Gaming',
-                  'Jeu de société',
-                  'Thème',
-                  'Etudiante'
-                ].map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(
-                      value,
-                    ),
-                  );
-                }).toList(),
-                hint: Text(
-                  "Choisir un thème",
-                ),
-                decoration: InputDecoration(
-                    enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white))),
-                isExpanded: true,
-                onChanged: (String value) {
-                  setState(() {
-                    _themeValue = value;
-                  });
-                },
-              ),
-              TextFormField(
-                initialValue: Soiree.nombre,
-                decoration: InputDecoration(
-                    labelText: "Le nombre d'inviter sera de :",
+      context: context,
+      builder: (BuildContext bc) {
+        return Container(
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                // first page
+                TextFormField(
+                  initialValue: Soiree.nom,
+                  decoration: InputDecoration(
+                    labelText: "Votre soirée s'appelera :",
                     border: InputBorder.none,
-                    icon: Icon(Icons.person_add_alt_1_outlined)),
-                onChanged: (value) {
-                  setState(() {
-                    _nombre = value;
-                  });
-                },
-              ),
-              // second page
-              ElevatedButton(
-                child: new Text(
-                  'Valider',
-                  style: TextStyle(
-                    color: PRIMARY_COLOR,
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
+                    icon: Icon(Icons.create_outlined),
                   ),
+                  onChanged: (value) {
+                    setState(() {
+                      _name = value;
+                    });
+                  },
                 ),
-                style: ElevatedButton.styleFrom(
-                  primary: SECONDARY_COLOR,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                  ),
-                ),
-                onPressed: () {
-                  setState(() {
-                    Soiree.setDataFistPage(
-                      _name,
-                      _themeValue,
-                      _nombre,
+                DropdownButtonFormField<String>(
+                  value: Soiree.theme,
+                  items: [
+                    'Classique',
+                    'Gaming',
+                    'Jeu de société',
+                    'Thème',
+                    'Etudiante'
+                  ].map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(
+                        value,
+                      ),
                     );
-                  });
-                },
-              ),
-            ]),
-          ));
-        });
+                  }).toList(),
+                  hint: Text(
+                    "Choisir un thème",
+                  ),
+                  decoration: InputDecoration(
+                      enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white))),
+                  isExpanded: true,
+                  onChanged: (String value) {
+                    setState(() {
+                      _themeValue = value;
+                    });
+                  },
+                ),
+                TextFormField(
+                  initialValue: Soiree.nombre,
+                  decoration: InputDecoration(
+                      labelText: "Le nombre d'inviter sera de :",
+                      border: InputBorder.none,
+                      icon: Icon(Icons.person_add_alt_1_outlined)),
+                  onChanged: (value) {
+                    setState(() {
+                      _nombre = value;
+                    });
+                  },
+                ),
+                // second page
+                ElevatedButton(
+                  child: new Text(
+                    'Valider',
+                    style: TextStyle(
+                      color: PRIMARY_COLOR,
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    primary: SECONDARY_COLOR,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      Soiree.setDataFistPage(
+                        _name,
+                        _themeValue,
+                        _nombre,
+                      );
+                    });
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 }

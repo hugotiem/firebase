@@ -262,7 +262,10 @@ class _LoginState extends State<Login> {
                               ),
                             ),
                             onTap: () {
-                              _auth.signInWithGoogle().then((value) => Navigator.of(context).pop());
+                              _auth
+                                  .signInWithGoogle()
+                                  .then((value) => Navigator.of(context).pop())
+                                  .catchError((onError) => print(onError));
                             },
                           ),
                         ],

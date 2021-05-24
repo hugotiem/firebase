@@ -67,8 +67,14 @@ class AuthService extends ChangeNotifier {
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
-
     return _auth.signInWithCredential(credential);
+  }
+
+  Future<void> reauthentification({String email, String password}) async {
+    EmailAuthCredential credential =
+        EmailAuthProvider.credential(email: email, password: password);
+
+    await _auth.currentUser.reauthenticateWithCredential(credential);
   }
 
   Future<void> updateDisplayName(String name) async {

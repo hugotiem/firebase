@@ -68,9 +68,34 @@ class _InfoScreenState extends State<InfoScreen> {
 
                 if (_email.compareTo(_newEmail) != 0) {
                   var res = await _service.updateEmail(_newEmail);
+                  print(res);
                   if (res != "success") {
                     if (res == "has to confirm") {
-                      // AuthService.currentUser.reauthenticateWithCredential();
+                      await showModalBottomSheet(
+                        context: context,
+                        builder: (BuildContext bc) {
+                          return Container(
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: <Widget>[
+                                  TextFormField(
+                                    decoration: InputDecoration(
+                                      labelText: "Mot de passe :",
+                                      border: InputBorder.none,
+                                      icon: Icon(Icons.lock),
+                                    ),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _name = value;
+                                      });
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      );
                     }
                   }
                 }
