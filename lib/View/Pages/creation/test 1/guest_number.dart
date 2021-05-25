@@ -40,7 +40,7 @@ class _GuestNumberState extends State<GuestNumber> {
                 width: MediaQuery.of(context).size.width * 0.9,
                 padding: EdgeInsets.only(top: 30, bottom: 40),
                 child: Text(
-                  "Combien d'invité ?",
+                  "Combien de personnes souhaitez-vous inviter ?",
                   style: TextStyle(  
                     wordSpacing: 1.5,
                     fontSize: 25,
@@ -50,29 +50,49 @@ class _GuestNumberState extends State<GuestNumber> {
                 ),
               ),
             ),
-            Center(
-              child: Container(
-                height: 50,
-                width: MediaQuery.of(context).size.width * 0.9,
-                decoration: BoxDecoration(  
-                  color: PRIMARY_COLOR,
-                  borderRadius: BorderRadius.circular(15)
-                ),
-                child: Padding(
+            Row(
+              children: [
+                Padding(
                   padding: const EdgeInsets.only(left: 16),
-                  child: Center(
-                    child: TextFormField(  
-                      style: TextStyle(
-                        fontSize: 18,
+                  child: Container(
+                    height: 60,
+                    width: 60,
+                    decoration: BoxDecoration(  
+                      color: PRIMARY_COLOR,
+                      borderRadius: BorderRadius.circular(15)
+                    ),
+                    child: Padding(
+                     padding: const EdgeInsets.only(left: 16),
+                      child: Center(
+                        child: TextFormField(  
+                          style: TextStyle(
+                            fontSize: 30,
+                          ),
+                          decoration: InputDecoration( 
+                            hintText: '20', 
+                            border: InputBorder.none,
+                          )
+                        ),
                       ),
-                      decoration: InputDecoration( 
-                        hintText: 'ex: 20', 
-                        border: InputBorder.none,
-                      )
                     ),
                   ),
                 ),
-              ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: Container( 
+                    child: Opacity(
+                      opacity: 0.7,
+                      child: Text( 
+                        'invités',
+                        style: TextStyle(  
+                          fontSize: 20,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+              ],
             ),
           ],
         ),

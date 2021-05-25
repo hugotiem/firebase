@@ -188,6 +188,7 @@ class _DateHourPageState extends State<DateHourPage> {
           data: ThemeData.light().copyWith(
             colorScheme: ColorScheme.light().copyWith(
               primary: SECONDARY_COLOR,
+              onPrimary: ICONCOLOR
             ),
           ), 
           child: child
@@ -211,6 +212,7 @@ class _DateHourPageState extends State<DateHourPage> {
           data: ThemeData.light().copyWith(
             colorScheme: ColorScheme.light().copyWith(
               primary: SECONDARY_COLOR,
+              onPrimary: ICONCOLOR
             ),
           ), 
           child: child
