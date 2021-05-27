@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/Model/components/back_appbar.dart';
@@ -15,7 +16,17 @@ class _NamePageState extends State<NamePage> {
       backgroundColor: Colors.white,      
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50),
-        child: BackAppBar(),
+        child: BackAppBar(
+          leading: CupertinoButton(
+              child: Icon(
+                Icons.close,
+                color: SECONDARY_COLOR,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+        ),
       ),
       floatingActionButton: FloatingActionButton( 
         backgroundColor: PRIMARY_COLOR,
