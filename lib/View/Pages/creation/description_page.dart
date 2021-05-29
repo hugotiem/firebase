@@ -28,7 +28,7 @@ class _DescriptionPageState extends State<DescriptionPage> {
             _description
           );
 
-          await db.collection("Party").add(
+          await db.collection("party").add(
             {
               'Name' : Soiree.nom,
               'Theme': Soiree.theme,

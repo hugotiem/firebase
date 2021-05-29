@@ -12,6 +12,8 @@ import 'package:pts/View/Pages/login/login.dart';
 import 'package:pts/View/Pages/profil/details.dart';
 import 'package:pts/View/Pages/profil/info_screen.dart';
 
+import 'list_of_party.dart';
+
 class Profil extends StatefulWidget {
   @override
   _ProfilState createState() => _ProfilState();
@@ -131,6 +133,7 @@ class _ProfilState extends State<Profil> {
                               )
                           ),
                           ClickableContainer(
+                            to: GetPartyData(),
                             margin: EdgeInsets.only(top: 10),
                             padding: EdgeInsets.only(
                               top: 0,
