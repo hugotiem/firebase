@@ -125,12 +125,12 @@ class _FourthpageState extends State<Fourthpage> {
                     ),
                   ),
                   onPressed: () {
-                    Soiree.setDataFourthPage(
-                      _paiement,
-                      _prix,
-                      _gratuit,
-                    );
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => LastPage())); 
+                    // Soiree.setDataFourthPage(
+                    //   _paiement,
+                    //   _prix,
+                    //   _gratuit,
+                    // );
+                    // Navigator.push(context, MaterialPageRoute(builder: (context) => LastPage())); 
                   },
                 ),
               )

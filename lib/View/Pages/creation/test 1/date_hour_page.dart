@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pts/Model/components/back_appbar.dart';
+import 'package:pts/Model/soiree.dart';
 
 import '../../../../Constant.dart';
 import 'location_page.dart';
@@ -31,6 +32,10 @@ class _DateHourPageState extends State<DateHourPage> {
           color: SECONDARY_COLOR,
           ),
         onPressed: () {
+          Soiree.setDataDateHourPage(
+            _date,
+            _heure
+          );
           Navigator.push(context, 
             MaterialPageRoute(builder: (context) => LocationPage())
           );

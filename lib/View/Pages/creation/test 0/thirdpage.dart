@@ -130,13 +130,13 @@ class _ThirdPageState extends State<ThirdPage> {
                     ),
                   ),
                   onPressed: () {
-                    Soiree.setDataThirdPage(
-                      _adresse,
-                      _ville,
-                      _codepostal,
-                    );
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Fourthpage()));
+                    // Soiree.setDataThirdPage(
+                    //   _adresse,
+                    //   _ville,
+                    //   _codepostal,
+                    // );
+                    // Navigator.push(context,
+                    //     MaterialPageRoute(builder: (context) => Fourthpage()));
                   },
                 ),
               )),

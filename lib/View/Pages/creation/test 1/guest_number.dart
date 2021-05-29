@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/Model/components/back_appbar.dart';
+import 'package:pts/Model/soiree.dart';
 
 import 'price_page.dart';
 
@@ -10,6 +11,8 @@ class GuestNumber extends StatefulWidget {
 }
 
 class _GuestNumberState extends State<GuestNumber> {
+  var _nombre;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,6 +29,9 @@ class _GuestNumberState extends State<GuestNumber> {
           color: SECONDARY_COLOR,
           ),
         onPressed: () {
+          Soiree.setDataNumberPage(
+            _nombre
+          );
           Navigator.push(context, 
             MaterialPageRoute(builder: (context) => PricePage())
           );
@@ -64,7 +70,10 @@ class _GuestNumberState extends State<GuestNumber> {
                     child: Padding(
                      padding: const EdgeInsets.only(left: 16),
                       child: Center(
-                        child: TextFormField(  
+                        child: TextFormField(
+                          onChanged: (value) {
+                            _nombre = value;
+                          }, 
                           style: TextStyle(
                             fontSize: 30,
                           ),

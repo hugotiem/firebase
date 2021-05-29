@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/Model/components/back_appbar.dart';
+import 'package:pts/Model/soiree.dart';
 import 'package:pts/View/Pages/creation/test%201/theme_page.dart';
 
 class NamePage extends StatefulWidget {
@@ -10,6 +11,8 @@ class NamePage extends StatefulWidget {
 }
 
 class _NamePageState extends State<NamePage> {
+  String _name;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,6 +39,9 @@ class _NamePageState extends State<NamePage> {
           color: SECONDARY_COLOR,
           ),
         onPressed: () {
+          Soiree.setDataNamePage(
+            _name
+          );
           Navigator.push(context, 
             MaterialPageRoute(builder: (context) => ThemePage())
           );
@@ -72,6 +78,9 @@ class _NamePageState extends State<NamePage> {
                   padding: const EdgeInsets.only(left: 16),
                   child: Center(
                     child: TextFormField(  
+                      onChanged: (value) {
+                        _name = value;
+                      },
                       style: TextStyle(
                         fontSize: 18,
                       ),

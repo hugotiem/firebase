@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/Model/components/back_appbar.dart';
+import 'package:pts/Model/soiree.dart';
 
 import 'description_page.dart';
 
@@ -10,6 +11,8 @@ class PricePage extends StatefulWidget {
 }
 
 class _PricePageState extends State<PricePage> {
+  var _prix;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,6 +29,9 @@ class _PricePageState extends State<PricePage> {
           color: SECONDARY_COLOR,
           ),
         onPressed: () {
+          Soiree.setDataPricePage(
+            _prix
+          );
           Navigator.push(context, 
             MaterialPageRoute(builder: (context) => DescriptionPage())
           );
@@ -35,46 +41,23 @@ class _PricePageState extends State<PricePage> {
         child: Column(  
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                Center(
-                  child: Container(
-                    padding: EdgeInsets.only(
-                      top: 30, 
-                      bottom: 40,
-                      left: 20
-                      ),
-                    child: Text(
-                      "Le prix d'entré",
-                      style: TextStyle(  
-                        wordSpacing: 1.5,
-                        fontSize: 25,
-                        color: SECONDARY_COLOR,
-                        fontWeight: FontWeight.w700
-                      ),
-                    ),
+            Center(
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.9,
+                padding: EdgeInsets.only(
+                  top: 30, 
+                  bottom: 40,
+                  ),
+                child: Text(
+                  "A combien fixez-vous le prix d'entré ?",
+                  style: TextStyle(  
+                    wordSpacing: 1.5,
+                    fontSize: 25,
+                    color: SECONDARY_COLOR,
+                    fontWeight: FontWeight.w700
                   ),
                 ),
-                Center(
-                  child: Container( 
-                    padding: EdgeInsets.only(
-                      top: 30, 
-                      bottom: 37,
-                      left: 5
-                      ),
-                    child: Opacity(
-                      opacity: 0.7,
-                      child: Text(
-                        '(optionnel)',
-                        style: TextStyle(  
-                          fontSize: 18,
-                          color: Colors.black
-                        ),
-                      ),
-                    ),
-                  ),
-                )
-              ],
+              ),
             ),
             Row(
               children: [
@@ -90,7 +73,10 @@ class _PricePageState extends State<PricePage> {
                     child: Padding(
                      padding: const EdgeInsets.only(left: 16),
                       child: Center(
-                        child: TextFormField(  
+                        child: TextFormField(
+                          onChanged: (value) {
+                            _prix = value;
+                          },  
                           style: TextStyle(
                             fontSize: 30,
                           ),

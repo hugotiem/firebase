@@ -179,11 +179,11 @@ class _FirstPageState extends State<FirstPage> {
                     ),
                   ),
                   onPressed: () {
-                    Soiree.setDataFistPage(
-                      _name,
-                      _themeValue,
-                      _nombre,
-                    );
+                    // Soiree.setDataFistPage(
+                    //   _name,
+                    //   _themeValue,
+                    //   _nombre,
+                    // );
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => SecondPage()));
                   },

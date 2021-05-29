@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pts/Model/components/back_appbar.dart';
+import 'package:pts/Model/soiree.dart';
 
 import '../../../../Constant.dart';
 import 'date_hour_page.dart';
@@ -28,6 +29,9 @@ class _ThemePageState extends State<ThemePage> {
           color: SECONDARY_COLOR,
           ),
         onPressed: () {
+          Soiree.setDataThemePage(
+            _theme
+          );
           Navigator.push(context, 
             MaterialPageRoute(builder: (context) => DateHourPage())
           );
@@ -69,7 +73,7 @@ class _ThemePageState extends State<ThemePage> {
                       'Classique',
                       'Gaming',
                       'Jeu de société',
-                      'Thème',
+                      'Soirée à thème',
                     ].map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
