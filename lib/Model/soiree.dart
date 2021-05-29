@@ -6,6 +6,9 @@ class Soiree {
   static var heure;
   static var prix;
   static String description;
+  static String adresse;
+  static String ville;
+  static String codepostal;
 
   static void setDataNamePage(String _nom) {
     nom = _nom;
@@ -20,6 +23,12 @@ class Soiree {
     heure = _heure;
   }
 
+  static void setDataLocationPage(String _adresse, String _ville, String _codepostal) {
+    adresse = _adresse;
+    ville = _ville;
+    codepostal = _codepostal;
+  }
+
   static void setDataNumberPage(var _nombre) {
     nombre = _nombre;
   }
@@ -31,4 +40,5 @@ class Soiree {
   static void setDataDescriptionPage(String _description) {
     description = _description;
   }
+
 }

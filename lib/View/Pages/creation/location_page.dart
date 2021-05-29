@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/Model/components/back_appbar.dart';
+import 'package:pts/Model/soiree.dart';
 
 import 'guest_number.dart';
 
@@ -10,6 +11,10 @@ class LocationPage extends StatefulWidget {
 }
 
 class _LocationPageState extends State<LocationPage> {
+  String _adresse;
+  String _ville;
+  String _codepostal;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,6 +31,11 @@ class _LocationPageState extends State<LocationPage> {
           color: SECONDARY_COLOR,
           ),
         onPressed: () {
+          Soiree.setDataLocationPage(
+            _adresse,
+            _ville,
+            _codepostal
+          );
           Navigator.push(context, 
             MaterialPageRoute(builder: (context) => GuestNumber())
           );
@@ -77,6 +87,9 @@ class _LocationPageState extends State<LocationPage> {
                   padding: const EdgeInsets.only(left: 16),
                   child: Center(
                     child: TextFormField(  
+                      onChanged: (value) {
+                        _adresse = value;
+                      },
                       style: TextStyle(
                         fontSize: 18,
                       ),
@@ -116,6 +129,9 @@ class _LocationPageState extends State<LocationPage> {
                   padding: const EdgeInsets.only(left: 16),
                   child: Center(
                     child: TextFormField(  
+                      onChanged: (value) {
+                        _ville = value;
+                      },
                       style: TextStyle(
                         fontSize: 18,
                       ),
@@ -155,6 +171,9 @@ class _LocationPageState extends State<LocationPage> {
                   padding: const EdgeInsets.only(left: 16),
                   child: Center(
                     child: TextFormField(  
+                      onChanged: (value) {
+                        _codepostal = value;
+                      },
                       style: TextStyle(
                         fontSize: 18,
                       ),

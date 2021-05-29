@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/Model/components/back_appbar.dart';
 import 'package:pts/Model/soiree.dart';
-import 'package:pts/View/Pages/creation/test%201/theme_page.dart';
+import 'package:pts/View/Pages/creation/theme_page.dart';
 
 class NamePage extends StatefulWidget {
   @override

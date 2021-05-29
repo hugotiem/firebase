@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pts/Model/components/back_appbar.dart';
 import 'package:pts/Model/soiree.dart';
 
-import '../../../../Constant.dart';
+import '../../../Constant.dart';
 import 'location_page.dart';
 
 

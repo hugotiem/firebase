@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pts/Model/components/back_appbar.dart';
 import 'package:pts/Model/soiree.dart';
 
-import '../../../../Constant.dart';
+import '../../../Constant.dart';
 import 'date_hour_page.dart';
 
 class ThemePage extends StatefulWidget {

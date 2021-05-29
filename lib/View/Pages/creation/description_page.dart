@@ -21,6 +21,41 @@ class _DescriptionPageState extends State<DescriptionPage> {
         preferredSize: Size.fromHeight(50),
         child: BackAppBar(),
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () async {
+
+          Soiree.setDataDescriptionPage(
+            _description
+          );
+
+          await db.collection("Party").add(
+            {
+              'Name' : Soiree.nom,
+              'Theme': Soiree.theme,
+              'Date': Soiree.date,
+              'Hour': Soiree.heure.format(context),
+              'Number': Soiree.nombre,
+              'Price': Soiree.prix,
+              'Description': Soiree.description,
+              'adress': Soiree.adresse,
+              'city': Soiree.ville,
+              'postal code': Soiree.codepostal
+            }
+          );
+
+          Navigator.of(context).popUntil((route) => route.isFirst);
+
+        }, 
+        backgroundColor: SECONDARY_COLOR,
+        elevation: 0,
+        label: Text(
+          'Publier la soirée',
+          style: TextStyle(  
+            fontSize: 15
+          ),
+        )
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: SingleChildScrollView(
         child: Column(  
             children: [
@@ -67,41 +102,6 @@ class _DescriptionPageState extends State<DescriptionPage> {
                   ),
                 ),
               ),
-              Container(
-                padding: EdgeInsets.only(bottom: 20),
-                height: MediaQuery.of(context).size.height * 0.45,
-                alignment: Alignment.bottomCenter,
-                child: ElevatedButton( 
-                  style: ElevatedButton.styleFrom(
-                    primary: SECONDARY_COLOR,
-                    elevation: 0,
-                    shape: StadiumBorder()
-                  ),
-                  child: Text(
-                    "Publier la soirée",
-                    style: TextStyle(  
-                      fontSize: 18,
-                    ),
-                  ),
-                  onPressed: () async {
-                    Soiree.setDataDescriptionPage(
-                      _description
-                    );
-
-                    await db.collection("Party").add(
-                      {
-                        'Name' : Soiree.nom,
-                        'Theme': Soiree.theme,
-                        'Date': Soiree.date,
-                        'Hour': Soiree.heure.format(context),
-                        'Number': Soiree.nombre,
-                        'Price': Soiree.prix,
-                        'Description': Soiree.description
-                      }
-                    );
-                  },
-                ),
-              )
             ]
           )
         ),
