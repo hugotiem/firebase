@@ -120,6 +120,81 @@ class _ProfilState extends State<Profil> {
                     ),
                     PTSBox(
                       padding: EdgeInsets.only(top: 20, bottom: 20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget> [
+                          Container( 
+                            margin: EdgeInsets.only(left: 20, bottom: 10),
+                            child: BoldText(
+                              text: 'Activités',
+                              fontSize: 15,
+                              )
+                          ),
+                          ClickableContainer(
+                            margin: EdgeInsets.only(top: 10),
+                            padding: EdgeInsets.only(
+                              top: 0,
+                              bottom: 0,
+                              left: 20,
+                              right: 20,
+                            ),
+                            child: Container(
+                              padding: EdgeInsets.only(
+                                top: 15,
+                                bottom: 15,
+                              ),
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(
+                                    color: Colors.grey.withOpacity(0.23),
+                                  ),
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(
+                                    "Vos soirées",
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                  Icon(Icons.calendar_today_outlined)
+                                ],
+                              ),
+                            ),
+                          ),
+                          ClickableContainer(
+                            margin: EdgeInsets.only(top: 10),
+                            padding: EdgeInsets.only(
+                              top: 0,
+                              bottom: 0,
+                              left: 20,
+                              right: 20,
+                            ),
+                            child: Container(
+                              padding: EdgeInsets.only(
+                                top: 15,
+                                bottom: 15,
+                              ),
+                              
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(
+                                    "Messagerie",
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                  Icon(Icons.message_outlined)
+                                ],
+                              ),
+                            ),
+                          )
+                        ]
+                      ),
+                    ),
+                    PTSBox(
+                      padding: EdgeInsets.only(top: 20, bottom: 20),
                       // creer une list avec tous les elements
                       child: new Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -208,13 +283,6 @@ class _ProfilState extends State<Profil> {
                               padding: EdgeInsets.only(
                                 top: 20,
                                 bottom: 10,
-                              ),
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  bottom: BorderSide(
-                                    color: Colors.grey.withOpacity(0.23),
-                                  ),
-                                ),
                               ),
                               child: Row(
                                 mainAxisAlignment:
