@@ -90,248 +90,247 @@ class _ProfilState extends State<Profil> {
               _user = snapshot.data;
             }
 
-            return Container(
-              color: PRIMARY_COLOR,
-              child: Center(
-                child: Column(
-                  children: <Widget>[
-                    ClickableContainer(
-                      to: ProfilDetails(),
-                      containerShadow: true,
-                      child: Row(
-                        children: <Widget>[
-                          ProfilPhoto(),
-                          Container(
-                            margin: EdgeInsets.only(left: 20),
-                            child: new Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                BoldText(
-                                    text: _user.displayName != null
-                                        ? _user.displayName.split(" ")[0]
-                                        : ""),
-                                Opacity(
-                                  opacity: 0.7,
-                                  child: new Text("Afficher le profil"),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    PTSBox(
-                      padding: EdgeInsets.only(top: 20, bottom: 20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget> [
-                          Container( 
-                            margin: EdgeInsets.only(left: 20, bottom: 10),
-                            child: BoldText(
-                              text: 'Activités',
-                              fontSize: 15,
-                              )
-                          ),
-                          ClickableContainer(
-                            to: GetPartyData(),
-                            margin: EdgeInsets.only(top: 10),
-                            padding: EdgeInsets.only(
-                              top: 0,
-                              bottom: 0,
-                              left: 20,
-                              right: 20,
-                            ),
-                            child: Container(
-                              padding: EdgeInsets.only(
-                                top: 15,
-                                bottom: 15,
-                              ),
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  bottom: BorderSide(
-                                    color: Colors.grey.withOpacity(0.23),
-                                  ),
-                                ),
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text(
-                                    "Vos soirées",
-                                    style: TextStyle(fontSize: 20),
-                                  ),
-                                  Icon(Icons.calendar_today_outlined)
-                                ],
-                              ),
-                            ),
-                          ),
-                          ClickableContainer(
-                            margin: EdgeInsets.only(top: 10),
-                            padding: EdgeInsets.only(
-                              top: 0,
-                              bottom: 0,
-                              left: 20,
-                              right: 20,
-                            ),
-                            child: Container(
-                              padding: EdgeInsets.only(
-                                top: 15,
-                                bottom: 15,
-                              ),
-                              
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text(
-                                    "Messagerie",
-                                    style: TextStyle(fontSize: 20),
-                                  ),
-                                  Icon(Icons.message_outlined)
-                                ],
-                              ),
-                            ),
-                          )
-                        ]
-                      ),
-                    ),
-                    PTSBox(
-                      padding: EdgeInsets.only(top: 20, bottom: 20),
-                      // creer une list avec tous les elements
-                      child: new Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Container(
-                            margin: EdgeInsets.only(left: 20, bottom: 10),
-                            child: BoldText(
-                              text: "Paramètres du compte",
-                              fontSize: 15,
-                            ),
-                          ),
-                          ClickableContainer(
-                            to: InfoScreen(),
-                            margin: EdgeInsets.only(top: 10),
-                            padding: EdgeInsets.only(
-                              top: 0,
-                              bottom: 0,
-                              left: 20,
-                              right: 20,
-                            ),
-                            child: new Container(
-                              padding: EdgeInsets.only(
-                                top: 15,
-                                bottom: 15,
-                              ),
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  bottom: BorderSide(
-                                    color: Colors.grey.withOpacity(0.23),
-                                  ),
-                                ),
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  new Text(
-                                    "Informations personnelles",
-                                    style: TextStyle(fontSize: 20),
-                                  ),
-                                  new Icon(Icons.perm_identity)
-                                ],
-                              ),
-                            ),
-                          ),
-                          ClickableContainer(
-                            padding: EdgeInsets.only(
-                              top: 0,
-                              bottom: 0,
-                              left: 20,
-                              right: 20,
-                            ),
-                            child: new Container(
-                              padding: EdgeInsets.only(
-                                top: 15,
-                                bottom: 15,
-                              ),
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  bottom: BorderSide(
-                                    color: Colors.grey.withOpacity(0.23),
-                                  ),
-                                ),
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  new Text(
-                                    "Paiements",
-                                    style: TextStyle(fontSize: 20),
-                                  ),
-                                  new Icon(Icons.payment)
-                                ],
-                              ),
-                            ),
-                          ),
-                          ClickableContainer(
-                            padding: EdgeInsets.only(
-                              top: 0,
-                              bottom: 0,
-                              left: 20,
-                              right: 20,
-                            ),
-                            child: new Container(
-                              padding: EdgeInsets.only(
-                                top: 20,
-                                bottom: 10,
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  new Text(
-                                    "Notifications",
-                                    style: TextStyle(fontSize: 20),
-                                  ),
-                                  new Icon(Icons.notifications_outlined)
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () async {
-                        await AuthService.auth.signOut();
-                      },
-                      child: Container(
-                        margin: EdgeInsets.all(10),
-                        padding: EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20)),
+            return SingleChildScrollView(
+              child: Container(
+                color: PRIMARY_COLOR,
+                child: Center(
+                  child: Column(
+                    children: <Widget>[
+                      ClickableContainer(
+                        to: ProfilDetails(),
+                        containerShadow: true,
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            Text(
-                              "Se deconnecter",
-                              style: TextStyle(
-                                color: Colors.red,
-                                fontSize: 20,
+                            ProfilPhoto(),
+                            Container(
+                              margin: EdgeInsets.only(left: 20),
+                              child: new Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  BoldText(
+                                      text: _user.displayName != null
+                                          ? _user.displayName.split(" ")[0]
+                                          : ""),
+                                  Opacity(
+                                    opacity: 0.7,
+                                    child: new Text("Afficher le profil"),
+                                  ),
+                                ],
                               ),
-                            ),
-                            Icon(
-                              Icons.logout,
-                              color: Colors.red,
                             ),
                           ],
                         ),
                       ),
-                    ),
-                  ],
+                      PTSBox(
+                        padding: EdgeInsets.only(top: 20, bottom: 20),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Container(
+                                  margin: EdgeInsets.only(left: 20, bottom: 10),
+                                  child: BoldText(
+                                    text: 'Activités',
+                                    fontSize: 15,
+                                  )),
+                              ClickableContainer(
+                                to: GetPartyData(),
+                                margin: EdgeInsets.only(top: 10),
+                                padding: EdgeInsets.only(
+                                  top: 0,
+                                  bottom: 0,
+                                  left: 20,
+                                  right: 20,
+                                ),
+                                child: Container(
+                                  padding: EdgeInsets.only(
+                                    top: 15,
+                                    bottom: 15,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    border: Border(
+                                      bottom: BorderSide(
+                                        color: Colors.grey.withOpacity(0.23),
+                                      ),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Text(
+                                        "Vos soirées",
+                                        style: TextStyle(fontSize: 20),
+                                      ),
+                                      Icon(Icons.calendar_today_outlined)
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              ClickableContainer(
+                                margin: EdgeInsets.only(top: 10),
+                                padding: EdgeInsets.only(
+                                  top: 0,
+                                  bottom: 0,
+                                  left: 20,
+                                  right: 20,
+                                ),
+                                child: Container(
+                                  padding: EdgeInsets.only(
+                                    top: 15,
+                                    bottom: 15,
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Text(
+                                        "Messagerie",
+                                        style: TextStyle(fontSize: 20),
+                                      ),
+                                      Icon(Icons.message_outlined)
+                                    ],
+                                  ),
+                                ),
+                              )
+                            ]),
+                      ),
+                      PTSBox(
+                        padding: EdgeInsets.only(top: 20, bottom: 20),
+                        // creer une list avec tous les elements
+                        child: new Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Container(
+                              margin: EdgeInsets.only(left: 20, bottom: 10),
+                              child: BoldText(
+                                text: "Paramètres du compte",
+                                fontSize: 15,
+                              ),
+                            ),
+                            ClickableContainer(
+                              to: InfoScreen(),
+                              margin: EdgeInsets.only(top: 10),
+                              padding: EdgeInsets.only(
+                                top: 0,
+                                bottom: 0,
+                                left: 20,
+                                right: 20,
+                              ),
+                              child: new Container(
+                                padding: EdgeInsets.only(
+                                  top: 15,
+                                  bottom: 15,
+                                ),
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      color: Colors.grey.withOpacity(0.23),
+                                    ),
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    new Text(
+                                      "Informations personnelles",
+                                      style: TextStyle(fontSize: 20),
+                                    ),
+                                    new Icon(Icons.perm_identity)
+                                  ],
+                                ),
+                              ),
+                            ),
+                            ClickableContainer(
+                              padding: EdgeInsets.only(
+                                top: 0,
+                                bottom: 0,
+                                left: 20,
+                                right: 20,
+                              ),
+                              child: new Container(
+                                padding: EdgeInsets.only(
+                                  top: 15,
+                                  bottom: 15,
+                                ),
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      color: Colors.grey.withOpacity(0.23),
+                                    ),
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    new Text(
+                                      "Paiements",
+                                      style: TextStyle(fontSize: 20),
+                                    ),
+                                    new Icon(Icons.payment)
+                                  ],
+                                ),
+                              ),
+                            ),
+                            ClickableContainer(
+                              padding: EdgeInsets.only(
+                                top: 0,
+                                bottom: 0,
+                                left: 20,
+                                right: 20,
+                              ),
+                              child: new Container(
+                                padding: EdgeInsets.only(
+                                  top: 20,
+                                  bottom: 10,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    new Text(
+                                      "Notifications",
+                                      style: TextStyle(fontSize: 20),
+                                    ),
+                                    new Icon(Icons.notifications_outlined)
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () async {
+                          await AuthService.auth.signOut();
+                        },
+                        child: Container(
+                          margin: EdgeInsets.all(10),
+                          padding: EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text(
+                                "Se deconnecter",
+                                style: TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 20,
+                                ),
+                              ),
+                              Icon(
+                                Icons.logout,
+                                color: Colors.red,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             );

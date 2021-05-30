@@ -63,6 +63,7 @@ class _InfoScreenState extends State<InfoScreen> {
         child: BackAppBar(
           actions: <Widget>[
             CupertinoButton(
+              color: Colors.transparent,
               onPressed: () async {
                 _service.updateDisplayName(_name + " " + _surname);
 
