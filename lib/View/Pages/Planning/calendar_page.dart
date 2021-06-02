@@ -36,7 +36,14 @@ class CalendarPage extends StatelessWidget {
           )
         ],
       ),
-      body: CalendarWidget(),
+      body: Column(
+        children: [
+          Container(
+            height: MediaQuery.of(context).size.height * 0.6,
+            child: CalendarWidget()
+          ),
+        ],
+      ),
     );
   }
 }
