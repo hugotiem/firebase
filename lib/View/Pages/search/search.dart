@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pts/Model/components/backgroundtitle.dart';
@@ -93,165 +94,20 @@ class _SearchState extends State<Search> {
                     ),
                     SizedBox(
                       height: 200,
-                      child: PageView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 10,
-                        controller: PageController(viewportFraction: 0.85),
-                        onPageChanged: (int index) =>
-                            setState(() => _index = index),
-                        itemBuilder: (_, i) {
-                          return Transform.scale(
-                            scale: 1,
-                            child: GridView.count(
-                              childAspectRatio: (100 / 320),
-                              crossAxisCount: 2,
-                              scrollDirection: Axis.horizontal,
-                              children: <Widget>[
-                                Stack(
-                                  children: <Widget>[
-                                    Container(
-                                      padding: EdgeInsets.all(8),
-                                      decoration: BoxDecoration(
-                                          color: Colors.transparent),
-                                      child: OpenContainer(
-                                        closedElevation: 0.0,
-                                        transitionDuration: Duration(milliseconds: 400),
-                                        closedColor: Colors.grey[100],
-                                        openColor: Colors.white,
-                                        closedBuilder: (context, returnValue) {
-                                          return Row(
-                                          children: <Widget>[
-                                            Container(
-                                              width: 80,
-                                              decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(15),
-                                                color: Colors.white,
-                                              )
-                                            ),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: <Widget>[
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Container(
-                                                      padding: EdgeInsets.only(
-                                                          left: 8),
-                                                      child: Text(
-                                                        'Nom',
-                                                        style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 20,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                Container(
-                                                  padding:
-                                                      EdgeInsets.only(left: 8),
-                                                  child: Opacity(
-                                                    opacity: 0.7,
-                                                    child: Text(
-                                                      'description',
-                                                      style: TextStyle(
-                                                        fontSize: 15,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                      openBuilder: (context, returnValue) {
-                                        return OpenBuilderContainer();
-                                      },
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Stack(children: [
-                                  Container(
-                                    padding: EdgeInsets.all(8),
-                                    decoration: BoxDecoration(
-                                      color: Colors.transparent,
-                                    ),
-                                    child: OpenContainer(
-                                      closedElevation: 0.0,
-                                        transitionDuration: Duration(milliseconds: 400),
-                                        closedColor: Colors.grey[100],
-                                        openColor: Colors.white,
-                                        closedBuilder: (context, returnValue) {
-                                          return Row(
-                                        children: <Widget>[
-                                          Container(
-                                            width: 80,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(15),
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: <Widget>[
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: <Widget>[
-                                                  Container(
-                                                    padding:
-                                                        EdgeInsets.only(left: 8),
-                                                    child: Text(
-                                                      'Nom',
-                                                      style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 20,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              Container(
-                                                padding: EdgeInsets.only(left: 8),
-                                                child: Opacity(
-                                                  opacity: 0.7,
-                                                  child: Text(
-                                                    'description',
-                                                    style: TextStyle(
-                                                      fontSize: 15,
-                                                    ),
-                                                  ),
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                    openBuilder: (context, returnValue) {
-                                      return Container();
-                                    },
-                                    ),
-                                  ),
-                                ]),
-                              ],
-                            ),
+                      child: StreamBuilder(
+                        stream: getPartyStreamSnapshot(context),
+                        builder:  (context, snapshot) {
+                          if (!snapshot.hasData) return const Text('Loading...');
+                          return PageView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: snapshot.data.docs.length,
+                            controller: PageController(viewportFraction: 0.85),
+                            onPageChanged: (int index) =>
+                                setState(() => _index = index),
+                            itemBuilder: (BuildContext context, int index) => 
+                              buildPartyCard(context, snapshot.data.docs[index])
                           );
-                        },
+                        }
                       ),
                     ),
                   ],
@@ -610,6 +466,20 @@ class _SearchState extends State<Search> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Stream<QuerySnapshot> getPartyStreamSnapshot(BuildContext context) async* {
+    yield* FirebaseFirestore.instance
+    .collection('party')
+    .snapshots();
+  }
+
+  Widget buildPartyCard(BuildContext context, DocumentSnapshot party) {
+    return Container( 
+      child: Card(
+        child: Text(party['Name'])
       ),
     );
   }

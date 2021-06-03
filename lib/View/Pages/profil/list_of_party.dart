@@ -22,6 +22,8 @@ class GetPartyData extends StatelessWidget {
   }
 
   Stream<QuerySnapshot> getPartyStreamSnapshots(BuildContext context) async* {
+    //à ajouter les soirées que l'utilisateur a créé et à rejoind
+    //pour l'instant c'est la liste de toute les soirées créées
     yield* FirebaseFirestore.instance
     .collection('party')
     .snapshots();
