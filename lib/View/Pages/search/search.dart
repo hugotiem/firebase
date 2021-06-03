@@ -89,8 +89,8 @@ class _SearchState extends State<Search> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Container(
-                      margin: EdgeInsets.only(top: 20, left: 20, bottom: 10),
-                      child: BoldText(text: "A proximité"),
+                      margin: EdgeInsets.only(top: 30, left: 20),
+                      child: BoldText(text: "Dernières créées"),
                     ),
                     SizedBox(
                       height: 200,
@@ -162,7 +162,8 @@ class _SearchState extends State<Search> {
                                     colors: [
                                       Color(0xFF1c92d2),
                                       Color(0xFFf2fcfe)
-                                    ]),
+                                    ]
+                                  ),
                               ),
                               child: Center(
                                 child: Text('Gamings'),
@@ -477,10 +478,79 @@ class _SearchState extends State<Search> {
   }
 
   Widget buildPartyCard(BuildContext context, DocumentSnapshot party) {
-    return Container( 
-      child: Card(
-        child: Text(party['Name'])
-      ),
-    );
+    return Stack(
+      children: <Widget>[
+        Container(
+          padding: EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: Colors.transparent
+          ),
+          child: OpenContainer(
+            closedElevation: 0.0,
+            transitionDuration: Duration(milliseconds: 400),
+            closedColor: Colors.grey[100],
+            openColor: Colors.white,
+            closedBuilder: (context, returnValue) {
+              return Row(
+                children: <Widget>[
+                  Container(
+                    width: 145,
+                    height: 145,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Color(0xFF1c92d2),
+                          Color(0xFFf2fcfe)
+                        ]
+                      ),
+                    )
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.only(left: 8),
+                              child: Text(
+                                party['Name'],
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(left: 8),
+                          child: Opacity(
+                            opacity: 0.7,
+                            child: Text(
+                              party['city'],
+                              style: TextStyle(
+                                fontSize: 15,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                );
+              },
+              openBuilder: (context, returnValue) {
+                return OpenBuilderContainer();
+              },
+            ),
+          ),
+          
+        ],
+      );
   }
 }
