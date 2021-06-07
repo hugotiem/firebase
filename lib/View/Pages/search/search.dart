@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pts/Model/components/back_appbar.dart';
 import 'package:pts/Model/components/backgroundtitle.dart';
 import 'package:pts/Model/components/custom_sliver.dart';
-import 'package:pts/Model/components/opencontainer_soiree.dart';
 import 'package:pts/Model/components/text_materials.dart';
+import 'package:pts/Model/services/auth_service.dart';
 import 'package:pts/Model/services/firestore_service.dart';
 import 'package:pts/View/Pages/search/searchbar_screen.dart';
 import 'package:animations/animations.dart';
@@ -81,7 +82,7 @@ class _SearchState extends State<Search> {
         child: ListView(
           children: <Widget>[
             SizedBox(
-              height: 350,
+              height: 325,
             ),
             Container(
                 margin: EdgeInsets.only(top: 20),
@@ -89,11 +90,11 @@ class _SearchState extends State<Search> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Container(
-                      margin: EdgeInsets.only(top: 30, left: 20),
+                      margin: EdgeInsets.only(top: 60, left: 20),
                       child: BoldText(text: "Dernières créées"),
                     ),
                     SizedBox(
-                      height: 200,
+                      height: 250,
                       child: StreamBuilder(
                         stream: getPartyStreamSnapshot(context),
                         builder:  (context, snapshot) {
@@ -480,77 +481,240 @@ class _SearchState extends State<Search> {
   Widget buildPartyCard(BuildContext context, DocumentSnapshot party) {
     return Stack(
       children: <Widget>[
-        Container(
-          padding: EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: Colors.transparent
-          ),
-          child: OpenContainer(
-            closedElevation: 0.0,
-            transitionDuration: Duration(milliseconds: 400),
-            closedColor: Colors.grey[100],
-            openColor: Colors.white,
-            closedBuilder: (context, returnValue) {
-              return Row(
-                children: <Widget>[
-                  Container(
-                    width: 145,
-                    height: 145,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Color(0xFF1c92d2),
-                          Color(0xFFf2fcfe)
-                        ]
-                      ),
-                    )
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            padding: EdgeInsets.only(left: 8),
-                              child: Text(
-                                party['Name'],
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
+        Padding(
+          padding: const EdgeInsets.only(top: 20),
+          child: Container(
+            margin: EdgeInsets.only(right: 15),
+            height: 250,
+            padding: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(15))
+            ),
+            child: OpenContainer(
+              closedElevation: 0,
+              transitionDuration: Duration(milliseconds: 400),
+              closedColor: Colors.white,
+              openColor: Colors.white,
+              closedBuilder: (context, returnValue) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: 145,
+                          height: 145,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                Color(0xFFb24592),
+                                Color(0xFFf15f79)
+                              ]
+                            ),
+                          )
+                        ),
+                        Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 10.0, left: 5),
+                              child: Container(
+                                height: 50,
+                                width: 50,
+                                clipBehavior: Clip.antiAlias,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Image.network(
+                                  'https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png',
                                 ),
                               ),
                             ),
-                          ],
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(left: 8),
-                          child: Opacity(
-                            opacity: 0.7,
-                            child: Text(
-                              party['city'],
-                              style: TextStyle(
-                                fontSize: 15,
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8, top: 14),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 5.0),
+                                    child: Text(
+                                      AuthService.auth.currentUser.displayName.split(" ")[0],
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                  ),
+                                  Row(
+                                    children: [
+                                      Icon(Icons.star_rate_rounded,
+                                      color: ICONCOLOR,
+                                      ),
+                                      Text('4.9')
+                                    ],
+                                  )
+                                ],
                               ),
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Column(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.only(top: 8),
+                                  child: Text(
+                                    party['Name'],
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  padding: EdgeInsets.only(),
+                                  child: Opacity(
+                                    opacity: 0.7,
+                                    child: Text(
+                                      party['city'],
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
+                          ],
                         ),
                       ],
                     ),
+                    Container(
+                      padding: EdgeInsets.only(top: 8, right: 8),
+                      alignment: Alignment.topRight,
+                      child: Row(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.only(left: 8, bottom: 8),
+                            child: Text(
+                              party['Price'],
+                              style: TextStyle(  
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold
+                              ),
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(bottom: 8),
+                            child: Text( 
+                              '€',
+                              style: TextStyle(  
+                                fontSize: 20
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    )
                   ],
                 );
               },
               openBuilder: (context, returnValue) {
-                return OpenBuilderContainer();
+                return Scaffold(  
+                  appBar: PreferredSize(  
+                    preferredSize: Size.fromHeight(50),
+                    child: BackAppBar(),
+                  ),
+                  body: Container( 
+                    child: Column(
+                      children: <Widget> [
+                        Center(
+                          child: Container(
+                            height: 100,
+                            width: 100,
+                            clipBehavior: Clip.antiAlias,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                            ),
+                            child: Image.network(
+                              'https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png',
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            top: 8,
+                            bottom: 20
+                            ),
+                          child: Container( 
+                            child: Text(
+                              party['Name'],
+                              style: TextStyle(
+                                fontSize: 30,
+                                fontWeight: FontWeight.w900
+                              ),
+                            )
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0),
+                          child: Container( 
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Date :',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold
+                              )
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0),
+                          child: Container( 
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Heure :',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold
+                              )
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0),
+                          child: Container( 
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Description :',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold
+                              )
+                            ),
+                          ),
+                        ),
+                      ]
+                    ),
+                  ),
+                );
               },
             ),
           ),
-          
-        ],
-      );
+        ), 
+      ],
+    );
   }
 }
