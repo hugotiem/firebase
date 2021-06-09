@@ -497,137 +497,127 @@ class _SearchState extends State<Search> {
               closedColor: Colors.white,
               openColor: Colors.white,
               closedBuilder: (context, returnValue) {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: 145,
-                          height: 145,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [
-                                Color(0xFFb24592),
-                                Color(0xFFf15f79)
-                              ]
-                            ),
-                          )
-                        ),
-                        Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 10.0, left: 5),
-                              child: Container(
-                                height: 50,
-                                width: 50,
-                                clipBehavior: Clip.antiAlias,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Image.network(
-                                  'https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png',
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8, top: 14),
-                              child: Column(
+                return Container(
+                  child: Stack(
+                    children: [ 
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 5.0),
+                                  Container(
+                                    padding: EdgeInsets.only(top: 8),
                                     child: Text(
-                                      AuthService.auth.currentUser.displayName.split(" ")[0],
+                                      party['Name'],
                                       style: TextStyle(
+                                        fontWeight: FontWeight.bold,
                                         fontSize: 20,
                                       ),
                                     ),
                                   ),
-                                  Row(
-                                    children: [
-                                      Icon(Icons.star_rate_rounded,
-                                      color: ICONCOLOR,
+                                  Container(
+                                    padding: EdgeInsets.only(),
+                                    child: Opacity(
+                                      opacity: 0.7,
+                                      child: Text(
+                                        party['city'],
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                        ),
                                       ),
-                                      Text('4.9')
-                                    ],
-                                  )
+                                    ),
+                                  ),
                                 ],
                               ),
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Column(
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.only(top: 8),
-                                  child: Text(
-                                    party['Name'],
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  padding: EdgeInsets.only(),
-                                  child: Opacity(
-                                    opacity: 0.7,
-                                    child: Text(
-                                      party['city'],
-                                      style: TextStyle(
-                                        fontSize: 15,
+                            ],
+                          ),
+                              Container(
+                                child: Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 10.0, left: 5),
+                                      child: Container(
+                                        height: 50,
+                                        width: 50,
+                                        clipBehavior: Clip.antiAlias,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: Image.network(
+                                          'https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png',
+                                        ),
                                       ),
                                     ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 8, top: 14),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(left: 5.0),
+                                            child: Text(
+                                              AuthService.auth.currentUser.displayName.split(" ")[0],
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                              ),
+                                            ),
+                                          ),
+                                          Row(
+                                            children: [
+                                              Icon(Icons.star_rate_rounded,
+                                              color: ICONCOLOR,
+                                              ),
+                                              Text('4.9')
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                          
+                          Container(
+                            padding: EdgeInsets.only(top: 8, right: 8),
+                            alignment: Alignment.topRight,
+                            child: Row(
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.only(left: 8, bottom: 8),
+                                  child: Text(
+                                    party['Price'],
+                                    style: TextStyle(  
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold
+                                    ),
                                   ),
                                 ),
+                                Container(
+                                  padding: EdgeInsets.only(bottom: 8),
+                                  child: Text( 
+                                    '€',
+                                    style: TextStyle(  
+                                      fontSize: 20
+                                    ),
+                                  ),
+                                )
                               ],
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(top: 8, right: 8),
-                      alignment: Alignment.topRight,
-                      child: Row(
-                        children: [
-                          Container(
-                            padding: EdgeInsets.only(left: 8, bottom: 8),
-                            child: Text(
-                              party['Price'],
-                              style: TextStyle(  
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold
-                              ),
-                            ),
-                          ),
-                          Container(
-                            padding: EdgeInsets.only(bottom: 8),
-                            child: Text( 
-                              '€',
-                              style: TextStyle(  
-                                fontSize: 20
-                              ),
                             ),
                           )
                         ],
                       ),
-                    )
-                  ],
+                    ]
+                  ),
                 );
               },
               openBuilder: (context, returnValue) {
