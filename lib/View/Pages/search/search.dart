@@ -5,10 +5,9 @@ import 'package:pts/Model/components/back_appbar.dart';
 import 'package:pts/Model/components/backgroundtitle.dart';
 import 'package:pts/Model/components/custom_sliver.dart';
 import 'package:pts/Model/components/text_materials.dart';
-import 'package:pts/Model/services/auth_service.dart';
-import 'package:pts/Model/services/firestore_service.dart';
 import 'package:pts/View/Pages/search/searchbar_screen.dart';
 import 'package:animations/animations.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../Constant.dart';
 
@@ -28,8 +27,6 @@ class _SearchState extends State<Search> {
   Brightness _brightness;
   Color _toolbarColor;
   int _index = 0;
-
-  FireStoreServices _firestore = new FireStoreServices("Soirée");
 
   @override
   void initState() {
@@ -507,10 +504,6 @@ class _SearchState extends State<Search> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Container(
@@ -518,7 +511,7 @@ class _SearchState extends State<Search> {
                                     child: Text(
                                       party['Name'],
                                       style: TextStyle(
-                                        fontWeight: FontWeight.bold,
+                                        fontWeight: FontWeight.w900,
                                         fontSize: 20,
                                       ),
                                     ),
@@ -537,8 +530,6 @@ class _SearchState extends State<Search> {
                                   ),
                                 ],
                               ),
-                            ],
-                          ),
                               Container(
                                 child: Row(
                                   children: [
@@ -564,7 +555,7 @@ class _SearchState extends State<Search> {
                                           Padding(
                                             padding: const EdgeInsets.only(left: 5.0),
                                             child: Text(
-                                              AuthService.auth.currentUser.displayName.split(" ")[0],
+                                              "Jean",
                                               style: TextStyle(
                                                 fontSize: 20,
                                               ),
@@ -586,7 +577,6 @@ class _SearchState extends State<Search> {
                               )
                             ],
                           ),
-                          
                           Container(
                             padding: EdgeInsets.only(top: 8, right: 8),
                             alignment: Alignment.topRight,
@@ -598,7 +588,7 @@ class _SearchState extends State<Search> {
                                     party['Price'],
                                     style: TextStyle(  
                                       fontSize: 20,
-                                      fontWeight: FontWeight.bold
+                                      fontWeight: FontWeight.w900
                                     ),
                                   ),
                                 ),
@@ -607,7 +597,8 @@ class _SearchState extends State<Search> {
                                   child: Text( 
                                     '€',
                                     style: TextStyle(  
-                                      fontSize: 20
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w900
                                     ),
                                   ),
                                 )
@@ -626,79 +617,64 @@ class _SearchState extends State<Search> {
                     preferredSize: Size.fromHeight(50),
                     child: BackAppBar(),
                   ),
-                  body: Container( 
-                    child: Column(
-                      children: <Widget> [
-                        Center(
-                          child: Container(
-                            height: 100,
-                            width: 100,
-                            clipBehavior: Clip.antiAlias,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                            ),
-                            child: Image.network(
-                              'https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png',
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            top: 8,
-                            bottom: 20
-                            ),
-                          child: Container( 
-                            child: Text(
-                              party['Name'],
-                              style: TextStyle(
-                                fontSize: 30,
-                                fontWeight: FontWeight.w900
+                  body: Column(  
+                    children: [
+                      SizedBox(
+                        height: 100,
+                        width: MediaQuery.of(context).size.width,
+                        child: Column(
+                          children: [
+                            Container(
+                              height: 50,
+                              alignment: Alignment.bottomLeft,
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 16),
+                                child: Text(
+                                  //utiliser la date de firebase
+                                  'Dim. 13 juin',
+                                  style: TextStyle(  
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.w700
+                                  ),
+                                ),
                               ),
-                            )
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: Container( 
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'Date :',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold
-                              )
                             ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: Container( 
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'Heure :',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold
-                              )
+                            Container(  
+                              height: 50,
+                              alignment: Alignment.topLeft,
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 16),
+                                child: Opacity(
+                                  opacity: 0.7,
+                                  child: Text(
+                                    "${party['Hour'].split(":")[0]}h${party['Hour'].split(":")[1]}",
+                                    style: TextStyle(  
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
+                          ],
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: Container( 
-                            alignment: Alignment.centerLeft,
+                      ),
+                      SizedBox(
+                        height: 100,
+                        child: Container( 
+                          decoration: BoxDecoration(color: Colors.amber),
+                          alignment: Alignment.topLeft,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
                             child: Text(
-                              'Description :',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold
-                              )
+                              party['Description'],
+                              style: TextStyle(  
+                              ),
                             ),
-                          ),
-                        ),
-                      ]
-                    ),
-                  ),
+                          )
+                        )
+                      )
+                    ],
+                  )
                 );
               },
             ),
