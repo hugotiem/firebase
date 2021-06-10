@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +9,6 @@ import 'package:pts/Model/components/custom_sliver.dart';
 import 'package:pts/Model/components/text_materials.dart';
 import 'package:pts/View/Pages/search/searchbar_screen.dart';
 import 'package:animations/animations.dart';
-import 'package:intl/intl.dart';
 
 import '../../../../Constant.dart';
 
@@ -620,57 +621,107 @@ class _SearchState extends State<Search> {
                   body: Column(  
                     children: [
                       SizedBox(
-                        height: 100,
+                        height: 120,
                         width: MediaQuery.of(context).size.width,
-                        child: Column(
+                        child: Stack(
                           children: [
-                            Container(
-                              height: 50,
-                              alignment: Alignment.bottomLeft,
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 16),
+                            Column(
+                              children: [
+                                Container(
+                                  height: 60,
+                                  alignment: Alignment.bottomLeft,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 16),
+                                    child: Text(
+                                      //utiliser la date de firebase
+                                      'Dim. 13 juin',
+                                      style: TextStyle(  
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.w700
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Container(  
+                                  height: 60,
+                                  alignment: Alignment.topLeft,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 16),
+                                    child: Opacity(
+                                      opacity: 0.7,
+                                      child: Text(
+                                        "${party['Hour'].split(":")[0]}h${party['Hour'].split(":")[1]}",
+                                        style: TextStyle(  
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 16),
+                              child: Container(
+                                height: 60,
+                                alignment: Alignment.bottomRight,
                                 child: Text(
-                                  //utiliser la date de firebase
-                                  'Dim. 13 juin',
+                                  party['city'],
                                   style: TextStyle(  
                                     fontSize: 25,
                                     fontWeight: FontWeight.w700
                                   ),
                                 ),
                               ),
-                            ),
-                            Container(  
-                              height: 50,
-                              alignment: Alignment.topLeft,
+                            )
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 80,
+                        child: Stack(
+                          children: [
+                            Container( 
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  top: BorderSide(  
+                                    width: 1.75,
+                                    color: FOCUS_COLOR
+                                  ),
+                                  bottom: BorderSide(  
+                                    width: 1.75,
+                                    color: FOCUS_COLOR
+                                  )
+                                )
+                              ),
+                              alignment: Alignment.centerLeft,
                               child: Padding(
                                 padding: const EdgeInsets.only(left: 16),
                                 child: Opacity(
                                   opacity: 0.7,
                                   child: Text(
-                                    "${party['Hour'].split(":")[0]}h${party['Hour'].split(":")[1]}",
+                                    "Prix d'entré pour 1 personne",
                                     style: TextStyle(  
-                                      fontSize: 16,
+                                      fontSize: 16 
                                     ),
                                   ),
                                 ),
-                              ),
+                              )
                             ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 100,
-                        child: Container( 
-                          decoration: BoxDecoration(color: Colors.amber),
-                          alignment: Alignment.topLeft,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
-                            child: Text(
-                              party['Description'],
-                              style: TextStyle(  
+                            Padding(
+                              padding: const EdgeInsets.only(right: 16),
+                              child: Container( 
+                                alignment: Alignment.centerRight,
+                                child: Text(
+                                  "${party['Price']} €",
+                                  style: TextStyle(  
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.w700
+                                  ),
+                                ),
                               ),
-                            ),
-                          )
+                            )
+                          ]
                         )
                       )
                     ],
