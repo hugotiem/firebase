@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:pts/Model/components/back_appbar.dart';
 import 'package:pts/Model/components/backgroundtitle.dart';
 import 'package:pts/Model/components/custom_sliver.dart';
@@ -631,10 +632,9 @@ class _SearchState extends State<Search> {
                                   height: 60,
                                   alignment: Alignment.bottomLeft,
                                   child: Padding(
-                                    padding: const EdgeInsets.only(left: 16),
+                                    padding: const EdgeInsets.only(left: 21),
                                     child: Text(
-                                      //utiliser la date de firebase
-                                      'Dim. 13 juin',
+                                      DateFormat.MMMMEEEEd('fr').format(party['Date'].toDate()),
                                       style: TextStyle(  
                                         fontSize: 25,
                                         fontWeight: FontWeight.w700
@@ -646,7 +646,7 @@ class _SearchState extends State<Search> {
                                   height: 60,
                                   alignment: Alignment.topLeft,
                                   child: Padding(
-                                    padding: const EdgeInsets.only(left: 16),
+                                    padding: const EdgeInsets.only(left: 21),
                                     child: Opacity(
                                       opacity: 0.7,
                                       child: Text(
@@ -661,7 +661,7 @@ class _SearchState extends State<Search> {
                               ],
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(right: 16),
+                              padding: const EdgeInsets.only(right: 21),
                               child: Container(
                                 height: 60,
                                 alignment: Alignment.bottomRight,
@@ -696,7 +696,7 @@ class _SearchState extends State<Search> {
                               ),
                               alignment: Alignment.centerLeft,
                               child: Padding(
-                                padding: const EdgeInsets.only(left: 16),
+                                padding: const EdgeInsets.only(left: 21),
                                 child: Opacity(
                                   opacity: 0.7,
                                   child: Text(
@@ -709,7 +709,7 @@ class _SearchState extends State<Search> {
                               )
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(right: 16),
+                              padding: const EdgeInsets.only(right: 21),
                               child: Container( 
                                 alignment: Alignment.centerRight,
                                 child: Text(
@@ -723,6 +723,88 @@ class _SearchState extends State<Search> {
                             )
                           ]
                         )
+                      ),
+                      SizedBox(
+                        height: 250,
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  alignment: Alignment.topLeft,
+                                  child:Padding(
+                                      padding: const EdgeInsets.only(left: 16, top: 30),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(left: 5.0),
+                                            child: Text(
+                                              "Jean",
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w700
+                                              ),
+                                            ),
+                                          ),
+                                          Opacity(
+                                            opacity: 0.7,
+                                            child: Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.star_rate_rounded,
+                                                  color: ICONCOLOR,
+                                                ),
+                                                Text(
+                                                  '4.9 / 5 - 0 avis',
+                                                  style: TextStyle(
+                                                    fontSize: 16
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    )
+                                ),
+                                Container(
+                                  child: Padding(
+                                      padding: const EdgeInsets.only(top: 30.0, right: 21),
+                                      child: Container(
+                                        height: 50,
+                                        width: 50,
+                                        clipBehavior: Clip.antiAlias,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: Image.network(
+                                          'https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png',
+                                        ),
+                                      ),
+                                    ),
+                                )
+                              ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 30, left: 21, right: 21),
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                alignment: Alignment.topLeft,
+                                child: Opacity( 
+                                  opacity: 0.7,
+                                  child: Text(
+                                    party['Description'],
+                                    style: TextStyle(
+                                      fontSize: 16
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
                       )
                     ],
                   )
