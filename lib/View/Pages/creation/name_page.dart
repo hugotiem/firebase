@@ -23,7 +23,7 @@ class _NamePageState extends State<NamePage> {
           leading: CupertinoButton(
               child: Icon(
                 Icons.close,
-                color: SECONDARY_COLOR,
+                color: ICONCOLOR,
               ),
               onPressed: () {
                 Navigator.pop(context);

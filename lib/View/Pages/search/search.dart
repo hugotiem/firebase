@@ -622,7 +622,7 @@ class _SearchState extends State<Search> {
                   body: Column(  
                     children: [
                       SizedBox(
-                        height: 120,
+                        height: 100,
                         width: MediaQuery.of(context).size.width,
                         child: Stack(
                           children: [
@@ -637,13 +637,14 @@ class _SearchState extends State<Search> {
                                       DateFormat.MMMMEEEEd('fr').format(party['Date'].toDate()),
                                       style: TextStyle(  
                                         fontSize: 25,
-                                        fontWeight: FontWeight.w700
+                                        fontWeight: FontWeight.w700,
+                                        color: SECONDARY_COLOR
                                       ),
                                     ),
                                   ),
                                 ),
                                 Container(  
-                                  height: 60,
+                                  height: 40,
                                   alignment: Alignment.topLeft,
                                   child: Padding(
                                     padding: const EdgeInsets.only(left: 21),
@@ -653,6 +654,7 @@ class _SearchState extends State<Search> {
                                         "${party['Hour'].split(":")[0]}h${party['Hour'].split(":")[1]}",
                                         style: TextStyle(  
                                           fontSize: 16,
+                                          color: SECONDARY_COLOR
                                         ),
                                       ),
                                     ),
@@ -669,12 +671,32 @@ class _SearchState extends State<Search> {
                                   party['city'],
                                   style: TextStyle(  
                                     fontSize: 25,
-                                    fontWeight: FontWeight.w700
+                                    fontWeight: FontWeight.w700,
+                                    color: SECONDARY_COLOR
                                   ),
                                 ),
                               ),
                             )
                           ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 60,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 21),
+                          child: Container(
+                            decoration: BoxDecoration(
+                            ),
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              party['Theme'],
+                              style: TextStyle(  
+                                fontSize: 25,
+                                color: SECONDARY_COLOR,
+                                fontWeight: FontWeight.w700
+                              ),
+                            )
+                          ),
                         ),
                       ),
                       SizedBox(
@@ -702,7 +724,8 @@ class _SearchState extends State<Search> {
                                   child: Text(
                                     "Prix d'entré pour 1 personne",
                                     style: TextStyle(  
-                                      fontSize: 16 
+                                      fontSize: 16,
+                                      color: SECONDARY_COLOR
                                     ),
                                   ),
                                 ),
@@ -716,7 +739,8 @@ class _SearchState extends State<Search> {
                                   "${party['Price']} €",
                                   style: TextStyle(  
                                     fontSize: 25,
-                                    fontWeight: FontWeight.w700
+                                    fontWeight: FontWeight.w700,
+                                    color: SECONDARY_COLOR
                                   ),
                                 ),
                               ),
@@ -725,7 +749,6 @@ class _SearchState extends State<Search> {
                         )
                       ),
                       SizedBox(
-                        height: 250,
                         child: Column(
                           children: [
                             Row(
@@ -740,11 +763,15 @@ class _SearchState extends State<Search> {
                                         children: [
                                           Padding(
                                             padding: const EdgeInsets.only(left: 5.0),
-                                            child: Text(
-                                              "Jean",
-                                              style: TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.w700
+                                            child: Opacity(
+                                              opacity: 0.9,
+                                              child: Text(
+                                                "Jean",
+                                                style: TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.w700,
+                                                  color: SECONDARY_COLOR
+                                                ),
                                               ),
                                             ),
                                           ),
@@ -759,7 +786,8 @@ class _SearchState extends State<Search> {
                                                 Text(
                                                   '4.9 / 5 - 0 avis',
                                                   style: TextStyle(
-                                                    fontSize: 16
+                                                    fontSize: 16,
+                                                    color: SECONDARY_COLOR
                                                   ),
                                                 )
                                               ],
@@ -797,7 +825,8 @@ class _SearchState extends State<Search> {
                                   child: Text(
                                     party['Description'],
                                     style: TextStyle(
-                                      fontSize: 16
+                                      fontSize: 16,
+                                      color: SECONDARY_COLOR
                                     ),
                                   ),
                                 ),
@@ -805,7 +834,37 @@ class _SearchState extends State<Search> {
                             )
                           ],
                         ),
-                      )
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16, top: 30),
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          alignment: Alignment.topLeft,
+                          child: TextButton( 
+                            onPressed: () {},
+                            child: Text(
+                              'Contacter Jean',
+                              style: TextStyle(
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 30, bottom: 30, left: 21, right: 21),
+                        child: Container(
+                          decoration: BoxDecoration(
+                          border: Border(
+                            top: BorderSide(  
+                              width: 1.75,
+                              color: FOCUS_COLOR
+                            )
+                            )
+                          )
+                        ),
+                      ),
+                      // faire la liste des invités
                     ],
                   )
                 );
