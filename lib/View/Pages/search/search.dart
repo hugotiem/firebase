@@ -10,8 +10,8 @@ import 'package:pts/Model/components/custom_sliver.dart';
 import 'package:pts/Model/components/text_materials.dart';
 import 'package:pts/View/Pages/search/searchbar_screen.dart';
 import 'package:animations/animations.dart';
-
 import '../../../../Constant.dart';
+import 'package:fl_chart/fl_chart.dart';
 
 class Search extends StatefulWidget {
   Search({Key key}) : super(key: key);
@@ -864,6 +864,71 @@ class _SearchState extends State<Search> {
                           )
                         ),
                       ),
+                      SizedBox(
+                        height: 200,
+                        child: PieChart(
+                          PieChartData(  
+                            sections: [
+                              PieChartSectionData(
+                                value: 50,
+                                color: Colors.blue,
+                                title: '50 %',
+                                radius: 50
+                              ) ,
+                              PieChartSectionData(
+                                value: 50,
+                                color: Colors.pink,
+                                title: '50 %',
+                                radius: 50
+                              ) ,
+                            ] 
+                          )
+                        ),
+                      ),
+                      SizedBox(
+                        height: 50,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              height: 15,
+                              width: 15,
+                              decoration: BoxDecoration(
+                                color: Colors.pink,
+                                borderRadius: BorderRadius.circular(30)
+                              )
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: Text(
+                                'Femme',
+                                style: TextStyle(  
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold
+                                ),
+                              ),
+                            ),
+                            Container(
+                              height: 15,
+                              width: 15,
+                              decoration: BoxDecoration(
+                                color: Colors.blue,
+                                borderRadius: BorderRadius.circular(30)
+                              )
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: Text(
+                                'Homme',
+                                style: TextStyle(  
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
                       // faire la liste des invités
                     ],
                   )
