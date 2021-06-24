@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:pts/Model/components/back_appbar.dart';
 import 'package:pts/Model/components/backgroundtitle.dart';
 import 'package:pts/Model/components/custom_sliver.dart';
+import 'package:pts/Model/components/gridlistcity.dart';
 import 'package:pts/Model/components/text_materials.dart';
 import 'package:pts/View/Pages/search/searchbar_screen.dart';
 import 'package:animations/animations.dart';
@@ -29,7 +30,7 @@ class _SearchState extends State<Search> {
   Brightness _brightness;
   Color _toolbarColor;
   int _index = 0;
-
+  
   @override
   void initState() {
     setState(() {
@@ -84,12 +85,31 @@ class _SearchState extends State<Search> {
               height: 325,
             ),
             Container(
-                margin: EdgeInsets.only(top: 20),
+              margin: EdgeInsets.only(top: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget> [
+                  Container(
+                    margin: EdgeInsets.only(top: 60, left: 20),
+                    child: BoldText(
+                      text: "Villes",
+                    ),
+                  ),
+                  SizedBox(
+                    height: 182,
+                    child: GridViewCity()
+                   // créé une liste des 10 villes les plus grandes de france 
+                   // quand on clique dessus on arrive sur une liste des soirées dans cette ville
+                  )
+                ]
+              ),
+            ),
+            Container(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Container(
-                      margin: EdgeInsets.only(top: 60, left: 20),
+                      margin: EdgeInsets.only(top: 30, left: 20),
                       child: BoldText(text: "Dernières créées"),
                     ),
                     SizedBox(
