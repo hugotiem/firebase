@@ -12,6 +12,7 @@ class NamePage extends StatefulWidget {
 
 class _NamePageState extends State<NamePage> {
   String _name;
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +80,7 @@ class _NamePageState extends State<NamePage> {
                   child: Center(
                     child: TextFormField(  
                       onChanged: (value) {
-                        _name = value;
+                      _name = value;
                       },
                       style: TextStyle(
                         fontSize: 18,
@@ -87,7 +88,7 @@ class _NamePageState extends State<NamePage> {
                       decoration: InputDecoration( 
                         hintText: 'ex: La fête du roi', 
                         border: InputBorder.none,
-                      )
+                      ),
                     ),
                   ),
                 ),
