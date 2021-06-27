@@ -156,6 +156,84 @@ class _CardPartyState extends State<CardParty> {
                             ),
                           )
                         ]
+                      ),
+                      Container(
+                        height: 200,
+                        width: 246.7,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 10, left: 16),
+                                      child: Text(
+                                        party['Name'],
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w500,
+                                          color: SECONDARY_COLOR
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(right: 18),
+                                      child: Opacity(
+                                        opacity: 0.7,
+                                        child: Text(
+                                          party['Theme'],
+                                          style: TextStyle(
+                                            color: SECONDARY_COLOR
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Column(  
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Opacity(
+                                      opacity: 0.7,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(left: 16),
+                                        child: Text(
+                                          'Personnes'.toUpperCase(),
+                                          style: TextStyle(
+
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        Icon(
+                                          Icons.person_outline,
+                                          size: 20,
+                                          color: SECONDARY_COLOR,
+                                        ),
+                                        Text(
+                                          party['Number'],
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                          ),
+                                        )
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
                       )
                     ],
                   ),
