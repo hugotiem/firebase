@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pts/Constant.dart';
 import 'package:pts/Model/components/text_materials.dart';
 
 class GridViewCity extends StatefulWidget {
@@ -103,7 +104,7 @@ class CityBox extends StatelessWidget {
           height: 75,
           width: 150,
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: SECONDARY_COLOR,
             borderRadius: BorderRadius.circular(15)
             ),
           child: Center(
@@ -111,7 +112,8 @@ class CityBox extends StatelessWidget {
               this.text,
               style: TextStyle(
                 fontSize: 20,
-                fontWeight: FontWeight.w900
+                fontWeight: FontWeight.w900,
+                color: FOCUS_COLOR
             ),
           ),
         ),

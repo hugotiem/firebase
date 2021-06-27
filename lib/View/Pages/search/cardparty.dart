@@ -1,3 +1,5 @@
+// ignore_for_file: unused_field
+
 import 'package:animations/animations.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -29,7 +31,7 @@ class _CardPartyState extends State<CardParty> {
             child: BoldText(text: "Dernières créées"),
           ),
           SizedBox(
-            height: 250,
+            height: 220,
               child: StreamBuilder(
                 stream: getPartyStreamSnapshot(context),
                 builder:  (context, snapshot) {
@@ -49,8 +51,7 @@ class _CardPartyState extends State<CardParty> {
               ],
             )
           );
-
-  }
+        }
 
   Stream<QuerySnapshot> getPartyStreamSnapshot(BuildContext context) async* {
     yield* FirebaseFirestore.instance
@@ -66,11 +67,12 @@ class _CardPartyState extends State<CardParty> {
           padding: const EdgeInsets.only(top: 20),
           child: Container(
             margin: EdgeInsets.only(right: 15),
-            height: 250,
+            height: 200,
+            width: MediaQuery.of(context).size.width * 0.85,
             padding: EdgeInsets.all(8),
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(15))
+              borderRadius: BorderRadius.all(Radius.circular(8))
             ),
             child: OpenContainer(
               closedElevation: 0,
@@ -79,119 +81,83 @@ class _CardPartyState extends State<CardParty> {
               openColor: Colors.white,
               closedBuilder: (context, returnValue) {
                 return Container(
-                  child: Stack(
-                    children: [ 
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    padding: EdgeInsets.only(top: 8),
-                                    child: Text(
-                                      party['Name'],
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w900,
-                                        fontSize: 20,
-                                      ),
-                                    ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.only(left: 5),
+                        height: 200,
+                        width: 55,
+                        alignment: Alignment.centerLeft,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 10),
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  '${party['Price']}€',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w500,
+                                    color: SECONDARY_COLOR
                                   ),
-                                  Container(
-                                    padding: EdgeInsets.only(),
-                                    child: Opacity(
-                                      opacity: 0.7,
-                                      child: Text(
-                                        party['city'],
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                                ),
                               ),
-                              Container(
-                                child: Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 10.0, left: 5),
-                                      child: Container(
-                                        height: 50,
-                                        width: 50,
-                                        clipBehavior: Clip.antiAlias,
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                        ),
-                                        child: Image.network(
-                                          'https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png',
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 8, top: 14),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 5.0),
-                                            child: Text(
-                                              "Jean",
-                                              style: TextStyle(
-                                                fontSize: 20,
-                                              ),
-                                            ),
-                                          ),
-                                          Row(
-                                            children: [
-                                              Icon(Icons.star_rate_rounded,
-                                              color: ICONCOLOR,
-                                              ),
-                                              Text('4.9')
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                          Container(
-                            padding: EdgeInsets.only(top: 8, right: 8),
-                            alignment: Alignment.topRight,
-                            child: Row(
+                            ),
+                            Column(
                               children: [
-                                Container(
-                                  padding: EdgeInsets.only(left: 8, bottom: 8),
-                                  child: Text(
-                                    party['Price'],
-                                    style: TextStyle(  
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w900
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Opacity(
+                                    opacity: 0.7,
+                                    child: Text(
+                                      "${DateFormat.MMMMEEEEd('fr').format(party['Date'].toDate()).split(' ')[1]} ${DateFormat.MMMMEEEEd('fr').format(party['Date'].toDate()).split(' ')[2]}",
+                                      style: TextStyle(
+                                        color: SECONDARY_COLOR
+                                      ),
                                     ),
                                   ),
                                 ),
-                                Container(
-                                  padding: EdgeInsets.only(bottom: 8),
-                                  child: Text( 
-                                    '€',
-                                    style: TextStyle(  
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w900
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 10),
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      "${party['Hour'].split(":")[0]}h${party['Hour'].split(":")[1]}",
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w500,
+                                        color: SECONDARY_COLOR
+                                      ),
                                     ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          ]
+                        ),
+                      ),
+                      Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 15, top: 12),
+                            child: Center(
+                              child: Container(
+                                height: 160,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    width: 1,
+                                    color: FOCUS_COLOR
                                   ),
                                 )
-                              ],
+                              ),
                             ),
                           )
-                        ],
-                      ),
-                    ]
+                        ]
+                      )
+                    ],
                   ),
                 );
               },

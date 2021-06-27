@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pts/Constant.dart';
 import 'package:pts/Model/components/text_materials.dart';
 
 class GridListThemes extends StatefulWidget {
@@ -84,7 +85,7 @@ class ThemeBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 10, left: 40, right: 10),
+      margin: EdgeInsets.only(bottom: 20, left: 40, right: 10),
       height: 145,
       width: 145,
       decoration: BoxDecoration(
@@ -97,7 +98,12 @@ class ThemeBox extends StatelessWidget {
       ),
       child: Center(
         child: Text(
-          this.text
+          this.text,
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w900,
+            color: Colors.white
+          ),
         ),
       ),
     );

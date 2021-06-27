@@ -12,7 +12,6 @@ class NamePage extends StatefulWidget {
 
 class _NamePageState extends State<NamePage> {
   String _name;
-  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {

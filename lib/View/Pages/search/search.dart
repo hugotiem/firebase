@@ -92,56 +92,8 @@ class _SearchState extends State<Search> {
             ContainerAddParty(),
           ],
         ),
-        // child: StreamBuilder(
-        //   stream: _firestore.getSnapshots(),
-        //   builder: (context, snapshot) {
-        //     if (!snapshot.hasData) return CircularProgressIndicator();
-        //     //print(snapshot.data.docs[1].id);
-        //     return ListView.builder(
-        //       itemCount: snapshot.data.docs.length,
-        //       itemBuilder: (context, index) {
-        //         Widget _container = Container(
-        //           padding: const EdgeInsets.all(8.0),
-        //           //margin: EdgeInsets.only(top: index == 0 ? 350 : 0),
-        //           child: GestureDetector(
-        //             behavior: HitTestBehavior.translucent,
-        //             child: Card(
-        //               color: Colors.white,
-        //               child: Container(
-        //                 child: Stack(
-        //                   children: <Widget>[
-        //                     Container(),
-        //                     closeContent(
-        //                         this._isOpen ? 400 : 150, index, snapshot),
-        //                   ],
-        //                 ),
-        //               ),
-        //             ),
-        //             onTap: () {
-        //               open();
-        //             },
-        //           ),
-        //         );
-        //         if (index == 0) {
-        //           return Stack(
-        //             children: <Widget>[
-        //               Column(
-        //                 children: <Widget>[
-        //                   SizedBox(
-        //                     height: 350,
-        //                   ),
-        //                   _container,
-        //                 ],
-        //               ),
-        //             ],
-        //           );
-        //         }
-        //         return _container;
-        //       },
-        //     );
-        //   },
-        // ),
       ),
+
       onNotification: (notification) {
         setState(() {
           if (!(notification is ScrollStartNotification) &&
@@ -170,6 +122,7 @@ class _SearchState extends State<Search> {
 
         return true;
       },
+      
       searchBar: Column(
         children: [
           SizedBox(
