@@ -160,27 +160,32 @@ class _CardPartyState extends State<CardParty> {
                       Container(
                         height: 200,
                         width: 246.7,
+                        padding: EdgeInsets.only(left: 16, bottom: 10),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Row(
                               children: [
                                 Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsets.only(top: 10, left: 16),
-                                      child: Text(
-                                        party['Name'],
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w500,
-                                          color: SECONDARY_COLOR
+                                      padding: const EdgeInsets.only(top: 10),
+                                      child: Container(
+                                        alignment: Alignment.topLeft,
+                                        child: Text(
+                                          party['Name'],
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w500,
+                                            color: SECONDARY_COLOR
+                                          ),
                                         ),
                                       ),
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.only(right: 18),
+                                      padding: const EdgeInsets.only(),
                                       child: Opacity(
                                         opacity: 0.7,
                                         child: Text(
@@ -196,6 +201,7 @@ class _CardPartyState extends State<CardParty> {
                               ],
                             ),
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Column(  
                                   mainAxisAlignment: MainAxisAlignment.start,
@@ -203,11 +209,11 @@ class _CardPartyState extends State<CardParty> {
                                     Opacity(
                                       opacity: 0.7,
                                       child: Padding(
-                                        padding: const EdgeInsets.only(left: 16),
+                                        padding: const EdgeInsets.only(),
                                         child: Text(
                                           'Personnes'.toUpperCase(),
                                           style: TextStyle(
-
+                                            color: SECONDARY_COLOR
                                           ),
                                         ),
                                       ),
@@ -220,10 +226,83 @@ class _CardPartyState extends State<CardParty> {
                                           size: 20,
                                           color: SECONDARY_COLOR,
                                         ),
-                                        Text(
-                                          party['Number'],
+                                        Padding(
+                                          padding: const EdgeInsets.only(),
+                                          child: Text(
+                                            party['Number'],
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                            ),
+                                            overflow: TextOverflow.ellipsis
+                                          ),
+                                        )
+                                      ],
+                                    )
+                                  ],
+                                ),
+                                Column(  
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Opacity(
+                                      opacity: 0.7,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(),
+                                        child: Text(
+                                          'Prix'.toUpperCase(),
                                           style: TextStyle(
-                                            fontSize: 20,
+                                            color: SECONDARY_COLOR
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(),
+                                          child: Text(
+                                            '€${party['Price']}',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                            ),
+                                            overflow: TextOverflow.ellipsis
+                                          ),
+                                        )
+                                      ],
+                                    )
+                                  ],
+                                ),
+                                Column(  
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Opacity(
+                                      opacity: 0.7,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(),
+                                        child: Text(
+                                          'Ville'.toUpperCase(),
+                                          style: TextStyle(
+                                            color: SECONDARY_COLOR
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        Icon(
+                                          Icons.location_on_outlined,
+                                          size: 20,
+                                          color: SECONDARY_COLOR,
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(),
+                                          child: Text(
+                                            party['city'],
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                            ),
+                                            overflow: TextOverflow.ellipsis
                                           ),
                                         )
                                       ],
