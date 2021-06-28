@@ -12,6 +12,7 @@ class ThemePage extends StatefulWidget {
 
 class _ThemePageState extends State<ThemePage> {
   String _theme;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +30,9 @@ class _ThemePageState extends State<ThemePage> {
           color: SECONDARY_COLOR,
           ),
         onPressed: () {
+          if (!_formKey.currentState.validate()) {
+            return;
+          }
           Soiree.setDataThemePage(
             _theme
           );
@@ -66,48 +70,58 @@ class _ThemePageState extends State<ThemePage> {
                 ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 16, right: 8),
-                  child: Center(
-                    child: DropdownButtonFormField<String>(
-                    value: _theme,
-                    items: [
-                      'Classique',
-                      'Gaming',
-                      'Jeu de société',
-                      'Soirée à thème',
-                    ].map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(
-                          value,
-                          style: TextStyle(  
+                  child: Form(
+                    key: _formKey,
+                    child: Center(
+                      child: DropdownButtonFormField<String>(
+                        value: _theme,
+                        items: [
+                          'Classique',
+                          'Gaming',
+                          'Jeu de société',
+                          'Soirée à thème',
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(
+                              value,
+                              style: TextStyle(  
+                                fontSize: 18
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                        hint: Text(
+                          "Choisir un thème",
+                          style: TextStyle(
                             fontSize: 18
                           ),
                         ),
-                      );
-                    }).toList(),
-                    hint: Text(
-                      "Choisir un thème",
-                      style: TextStyle(
-                        fontSize: 18
+                        elevation: 0,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder( 
+                            borderRadius: BorderRadius.circular(15)
+                          ),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.white
+                            )
+                          )
+                        ),
+                        onChanged: (String value) {
+                          setState(() {
+                            _theme = value;
+                          });
+                        },
+                        validator: (value) {
+                          if (value == null) {
+                            return 'Vous devez choisir un thème';
+                          } else {
+                            return null;
+                          }
+                        },
                       ),
                     ),
-                    elevation: 0,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder( 
-                        borderRadius: BorderRadius.circular(15)
-                      ),
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.white
-                        )
-                      )
-                    ),
-                    onChanged: (String value) {
-                      setState(() {
-                        _theme = value;
-                      });
-                    },
-                  ),
                   ),
                 ),
               ),

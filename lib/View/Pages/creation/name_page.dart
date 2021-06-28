@@ -12,6 +12,7 @@ class NamePage extends StatefulWidget {
 
 class _NamePageState extends State<NamePage> {
   String _name;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +40,9 @@ class _NamePageState extends State<NamePage> {
           color: SECONDARY_COLOR,
           ),
         onPressed: () {
+          if (!_formKey.currentState.validate()) {
+            return;
+          }
           Soiree.setDataNamePage(
             _name
           );
@@ -77,16 +81,28 @@ class _NamePageState extends State<NamePage> {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 16),
                   child: Center(
-                    child: TextFormField(  
-                      onChanged: (value) {
-                      _name = value;
-                      },
-                      style: TextStyle(
-                        fontSize: 18,
-                      ),
-                      decoration: InputDecoration( 
-                        hintText: 'ex: La fête du roi', 
-                        border: InputBorder.none,
+                    child: Form(
+                      key: _formKey,
+                      child: TextFormField(  
+                        onChanged: (value) {
+                        _name = value;
+                        },
+                        style: TextStyle(
+                          fontSize: 18,
+                        ),
+                        decoration: InputDecoration( 
+                          hintText: 'ex: La fête du roi', 
+                          border: InputBorder.none,
+                          counterText: '',
+                        ),
+                        maxLength: 20,
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Vous devez rentrer un nom';
+                          } else {
+                            return null;
+                          }
+                        },
                       ),
                     ),
                   ),
