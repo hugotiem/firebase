@@ -5,6 +5,8 @@ import 'package:pts/Model/components/back_appbar.dart';
 import 'package:pts/Model/soiree.dart';
 import 'package:pts/View/Pages/creation/theme_page.dart';
 
+import 'components/headertext_one.dart';
+
 class NamePage extends StatefulWidget {
   @override
   _NamePageState createState() => _NamePageState();
@@ -55,20 +57,8 @@ class _NamePageState extends State<NamePage> {
         child: Column(  
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(
-              child: Container(
-                width: MediaQuery.of(context).size.width * 0.9,
-                padding: EdgeInsets.only(top: 30, bottom: 40),
-                child: Text(
-                  "Comment s'appelera-t'elle ?",
-                  style: TextStyle(  
-                    wordSpacing: 1.5,
-                    fontSize: 25,
-                    color: SECONDARY_COLOR,
-                    fontWeight: FontWeight.w700
-                  ),
-                ),
-              ),
+            HeaderText1(
+              text: "Comment s'appelera-t'elle ?",
             ),
             Center(
               child: Container(

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/Model/components/back_appbar.dart';
 import 'package:pts/Model/soiree.dart';
+import 'package:pts/View/Pages/creation/components/headertext_one.dart';
+import 'package:pts/View/Pages/creation/components/headertext_two.dart';
 
 import 'guest_number.dart';
 
@@ -45,35 +47,11 @@ class _LocationPageState extends State<LocationPage> {
         child: Column(  
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(
-              child: Container(
-                width: MediaQuery.of(context).size.width * 0.9,
-                padding: EdgeInsets.only(top: 30, bottom: 40),
-                child: Text(
-                  "Où se déroulera-t'elle ?",
-                  style: TextStyle(  
-                    wordSpacing: 1.5,
-                    fontSize: 25,
-                    color: SECONDARY_COLOR,
-                    fontWeight: FontWeight.w700
-                  ),
-                ),
-              ),
+            HeaderText1(
+              text: "Où se déroulera-t'elle ?",
             ),
-            Center(
-              child: Container(
-                width: MediaQuery.of(context).size.width * 0.9,
-                padding: EdgeInsets.only( bottom: 20),
-                child: Text(
-                  "Adresse",
-                  style: TextStyle(  
-                    wordSpacing: 1.5,
-                    fontSize: 22,
-                    color: SECONDARY_COLOR,
-                    fontWeight: FontWeight.w500
-                  ),
-                ),
-              ),
+            HeaderText2(
+              text: "Adresse",
             ),
             Center(
               child: Container(
@@ -102,20 +80,9 @@ class _LocationPageState extends State<LocationPage> {
                 ),
               ),
             ),
-            Center(
-              child: Container(
-                width: MediaQuery.of(context).size.width * 0.9,
-                padding: EdgeInsets.only(top: 40, bottom: 20),
-                child: Text(
-                  "Ville",
-                  style: TextStyle(  
-                    wordSpacing: 1.5,
-                    fontSize: 22,
-                    color: SECONDARY_COLOR,
-                    fontWeight: FontWeight.w500
-                  ),
-                ),
-              ),
+            HeaderText2(
+              text: "Ville",
+              padding: EdgeInsets.only(bottom: 20, top: 40)
             ),
             Center(
               child: Container(
@@ -144,20 +111,9 @@ class _LocationPageState extends State<LocationPage> {
                 ),
               ),
             ),
-            Center(
-              child: Container(
-                width: MediaQuery.of(context).size.width * 0.9,
-                padding: EdgeInsets.only(top: 40, bottom: 20),
-                child: Text(
-                  "Code postal",
-                  style: TextStyle(  
-                    wordSpacing: 1.5,
-                    fontSize: 22,
-                    color: SECONDARY_COLOR,
-                    fontWeight: FontWeight.w500
-                  ),
-                ),
-              ),
+            HeaderText2(
+              text: "Code postal",
+              padding: EdgeInsets.only(bottom: 20, top: 40)
             ),
             Center(
               child: Container(

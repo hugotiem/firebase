@@ -3,6 +3,7 @@ import 'package:pts/Constant.dart';
 import 'package:pts/Model/components/back_appbar.dart';
 import 'package:pts/Model/soiree.dart';
 
+import 'components/headertext_one.dart';
 import 'price_page.dart';
 
 class GuestNumber extends StatefulWidget {
@@ -41,20 +42,8 @@ class _GuestNumberState extends State<GuestNumber> {
         child: Column(  
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(
-              child: Container(
-                width: MediaQuery.of(context).size.width * 0.9,
-                padding: EdgeInsets.only(top: 30, bottom: 40),
-                child: Text(
-                  "Combien de personnes souhaitez-vous inviter ?",
-                  style: TextStyle(  
-                    wordSpacing: 1.5,
-                    fontSize: 25,
-                    color: SECONDARY_COLOR,
-                    fontWeight: FontWeight.w700
-                  ),
-                ),
-              ),
+            HeaderText1(
+              text: "Combien de personnes souhaitez-vous inviter ?",
             ),
             Row(
               children: [

@@ -3,6 +3,7 @@ import 'package:pts/Constant.dart';
 import 'package:pts/Model/components/back_appbar.dart';
 import 'package:pts/Model/services/firestore_service.dart';
 import 'package:pts/Model/soiree.dart';
+import 'package:pts/View/Pages/creation/components/headertext_one.dart';
 
 class DescriptionPage extends StatefulWidget {
   @override
@@ -50,43 +51,37 @@ class _DescriptionPageState extends State<DescriptionPage> {
           )),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: SingleChildScrollView(
-          child: Column(children: [
-        Center(
-          child: Container(
-            padding: EdgeInsets.only(top: 30, bottom: 40, left: 20),
-            child: Text(
-              "Un mot à ajouter pour décrire votre soirée ?",
-              style: TextStyle(
-                  wordSpacing: 1.5,
-                  fontSize: 25,
-                  color: SECONDARY_COLOR,
-                  fontWeight: FontWeight.w700),
+        child: Column(
+          children: [
+            HeaderText1(
+              text: "Un mot à ajouter pour décrire votre soirée ?",
             ),
-          ),
-        ),
-        Center(
-          child: Container(
-            height: 250,
-            width: MediaQuery.of(context).size.width * 0.9,
-            decoration: BoxDecoration(
-                color: PRIMARY_COLOR, borderRadius: BorderRadius.circular(15)),
-            child: Padding(
-              padding: const EdgeInsets.only(left: 16),
-              child: TextFormField(
-                  onChanged: (value) {
-                    _description = value;
-                  },
-                  style: TextStyle(
-                    fontSize: 18,
+            Center(
+              child: Container(
+                height: 250,
+                width: MediaQuery.of(context).size.width * 0.9,
+                decoration: BoxDecoration(
+                    color: PRIMARY_COLOR, borderRadius: BorderRadius.circular(15)),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 16),
+                  child: TextFormField(
+                    onChanged: (value) {
+                      _description = value;
+                    },
+                    style: TextStyle(
+                      fontSize: 18,
+                    ),
+                    decoration: InputDecoration(
+                      hintText: 'ex: Ambiance boîte de nuit !!',
+                      border: InputBorder.none,
+                    )
                   ),
-                  decoration: InputDecoration(
-                    hintText: 'ex: Ambiance boîte de nuit !!',
-                    border: InputBorder.none,
-                  )),
+                ),
+              ),
             ),
-          ),
-        ),
-      ])),
+          ]
+        )
+      ),
     );
   }
 }

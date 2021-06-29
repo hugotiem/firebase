@@ -3,6 +3,7 @@ import 'package:pts/Model/components/back_appbar.dart';
 import 'package:pts/Model/soiree.dart';
 
 import '../../../Constant.dart';
+import 'components/headertext_one.dart';
 import 'date_hour_page.dart';
 
 class ThemePage extends StatefulWidget {
@@ -45,20 +46,8 @@ class _ThemePageState extends State<ThemePage> {
         child: Column(  
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(
-              child: Container(
-                width: MediaQuery.of(context).size.width * 0.9,
-                padding: EdgeInsets.only(top: 30, bottom: 40),
-                child: Text(
-                  "Choisissez un thème ",
-                  style: TextStyle(  
-                    wordSpacing: 1.5,
-                    fontSize: 25,
-                    color: SECONDARY_COLOR,
-                    fontWeight: FontWeight.w700
-                  ),
-                ),
-              ),
+            HeaderText1(
+              text: 'Choississez un thème'
             ),
             Center(
               child: Container(

@@ -3,6 +3,8 @@ import 'package:pts/Model/components/back_appbar.dart';
 import 'package:pts/Model/soiree.dart';
 
 import '../../../Constant.dart';
+import 'components/headertext_one.dart';
+import 'components/headertext_two.dart';
 import 'location_page.dart';
 
 
@@ -45,35 +47,11 @@ class _DateHourPageState extends State<DateHourPage> {
         child: Column(  
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(
-              child: Container(
-                width: MediaQuery.of(context).size.width * 0.9,
-                padding: EdgeInsets.only(top: 30, bottom: 40),
-                child: Text(
-                  "Quand se déroulera-t'elle ? ",
-                  style: TextStyle(  
-                    wordSpacing: 1.5,
-                    fontSize: 25,
-                    color: SECONDARY_COLOR,
-                    fontWeight: FontWeight.w700
-                  ),
-                ),
-              ),
+            HeaderText1(
+              text: "Quand se déroulera-t'elle ?",
             ),
-            Center(
-              child: Container(
-                width: MediaQuery.of(context).size.width * 0.9,
-                padding: EdgeInsets.only(bottom: 20),
-                child: Text(
-                  "Date",
-                  style: TextStyle(  
-                    wordSpacing: 1.5,
-                    fontSize: 22,
-                    color: SECONDARY_COLOR,
-                    fontWeight: FontWeight.w500
-                  ),
-                ),
-              ),
+            HeaderText2(
+              text: 'Date',
             ),
             Center(
               child: Container(
@@ -118,20 +96,9 @@ class _DateHourPageState extends State<DateHourPage> {
                 ),
               ),
             ),
-            Center(
-              child: Container(
-                width: MediaQuery.of(context).size.width * 0.9,
-                padding: EdgeInsets.only(top: 40, bottom: 20),
-                child: Text(
-                  "Heure",
-                  style: TextStyle(  
-                    wordSpacing: 1.5,
-                    fontSize: 22,
-                    color: SECONDARY_COLOR,
-                    fontWeight: FontWeight.w500
-                  ),
-                ),
-              ),
+            HeaderText2(
+              text: 'Heure',
+              padding: EdgeInsets.only(bottom: 20, top: 40)
             ),
             Center(
               child: Container(
