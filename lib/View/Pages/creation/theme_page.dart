@@ -62,7 +62,7 @@ class _ThemePageState extends State<ThemePage> {
             ),
             Center(
               child: Container(
-                height: 50,
+                height: HEIGHTCONTAINER,
                 width: MediaQuery.of(context).size.width * 0.9,
                 decoration: BoxDecoration(  
                   color: PRIMARY_COLOR,
@@ -99,12 +99,19 @@ class _ThemePageState extends State<ThemePage> {
                         ),
                         elevation: 0,
                         decoration: InputDecoration(
+                          errorStyle: TextStyle(  
+                            height: 0,
+                            background: Paint()..color = Colors.transparent
+                          ),
+                          errorBorder: OutlineInputBorder( 
+                            borderSide: BorderSide(color: Colors.transparent)
+                          ),
                           border: OutlineInputBorder( 
                             borderRadius: BorderRadius.circular(15)
                           ),
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(
-                              color: Colors.white
+                              color: Colors.transparent
                             )
                           )
                         ),

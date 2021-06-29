@@ -72,7 +72,7 @@ class _NamePageState extends State<NamePage> {
             ),
             Center(
               child: Container(
-                height: 50,
+                height: HEIGHTCONTAINER,
                 width: MediaQuery.of(context).size.width * 0.9,
                 decoration: BoxDecoration(  
                   color: PRIMARY_COLOR,
@@ -94,6 +94,9 @@ class _NamePageState extends State<NamePage> {
                           hintText: 'ex: La fête du roi', 
                           border: InputBorder.none,
                           counterText: '',
+                          errorStyle: TextStyle(  
+                            height: 0,
+                          )
                         ),
                         maxLength: 20,
                         validator: (value) {

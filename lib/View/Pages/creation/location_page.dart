@@ -77,7 +77,7 @@ class _LocationPageState extends State<LocationPage> {
             ),
             Center(
               child: Container(
-                height: 50,
+                height: HEIGHTCONTAINER,
                 width: MediaQuery.of(context).size.width * 0.9,
                 decoration: BoxDecoration(  
                   color: PRIMARY_COLOR,
@@ -119,7 +119,7 @@ class _LocationPageState extends State<LocationPage> {
             ),
             Center(
               child: Container(
-                height: 50,
+                height: HEIGHTCONTAINER,
                 width: MediaQuery.of(context).size.width * 0.9,
                 decoration: BoxDecoration(  
                   color: PRIMARY_COLOR,
@@ -161,7 +161,7 @@ class _LocationPageState extends State<LocationPage> {
             ),
             Center(
               child: Container(
-                height: 50,
+                height: HEIGHTCONTAINER,
                 width: MediaQuery.of(context).size.width * 0.9,
                 decoration: BoxDecoration(  
                   color: PRIMARY_COLOR,
