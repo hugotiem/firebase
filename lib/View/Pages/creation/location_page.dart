@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/Model/components/back_appbar.dart';
 import 'package:pts/Model/soiree.dart';
@@ -16,6 +17,7 @@ class _LocationPageState extends State<LocationPage> {
   String _adresse;
   String _ville;
   String _codepostal;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +35,9 @@ class _LocationPageState extends State<LocationPage> {
           color: SECONDARY_COLOR,
           ),
         onPressed: () {
+          if (!_formKey.currentState.validate()) {
+            return;
+          }
           Soiree.setDataLocationPage(
             _adresse,
             _ville,
@@ -44,108 +49,151 @@ class _LocationPageState extends State<LocationPage> {
         },
       ),
       body: SingleChildScrollView(
-        child: Column(  
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            HeaderText1(
-              text: "Où se déroulera-t'elle ?",
-            ),
-            HeaderText2(
-              text: "Adresse",
-            ),
-            Center(
-              child: Container(
-                height: HEIGHTCONTAINER,
-                width: MediaQuery.of(context).size.width * 0.9,
-                decoration: BoxDecoration(  
-                  color: PRIMARY_COLOR,
-                  borderRadius: BorderRadius.circular(15)
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 16),
-                  child: Center(
-                    child: TextFormField(  
-                      onChanged: (value) {
-                        _adresse = value;
-                      },
-                      style: TextStyle(
-                        fontSize: 18,
+        child: Form(
+          key: _formKey,
+          child: Column(  
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              HeaderText1(
+                text: "Où se déroulera-t'elle ?",
+              ),
+              HeaderText2(
+                text: "Adresse",
+              ),
+              Center(
+                child: Container(
+                  height: HEIGHTCONTAINER,
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  decoration: BoxDecoration(  
+                    color: PRIMARY_COLOR,
+                    borderRadius: BorderRadius.circular(15)
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 16),
+                    child: Center(
+                      child: TextFormField(  
+                        onChanged: (value) {
+                          _adresse = value;
+                        },
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return "Vous devez remplir l'adresse";
+                          } else {
+                            return null;
+                          }
+                        },
+                        style: TextStyle(
+                          fontSize: 18,
+                        ),
+                        decoration: InputDecoration( 
+                          hintText: 'ex: 7 avenue des champs élysés', 
+                          border: InputBorder.none,
+                          errorStyle: TextStyle(
+                            height: 0
+                          )
+                        )
                       ),
-                      decoration: InputDecoration( 
-                        hintText: 'ex: 7 avenue des champs élysés', 
-                        border: InputBorder.none,
-                      )
                     ),
                   ),
                 ),
               ),
-            ),
-            HeaderText2(
-              text: "Ville",
-              padding: EdgeInsets.only(bottom: 20, top: 40)
-            ),
-            Center(
-              child: Container(
-                height: HEIGHTCONTAINER,
-                width: MediaQuery.of(context).size.width * 0.9,
-                decoration: BoxDecoration(  
-                  color: PRIMARY_COLOR,
-                  borderRadius: BorderRadius.circular(15)
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 16),
-                  child: Center(
-                    child: TextFormField(  
-                      onChanged: (value) {
-                        _ville = value;
-                      },
-                      style: TextStyle(
-                        fontSize: 18,
+              HeaderText2(
+                text: "Ville",
+                padding: EdgeInsets.only(bottom: 20, top: 40)
+              ),
+              Center(
+                child: Container(
+                  height: HEIGHTCONTAINER,
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  decoration: BoxDecoration(  
+                    color: PRIMARY_COLOR,
+                    borderRadius: BorderRadius.circular(15)
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 16),
+                    child: Center(
+                      child: TextFormField(  
+                        onChanged: (value) {
+                          _ville = value;
+                        },
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return "Vous devez remplir la ville";
+                          } else {
+                            return null;
+                          }
+                        },
+                        style: TextStyle(
+                          fontSize: 18,
+                        ),
+                        decoration: InputDecoration( 
+                          hintText: 'ex: Paris', 
+                          border: InputBorder.none,
+                          errorStyle: TextStyle(
+                            height: 0
+                          )
+                        )
                       ),
-                      decoration: InputDecoration( 
-                        hintText: 'ex: Paris', 
-                        border: InputBorder.none,
-                      )
                     ),
                   ),
                 ),
               ),
-            ),
-            HeaderText2(
-              text: "Code postal",
-              padding: EdgeInsets.only(bottom: 20, top: 40)
-            ),
-            Center(
-              child: Container(
-                height: HEIGHTCONTAINER,
-                width: MediaQuery.of(context).size.width * 0.9,
-                decoration: BoxDecoration(  
-                  color: PRIMARY_COLOR,
-                  borderRadius: BorderRadius.circular(15)
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 16),
-                  child: Center(
-                    child: TextFormField(  
-                      onChanged: (value) {
-                        _codepostal = value;
-                      },
-                      style: TextStyle(
-                        fontSize: 18,
+              HeaderText2(
+                text: "Code postal",
+                padding: EdgeInsets.only(bottom: 20, top: 40)
+              ),
+              Center(
+                child: Container(
+                  height: HEIGHTCONTAINER,
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  decoration: BoxDecoration(  
+                    color: PRIMARY_COLOR,
+                    borderRadius: BorderRadius.circular(15)
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 16),
+                    child: Center(
+                      child: TextFormField(  
+                        onChanged: (value) {
+                          _codepostal = value;
+                        },
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return "Vous devez remplir le code postal";
+                          } 
+                          else if (value.length < 5) {
+                            return "Ce code n'existe pas";
+                          }
+                          else {
+                            return null;
+                          }
+                        },
+                        style: TextStyle(
+                          fontSize: 18,
+                        ),
+                        maxLength: 5,
+                        decoration: InputDecoration( 
+                          hintText: 'ex: 75008', 
+                          border: InputBorder.none,
+                          counterText: '',
+                          errorStyle: TextStyle(
+                            height: 0
+                          )
+                        ),
+                        keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[  
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
                       ),
-                      decoration: InputDecoration( 
-                        hintText: 'ex: 75008', 
-                        border: InputBorder.none,
-                      )
                     ),
                   ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 50
-            )
-          ],
+              SizedBox(
+                height: 50
+              )
+            ],
+          ),
         ),
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/Model/components/back_appbar.dart';
 import 'package:pts/Model/soiree.dart';
@@ -12,7 +13,7 @@ class GuestNumber extends StatefulWidget {
 }
 
 class _GuestNumberState extends State<GuestNumber> {
-  var _nombre;
+  var _nombre = '20';
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +67,10 @@ class _GuestNumberState extends State<GuestNumber> {
                           style: TextStyle(
                             fontSize: 30,
                           ),
+                          keyboardType: TextInputType.number,
+                          inputFormatters: <TextInputFormatter>[ 
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
                           decoration: InputDecoration( 
                             hintText: '20', 
                             border: InputBorder.none,

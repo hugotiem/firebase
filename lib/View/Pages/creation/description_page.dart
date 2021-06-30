@@ -11,7 +11,7 @@ class DescriptionPage extends StatefulWidget {
 }
 
 class _DescriptionPageState extends State<DescriptionPage> {
-  String _description;
+  String _description = "";
   final db = FireStoreServices("party");
 
   @override
@@ -58,12 +58,12 @@ class _DescriptionPageState extends State<DescriptionPage> {
             ),
             Center(
               child: Container(
-                height: 250,
+                height: 226,
                 width: MediaQuery.of(context).size.width * 0.9,
                 decoration: BoxDecoration(
                     color: PRIMARY_COLOR, borderRadius: BorderRadius.circular(15)),
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 16),
+                  padding: const EdgeInsets.only(left: 16, right: 16),
                   child: TextFormField(
                     onChanged: (value) {
                       _description = value;
@@ -71,9 +71,16 @@ class _DescriptionPageState extends State<DescriptionPage> {
                     style: TextStyle(
                       fontSize: 18,
                     ),
+                    maxLength: 500,
+                    keyboardType: TextInputType.multiline,
+                    minLines: 1,
+                    maxLines: 10,
                     decoration: InputDecoration(
                       hintText: 'ex: Ambiance boîte de nuit !!',
                       border: InputBorder.none,
+                      counterStyle: TextStyle(  
+                        height: 1
+                      )
                     )
                   ),
                 ),

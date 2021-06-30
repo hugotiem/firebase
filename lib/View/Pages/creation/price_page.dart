@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/Model/components/back_appbar.dart';
 import 'package:pts/Model/soiree.dart';
@@ -12,7 +13,7 @@ class PricePage extends StatefulWidget {
 }
 
 class _PricePageState extends State<PricePage> {
-  var _prix;
+  var _prix = '10';
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +63,11 @@ class _PricePageState extends State<PricePage> {
                         child: TextFormField(
                           onChanged: (value) {
                             _prix = value;
-                          },  
+                          },
+                          keyboardType: TextInputType.number,  
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
                           style: TextStyle(
                             fontSize: 30,
                           ),
