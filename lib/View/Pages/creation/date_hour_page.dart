@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:pts/Model/components/back_appbar.dart';
 import 'package:pts/Model/soiree.dart';
 
@@ -17,6 +18,9 @@ class DateHourPage extends StatefulWidget {
 class _DateHourPageState extends State<DateHourPage> {
   var _date;
   var _heure;
+  TextEditingController dateCtl = TextEditingController();
+  TextEditingController heureCtl = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +38,9 @@ class _DateHourPageState extends State<DateHourPage> {
           color: SECONDARY_COLOR,
           ),
         onPressed: () {
+          if (!_formKey.currentState.validate()) {
+            return;
+          }
           Soiree.setDataDateHourPage(
             _date,
             _heure
@@ -44,106 +51,105 @@ class _DateHourPageState extends State<DateHourPage> {
         },
       ),
       body: SingleChildScrollView(
-        child: Column(  
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            HeaderText1(
-              text: "Quand se déroulera-t'elle ?",
-            ),
-            HeaderText2(
-              text: 'Date',
-            ),
-            Center(
-              child: Container(
-                height: HEIGHTCONTAINER,
-                width: MediaQuery.of(context).size.width * 0.9,
-                decoration: BoxDecoration(  
-                  color: PRIMARY_COLOR,
-                  borderRadius: BorderRadius.circular(15)
-                ),
-                child: TextButton(
-                  child: Align(
-                    alignment: Alignment.centerLeft,
+        child: Form(
+          key: _formKey,
+          child: Column(  
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              HeaderText1(
+                text: "Quand se déroulera-t'elle ?",
+              ),
+              HeaderText2(
+                text: 'Date',
+              ),
+              Center(
+                child: Container(
+                  height: HEIGHTCONTAINER,
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  decoration: BoxDecoration(  
+                    color: PRIMARY_COLOR,
+                    borderRadius: BorderRadius.circular(15)
+                  ),
+                  child: Center(
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 8),
-                      child: Container(
-                        child: 
-                          _date == null 
-                            ? Text(
-                              'Choisir une date',
-                              style: TextStyle(  
-                                color: Colors.grey[600],
-                                fontWeight: FontWeight.w400,
-                                fontSize: 18
-                              ),
-                            )
-                            : Text(
-                              'Le ${_date.day}/${_date.month}/${_date.year} ',
-                              style: TextStyle(  
-                                color: SECONDARY_COLOR,
-                                fontSize: 18
-                              ),
-                            ),
+                      padding: const EdgeInsets.only(left: 16),
+                      child: TextFormField(
+                        controller: dateCtl,
+                        readOnly: true,
+                        onTap: () async {
+                          FocusScope.of(context).requestFocus(new FocusNode());
+                          await _selectionDate();
+                          dateCtl.text = DateFormat.MMMMEEEEd('fr').format(_date);
+                        },
+                        style: TextStyle(  
+                          fontSize: 18
+                        ),
+                        decoration: InputDecoration(  
+                          hintText: 'Choisir une date',
+                          border: InputBorder.none,
+                          errorStyle: TextStyle(  
+                            height: 0
+                          )
+                        ),
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return "vous devez choisir une date";
+                          } else {
+                            return null;
+                          }
+                        },
                       ),
                     ),
                   ),
-                  onPressed: () {
-                    _selectionDate();
-                  },
-                  style: TextButton.styleFrom(
-                    primary: PRIMARY_COLOR,
-                  )
                 ),
               ),
-            ),
-            HeaderText2(
-              text: 'Heure',
-              padding: EdgeInsets.only(bottom: 20, top: 40)
-            ),
-            Center(
-              child: Container(
-                height: HEIGHTCONTAINER,
-                width: MediaQuery.of(context).size.width * 0.9,
-                decoration: BoxDecoration(  
-                  color: PRIMARY_COLOR,
-                  borderRadius: BorderRadius.circular(15)
-                ),
-                child: TextButton(
-                  child: Align(
-                    alignment: Alignment.centerLeft,
+              HeaderText2(
+                text: 'Heure',
+                padding: EdgeInsets.only(bottom: 20, top: 40)
+              ),
+              Center(
+                child: Container(
+                  height: HEIGHTCONTAINER,
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  decoration: BoxDecoration(  
+                    color: PRIMARY_COLOR,
+                    borderRadius: BorderRadius.circular(15)
+                  ),
+                  child: Center(
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 8),
-                      child: Container(
-                        child: 
-                          _heure == null 
-                            ? Text(
-                              'Choisir une heure',
-                              style: TextStyle(  
-                                color: Colors.grey[600],
-                                fontWeight: FontWeight.w400,
-                                fontSize: 18
-                              ),
-                            )
-                            : Text(
-                              'A ${_heure.format(context)} ',
-                              style: TextStyle(  
-                                color: SECONDARY_COLOR,
-                                fontSize: 18
-                              ),
-                            ),
+                      padding: const EdgeInsets.only(left: 16),
+                      child: TextFormField(
+                        controller: heureCtl,
+                        readOnly: true,
+                        onTap: () async {
+                          FocusScope.of(context).requestFocus(new FocusNode());
+                          await _selectionHeure();
+                          heureCtl.text = 'A ${_heure.format(context)} ';
+                        },
+                        style: TextStyle(  
+                          fontSize: 18
+                        ),
+                        decoration: InputDecoration(  
+                          hintText: 'Choisir une heure',
+                          border: InputBorder.none,
+                          errorStyle: TextStyle(  
+                            height: 0
+                          )
+                        ),
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return "vous devez choisir une date";
+                          } else {
+                            return null;
+                          }
+                        },
                       ),
                     ),
                   ),
-                  onPressed: () {
-                    _selectionHeure();
-                  },
-                  style: TextButton.styleFrom(
-                    primary: PRIMARY_COLOR,
-                  )
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -168,7 +174,7 @@ class _DateHourPageState extends State<DateHourPage> {
       }
     );
 
-    if (_dateChoisie != null) {
+    if (_dateChoisie != null && _dateChoisie != _date) {
       setState(() {
         _date = _dateChoisie;
       });
@@ -192,7 +198,7 @@ class _DateHourPageState extends State<DateHourPage> {
       }
     );
 
-    if (_heureChoisie != null) {
+    if (_heureChoisie != null && _heureChoisie != _heure) {
       setState(() {
         _heure = _heureChoisie;
       });
