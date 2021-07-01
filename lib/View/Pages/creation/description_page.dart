@@ -4,6 +4,7 @@ import 'package:pts/Model/components/back_appbar.dart';
 import 'package:pts/Model/services/firestore_service.dart';
 import 'package:pts/Model/soiree.dart';
 import 'package:pts/View/Pages/creation/components/headertext_one.dart';
+import 'package:pts/View/Pages/creation/thanks_page.dart';
 
 class DescriptionPage extends StatefulWidget {
   @override
@@ -40,8 +41,9 @@ class _DescriptionPageState extends State<DescriptionPage> {
                 'postal code': Soiree.codepostal
               },
             );
-
-            Navigator.of(context).popUntil((route) => route.isFirst);
+            Navigator.push(context, 
+              MaterialPageRoute(builder: (context) => ThanksPage())
+            );
           },
           backgroundColor: SECONDARY_COLOR,
           elevation: 0,
