@@ -10,4 +10,5 @@ const Color SECONDARY_COLOR = Color(0xff232f3e);
 
 
 // Contante pour le formulaire
+const Color FORMBACKGROUNDCOLOR = Colors.white;
 const double HEIGHTCONTAINER = 55;

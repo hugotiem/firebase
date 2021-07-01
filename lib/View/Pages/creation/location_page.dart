@@ -22,7 +22,7 @@ class _LocationPageState extends State<LocationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,      
+      backgroundColor: FORMBACKGROUNDCOLOR,      
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50),
         child: BackAppBar(),
@@ -83,7 +83,7 @@ class _LocationPageState extends State<LocationPage> {
                           }
                         },
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: TEXTFIELDFONTSIZE,
                         ),
                         decoration: InputDecoration( 
                           hintText: 'ex: 7 avenue des champs élysés', 
@@ -124,7 +124,7 @@ class _LocationPageState extends State<LocationPage> {
                           }
                         },
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: TEXTFIELDFONTSIZE,
                         ),
                         decoration: InputDecoration( 
                           hintText: 'ex: Paris', 
@@ -169,7 +169,7 @@ class _LocationPageState extends State<LocationPage> {
                           }
                         },
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: TEXTFIELDFONTSIZE,
                         ),
                         maxLength: 5,
                         decoration: InputDecoration( 

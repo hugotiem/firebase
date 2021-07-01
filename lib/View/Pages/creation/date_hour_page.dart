@@ -25,7 +25,7 @@ class _DateHourPageState extends State<DateHourPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,      
+      backgroundColor: FORMBACKGROUNDCOLOR,      
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50),
         child: BackAppBar(),
@@ -82,7 +82,7 @@ class _DateHourPageState extends State<DateHourPage> {
                           dateCtl.text = DateFormat.MMMMEEEEd('fr').format(_date);
                         },
                         style: TextStyle(  
-                          fontSize: 18
+                          fontSize: TEXTFIELDFONTSIZE
                         ),
                         decoration: InputDecoration(  
                           hintText: 'Choisir une date',
@@ -127,7 +127,7 @@ class _DateHourPageState extends State<DateHourPage> {
                           heureCtl.text = 'A ${_heure.format(context)} ';
                         },
                         style: TextStyle(  
-                          fontSize: 18
+                          fontSize: TEXTFIELDFONTSIZE
                         ),
                         decoration: InputDecoration(  
                           hintText: 'Choisir une heure',

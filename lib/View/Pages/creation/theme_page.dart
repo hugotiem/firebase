@@ -18,7 +18,7 @@ class _ThemePageState extends State<ThemePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,      
+      backgroundColor: FORMBACKGROUNDCOLOR,      
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50),
         child: BackAppBar(),
@@ -75,7 +75,7 @@ class _ThemePageState extends State<ThemePage> {
                             child: Text(
                               value,
                               style: TextStyle(  
-                                fontSize: 18
+                                fontSize: TEXTFIELDFONTSIZE
                               ),
                             ),
                           );
@@ -83,7 +83,7 @@ class _ThemePageState extends State<ThemePage> {
                         hint: Text(
                           "Choisir un thème",
                           style: TextStyle(
-                            fontSize: 18
+                            fontSize: TEXTFIELDFONTSIZE
                           ),
                         ),
                         elevation: 0,
@@ -93,7 +93,9 @@ class _ThemePageState extends State<ThemePage> {
                             background: Paint()..color = Colors.transparent
                           ),
                           errorBorder: OutlineInputBorder( 
-                            borderSide: BorderSide(color: Colors.transparent)
+                            borderSide: BorderSide(
+                              color: Colors.transparent
+                            )
                           ),
                           border: OutlineInputBorder( 
                             borderRadius: BorderRadius.circular(15)

@@ -18,7 +18,7 @@ class _DescriptionPageState extends State<DescriptionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: FORMBACKGROUNDCOLOR,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50),
         child: BackAppBar(),
@@ -49,8 +49,11 @@ class _DescriptionPageState extends State<DescriptionPage> {
           elevation: 0,
           label: Text(
             'Publier la soirée',
-            style: TextStyle(fontSize: 15),
-          )),
+            style: TextStyle(
+              fontSize: 15
+            ),
+          )
+        ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: SingleChildScrollView(
         child: Column(
@@ -63,7 +66,9 @@ class _DescriptionPageState extends State<DescriptionPage> {
                 height: 226,
                 width: MediaQuery.of(context).size.width * 0.9,
                 decoration: BoxDecoration(
-                    color: PRIMARY_COLOR, borderRadius: BorderRadius.circular(15)),
+                  color: PRIMARY_COLOR, 
+                  borderRadius: BorderRadius.circular(15)
+                ),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 16, right: 16),
                   child: TextFormField(
@@ -71,7 +76,7 @@ class _DescriptionPageState extends State<DescriptionPage> {
                       _description = value;
                     },
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: TEXTFIELDFONTSIZE,
                     ),
                     maxLength: 500,
                     keyboardType: TextInputType.multiline,

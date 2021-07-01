@@ -18,7 +18,7 @@ class _GuestNumberState extends State<GuestNumber> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,      
+      backgroundColor: FORMBACKGROUNDCOLOR,      
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50),
         child: BackAppBar(),

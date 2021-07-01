@@ -19,7 +19,7 @@ class _NamePageState extends State<NamePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,      
+      backgroundColor: FORMBACKGROUNDCOLOR,      
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50),
         child: BackAppBar(
@@ -78,7 +78,7 @@ class _NamePageState extends State<NamePage> {
                         _name = value;
                         },
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: TEXTFIELDFONTSIZE,
                         ),
                         decoration: InputDecoration( 
                           hintText: 'ex: La fête du roi', 
