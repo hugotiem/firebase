@@ -4,7 +4,7 @@ import 'package:pts/Model/components/back_appbar.dart';
 import 'package:pts/Model/services/firestore_service.dart';
 import 'package:pts/Model/soiree.dart';
 import 'package:pts/View/Pages/creation/components/headertext_one.dart';
-import 'package:pts/View/Pages/creation/thanks_page.dart';
+import 'package:pts/View/Pages/creation/end_page.dart';
 
 class DescriptionPage extends StatefulWidget {
   @override
@@ -42,7 +42,7 @@ class _DescriptionPageState extends State<DescriptionPage> {
               },
             );
             Navigator.push(context, 
-              MaterialPageRoute(builder: (context) => ThanksPage())
+              MaterialPageRoute(builder: (context) => EndPage())
             );
           },
           backgroundColor: SECONDARY_COLOR,

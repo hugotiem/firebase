@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
 
-class ThanksPage extends StatelessWidget {
-  const ThanksPage({ Key key }) : super(key: key);
+class EndPage extends StatelessWidget {
+  const EndPage({ Key key }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

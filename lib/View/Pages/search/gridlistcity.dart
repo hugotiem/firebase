@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pts/Constant.dart';
 import 'package:pts/Model/components/text_materials.dart';
+
+import 'Components/citybox.dart';
 
 class GridViewCity extends StatefulWidget {
   @override
@@ -84,39 +85,6 @@ class _GridViewCityState extends State<GridViewCity> {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class CityBox extends StatelessWidget {
-  final String text;
-  const CityBox({
-    @required this.text,
-    Key key 
-    }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 32, top: 16),
-        child: Container(
-          height: 75,
-          width: 150,
-          decoration: BoxDecoration(
-            color: SECONDARY_COLOR,
-            borderRadius: BorderRadius.circular(15)
-            ),
-          child: Center(
-            child: Text(
-              this.text,
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w900,
-                color: FOCUS_COLOR
-            ),
-          ),
-        ),
       ),
     );
   }
