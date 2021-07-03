@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pts/Model/components/text_materials.dart';
 import 'package:pts/View/Pages/search/backgroundtitle.dart';
 import 'package:pts/View/Pages/search/custom_sliver.dart';
 import 'package:pts/View/Pages/search/gridlistcity.dart';
@@ -85,7 +86,21 @@ class _SearchState extends State<Search> {
             // quand on clique dessus on arrive sur une liste des soirées dans cette ville
             GridViewCity(),   
             // liste des soirées 
-            CardParty(),
+            Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container( 
+                    margin: EdgeInsets.only(top: 30, left: 20),
+                    child: BoldText(text: "Dernières créées"),
+                  ),
+                  SizedBox(
+                    height: 220,
+                    child: CardParty()
+                  ),
+                ],
+              )
+            ),
             // listes des thèmes de soirées
             GridListThemes(),
             // container qui permet de créer une soirée

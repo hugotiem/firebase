@@ -1,8 +1,10 @@
 import 'package:animations/animations.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:pts/Model/components/back_appbar.dart';
 
 import '../../../../Constant.dart';
+import 'build_party_card.dart';
 
 class CityBox extends StatelessWidget {
   final String text;
@@ -58,8 +60,32 @@ class CityBox extends StatelessWidget {
               ),
             ),
           ),
+          body: SingleChildScrollView(
+            child: StreamBuilder(
+              stream: getPartyStreamSnapshot(context),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) return const Text('Loading...');
+                return Expanded(
+                  child: Column(
+                    children: [
+                      ListView.builder(
+                        itemCount: snapshot.data.docs.length,
+                        itemBuilder: (BuildContext context, int index) =>
+                          buildPartyCard(context, snapshot.data.docs[index])
+                      ),
+                    ],
+                  ),
+                );
+              }, 
+            )
+          ),
         );
       },
     );
+  }
+  Stream<QuerySnapshot> getPartyStreamSnapshot(BuildContext context) async* {
+    yield* FirebaseFirestore.instance
+    .collection('party')
+    .snapshots();
   }
 }
