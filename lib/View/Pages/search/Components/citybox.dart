@@ -18,6 +18,7 @@ class CityBox extends StatelessWidget {
     return OpenContainer(
       transitionDuration: Duration(milliseconds: 400),
       closedColor: Colors.transparent,
+      openColor: PRIMARY_COLOR,
       closedElevation: 0,
       closedBuilder: (context, returnvalue) {
         return Padding(
@@ -80,6 +81,7 @@ class CityBox extends StatelessWidget {
   Stream<QuerySnapshot> getPartyStreamSnapshot(BuildContext context) async* {
     yield* FirebaseFirestore.instance
     .collection('party')
+    .where('city', isEqualTo: this.text)
     .snapshots();
   }
 }
