@@ -26,7 +26,10 @@ class _CardPartyState extends State<CardParty> {
             onPageChanged: (int index) =>
               setState(() => _index = index),
               itemBuilder: (BuildContext context, int index) => 
-                buildPartyCard(context, snapshot.data.docs[index])
+                Padding(
+                  padding: const EdgeInsets.only(right: 15),
+                  child: buildPartyCard(context, snapshot.data.docs[index]),
+                )
               );
             }
           );

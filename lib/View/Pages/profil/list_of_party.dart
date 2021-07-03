@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:pts/Constant.dart';
+import 'package:pts/View/Pages/search/Components/build_party_card.dart';
 
 class GetPartyData extends StatelessWidget {
 
@@ -27,20 +27,5 @@ class GetPartyData extends StatelessWidget {
     yield* FirebaseFirestore.instance
     .collection('party')
     .snapshots();
-  }
-
-  Widget buildPartyCard(BuildContext context, DocumentSnapshot party) {
-    return SingleChildScrollView(
-      child: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        color: PRIMARY_COLOR,
-        child: Column(  
-          children: [
-            Text(party['Name'])
-          ]
-        ),
-      ),
-    );
   }
 }

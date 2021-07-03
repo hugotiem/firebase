@@ -60,21 +60,15 @@ class CityBox extends StatelessWidget {
               ),
             ),
           ),
-          body: SingleChildScrollView(
+          body: Container(
             child: StreamBuilder(
               stream: getPartyStreamSnapshot(context),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) return const Text('Loading...');
-                return Expanded(
-                  child: Column(
-                    children: [
-                      ListView.builder(
-                        itemCount: snapshot.data.docs.length,
-                        itemBuilder: (BuildContext context, int index) =>
-                          buildPartyCard(context, snapshot.data.docs[index])
-                      ),
-                    ],
-                  ),
+                return ListView.builder(
+                  itemCount: snapshot.data.docs.length,
+                  itemBuilder: (BuildContext context, int index) =>
+                    buildPartyCard(context, snapshot.data.docs[index])
                 );
               }, 
             )
