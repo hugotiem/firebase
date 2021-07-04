@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:pts/Model/services/auth_service.dart';
 import 'package:pts/View/Pages/search/Components/build_party_card.dart';
 
 class GetPartyData extends StatelessWidget {
@@ -26,6 +27,7 @@ class GetPartyData extends StatelessWidget {
     //pour l'instant c'est la liste de toute les soirées créées
     yield* FirebaseFirestore.instance
     .collection('party')
+    .where('UID', isEqualTo: AuthService.currentUser.uid)
     .snapshots();
   }
 }
