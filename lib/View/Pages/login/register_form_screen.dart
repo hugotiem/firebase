@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/Model/services/auth_service.dart';
 
@@ -10,6 +11,7 @@ class RegisterFormScreen extends StatefulWidget {
 class _RegisterFormScreenState extends State<RegisterFormScreen> {
   String _name;
   String _surname;
+  String _number;
 
   @override
   Widget build(BuildContext context) {
@@ -90,18 +92,22 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                     width: MediaQuery.of(context).size.width * 0.9,
                     height: 50,
                     decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(30)),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(30),
+                    ),
                     child: Padding(
                       padding: const EdgeInsets.only(left: 30),
                       child: TextField(
                         // controller: _editingController,
                         keyboardAppearance: Brightness.light,
+                        keyboardType: TextInputType.phone,
                         decoration: InputDecoration(
                           labelText: "Téléphone (facultatif) :",
                           border: InputBorder.none,
                         ),
-                        onChanged: (value) {},
+                        onChanged: (value) {
+                          _number = value;
+                        },
                       ),
                     ),
                   ),
