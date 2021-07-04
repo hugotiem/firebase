@@ -31,14 +31,14 @@ class _GridListThemesState extends State<GridListThemes> {
                 Row(  
                   children: [
                     ThemeBox(
-                      text: 'Classiques', 
+                      text: 'Classique', 
                       colors: [
                         Color(0xFFf12711),
                         Color(0xFFf5af19)
                       ]
                     ),
                     ThemeBox(  
-                      text: 'Gamings',
+                      text: 'Gaming',
                       colors: [
                         Color(0xFF1c92d2),
                         Color(0xFFf2fcfe)
@@ -49,14 +49,14 @@ class _GridListThemesState extends State<GridListThemes> {
                 Row(
                   children: [
                     ThemeBox(
-                      text: 'Jeux de sociétés', 
+                      text: 'Jeu de société', 
                       colors: [
                         Color(0xFFa8ff78),
                         Color(0xFF78ffd6)
                       ]
                     ),
                     ThemeBox(  
-                      text: 'Soirées à thèmes',
+                      text: 'Soirée à thème',
                       colors: [
                         Color(0xFFb24592),
                         Color(0xFFf15f79)
