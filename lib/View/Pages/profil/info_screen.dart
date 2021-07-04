@@ -145,6 +145,9 @@ class _InfoScreenState extends State<InfoScreen> {
                   Text("Email"),
                   CupertinoTextField.borderless(
                     controller: _emailController,
+                    readOnly:
+                        AuthService.currentUser.providerData[0].providerId ==
+                            "google.com",
                     onChanged: (value) => _email = value,
                   ),
                 ],

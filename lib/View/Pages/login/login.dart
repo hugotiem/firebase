@@ -264,7 +264,18 @@ class _LoginState extends State<Login> {
                             onTap: () {
                               _auth
                                   .signInWithGoogle()
-                                  .then((value) => Navigator.of(context).pop())
+                                  .then(
+                                    (value) =>
+                                        Navigator.of(context).pushReplacement(
+                                      CupertinoPageRoute(
+                                        fullscreenDialog: true,
+                                        builder: (context) =>
+                                            RegisterFormScreen(
+                                          user: value.user,
+                                        ),
+                                      ),
+                                    ),
+                                  )
                                   .catchError((onError) => print(onError));
                             },
                           ),

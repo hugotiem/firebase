@@ -4,6 +4,9 @@ import 'package:pts/Constant.dart';
 import 'package:pts/Model/services/auth_service.dart';
 
 class RegisterFormScreen extends StatefulWidget {
+  final user;
+
+  const RegisterFormScreen({Key key, this.user}) : super(key: key);
   @override
   _RegisterFormScreenState createState() => _RegisterFormScreenState();
 }
@@ -12,6 +15,23 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
   String _name;
   String _surname;
   String _number;
+
+  TextEditingController _nameController;
+  TextEditingController _surnameController;
+
+  @override
+  void initState() {
+    _name = widget.user != null
+        ? (widget.user.displayName as String).split(" ")[0]
+        : "";
+    _surname = widget.user != null
+        ? (widget.user.displayName as String).split(" ")[1]
+        : "";
+
+    _nameController = TextEditingController(text: _name);
+    _surnameController = TextEditingController(text: _surname);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +65,7 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                     child: Padding(
                       padding: const EdgeInsets.only(left: 30),
                       child: TextField(
-                        // controller: _editingController,
+                        controller: _surnameController,
                         keyboardAppearance: Brightness.light,
                         decoration: InputDecoration(
                           labelText: "Nom :",
@@ -71,7 +91,7 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                     child: Padding(
                       padding: const EdgeInsets.only(left: 30),
                       child: TextField(
-                        // controller: _editingController,
+                        controller: _nameController,
                         keyboardAppearance: Brightness.light,
                         decoration: InputDecoration(
                           labelText: "Prénom :",
