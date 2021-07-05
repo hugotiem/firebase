@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/Model/components/back_appbar.dart';
 import 'package:pts/Model/soiree.dart';
+import 'package:pts/View/Pages/creation/components/Radio_and_text.dart';
 import 'package:pts/View/Pages/creation/components/headertext_one.dart';
 
 import 'components/headertext_two.dart';
@@ -65,95 +66,60 @@ class _PricePageState extends State<PricePage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      Radio(
-                        activeColor: SECONDARY_COLOR,
-                        value: RadioChoix.Gratuit,
-                        groupValue: _choixRadio,
-                        onChanged: (value) {
-                          setState(() {
-                            _choixRadio = value;
-                            _prix = '0';
-                          });
-                        },
-                      ),
-                      HintText(
-                        text: 'Gratuit',
-                      )
-                    ],
+                  RadioAndText(
+                    value: RadioChoix.Gratuit, 
+                    groupValue: _choixRadio, 
+                    onChanged: (value) {
+                      setState(() {
+                        _choixRadio = value;
+                        _prix = '0';
+                      });
+                    }, 
+                    text: 'Gratuit'
                   ),
-                  Row(
-                    children: [
-                      Radio(
-                        activeColor: SECONDARY_COLOR,
-                        value: RadioChoix.Cinq,
-                        groupValue: _choixRadio,
-                        onChanged: (value) {
-                          setState(() {
-                            _choixRadio = value;
-                            _prix = '5';
-                          });
-                        },
-                      ),
-                      HintText(
-                        text: '5 €',
-                      )
-                    ],
+                  RadioAndText(
+                    value: RadioChoix.Cinq, 
+                    groupValue: _choixRadio, 
+                    onChanged: (value) {
+                      setState(() {
+                        _choixRadio = value;
+                        _prix = '5';
+                      });
+                    }, 
+                    text: '5 €'
                   ),
-                  Row(
-                    children: [
-                      Radio(
-                        activeColor: SECONDARY_COLOR,
-                        value: RadioChoix.Dix,
-                        groupValue: _choixRadio,
-                        onChanged: (value) {
-                          setState(() {
-                            _choixRadio = value;
-                            _prix = '10';
-                          });
-                        },
-                      ),
-                      HintText(
-                        text: '10 €',
-                      )
-                    ],
+                  RadioAndText(
+                    value: RadioChoix.Dix, 
+                    groupValue: _choixRadio, 
+                    onChanged: (value) {
+                      setState(() {
+                        _choixRadio = value;
+                        _prix = '10';
+                      });
+                    }, 
+                    text: '10 €'
                   ),
-                  Row(
-                    children: [
-                      Radio(
-                        activeColor: SECONDARY_COLOR,
-                        value: RadioChoix.Quinze,
-                        groupValue: _choixRadio,
-                        onChanged: (value) {
-                          setState(() {
-                            _choixRadio = value;
-                            _prix = '15';
-                          });
-                        },
-                      ),
-                      HintText(
-                        text: '15 €',
-                      )
-                    ],
+                  RadioAndText(
+                    value: RadioChoix.Quinze, 
+                    groupValue: _choixRadio, 
+                    onChanged: (value) {
+                      setState(() {
+                        _choixRadio = value;
+                        _prix = '15';
+                      });
+                    }, 
+                    text: '15 €'
                   ),
-                  Row(
-                    children: [
-                      Radio(
-                        activeColor: SECONDARY_COLOR,
-                        value: RadioChoix.Vingt,
-                        groupValue: _choixRadio,
-                        onChanged: (value) {
-                          setState(() {
-                            _choixRadio = value;
-                            _prix = '20';
-                          });
-                        },
-                      ),
-                      HintText(
-                        text: '20 €',
-                      )
-                    ],
+                  RadioAndText(
+                    value: RadioChoix.Vingt, 
+                    groupValue: _choixRadio, 
+                    onChanged: (value) {
+                      setState(() {
+                        _choixRadio = value;
+                        _prix = '20';
+                      });
+                    }, 
+                    text: '20 €'
                   ),
                 ],
               ),
