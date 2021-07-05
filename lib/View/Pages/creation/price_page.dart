@@ -201,6 +201,9 @@ class _PricePageState extends State<PricePage> {
                 )
               ],
             ),
+            SizedBox( 
+              height: 50,
+            )
           ]
         )
       )
