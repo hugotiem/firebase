@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/Model/components/back_appbar.dart';
 import 'package:pts/Model/soiree.dart';
+import 'package:pts/View/Pages/creation/components/hint_text.dart';
 
 import 'components/headertext_one.dart';
 import 'price_page.dart';
@@ -49,7 +50,7 @@ class _GuestNumberState extends State<GuestNumber> {
             Row(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 16),
+                  padding: const EdgeInsets.only(left: 32),
                   child: Container(
                     height: 60,
                     width: 60,
@@ -80,20 +81,8 @@ class _GuestNumberState extends State<GuestNumber> {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 8.0),
-                  child: Container( 
-                    child: Opacity(
-                      opacity: 0.7,
-                      child: Text( 
-                        'invités',
-                        style: TextStyle(  
-                          fontSize: 20,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                  ),
+                HintText(
+                  text: 'invités'
                 )
               ],
             ),
