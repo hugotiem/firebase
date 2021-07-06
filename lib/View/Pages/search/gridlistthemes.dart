@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pts/Model/components/text_materials.dart';
+import 'package:pts/View/Pages/search/Components/title_text.dart';
 
 import 'Components/themebox.dart';
 
@@ -18,11 +18,9 @@ class _GridListThemesState extends State<GridListThemes> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            margin: EdgeInsets.only(top: 20, left: 20, bottom: 20),
-            child: BoldText(
-              text: 'Thèmes'
-            ),
+          TitleText(
+            text: 'Thèmes',
+            margin: EdgeInsets.only(top: 20, left: 20, bottom: 20)
           ),
           SizedBox(
             width: MediaQuery.of(context).size.width,

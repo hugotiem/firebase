@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pts/Model/components/text_materials.dart';
+import 'package:pts/View/Pages/search/Components/title_text.dart';
 import 'package:pts/View/Pages/search/backgroundtitle.dart';
 import 'package:pts/View/Pages/search/custom_sliver.dart';
 import 'package:pts/View/Pages/search/gridlistcity.dart';
@@ -80,19 +80,23 @@ class _SearchState extends State<Search> {
         child: ListView(
           children: <Widget>[
             SizedBox(
-              height: 325,
+              height: 400,
             ),
             // liste des 10 villes les plus grandes de france 
             // quand on clique dessus on arrive sur une liste des soirées dans cette ville
+            TitleText(
+              text: 'Villes',
+              margin: EdgeInsets.only(left: 20),
+            ),
             GridViewCity(),   
             // liste des soirées 
             Container(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container( 
-                    margin: EdgeInsets.only(top: 30, left: 20),
-                    child: BoldText(text: "Dernières créées"),
+                  TitleText(
+                    text: 'Dernières créées',
+                    margin: EdgeInsets.only(top: 30, left: 20)
                   ),
                   SizedBox(
                     height: 220,

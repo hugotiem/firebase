@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pts/Model/components/text_materials.dart';
 
 import 'Components/citybox.dart';
 
@@ -16,12 +15,7 @@ class _GridViewCityState extends State<GridViewCity> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            margin: EdgeInsets.only(top: 70, left: 20),
-            child: BoldText(
-              text: 'Villes'
-            ),
-          ),
+          
           SizedBox(
             height: 182,
             child: Container(
