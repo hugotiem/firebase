@@ -65,7 +65,7 @@ class CityBox extends StatelessWidget {
             child: StreamBuilder(
               stream: getPartyStreamSnapshot(context),
               builder: (context, snapshot) {
-                if (!snapshot.hasData) return const Text('Loading...');
+                if (!snapshot.hasData) return Center(child: const CircularProgressIndicator());
                 return ListView.builder(
                   itemCount: snapshot.data.docs.length,
                   itemBuilder: (BuildContext context, int index) =>
