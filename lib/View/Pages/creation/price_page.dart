@@ -4,6 +4,7 @@ import 'package:pts/Constant.dart';
 import 'package:pts/Model/components/back_appbar.dart';
 import 'package:pts/Model/soiree.dart';
 import 'package:pts/View/Pages/creation/components/Radio_and_text.dart';
+import 'package:pts/View/Pages/creation/components/fab_form.dart';
 import 'package:pts/View/Pages/creation/components/headertext_one.dart';
 
 import 'components/headertext_two.dart';
@@ -35,13 +36,7 @@ class _PricePageState extends State<PricePage> {
         preferredSize: Size.fromHeight(50),
         child: BackAppBar(),
       ),
-      floatingActionButton: FloatingActionButton( 
-        backgroundColor: PRIMARY_COLOR,
-        elevation: 1,
-        child: Icon(
-          Icons.arrow_forward_outlined,
-          color: SECONDARY_COLOR,
-          ),
+      floatingActionButton: FABForm( 
         onPressed: () {
           Soiree.setDataPricePage(
             _prix

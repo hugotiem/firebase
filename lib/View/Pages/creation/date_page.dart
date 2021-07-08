@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:pts/Model/components/back_appbar.dart';
 import 'package:pts/Model/soiree.dart';
 import 'package:pts/View/Pages/creation/components/date_hour_picker.dart';
+import 'package:pts/View/Pages/creation/components/fab_form.dart';
 
 import '../../../Constant.dart';
 import 'components/headertext_one.dart';
@@ -29,13 +30,7 @@ class _DateHourPageState extends State<DateHourPage> {
         preferredSize: Size.fromHeight(50),
         child: BackAppBar(),
       ),
-      floatingActionButton: FloatingActionButton( 
-        backgroundColor: PRIMARY_COLOR,
-        elevation: 1,
-        child: Icon(
-          Icons.arrow_forward_outlined,
-          color: SECONDARY_COLOR,
-          ),
+      floatingActionButton: FABForm( 
         onPressed: () {
           if (!_formKey.currentState.validate()) {
             return;

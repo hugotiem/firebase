@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/Model/components/back_appbar.dart';
 import 'package:pts/Model/soiree.dart';
+import 'package:pts/View/Pages/creation/components/fab_form.dart';
 import 'package:pts/View/Pages/creation/components/hint_text.dart';
 
 import 'components/headertext_one.dart';
@@ -24,13 +25,7 @@ class _GuestNumberState extends State<GuestNumber> {
         preferredSize: Size.fromHeight(50),
         child: BackAppBar(),
       ),
-      floatingActionButton: FloatingActionButton( 
-        backgroundColor: PRIMARY_COLOR,
-        elevation: 1,
-        child: Icon(
-          Icons.arrow_forward_outlined,
-          color: SECONDARY_COLOR,
-          ),
+      floatingActionButton: FABForm( 
         onPressed: () {
           Soiree.setDataNumberPage(
             _nombre
