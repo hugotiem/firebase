@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
+import 'package:pts/Model/Capitalize.dart';
 import 'package:pts/Model/components/back_appbar.dart';
 import 'package:pts/Model/services/auth_service.dart';
 import 'package:pts/Model/services/firestore_service.dart';
@@ -30,17 +31,18 @@ class _DescriptionPageState extends State<DescriptionPage> {
 
             await db.add(
               data: {
-                'Name': Soiree.nom.trimRight().trimLeft(),
+                'Name': Soiree.nom.trimRight().trimLeft().inCaps,
                 'Theme': Soiree.theme,
                 'Date': Soiree.date,
                 'Hour': Soiree.heure.format(context),
                 'Number': Soiree.nombre,
                 'Price': Soiree.prix,
                 'Description': Soiree.description,
-                'adress': Soiree.adresse.trimRight().trimLeft(),
-                'city': Soiree.ville.trimRight().trimLeft(),
+                'adress': Soiree.adresse.trimRight().trimLeft().inCaps,
+                'city': Soiree.ville.trimRight().trimLeft().inCaps,
                 'postal code': Soiree.codepostal,
-                'UID': AuthService.currentUser.uid
+                'UID': AuthService.currentUser.uid,
+                'timestamp': DateTime.now()
               },
             );
             Navigator.push(context, 

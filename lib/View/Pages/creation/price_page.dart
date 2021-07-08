@@ -24,7 +24,7 @@ class PricePage extends StatefulWidget {
 }
 
 class _PricePageState extends State<PricePage> {
-  var _prix;
+  var _prix = '10';
   RadioChoix _choixRadio = RadioChoix.Dix;
 
   @override

@@ -38,6 +38,7 @@ class _CardPartyState extends State<CardParty> {
   Stream<QuerySnapshot> getPartyStreamSnapshot(BuildContext context) async* {
     yield* FirebaseFirestore.instance
     .collection('party')
+    .orderBy("timestamp", descending: true)
     .snapshots();
   }
 }
