@@ -72,7 +72,7 @@ Widget buildPartyCard(BuildContext context, DocumentSnapshot party) {
                                     child: Align(
                                       alignment: Alignment.centerLeft,
                                       child: Text(
-                                        "${party['Hour'].split(":")[0]}h${party['Hour'].split(":")[1]}",
+                                        "${party['StartHour'].split(":")[0]}h${party['StartHour'].split(":")[1]}",
                                         style: TextStyle(
                                           fontSize: 20,
                                           fontWeight: FontWeight.w500,
@@ -306,7 +306,7 @@ Widget buildPartyCard(BuildContext context, DocumentSnapshot party) {
                                         child: Opacity(
                                           opacity: 0.7,
                                           child: Text(
-                                            "${party['Hour'].split(":")[0]}h${party['Hour'].split(":")[1]}",
+                                            "${party['StartHour'].split(":")[0]}h${party['StartHour'].split(":")[1]}",
                                             style: TextStyle(  
                                               fontSize: 16,
                                               color: SECONDARY_COLOR

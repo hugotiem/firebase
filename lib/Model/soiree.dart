@@ -3,7 +3,8 @@ class Soiree {
   static String theme;
   static String nombre;
   static var date;
-  static var heure;
+  static var starthour;
+  static var endhour;
   static var prix;
   static String description;
   static String adresse;
@@ -18,9 +19,13 @@ class Soiree {
     theme = _theme;
   }
 
-  static void setDataDateHourPage(var _date, var _heure) {
+  static void setDataDatePage(var _date) {
     date = _date;
-    heure = _heure;
+  }
+
+  static void setDataHourPage(var _heuredebut, var _heurefin) {
+    starthour = _heuredebut;
+    endhour = _heurefin;
   }
 
   static void setDataLocationPage(String _adresse, String _ville, String _codepostal) {
@@ -40,5 +45,7 @@ class Soiree {
   static void setDataDescriptionPage(String _description) {
     description = _description;
   }
+
+  static void setDataDateHourPage(starthour, endhour) {}
 
 }
