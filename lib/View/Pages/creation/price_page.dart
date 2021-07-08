@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/Model/components/back_appbar.dart';
 import 'package:pts/Model/soiree.dart';
@@ -9,6 +8,7 @@ import 'package:pts/View/Pages/creation/components/headertext_one.dart';
 
 import 'components/headertext_two.dart';
 import 'components/hint_text.dart';
+import 'components/tff_number.dart';
 import 'description_page.dart';
 
 enum RadioChoix {
@@ -125,37 +125,11 @@ class _PricePageState extends State<PricePage> {
             ),
             Row(
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 32),
-                  child: Container(
-                    height: 60,
-                    width: 60,
-                    decoration: BoxDecoration(  
-                      color: PRIMARY_COLOR,
-                      borderRadius: BorderRadius.circular(15)
-                    ),
-                    child: Padding(
-                     padding: const EdgeInsets.only(left: 16),
-                      child: Center(
-                        child: TextFormField(
-                          onChanged: (value) {
-                            _prix = value;
-                          },
-                          keyboardType: TextInputType.number,  
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                          style: TextStyle(
-                            fontSize: 30,
-                          ),
-                          decoration: InputDecoration( 
-                            hintText: '10', 
-                            border: InputBorder.none,
-                          )
-                        ),
-                      ),
-                    ),
-                  ),
+                TFFNumber(
+                  onChanged: (value) {
+                    _prix = value;
+                  },
+                  hintText: '10',
                 ),
                 HintText(   
                   text: '€',

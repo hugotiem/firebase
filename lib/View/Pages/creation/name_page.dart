@@ -4,6 +4,7 @@ import 'package:pts/Constant.dart';
 import 'package:pts/Model/components/back_appbar.dart';
 import 'package:pts/Model/soiree.dart';
 import 'package:pts/View/Pages/creation/components/fab_form.dart';
+import 'package:pts/View/Pages/creation/components/tff_text.dart';
 import 'package:pts/View/Pages/creation/theme_page.dart';
 
 import 'components/headertext_one.dart';
@@ -49,55 +50,30 @@ class _NamePageState extends State<NamePage> {
         },
       ),
       body: SingleChildScrollView(
-        child: Column(  
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            HeaderText1(
-              text: "Comment s'appelera-t'elle ?",
-            ),
-            Center(
-              child: Container(
-                height: HEIGHTCONTAINER,
-                width: MediaQuery.of(context).size.width * 0.9,
-                decoration: BoxDecoration(  
-                  color: PRIMARY_COLOR,
-                  borderRadius: BorderRadius.circular(15)
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 16),
-                  child: Center(
-                    child: Form(
-                      key: _formKey,
-                      child: TextFormField(  
-                        onChanged: (value) {
-                        _name = value;
-                        },
-                        style: TextStyle(
-                          fontSize: TEXTFIELDFONTSIZE,
-                        ),
-                        decoration: InputDecoration( 
-                          hintText: 'ex: La fête du roi', 
-                          border: InputBorder.none,
-                          counterText: '',
-                          errorStyle: TextStyle(  
-                            height: 0,
-                          )
-                        ),
-                        maxLength: 20,
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return 'Vous devez rentrer un nom';
-                          } else {
-                            return null;
-                          }
-                        },
-                      ),
-                    ),
-                  ),
-                ),
+        child: Form(
+          key: _formKey,
+          child: Column(  
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              HeaderText1(
+                text: "Comment s'appelera-t'elle ?",
               ),
-            ),
-          ],
+              TFFText(
+                onChanged: (value) {
+                  _name = value;
+                }, 
+                hintText: 'ex : La fête du roi', 
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Vous devez rentrer un nom';
+                  } else {
+                    return null;
+                  }
+                },
+                maxLength: 20,
+              ),
+            ],
+          ),
         ),
       ),
     );

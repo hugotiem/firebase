@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/Model/components/back_appbar.dart';
 import 'package:pts/Model/soiree.dart';
 import 'package:pts/View/Pages/creation/components/fab_form.dart';
 import 'package:pts/View/Pages/creation/components/hint_text.dart';
+import 'package:pts/View/Pages/creation/components/tff_number.dart';
 
 import 'components/headertext_one.dart';
 import 'price_page.dart';
@@ -44,37 +44,11 @@ class _GuestNumberState extends State<GuestNumber> {
             ),
             Row(
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 32),
-                  child: Container(
-                    height: 60,
-                    width: 60,
-                    decoration: BoxDecoration(  
-                      color: PRIMARY_COLOR,
-                      borderRadius: BorderRadius.circular(15)
-                    ),
-                    child: Padding(
-                     padding: const EdgeInsets.only(left: 16),
-                      child: Center(
-                        child: TextFormField(
-                          onChanged: (value) {
-                            _nombre = value;
-                          }, 
-                          style: TextStyle(
-                            fontSize: 30,
-                          ),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[ 
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                          decoration: InputDecoration( 
-                            hintText: '20', 
-                            border: InputBorder.none,
-                          )
-                        ),
-                      ),
-                    ),
-                  ),
+                TFFNumber(
+                  onChanged: (value) {
+                    _nombre = value;
+                  }, 
+                  hintText: '20'
                 ),
                 HintText(
                   text: 'invités'
