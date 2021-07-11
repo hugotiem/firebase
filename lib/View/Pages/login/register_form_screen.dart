@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -18,7 +21,8 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
   String _surname;
   String _number;
 
-  PickedFile _image;
+  PickedFile _idImage;
+  PickedFile _faceImage;
 
   TextEditingController _nameController;
   TextEditingController _surnameController;
@@ -33,17 +37,10 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
     super.initState();
   }
 
-  Future<void> _getImage(ImageSource imageSource) async {
+  Future<PickedFile> _getImage(ImageSource imageSource) async {
     var imagePicker = new ImagePicker();
 
-    var image = await imagePicker.getImage(
-      source: imageSource,
-    );
-
-    setState(() {
-      _image = image;
-      print("image : ${_image.readAsString()}");
-    });
+    return await imagePicker.getImage(source: imageSource);
   }
 
   @override
@@ -58,6 +55,12 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
         return true;
       },
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          toolbarHeight: 0,
+          elevation: 0,
+          brightness: Brightness.light,
+        ),
         body: SafeArea(
           child: Column(
             children: <Widget>[
@@ -156,30 +159,52 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(30),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 30),
-                      child: TextButton(
-                        onPressed: () => showCupertinoModalPopup(
-                          context: context,
-                          builder: (context) => CupertinoActionSheet(
-                            actions: [
-                              CupertinoActionSheetAction(
-                                onPressed: () => _getImage(ImageSource.gallery),
-                                child: Text("Gallerie"),
-                              ),
-                              CupertinoActionSheetAction(
-                                onPressed: () => _getImage(ImageSource.camera),
-                                child: Text("Camera"),
-                              ),
-                            ],
-                            cancelButton: CupertinoActionSheetAction(
-                              child: Text("Annuler"),
-                              onPressed: () {},
+                    child: TextButton(
+                      style: ButtonStyle(),
+                      onPressed: () => _idImage != null
+                          ? _showBottomModalSheet(
+                              image: _idImage,
+                              onPressed: () => _showCupertinoModalPopup(),
+                              isID: true,
+                            )
+                          : _showCupertinoModalPopup(),
+                      child: _idImage == null
+                          ? Text("Sélectionner une image")
+                          : Text("Voir l'image"),
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: Center(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    child: TextButton(
+                      onPressed: () => _faceImage == null
+                          ? _getImage(ImageSource.camera).then((value) {
+                              setState(() {
+                                _faceImage = value;
+                              });
+                            })
+                          : _showBottomModalSheet(
+                              image: _faceImage,
+                              onPressed: () =>
+                                  _getImage(ImageSource.camera).then((value) {
+                                setState(() {
+                                  _faceImage = value;
+                                });
+                              }),
+                              isID: false,
                             ),
-                          ),
-                        ),
-                        child: Text("Sélectionner une image"),
-                      ),
+                      child: _faceImage == null
+                          ? Text("Sélectionner une image")
+                          : Text("Voir l'image"),
                     ),
                   ),
                 ),
@@ -217,6 +242,92 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                 ),
               )
             ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<dynamic> _showCupertinoModalPopup() {
+    return showCupertinoModalPopup(
+      context: context,
+      builder: (context) => CupertinoActionSheet(
+        actions: [
+          CupertinoActionSheetAction(
+            onPressed: () {
+              _getImage(ImageSource.gallery).then((value) {
+                setState(() {
+                  _idImage = value;
+                });
+              });
+              Navigator.of(context).pop();
+            },
+            child: Text("Gallerie"),
+          ),
+          CupertinoActionSheetAction(
+            onPressed: () {
+              _getImage(ImageSource.camera).then((value) {
+                setState(() {
+                  _idImage = value;
+                });
+              });
+              Navigator.of(context).pop();
+            },
+            child: Text("Camera"),
+          ),
+        ],
+        cancelButton: CupertinoActionSheetAction(
+          child: Text("Annuler"),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+      ),
+    );
+  }
+
+  Future<dynamic> _showBottomModalSheet(
+      {PickedFile image, void Function() onPressed, bool isID}) {
+    return showModalBottomSheet(
+      enableDrag: true,
+      isScrollControlled: true,
+      context: context,
+      builder: (context) => Scaffold(
+        backgroundColor: SECONDARY_COLOR,
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          brightness: Brightness.dark,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          toolbarHeight: 150,
+          actions: [
+            TextButton(
+              onPressed: () => onPressed,
+              child: Text("Reprendre"),
+            ),
+          ],
+        ),
+        body: Center(
+          child: Image.file(
+            File(image.path),
+          ),
+        ),
+        bottomSheet: Container(
+          color: SECONDARY_COLOR,
+          width: MediaQuery.of(context).size.width,
+          height: 100,
+          child: TextButton(
+            onPressed: () {
+              setState(() {
+                if (isID)
+                  _idImage = null;
+                else
+                  _faceImage = null;
+              });
+              Navigator.of(context).pop();
+            },
+            child: Text(
+              "Supprimer",
+              style: TextStyle(color: Colors.red),
+            ),
           ),
         ),
       ),
