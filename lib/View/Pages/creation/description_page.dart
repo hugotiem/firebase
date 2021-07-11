@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/Model/Capitalize.dart';
+import 'package:pts/Model/calendar_data_source.dart';
 import 'package:pts/Model/components/back_appbar.dart';
 import 'package:pts/Model/services/auth_service.dart';
 import 'package:pts/Model/services/firestore_service.dart';
@@ -16,6 +18,8 @@ class DescriptionPage extends StatefulWidget {
 class _DescriptionPageState extends State<DescriptionPage> {
   String _description = "";
   final db = FireStoreServices("party");
+  final databaseReference = FirebaseFirestore.instance;
+  Meeting meeting = new Meeting();
 
   @override
   Widget build(BuildContext context) {
@@ -43,9 +47,12 @@ class _DescriptionPageState extends State<DescriptionPage> {
                 'city': Soiree.ville.trimRight().trimLeft().inCaps,
                 'postal code': Soiree.codepostal,
                 'UID': AuthService.currentUser.uid,
-                'timestamp': DateTime.now()
+                'timestamp': DateTime.now(),
+                'StartTime': Soiree.datedebut,
+                'EndTime': Soiree.datefin
               },
             );
+
             Navigator.push(context, 
               MaterialPageRoute(builder: (context) => EndPage())
             );

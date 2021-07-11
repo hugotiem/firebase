@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:pts/Constant.dart';
+import 'package:pts/Model/calendar_data_source.dart';
 import 'package:pts/Model/components/back_appbar.dart';
 import 'package:pts/Model/soiree.dart';
 import 'package:pts/View/Pages/creation/components/date_hour_picker.dart';
@@ -22,6 +24,9 @@ class _HourPageState extends State<HourPage> {
   TextEditingController heurefinctl = TextEditingController();
   TextEditingController heuredebutctl = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  var date;
+  DateTime datedebut;
+
   
   @override
   Widget build(BuildContext context) {
@@ -36,10 +41,23 @@ class _HourPageState extends State<HourPage> {
           if (!_formKey.currentState.validate()) {
             return;
           }
+
+          var date = Soiree.date;
+          
+          DateTime datedebut = DateTime(date.year, date.month, date.day, _heuredebut.hour, _heuredebut.minute);
+          DateTime datefin = DateTime(date.year, date.month, date.day, _heurefin.hour, _heurefin.minute);
+
+          if (datefin.isBefore(datedebut)) {
+            datefin = datefin.add(Duration(days: 1));
+          }
+
           Soiree.setDataHourPage(
             _heuredebut,
-            _heurefin
+            _heurefin,
+            datedebut,
+            datefin
           );
+
           Navigator.push(context, 
             MaterialPageRoute(builder: (context) => LocationPage())
           );

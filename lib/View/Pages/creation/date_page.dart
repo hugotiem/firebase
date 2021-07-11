@@ -19,7 +19,6 @@ class DateHourPage extends StatefulWidget {
 class _DateHourPageState extends State<DateHourPage> {
   var _date;
   TextEditingController dateCtl = TextEditingController();
-  TextEditingController heureCtl = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
