@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/Model/services/auth_service.dart';
 
@@ -16,21 +18,32 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
   String _surname;
   String _number;
 
+  PickedFile _image;
+
   TextEditingController _nameController;
   TextEditingController _surnameController;
 
   @override
   void initState() {
-    _name = widget.user != null
-        ? (widget.user.displayName as String).split(" ")[0]
-        : "";
-    _surname = widget.user != null
-        ? (widget.user.displayName as String).split(" ")[1]
-        : "";
+    _name = (widget.user.displayName as String).split(" ")[0] ?? "";
+    _surname = (widget.user.displayName as String).split(" ")[1] ?? "";
 
     _nameController = TextEditingController(text: _name);
     _surnameController = TextEditingController(text: _surname);
     super.initState();
+  }
+
+  Future<void> _getImage(ImageSource imageSource) async {
+    var imagePicker = new ImagePicker();
+
+    var image = await imagePicker.getImage(
+      source: imageSource,
+    );
+
+    setState(() {
+      _image = image;
+      print("image : ${_image.readAsString()}");
+    });
   }
 
   @override
@@ -128,6 +141,44 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                         onChanged: (value) {
                           _number = value;
                         },
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: Center(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 30),
+                      child: TextButton(
+                        onPressed: () => showCupertinoModalPopup(
+                          context: context,
+                          builder: (context) => CupertinoActionSheet(
+                            actions: [
+                              CupertinoActionSheetAction(
+                                onPressed: () => _getImage(ImageSource.gallery),
+                                child: Text("Gallerie"),
+                              ),
+                              CupertinoActionSheetAction(
+                                onPressed: () => _getImage(ImageSource.camera),
+                                child: Text("Camera"),
+                              ),
+                            ],
+                            cancelButton: CupertinoActionSheetAction(
+                              child: Text("Annuler"),
+                              onPressed: () {},
+                            ),
+                          ),
+                        ),
+                        child: Text("Sélectionner une image"),
                       ),
                     ),
                   ),
