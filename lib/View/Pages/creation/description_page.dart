@@ -19,7 +19,6 @@ class _DescriptionPageState extends State<DescriptionPage> {
   String _description = "";
   final db = FireStoreServices("party");
   final databaseReference = FirebaseFirestore.instance;
-  Meeting meeting = new Meeting();
 
   @override
   Widget build(BuildContext context) {

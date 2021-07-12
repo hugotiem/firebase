@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/View/Pages/Planning/CalendarWidget.dart';
+import 'package:pts/View/Pages/Planning/schedulewidget.dart';
 import 'package:pts/View/Pages/creation/name_page.dart';
 
 class CalendarPage extends StatelessWidget {
@@ -38,9 +39,19 @@ class CalendarPage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          Container(
-            height: MediaQuery.of(context).size.height * 0.6,
-            child: CalendarWidget()
+          Expanded(
+            flex: 6,
+            child: Container(
+              child: CalendarWidget()
+            ),
+          ),
+          Expanded(
+            flex: 4,
+            child: SingleChildScrollView(
+              child: Container(
+                child: ScheduleWidget(),
+              )
+            ),
           ),
         ],
       ),

@@ -26,6 +26,7 @@ class _HourPageState extends State<HourPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   var date;
   DateTime datedebut;
+  DateTime datefin;
 
   
   @override

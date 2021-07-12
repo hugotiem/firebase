@@ -8,12 +8,12 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 // docs :
 // https://github.com/SyncfusionExamples/appointments-to-firestore-database-flutter-calendar/blob/main/lib/main.dart
 
-class CalendarWidget extends StatefulWidget {
+class ScheduleWidget extends StatefulWidget {
   @override
-  _CalendarWidgetState createState() => _CalendarWidgetState();
+  _ScheduleWidgetState createState() => _ScheduleWidgetState();
 }
 
-class _CalendarWidgetState extends State<CalendarWidget> {
+class _ScheduleWidgetState extends State<ScheduleWidget> {
   MeetingDataSource events;
   final databaseReference = FirebaseFirestore.instance;
 
@@ -37,7 +37,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
         eventName: e.data()['Name'],
         from: e.data()['StartTime'].toDate(),
         to: e.data()['EndTime'].toDate(),
-        background: Colors.blue,
+        background: SECONDARY_COLOR,
         isAllDay: false ))
       .toList();
     setState(() {
@@ -50,15 +50,12 @@ class _CalendarWidgetState extends State<CalendarWidget> {
     return SfCalendar(
       dataSource: events,
       cellBorderColor: PRIMARY_COLOR,
-      view: CalendarView.month,
+      view: CalendarView.schedule,
       initialSelectedDate: DateTime.now(),
+      onSelectionChanged: (details) {
+
+      },
       todayHighlightColor: SECONDARY_COLOR,
-      selectionDecoration: BoxDecoration(
-        border: Border.all(
-          color: SECONDARY_COLOR,
-          width: 1.5
-        )
-      ),
     );
   }
 }
