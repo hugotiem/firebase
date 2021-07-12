@@ -36,9 +36,7 @@ class CalendarPage extends StatelessWidget {
           )
         ],
       ),
-      body: Container(
-        child: CalendarWidget()
-      ),
+      body: CalendarWidget()
     );
   }
 }
