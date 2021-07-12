@@ -37,7 +37,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
         eventName: e.data()['Name'],
         from: e.data()['StartTime'].toDate(),
         to: e.data()['EndTime'].toDate(),
-        background: Colors.blue,
+        background: SECONDARY_COLOR,
         isAllDay: false ))
       .toList();
     setState(() {
@@ -48,6 +48,17 @@ class _CalendarWidgetState extends State<CalendarWidget> {
   @override
   Widget build(BuildContext context) {
     return SfCalendar(
+      monthViewSettings: MonthViewSettings(
+        navigationDirection: MonthNavigationDirection.vertical,
+        showAgenda: true,
+        agendaViewHeight: MediaQuery.of(context).size.height * 0.2,
+        agendaStyle: AgendaStyle(
+          appointmentTextStyle: TextStyle(
+            color: ICONCOLOR
+          ),
+        ), 
+        agendaItemHeight: 50,
+      ),
       dataSource: events,
       cellBorderColor: PRIMARY_COLOR,
       view: CalendarView.month,

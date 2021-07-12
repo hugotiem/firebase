@@ -1,11 +1,14 @@
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class MeetingDataSource extends CalendarDataSource {
   MeetingDataSource(List<Meeting> source) {
     appointments = source;
   }
+
+  Meeting getEvent(int index) => appointments[index] as Meeting;
 
   @override
   DateTime getStartTime(int index) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pts/View/Pages/creation/name_page.dart';
 
 import '../../../Constant.dart';
 
@@ -36,6 +37,11 @@ class _ContainerAddPartyState extends State<ContainerAddParty> {
             ),
           ),
           GestureDetector(
+            onTap: () {
+              Navigator.push(context, 
+                MaterialPageRoute(builder: (context) => NamePage())
+              );
+            },
             child: Container(
               //width: MediaQuery.of(context).size.width - 100,
               margin: EdgeInsets.only(bottom: 20),
