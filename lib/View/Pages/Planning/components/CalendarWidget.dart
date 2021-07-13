@@ -4,6 +4,9 @@ import 'package:flutter/scheduler.dart';
 import 'package:intl/intl.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/Model/calendar_data_source.dart';
+import 'package:pts/Model/services/auth_service.dart';
+import 'package:pts/View/Pages/Planning/components/font-text.dart';
+import 'package:pts/View/Pages/Planning/components/opacity_text.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 // docs :
@@ -35,6 +38,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
   Future<void> getDataFromFireStore() async {
     var snapShotValue = await databaseReference
         .collection("party")
+        .where('UID', isEqualTo: AuthService.currentUser.uid)
         .get();
     
     List<Meeting> list = snapShotValue.docs
@@ -77,65 +81,73 @@ class _CalendarWidgetState extends State<CalendarWidget> {
           ),
           Expanded(  
             child: Container(
-              padding: EdgeInsets.only(top: 8), 
               color: Colors.white,
               child: ListView.separated(
                 itemCount: _appointmentDetails.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return Row(
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: Container(
-                          child: Column(
-                            children: [
-                              Text(
-                                '${DateFormat.E('fr_FR').format(_appointmentDetails[index].from)}',
-                              ),
-                              Text(
-                                '${DateFormat.d('fr_FR').format(_appointmentDetails[index].from)}'
-                              ),
-                            ]
-                          ),
-                        )
-                      ),
-                      Expanded(
-                        flex: 5,
-                        child: Padding(
-                          padding: const EdgeInsets.only(right: 4, left: 4),
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
                           child: Container(
-                            height: 50,
-                            decoration: BoxDecoration(  
-                              color: SECONDARY_COLOR,
-                              borderRadius: BorderRadius.circular(5)
-                            ),
                             child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  _appointmentDetails[index].eventName,
-                                  style: TextStyle(  
-                                    color: ICONCOLOR
-                                  ),
+                                OpacityText(
+                                  data: '${DateFormat.E('fr_FR').format(_appointmentDetails[index].from)}',
+                                  color: SECONDARY_COLOR
                                 ),
-                                Text(
-                                  '${DateFormat.Hm('fr_FR').format(_appointmentDetails[index].from)}',
-                                  style: TextStyle(  
-                                    color: ICONCOLOR
-                                  ),
+                                FontText(
+                                  data: '${DateFormat.d('fr_FR').format(_appointmentDetails[index].from)}',
+                                  fontSize: 20,
+                                  color: SECONDARY_COLOR,
                                 )
                               ]
                             ),
+                          )
+                        ),
+                        Expanded(
+                          flex: 5,
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 4, left: 4),
+                            child: Container(
+                              height: 55,
+                              decoration: BoxDecoration(  
+                                color: SECONDARY_COLOR,
+                                borderRadius: BorderRadius.circular(8)
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 8),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    FontText(
+                                      data: _appointmentDetails[index].eventName,
+                                      color: ICONCOLOR,
+                                      fontSize: 16.5
+                                    ),
+                                    SizedBox(
+                                      height: 2
+                                    ),
+                                    OpacityText(
+                                      data: 'De ${DateFormat.Hm('fr_FR').format(_appointmentDetails[index].from)} à ${DateFormat.Hm('fr_FR').format(_appointmentDetails[index].to)}',
+                                      color: ICONCOLOR,
+                                    ),
+                                  ]
+                                ),
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ]
+                      ]
+                    ),
                   );
                 }, 
                 separatorBuilder: (BuildContext context, int index) =>
-                  const Divider(
-                    height: 5,
+                  const SizedBox(
+                    height: 0,
                   )
               ),
             ),
