@@ -25,9 +25,7 @@ class Soiree {
     date = _date;
   }
 
-  static void setDataHourPage(var _heuredebut, var _heurefin, DateTime _datedebut, DateTime _datefin) {
-    starthour = _heuredebut;
-    endhour = _heurefin;
+  static void setDataHourPage(DateTime _datedebut, DateTime _datefin) {
     datedebut = _datedebut;
     datefin = _datefin;
   }

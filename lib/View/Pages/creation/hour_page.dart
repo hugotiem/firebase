@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:pts/Constant.dart';
-import 'package:pts/Model/calendar_data_source.dart';
 import 'package:pts/Model/components/back_appbar.dart';
 import 'package:pts/Model/soiree.dart';
 import 'package:pts/View/Pages/creation/components/date_hour_picker.dart';
@@ -53,8 +51,6 @@ class _HourPageState extends State<HourPage> {
           }
 
           Soiree.setDataHourPage(
-            _heuredebut,
-            _heurefin,
             datedebut,
             datefin
           );

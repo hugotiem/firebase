@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/Model/Capitalize.dart';
-import 'package:pts/Model/calendar_data_source.dart';
 import 'package:pts/Model/components/back_appbar.dart';
 import 'package:pts/Model/services/auth_service.dart';
 import 'package:pts/Model/services/firestore_service.dart';
@@ -37,8 +36,6 @@ class _DescriptionPageState extends State<DescriptionPage> {
                 'Name': Soiree.nom.trimRight().trimLeft().inCaps,
                 'Theme': Soiree.theme,
                 'Date': Soiree.date,
-                'StartHour': Soiree.starthour.format(context),
-                'EndHour': Soiree.endhour.format(context),
                 'Number': Soiree.nombre,
                 'Price': Soiree.prix,
                 'Description': Soiree.description,
@@ -46,6 +43,7 @@ class _DescriptionPageState extends State<DescriptionPage> {
                 'city': Soiree.ville.trimRight().trimLeft().inCaps,
                 'postal code': Soiree.codepostal,
                 'UID': AuthService.currentUser.uid,
+                'NameOganizer': AuthService.currentUser.displayName,
                 'timestamp': DateTime.now(),
                 'StartTime': Soiree.datedebut,
                 'EndTime': Soiree.datefin

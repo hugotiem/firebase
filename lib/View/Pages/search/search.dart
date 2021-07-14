@@ -89,7 +89,7 @@ class _SearchState extends State<Search> {
               margin: EdgeInsets.only(left: 20),
             ),
             GridViewCity(),   
-            // liste des soirées 
+            // liste des dernières soirées créées
             Container(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

@@ -61,7 +61,7 @@ Widget buildPartyCard(BuildContext context, DocumentSnapshot party) {
                                       child: Opacity(
                                         opacity: 0.7,
                                         child: Text(
-                                          "${DateFormat.MMMMEEEEd('fr').format(party['Date'].toDate()).split(' ')[1]} ${DateFormat.MMMMEEEEd('fr').format(party['Date'].toDate()).split(' ')[2]}",
+                                          "${DateFormat.MMMMEEEEd('fr').format(party['StartTime'].toDate()).split(' ')[1]} ${DateFormat.MMMMEEEEd('fr').format(party['StartTime'].toDate()).split(' ')[2]}",
                                           style: TextStyle(
                                             color: SECONDARY_COLOR
                                           ),
@@ -73,7 +73,7 @@ Widget buildPartyCard(BuildContext context, DocumentSnapshot party) {
                                       child: Align(
                                         alignment: Alignment.centerLeft,
                                         child: Text(
-                                          "${party['StartHour'].split(":")[0]}h${party['StartHour'].split(":")[1]}",
+                                          "${DateFormat.Hm('fr').format(party['StartTime'].toDate()).split(':')[0]}h${DateFormat.Hm('fr').format(party['StartTime'].toDate()).split(':')[1]}",
                                           style: TextStyle(
                                             fontSize: 20,
                                             fontWeight: FontWeight.w500,
@@ -292,7 +292,7 @@ Widget buildPartyCard(BuildContext context, DocumentSnapshot party) {
                                       child: Padding(
                                         padding: const EdgeInsets.only(left: 21),
                                         child: Text(
-                                          DateFormat.MMMMEEEEd('fr').format(party['Date'].toDate()),
+                                          DateFormat.MMMMEEEEd('fr').format(party['StartTime'].toDate()),
                                           style: TextStyle(  
                                             fontSize: 25,
                                             fontWeight: FontWeight.w700,
@@ -309,7 +309,7 @@ Widget buildPartyCard(BuildContext context, DocumentSnapshot party) {
                                         child: Opacity(
                                           opacity: 0.7,
                                           child: Text(
-                                            "${party['StartHour'].split(":")[0]}h${party['StartHour'].split(":")[1]}",
+                                            "${DateFormat.Hm('fr').format(party['StartTime'].toDate()).split(':')[0]}h${DateFormat.Hm('fr').format(party['StartTime'].toDate()).split(':')[1]}",
                                             style: TextStyle(  
                                               fontSize: 16,
                                               color: SECONDARY_COLOR
@@ -424,7 +424,7 @@ Widget buildPartyCard(BuildContext context, DocumentSnapshot party) {
                                                 child: Opacity(
                                                   opacity: 0.9,
                                                   child: Text(
-                                                    "Jean",
+                                                    party['NameOganizer'],
                                                     style: TextStyle(
                                                       fontSize: 20,
                                                       fontWeight: FontWeight.w700,
