@@ -31,59 +31,61 @@ Widget buildPartyCard(BuildContext context, DocumentSnapshot party) {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Container(
-                          padding: EdgeInsets.only(left: 5),
-                          height: 200,
-                          width: 55,
-                          alignment: Alignment.centerLeft,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(top: 10),
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    '${party['Price']}€',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w500,
-                                      color: SECONDARY_COLOR
+                        Expanded(
+                          flex: 2,
+                          child: Container(
+                            padding: EdgeInsets.only(left: 5),
+                            alignment: Alignment.centerLeft,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 10),
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text( party['Price'] != '0'
+                                      ?'${party['Price']}€'
+                                      :'Gratuit',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w500,
+                                        color: SECONDARY_COLOR
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              Column(
-                                children: [
-                                  Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Opacity(
-                                      opacity: 0.7,
-                                      child: Text(
-                                        "${DateFormat.MMMMEEEEd('fr').format(party['Date'].toDate()).split(' ')[1]} ${DateFormat.MMMMEEEEd('fr').format(party['Date'].toDate()).split(' ')[2]}",
-                                        style: TextStyle(
-                                          color: SECONDARY_COLOR
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(bottom: 10),
-                                    child: Align(
+                                Column(
+                                  children: [
+                                    Align(
                                       alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        "${party['StartHour'].split(":")[0]}h${party['StartHour'].split(":")[1]}",
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w500,
-                                          color: SECONDARY_COLOR
+                                      child: Opacity(
+                                        opacity: 0.7,
+                                        child: Text(
+                                          "${DateFormat.MMMMEEEEd('fr').format(party['Date'].toDate()).split(' ')[1]} ${DateFormat.MMMMEEEEd('fr').format(party['Date'].toDate()).split(' ')[2]}",
+                                          style: TextStyle(
+                                            color: SECONDARY_COLOR
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              )
-                            ]
+                                    Padding(
+                                      padding: const EdgeInsets.only(bottom: 10),
+                                      child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          "${party['StartHour'].split(":")[0]}h${party['StartHour'].split(":")[1]}",
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w500,
+                                            color: SECONDARY_COLOR
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              ]
+                            ),
                           ),
                         ),
                         Column(
@@ -104,161 +106,162 @@ Widget buildPartyCard(BuildContext context, DocumentSnapshot party) {
                             )
                           ]
                         ),
-                        Container(
-                          height: 200,
-                          width: 246.7,
-                          padding: EdgeInsets.only(left: 16, bottom: 10),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 10),
-                                        child: Container(
-                                          alignment: Alignment.topLeft,
-                                          child: Text(
-                                            party['Name'],
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.w500,
-                                              color: SECONDARY_COLOR
+                        Expanded(
+                          flex: 8,
+                          child: Container(
+                            padding: EdgeInsets.only(left: 16, bottom: 10),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(top: 10),
+                                          child: Container(
+                                            alignment: Alignment.topLeft,
+                                            child: Text(
+                                              party['Name'],
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w500,
+                                                color: SECONDARY_COLOR
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(),
-                                        child: Opacity(
+                                        Padding(
+                                          padding: const EdgeInsets.only(),
+                                          child: Opacity(
+                                            opacity: 0.7,
+                                            child: Text(
+                                              party['Theme'],
+                                              style: TextStyle(
+                                                color: SECONDARY_COLOR
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    )
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(  
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        Opacity(
                                           opacity: 0.7,
-                                          child: Text(
-                                            party['Theme'],
-                                            style: TextStyle(
-                                              color: SECONDARY_COLOR
-                                            ),
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  )
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Column(  
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Opacity(
-                                        opacity: 0.7,
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(),
-                                          child: Text(
-                                            'Personnes'.toUpperCase(),
-                                            style: TextStyle(
-                                              color: SECONDARY_COLOR
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        children: [
-                                          Icon(
-                                            Icons.person_outline,
-                                            size: 20,
-                                            color: SECONDARY_COLOR,
-                                          ),
-                                          Padding(
+                                          child: Padding(
                                             padding: const EdgeInsets.only(),
                                             child: Text(
-                                              party['Number'],
+                                              'Personnes'.toUpperCase(),
                                               style: TextStyle(
-                                                fontSize: 20,
+                                                color: SECONDARY_COLOR
                                               ),
-                                              overflow: TextOverflow.ellipsis
-                                            ),
-                                          )
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                  Column(  
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Opacity(
-                                        opacity: 0.7,
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(),
-                                          child: Text(
-                                            'Prix'.toUpperCase(),
-                                            style: TextStyle(
-                                              color: SECONDARY_COLOR
                                             ),
                                           ),
                                         ),
-                                      ),
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        children: [
-                                          Padding(
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          children: [
+                                            Icon(
+                                              Icons.person_outline,
+                                              size: 20,
+                                              color: SECONDARY_COLOR,
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(),
+                                              child: Text(
+                                                party['Number'],
+                                                style: TextStyle(
+                                                  fontSize: 20,
+                                                ),
+                                                overflow: TextOverflow.ellipsis
+                                              ),
+                                            )
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                    Column(  
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        Opacity(
+                                          opacity: 0.7,
+                                          child: Padding(
                                             padding: const EdgeInsets.only(),
                                             child: Text(
-                                              '€${party['Price']}',
+                                              'Prix'.toUpperCase(),
                                               style: TextStyle(
-                                                fontSize: 20,
+                                                color: SECONDARY_COLOR
                                               ),
-                                              overflow: TextOverflow.ellipsis
-                                            ),
-                                          )
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                  Column(  
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Opacity(
-                                        opacity: 0.7,
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(),
-                                          child: Text(
-                                            'Ville'.toUpperCase(),
-                                            style: TextStyle(
-                                              color: SECONDARY_COLOR
                                             ),
                                           ),
                                         ),
-                                      ),
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        children: [
-                                          Icon(
-                                            Icons.location_on_outlined,
-                                            size: 20,
-                                            color: SECONDARY_COLOR,
-                                          ),
-                                          Padding(
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(),
+                                              child: Text(
+                                                '€${party['Price']}',
+                                                style: TextStyle(
+                                                  fontSize: 20,
+                                                ),
+                                                overflow: TextOverflow.ellipsis
+                                              ),
+                                            )
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                    Column(  
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        Opacity(
+                                          opacity: 0.7,
+                                          child: Padding(
                                             padding: const EdgeInsets.only(),
                                             child: Text(
-                                              party['city'],
+                                              'Ville'.toUpperCase(),
                                               style: TextStyle(
-                                                fontSize: 20,
+                                                color: SECONDARY_COLOR
                                               ),
-                                              overflow: TextOverflow.ellipsis
                                             ),
-                                          )
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                ],
-                              )
-                            ],
+                                          ),
+                                        ),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          children: [
+                                            Icon(
+                                              Icons.location_on_outlined,
+                                              size: 20,
+                                              color: SECONDARY_COLOR,
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(),
+                                              child: Text(
+                                                party['city'],
+                                                style: TextStyle(
+                                                  fontSize: 20,
+                                                ),
+                                                overflow: TextOverflow.ellipsis
+                                              ),
+                                            )
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
                           ),
                         )
                       ],

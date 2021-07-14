@@ -2,16 +2,16 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pts/View/Pages/search/Components/title_text.dart';
-import 'package:pts/View/Pages/search/backgroundtitle.dart';
-import 'package:pts/View/Pages/search/custom_sliver.dart';
-import 'package:pts/View/Pages/search/gridlistcity.dart';
-import 'package:pts/View/Pages/search/searchbar_screen.dart';
 import 'package:animations/animations.dart';
-import '../../../../Constant.dart';
+import 'package:pts/View/Pages/search/sliver/searchbar_screen.dart';
+import '../../../../../Constant.dart';
 
-import 'cardparty.dart';
-import 'containeraddparty.dart';
-import 'gridlistthemes.dart';
+import 'city/gridlistcity.dart';
+import 'lastpartycreated/cardparty.dart';
+import 'addparty/containeraddparty.dart';
+import 'theme/gridlistthemes.dart';
+import 'sliver/backgroundtitle.dart';
+import 'sliver/custom_sliver.dart';
 
 class Search extends StatefulWidget {
   Search({Key key}) : super(key: key);

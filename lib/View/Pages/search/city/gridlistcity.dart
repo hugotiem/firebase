@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'Components/citybox.dart';
+import 'citybox.dart';
 
 class GridViewCity extends StatefulWidget {
   @override

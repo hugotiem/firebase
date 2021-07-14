@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'Components/build_party_card.dart';
+import '../Components/build_party_card.dart';
 
 class CardParty extends StatefulWidget {
   const CardParty({ Key key }) : super(key: key);

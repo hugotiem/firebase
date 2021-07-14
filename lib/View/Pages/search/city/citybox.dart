@@ -2,19 +2,17 @@ import 'package:animations/animations.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:pts/Model/components/back_appbar.dart';
+import 'package:pts/View/Pages/search/Components/build_party_card.dart';
 
-import '../../../../Constant.dart';
-import 'build_party_card.dart';
+import '../../../../../Constant.dart';
 
-class ThemeBox extends StatelessWidget {
-  final List<Color> colors;
+class CityBox extends StatelessWidget {
   final String text;
-  const ThemeBox({
+  const CityBox({
     @required this.text,
-    @required this.colors,
     Key key 
     }) : super(key: key);
- 
+
   @override
   Widget build(BuildContext context) {
     return OpenContainer(
@@ -23,30 +21,29 @@ class ThemeBox extends StatelessWidget {
       openColor: PRIMARY_COLOR,
       closedElevation: 0,
       closedBuilder: (context, returnvalue) {
-        return Container(
-          margin: EdgeInsets.only(bottom: 20, left: 40, right: 10),
-          height: 145,
-          width: 145,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: this.colors
-            )
-          ),
-          child: Center(
-            child: Text(
-              this.text,
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w900,
-                color: Colors.white
+        return Padding(
+          padding: const EdgeInsets.only(left: 32, top: 16),
+            child: Container(
+              height: 75,
+              width: 150,
+              decoration: BoxDecoration(
+                color: SECONDARY_COLOR,
+                borderRadius: BorderRadius.circular(15)
+                ),
+              child: Center(
+                child: Text(
+                  this.text,
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w900,
+                    color: FOCUS_COLOR
+                ),
               ),
             ),
           ),
         );
       },
+
       openBuilder: (context, returnvalue) {
         return Scaffold(
           appBar: PreferredSize(
@@ -84,7 +81,7 @@ class ThemeBox extends StatelessWidget {
   Stream<QuerySnapshot> getPartyStreamSnapshot(BuildContext context) async* {
     yield* FirebaseFirestore.instance
     .collection('party')
-    .where('Theme', isEqualTo: this.text)
+    .where('city', isEqualTo: this.text)
     .snapshots();
   }
 }

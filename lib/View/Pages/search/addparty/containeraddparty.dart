@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pts/View/Pages/creation/name_page.dart';
 
-import '../../../Constant.dart';
+import '../../../../Constant.dart';
 
 class ContainerAddParty extends StatefulWidget {
   const ContainerAddParty({ Key key }) : super(key: key);

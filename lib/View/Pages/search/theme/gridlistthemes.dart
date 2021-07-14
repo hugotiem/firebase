@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pts/View/Pages/search/Components/title_text.dart';
 
-import 'Components/themebox.dart';
+import 'themebox.dart';
 
 class GridListThemes extends StatefulWidget {
   const GridListThemes({ Key key }) : super(key: key);
