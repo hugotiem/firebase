@@ -5,8 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pts/Model/components/back_appbar.dart';
 import 'package:pts/View/Pages/search_party_card/close/text_detail.dart';
+import 'package:pts/View/Pages/search_party_card/close/time_text.dart';
+import 'package:pts/View/Pages/search_party_card/close/title_text.dart';
 
 import '../../../Constant.dart';
+import 'close/separator.dart';
 
 Widget buildPartyCard(BuildContext context, DocumentSnapshot party) {
     return Stack(
@@ -37,116 +40,26 @@ Widget buildPartyCard(BuildContext context, DocumentSnapshot party) {
                           child: Container(
                             padding: EdgeInsets.only(left: 5),
                             alignment: Alignment.centerLeft,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 10),
-                                  child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text( party['Price'] != '0'
-                                      ?'${party['Price']}€'
-                                      :'Gratuit',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w500,
-                                        color: SECONDARY_COLOR
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Column(
-                                  children: [
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Opacity(
-                                        opacity: 0.7,
-                                        child: Text(
-                                          "${DateFormat.MMMM('fr').format(party['StartTime'].toDate())}",
-                                          style: TextStyle(
-                                            color: SECONDARY_COLOR
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(bottom: 10),
-                                      child: Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          "${DateFormat.E('fr').format(party['StartTime'].toDate())}${DateFormat.d('fr').format(party['StartTime'].toDate())}",
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w500,
-                                            color: SECONDARY_COLOR
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              ]
-                            ),
+                            child: TimeText(
+                              heure: "${DateFormat.Hm('fr').format(party['StartTime'].toDate()).split(':')[0]}h${DateFormat.Hm('fr').format(party['StartTime'].toDate()).split(':')[1]}",
+                              mois: "${DateFormat.MMMM('fr').format(party['StartTime'].toDate())}",
+                              jour: "${DateFormat.E('fr').format(party['StartTime'].toDate())}${DateFormat.d('fr').format(party['StartTime'].toDate())}",
+                            )
                           ),
                         ),
-                        Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 15, top: 12),
-                              child: Center(
-                                child: Container(
-                                  height: 160,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      width: 1,
-                                      color: FOCUS_COLOR
-                                    ),
-                                  )
-                                ),
-                              ),
-                            )
-                          ]
-                        ),
+                        Separator(),
                         Expanded(
                           flex: 8,
                           child: Container(
-                            padding: EdgeInsets.only(left: 16, bottom: 10),
+                            padding: EdgeInsets.only(left: 16, bottom: 10, right: 16),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Row(
                                   children: [
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(top: 10),
-                                          child: Container(
-                                            alignment: Alignment.topLeft,
-                                            child: Text(
-                                              party['Name'],
-                                              style: TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.w500,
-                                                color: SECONDARY_COLOR
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(),
-                                          child: Opacity(
-                                            opacity: 0.7,
-                                            child: Text(
-                                              party['Theme'],
-                                              style: TextStyle(
-                                                color: SECONDARY_COLOR
-                                              ),
-                                            ),
-                                          ),
-                                        )
-                                      ],
+                                    TitleText(
+                                      name: party['Name'],
+                                      theme: party['Theme']
                                     )
                                   ],
                                 ),
@@ -154,19 +67,18 @@ Widget buildPartyCard(BuildContext context, DocumentSnapshot party) {
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Textdetail(
-                                      headerText: 'Personnes', 
+                                      headerText: 'invités', 
                                       detailText: party['Number'],
-                                      icon: Icons.person_outline,
                                     ),
                                     Textdetail(
-                                      headerText: 'prix', 
-                                      detailText: '${party['Price']}',
-                                      icon: Icons.euro_symbol_outlined,
+                                      headerText: 'Prix', 
+                                      detailText: party['Price'] != '0'
+                                      ? '${party['Price']}€'
+                                      : 'Gratuit'
                                     ),
                                     Textdetail(   
                                       headerText: 'ville',
                                       detailText: party['city'],
-                                      icon: Icons.location_on_outlined
                                     ),
                                   ],
                                 )
