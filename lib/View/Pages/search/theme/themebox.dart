@@ -2,7 +2,7 @@ import 'package:animations/animations.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:pts/Model/components/back_appbar.dart';
-import 'package:pts/View/Pages/search/Components/build_party_card.dart';
+import 'package:pts/View/Pages/search_party_card/build_party_card.dart';
 
 import '../../../../../Constant.dart';
 

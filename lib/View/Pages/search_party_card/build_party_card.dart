@@ -4,8 +4,9 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pts/Model/components/back_appbar.dart';
+import 'package:pts/View/Pages/search_party_card/close/text_detail.dart';
 
-import '../../../../Constant.dart';
+import '../../../Constant.dart';
 
 Widget buildPartyCard(BuildContext context, DocumentSnapshot party) {
     return Stack(
@@ -61,7 +62,7 @@ Widget buildPartyCard(BuildContext context, DocumentSnapshot party) {
                                       child: Opacity(
                                         opacity: 0.7,
                                         child: Text(
-                                          "${DateFormat.MMMMEEEEd('fr').format(party['StartTime'].toDate()).split(' ')[1]} ${DateFormat.MMMMEEEEd('fr').format(party['StartTime'].toDate()).split(' ')[2]}",
+                                          "${DateFormat.MMMM('fr').format(party['StartTime'].toDate())}",
                                           style: TextStyle(
                                             color: SECONDARY_COLOR
                                           ),
@@ -73,7 +74,7 @@ Widget buildPartyCard(BuildContext context, DocumentSnapshot party) {
                                       child: Align(
                                         alignment: Alignment.centerLeft,
                                         child: Text(
-                                          "${DateFormat.Hm('fr').format(party['StartTime'].toDate()).split(':')[0]}h${DateFormat.Hm('fr').format(party['StartTime'].toDate()).split(':')[1]}",
+                                          "${DateFormat.E('fr').format(party['StartTime'].toDate())}${DateFormat.d('fr').format(party['StartTime'].toDate())}",
                                           style: TextStyle(
                                             fontSize: 20,
                                             fontWeight: FontWeight.w500,
@@ -152,111 +153,20 @@ Widget buildPartyCard(BuildContext context, DocumentSnapshot party) {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Column(  
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: [
-                                        Opacity(
-                                          opacity: 0.7,
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(),
-                                            child: Text(
-                                              'Personnes'.toUpperCase(),
-                                              style: TextStyle(
-                                                color: SECONDARY_COLOR
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          children: [
-                                            Icon(
-                                              Icons.person_outline,
-                                              size: 20,
-                                              color: SECONDARY_COLOR,
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(),
-                                              child: Text(
-                                                party['Number'],
-                                                style: TextStyle(
-                                                  fontSize: 20,
-                                                ),
-                                                overflow: TextOverflow.ellipsis
-                                              ),
-                                            )
-                                          ],
-                                        )
-                                      ],
+                                    Textdetail(
+                                      headerText: 'Personnes', 
+                                      detailText: party['Number'],
+                                      icon: Icons.person_outline,
                                     ),
-                                    Column(  
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: [
-                                        Opacity(
-                                          opacity: 0.7,
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(),
-                                            child: Text(
-                                              'Prix'.toUpperCase(),
-                                              style: TextStyle(
-                                                color: SECONDARY_COLOR
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(),
-                                              child: Text(
-                                                '€${party['Price']}',
-                                                style: TextStyle(
-                                                  fontSize: 20,
-                                                ),
-                                                overflow: TextOverflow.ellipsis
-                                              ),
-                                            )
-                                          ],
-                                        )
-                                      ],
+                                    Textdetail(
+                                      headerText: 'prix', 
+                                      detailText: '${party['Price']}',
+                                      icon: Icons.euro_symbol_outlined,
                                     ),
-                                    Column(  
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: [
-                                        Opacity(
-                                          opacity: 0.7,
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(),
-                                            child: Text(
-                                              'Ville'.toUpperCase(),
-                                              style: TextStyle(
-                                                color: SECONDARY_COLOR
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          children: [
-                                            Icon(
-                                              Icons.location_on_outlined,
-                                              size: 20,
-                                              color: SECONDARY_COLOR,
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(),
-                                              child: Text(
-                                                party['city'],
-                                                style: TextStyle(
-                                                  fontSize: 20,
-                                                ),
-                                                overflow: TextOverflow.ellipsis
-                                              ),
-                                            )
-                                          ],
-                                        )
-                                      ],
+                                    Textdetail(   
+                                      headerText: 'ville',
+                                      detailText: party['city'],
+                                      icon: Icons.location_on_outlined
                                     ),
                                   ],
                                 )
