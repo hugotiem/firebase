@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../../../Constant.dart';
+import '../../../../../Constant.dart';
 
-class Separator extends StatelessWidget {
-  const Separator({ Key key }) : super(key: key);
+class VerticalSeparator extends StatelessWidget {
+  const VerticalSeparator({ Key key }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
