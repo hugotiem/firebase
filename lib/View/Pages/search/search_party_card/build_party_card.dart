@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pts/Model/Capitalize.dart';
 import 'package:pts/Model/components/back_appbar.dart';
+import 'package:pts/Model/services/auth_service.dart';
+import 'package:pts/Model/services/firestore_service.dart';
+import 'package:pts/View/Pages/search/search_party_card/open/fab_join.dart';
 import 'package:pts/View/Pages/search/search_party_card/open/horizontal_separator.dart';
 import 'package:pts/View/Pages/search/search_party_card/open/piechart_informartion.dart';
 import '../../../../Constant.dart';
@@ -106,11 +109,25 @@ Widget buildPartyCard(BuildContext context, DocumentSnapshot party) {
                       preferredSize: Size.fromHeight(50),
                       child: BackAppBar(),
                     ),
+                    floatingActionButton: FABJoin(  
+                      label: 'Rejoindre',
+                      onPressed: () async {
+
+                        // await FireStoreServices('party').add(
+                        //   data: {
+                        //     'UID Wait List': AuthService.currentUser.uid,
+                        //     'Name Wait List': AuthService.currentUser.displayName,
+                        //   }
+                        // );
+
+                      },
+                    ),
+                    floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
                     body: SingleChildScrollView(
                       child: Column(  
                         children: [
                           NameThemeInformation(
-                            nom: party['Name'],
+                            nom: party['Name'].toUpperCase(),
                             theme: party["Theme"],
                           ),
                           DateInformation(
