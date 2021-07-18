@@ -1,12 +1,9 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/Model/services/auth_service.dart';
+import 'package:pts/View/Pages/login/id_form_screen.dart';
 
 class RegisterFormScreen extends StatefulWidget {
   final user;
@@ -19,13 +16,11 @@ class RegisterFormScreen extends StatefulWidget {
 class _RegisterFormScreenState extends State<RegisterFormScreen> {
   String _name;
   String _surname;
-  String _number;
-
-  PickedFile _idImage;
-  PickedFile _faceImage;
 
   TextEditingController _nameController;
   TextEditingController _surnameController;
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -35,12 +30,6 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
     _nameController = TextEditingController(text: _name);
     _surnameController = TextEditingController(text: _surname);
     super.initState();
-  }
-
-  Future<PickedFile> _getImage(ImageSource imageSource) async {
-    var imagePicker = new ImagePicker();
-
-    return await imagePicker.getImage(source: imageSource);
   }
 
   @override
@@ -59,276 +48,155 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
           backgroundColor: Colors.transparent,
           toolbarHeight: 0,
           elevation: 0,
-          brightness: Brightness.light,
+          systemOverlayStyle: SystemUiOverlayStyle.dark,
         ),
         body: SafeArea(
-          child: Column(
-            children: <Widget>[
-              Expanded(
-                flex: 1,
-                child: Container(),
-              ),
-              Expanded(
-                flex: 1,
-                child: Center(
-                  child: Container(
-                    width: MediaQuery.of(context).size.width * 0.9,
+          child: Form(
+            key: _formKey,
+            child: SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  SizedBox(
                     height: 50,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 30),
-                      child: TextField(
-                        controller: _surnameController,
-                        keyboardAppearance: Brightness.light,
-                        decoration: InputDecoration(
-                          labelText: "Nom :",
-                          border: InputBorder.none,
-                        ),
-                        onChanged: (value) {
-                          _surname = value;
-                        },
-                      ),
-                    ),
                   ),
-                ),
-              ),
-              Expanded(
-                flex: 1,
-                child: Center(
-                  child: Container(
-                    width: MediaQuery.of(context).size.width * 0.9,
-                    height: 50,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(30)),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 30),
-                      child: TextField(
-                        controller: _nameController,
-                        keyboardAppearance: Brightness.light,
-                        decoration: InputDecoration(
-                          labelText: "Prénom :",
-                          border: InputBorder.none,
-                        ),
-                        onChanged: (value) {
-                          _name = value;
-                        },
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: 1,
-                child: Center(
-                  child: Container(
-                    width: MediaQuery.of(context).size.width * 0.9,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 30),
-                      child: TextField(
-                        // controller: _editingController,
-                        keyboardAppearance: Brightness.light,
-                        keyboardType: TextInputType.phone,
-                        decoration: InputDecoration(
-                          labelText: "Téléphone (facultatif) :",
-                          border: InputBorder.none,
-                        ),
-                        onChanged: (value) {
-                          _number = value;
-                        },
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: 1,
-                child: Center(
-                  child: Container(
-                    width: MediaQuery.of(context).size.width * 0.9,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: TextButton(
-                      style: ButtonStyle(),
-                      onPressed: () => _idImage != null
-                          ? _showBottomModalSheet(
-                              image: _idImage,
-                              onPressed: () => _showCupertinoModalPopup(),
-                              isID: true,
-                            )
-                          : _showCupertinoModalPopup(),
-                      child: _idImage == null
-                          ? Text("Sélectionner une image")
-                          : Text("Voir l'image"),
-                    ),
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: 1,
-                child: Center(
-                  child: Container(
-                    width: MediaQuery.of(context).size.width * 0.9,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: TextButton(
-                      onPressed: () => _faceImage == null
-                          ? _getImage(ImageSource.camera).then((value) {
-                              setState(() {
-                                _faceImage = value;
-                              });
-                            })
-                          : _showBottomModalSheet(
-                              image: _faceImage,
-                              onPressed: () =>
-                                  _getImage(ImageSource.camera).then((value) {
-                                setState(() {
-                                  _faceImage = value;
-                                });
-                              }),
-                              isID: false,
-                            ),
-                      child: _faceImage == null
-                          ? Text("Sélectionner une image")
-                          : Text("Voir l'image"),
-                    ),
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: 2,
-                child: Center(
-                  child: GestureDetector(
+                  Center(
                     child: Container(
-                      width: size.width - 100,
-                      padding: EdgeInsets.symmetric(vertical: 20),
+                      margin: EdgeInsets.symmetric(vertical: 20),
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      height: 50,
                       decoration: BoxDecoration(
-                        color: ICONCOLOR,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(200),
-                        ),
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(30),
                       ),
-                      child: Text(
-                        "enregister".toUpperCase(),
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 30),
+                        child: TextFormField(
+                          controller: _surnameController,
+                          keyboardAppearance: Brightness.light,
+                          decoration: InputDecoration(
+                            labelText: "Nom :",
+                            border: InputBorder.none,
+                          ),
+                          onChanged: (value) {
+                            _surname = value;
+                          },
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return "Le champs ne dois pas être vide";
+                            }
+                            return null;
+                          },
                         ),
-                        textAlign: TextAlign.center,
                       ),
                     ),
-                    onTap: () {
-                      var user = AuthService.auth.currentUser;
-                      user
-                          .updateProfile(displayName: _name + " " + _surname)
-                          .then((value) => Navigator.of(context).pop());
-                    },
+                  ),
+                  Center(
+                    child: Container(
+                      margin: EdgeInsets.symmetric(vertical: 20),
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      height: 50,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(30)),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 30),
+                        child: TextFormField(
+                          controller: _nameController,
+                          keyboardAppearance: Brightness.light,
+                          decoration: InputDecoration(
+                            labelText: "Prénom :",
+                            border: InputBorder.none,
+                          ),
+                          onChanged: (value) {
+                            _name = value;
+                          },
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return "le champs ne dois pas être vide";
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                  Center(
+                    child: Container(
+                      margin: EdgeInsets.symmetric(vertical: 20),
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 30),
+                        child: TextFormField(
+                          // controller: _editingController,
+                          keyboardAppearance: Brightness.light,
+                          keyboardType: TextInputType.phone,
+                          decoration: InputDecoration(
+                            labelText: "Téléphone (facultatif) :",
+                            border: InputBorder.none,
+                          ),
+                          onChanged: (value) {
+                            // _number = value;
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 100,
+                  )
+                ],
+              ),
+            ),
+          ),
+        ),
+        bottomSheet: Wrap(
+          children: <Widget>[
+            Center(
+              child: GestureDetector(
+                child: Container(
+                  margin: EdgeInsets.symmetric(vertical: 20),
+                  width: size.width - 100,
+                  padding: EdgeInsets.symmetric(vertical: 20),
+                  decoration: BoxDecoration(
+                    color: ICONCOLOR,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(200),
+                    ),
+                  ),
+                  child: Text(
+                    "suivant".toUpperCase(),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
                 ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Future<dynamic> _showCupertinoModalPopup() {
-    return showCupertinoModalPopup(
-      context: context,
-      builder: (context) => CupertinoActionSheet(
-        actions: [
-          CupertinoActionSheetAction(
-            onPressed: () {
-              _getImage(ImageSource.gallery).then((value) {
-                setState(() {
-                  _idImage = value;
-                });
-              });
-              Navigator.of(context).pop();
-            },
-            child: Text("Gallerie"),
-          ),
-          CupertinoActionSheetAction(
-            onPressed: () {
-              _getImage(ImageSource.camera).then((value) {
-                setState(() {
-                  _idImage = value;
-                });
-              });
-              Navigator.of(context).pop();
-            },
-            child: Text("Camera"),
-          ),
-        ],
-        cancelButton: CupertinoActionSheetAction(
-          child: Text("Annuler"),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-      ),
-    );
-  }
-
-  Future<dynamic> _showBottomModalSheet(
-      {PickedFile image, void Function() onPressed, bool isID}) {
-    return showModalBottomSheet(
-      enableDrag: true,
-      isScrollControlled: true,
-      context: context,
-      builder: (context) => Scaffold(
-        backgroundColor: SECONDARY_COLOR,
-        extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          brightness: Brightness.dark,
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          toolbarHeight: 150,
-          actions: [
-            TextButton(
-              onPressed: () => onPressed,
-              child: Text("Reprendre"),
+                onTap: () {
+                  if (!_formKey.currentState.validate()) {
+                    return;
+                  }
+                  var user = AuthService.auth.currentUser;
+                  user.updateProfile(displayName: _name + " " + _surname).then(
+                        (value) => Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => IdFormScreen(
+                              name: _name,
+                              surname: _surname,
+                            ),
+                          ),
+                        ),
+                      );
+                },
+              ),
             ),
           ],
-        ),
-        body: Center(
-          child: Image.file(
-            File(image.path),
-          ),
-        ),
-        bottomSheet: Container(
-          color: SECONDARY_COLOR,
-          width: MediaQuery.of(context).size.width,
-          height: 100,
-          child: TextButton(
-            onPressed: () {
-              setState(() {
-                if (isID)
-                  _idImage = null;
-                else
-                  _faceImage = null;
-              });
-              Navigator.of(context).pop();
-            },
-            child: Text(
-              "Supprimer",
-              style: TextStyle(color: Colors.red),
-            ),
-          ),
         ),
       ),
     );

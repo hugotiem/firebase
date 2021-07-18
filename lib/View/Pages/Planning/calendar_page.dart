@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/View/Pages/Planning/components/CalendarWidget.dart';
 import 'package:pts/View/Pages/creation/name_page.dart';
@@ -10,7 +11,7 @@ class CalendarPage extends StatelessWidget {
       backgroundColor: PRIMARY_COLOR, 
       appBar: AppBar(
         backgroundColor: Colors.white,
-        brightness: Brightness.light,
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
         elevation: 0,
         title: Text(
           'Calendrier',

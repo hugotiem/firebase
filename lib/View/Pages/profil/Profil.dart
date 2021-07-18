@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/Model/components/ProfilPhoto.dart';
 import 'package:pts/Model/components/pts_box.dart';
@@ -41,7 +42,7 @@ class _ProfilState extends State<Profil> {
         toolbarHeight: 0,
         elevation: 0,
         backgroundColor: PRIMARY_COLOR,
-        brightness: Brightness.light,
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
       backgroundColor: PRIMARY_COLOR,
       body: StreamBuilder<User>(
@@ -61,11 +62,10 @@ class _ProfilState extends State<Profil> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.of(context).push(
-                            CupertinoPageRoute(
-                              fullscreenDialog: true,
-                              builder: (context) => Login(),
-                            ),
+                          showModalBottomSheet(
+                            context: context,
+                            builder: (context) => Login(),
+                            isScrollControlled: true,
                           );
                         },
                         child: Container(

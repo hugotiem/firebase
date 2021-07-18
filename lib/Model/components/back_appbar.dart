@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pts/Constant.dart';
 
 class BackAppBar extends PreferredSize {
@@ -34,7 +35,7 @@ class BackAppBar extends PreferredSize {
             ),
       title: title,
       actions: actions,
-      brightness: Brightness.light,
+      systemOverlayStyle: SystemUiOverlayStyle.dark,
       //brightness: brightness != null ? brightness : Brightness.light,
     );
   }
