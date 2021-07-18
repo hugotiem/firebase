@@ -46,7 +46,7 @@ class _DescriptionPageState extends State<DescriptionPage> {
                 'NameOganizer': AuthService.currentUser.displayName,
                 'timestamp': DateTime.now(),
                 'StartTime': Soiree.datedebut,
-                'EndTime': Soiree.datefin
+                'EndTime': Soiree.datefin,
               },
             );
 

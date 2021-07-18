@@ -5,7 +5,6 @@ import 'package:intl/intl.dart';
 import 'package:pts/Model/Capitalize.dart';
 import 'package:pts/Model/components/back_appbar.dart';
 import 'package:pts/Model/services/auth_service.dart';
-import 'package:pts/Model/services/firestore_service.dart';
 import 'package:pts/View/Pages/search/search_party_card/open/fab_join.dart';
 import 'package:pts/View/Pages/search/search_party_card/open/horizontal_separator.dart';
 import 'package:pts/View/Pages/search/search_party_card/open/piechart_informartion.dart';
@@ -112,13 +111,12 @@ Widget buildPartyCard(BuildContext context, DocumentSnapshot party) {
                     floatingActionButton: FABJoin(  
                       label: 'Rejoindre',
                       onPressed: () async {
+                        // final _db = FirebaseFirestore.instance.collection('party');
 
-                        // await FireStoreServices('party').add(
-                        //   data: {
-                        //     'UID Wait List': AuthService.currentUser.uid,
-                        //     'Name Wait List': AuthService.currentUser.displayName,
-                        //   }
-                        // );
+                        // await _db.doc().set({
+                        //   'UID Wait list': AuthService.currentUser.uid,
+                        //   'Name Wait list': AuthService.currentUser.displayName
+                        // });
 
                       },
                     ),
