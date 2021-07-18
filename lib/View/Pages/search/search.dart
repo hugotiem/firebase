@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pts/View/Pages/search/Components/title_text.dart';
 import 'package:animations/animations.dart';
 import 'package:pts/View/Pages/search/sliver/searchbar_screen.dart';
@@ -26,7 +27,7 @@ class _SearchState extends State<Search> {
   double _opacity;
   double _barSizeWidth;
   double _barSizeHeight;
-  Brightness _brightness;
+  SystemUiOverlayStyle _brightness;
   Color _toolbarColor;
   
   @override
@@ -37,7 +38,7 @@ class _SearchState extends State<Search> {
       _opacity = 1;
       _barSizeWidth = 350;
       _barSizeHeight = 60;
-      _brightness = Brightness.dark;
+      _brightness = SystemUiOverlayStyle.light;
       _toolbarColor = Colors.transparent;
     });
     super.initState();
@@ -120,7 +121,7 @@ class _SearchState extends State<Search> {
             double _pixels = notification.metrics.pixels;
             if (_pixels <= 400 && (400 - _pixels) >= 100) {
               _size = 400 - _pixels;
-              _brightness = Brightness.dark;
+              _brightness = SystemUiOverlayStyle.light;
               _toolbarColor = Colors.transparent;
 
               if (_pixels >= 250) {
@@ -133,7 +134,7 @@ class _SearchState extends State<Search> {
             } else if (_pixels > 300) {
               _size = 100;
               _opacity = 0;
-              _brightness = Brightness.light;
+              _brightness = SystemUiOverlayStyle.dark;
               _toolbarColor = PRIMARY_COLOR;
             }
           }
