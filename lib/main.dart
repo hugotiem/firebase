@@ -1,4 +1,6 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pts/Model/services/auth_service.dart';
 import 'View/Home.dart';
@@ -9,7 +11,11 @@ import 'package:flutter/services.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   //await Firebase.initializeApp();
-  runApp(MyApp());
+  runApp(DevicePreview(
+    builder: (context) => MyApp(),
+    enabled: !kReleaseMode,
+    )
+  );
 }
 
 class MyApp extends StatelessWidget {

@@ -107,6 +107,10 @@ class _SearchState extends State<Search> {
               )
             ),
             // listes des thèmes de soirées
+            TitleText(
+              text: 'Thèmes',
+              margin: EdgeInsets.only(left: 20, top: 30),
+            ),
             GridListThemes(),
             // container qui permet de créer une soirée
             ContainerAddParty(),

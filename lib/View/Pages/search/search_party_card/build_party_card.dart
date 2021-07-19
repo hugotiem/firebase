@@ -131,7 +131,7 @@ Widget buildPartyCard(BuildContext context, DocumentSnapshot party) {
                           DateInformation(
                             date: '${DateFormat.E('fr').format(party['StartTime'].toDate()).inCaps} ${DateFormat.d('fr').format(party['StartTime'].toDate())} ${DateFormat.MMMM('fr').format(party['StartTime'].toDate())}',
                           ),
-                          HourInformation(
+                          HourInformation( 
                             heuredebut: 'De ${DateFormat.Hm('fr').format(party['StartTime'].toDate()).split(":")[0]}h${DateFormat.Hm('fr').format(party['StartTime'].toDate()).split(":")[1]}',
                             heurefin: 'A ${DateFormat.Hm('fr').format(party['EndTime'].toDate()).split(':')[0]}h${DateFormat.Hm('fr').format(party['EndTime'].toDate()).split(':')[1]}',
                           ),

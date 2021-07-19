@@ -23,25 +23,27 @@ class ThemeBox extends StatelessWidget {
       openColor: PRIMARY_COLOR,
       closedElevation: 0,
       closedBuilder: (context, returnvalue) {
-        return Container(
-          margin: EdgeInsets.only(bottom: 20, left: 40, right: 10),
-          height: 145,
-          width: 145,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: this.colors
-            )
-          ),
-          child: Center(
-            child: Text(
-              this.text,
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w900,
-                color: Colors.white
+        return Padding(
+          padding: const EdgeInsets.only(left: 40, bottom: 20),
+          child: Container(
+            height: 145,
+            width: 145,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: this.colors
+              )
+            ),
+            child: Center(
+              child: Text(
+                this.text,
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w900,
+                  color: Colors.white
+                ),
               ),
             ),
           ),
