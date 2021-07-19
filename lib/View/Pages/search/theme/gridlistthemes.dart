@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pts/View/Pages/search/Components/title_text.dart';
 
 import 'themebox.dart';
 

@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:pts/Model/Capitalize.dart';
 import 'package:pts/Model/components/back_appbar.dart';
 import 'package:pts/Model/services/auth_service.dart';
+import 'package:pts/View/Pages/search/search_party_card/open/custombnb.dart';
 import 'package:pts/View/Pages/search/search_party_card/open/fab_join.dart';
 import 'package:pts/View/Pages/search/search_party_card/open/horizontal_separator.dart';
 import 'package:pts/View/Pages/search/search_party_card/open/piechart_informartion.dart';
@@ -108,6 +109,7 @@ Widget buildPartyCard(BuildContext context, DocumentSnapshot party) {
                       preferredSize: Size.fromHeight(50),
                       child: BackAppBar(),
                     ),
+                    bottomNavigationBar: CustomBNB(),
                     floatingActionButton: FABJoin(  
                       label: 'Rejoindre',
                       onPressed: () async {
@@ -120,7 +122,7 @@ Widget buildPartyCard(BuildContext context, DocumentSnapshot party) {
 
                       },
                     ),
-                    floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+                    floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
                     body: SingleChildScrollView(
                       child: Column(  
                         children: [
