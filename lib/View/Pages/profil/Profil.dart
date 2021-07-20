@@ -15,6 +15,7 @@ import 'package:pts/View/Pages/profil/info_screen.dart';
 
 import 'components/clickable_container_profil.dart';
 import 'components/title_text_profil.dart';
+import 'guest_wait_list.dart';
 import 'list_of_party.dart';
 
 class Profil extends StatefulWidget {
@@ -142,6 +143,27 @@ class _ProfilState extends State<Profil> {
                               bottomBorder: false,
                             ),
                           ]
+                        ),
+                      ),
+                      PTSBox(
+                        padding: EdgeInsets.only(top: 20, bottom: 20),
+                        child: Column(  
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            TitleTextProfil(
+                              text: "Listes d'attente",
+                            ),
+                            CickableContainerProfil(
+                              text: "Soirées",
+                              icon: Icons.calendar_today_outlined,
+                            ),
+                            CickableContainerProfil( 
+                              to: GuestWaitList(),
+                              text: 'Invités',
+                              icon: Icons.perm_identity_outlined,
+                              bottomBorder: false,
+                            )
+                          ],
                         ),
                       ),
                       PTSBox(
