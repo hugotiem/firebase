@@ -18,6 +18,7 @@ import 'open/contact_information.dart';
 import 'open/date_information.dart';
 import 'open/decription_information.dart';
 import 'open/hour_information.dart';
+import 'open/join_wait_list.dart';
 import 'open/name_theme_information.dart';
 import 'open/piechart_legend.dart';
 import 'open/price_information.dart';
@@ -113,13 +114,24 @@ Widget buildPartyCard(BuildContext context, DocumentSnapshot party) {
                     floatingActionButton: FABJoin(  
                       label: 'Rejoindre',
                       onPressed: () async {
-                        // final _db = FirebaseFirestore.instance.collection('party');
+                        final _db = FirebaseFirestore.instance.collection('party');
+                        final name = AuthService.currentUser.displayName;
+                        final uid = AuthService.currentUser.uid;
 
-                        // await _db.doc().set({
-                        //   'UID Wait list': AuthService.currentUser.uid,
-                        //   'Name Wait list': AuthService.currentUser.displayName
-                        // });
+                        List waitList = [];
+                          waitList.add({
+                            "Name": name,
+                            "uid": uid
+                          });
 
+
+                        await _db.doc(party.id).update({
+                          "wait list": FieldValue.arrayUnion(waitList),
+                        });
+                        
+                        Navigator.push(context, 
+                        MaterialPageRoute(builder: (context) => JoinWaitList()
+                        ));
                       },
                     ),
                     floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

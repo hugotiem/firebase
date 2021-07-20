@@ -13,6 +13,8 @@ import 'package:pts/View/Pages/login/login.dart';
 import 'package:pts/View/Pages/profil/details.dart';
 import 'package:pts/View/Pages/profil/info_screen.dart';
 
+import 'components/clickable_container_profil.dart';
+import 'components/title_text_profil.dart';
 import 'list_of_party.dart';
 
 class Profil extends StatefulWidget {
@@ -124,75 +126,23 @@ class _ProfilState extends State<Profil> {
                       PTSBox(
                         padding: EdgeInsets.only(top: 20, bottom: 20),
                         child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Container(
-                                  margin: EdgeInsets.only(left: 20, bottom: 10),
-                                  child: BoldText(
-                                    text: 'Activités',
-                                    fontSize: 15,
-                                  )),
-                              ClickableContainer(
-                                to: GetPartyData(),
-                                margin: EdgeInsets.only(top: 10),
-                                padding: EdgeInsets.only(
-                                  top: 0,
-                                  bottom: 0,
-                                  left: 20,
-                                  right: 20,
-                                ),
-                                child: Container(
-                                  padding: EdgeInsets.only(
-                                    top: 15,
-                                    bottom: 15,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    border: Border(
-                                      bottom: BorderSide(
-                                        color: Colors.grey.withOpacity(0.23),
-                                      ),
-                                    ),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Text(
-                                        "Vos soirées",
-                                        style: TextStyle(fontSize: 20),
-                                      ),
-                                      Icon(Icons.calendar_today_outlined)
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              ClickableContainer(
-                                margin: EdgeInsets.only(top: 10),
-                                padding: EdgeInsets.only(
-                                  top: 0,
-                                  bottom: 0,
-                                  left: 20,
-                                  right: 20,
-                                ),
-                                child: Container(
-                                  padding: EdgeInsets.only(
-                                    top: 15,
-                                    bottom: 15,
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Text(
-                                        "Messagerie",
-                                        style: TextStyle(fontSize: 20),
-                                      ),
-                                      Icon(Icons.message_outlined)
-                                    ],
-                                  ),
-                                ),
-                              )
-                            ]),
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            TitleTextProfil(
+                              text: 'Activités',
+                            ),
+                            CickableContainerProfil(
+                              to: GetPartyData(),
+                              text:  "Vos soirées",
+                              icon: Icons.calendar_today_outlined,
+                            ),
+                            CickableContainerProfil(
+                              text:  "Messagerie",
+                              icon: Icons.message_outlined,
+                              bottomBorder: false,
+                            ),
+                          ]
+                        ),
                       ),
                       PTSBox(
                         padding: EdgeInsets.only(top: 20, bottom: 20),
@@ -200,103 +150,22 @@ class _ProfilState extends State<Profil> {
                         child: new Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Container(
-                              margin: EdgeInsets.only(left: 20, bottom: 10),
-                              child: BoldText(
-                                text: "Paramètres du compte",
-                                fontSize: 15,
-                              ),
+                            TitleTextProfil(
+                              text: 'Paramètres du compte',
                             ),
-                            ClickableContainer(
+                            CickableContainerProfil(
                               to: InfoScreen(),
-                              margin: EdgeInsets.only(top: 10),
-                              padding: EdgeInsets.only(
-                                top: 0,
-                                bottom: 0,
-                                left: 20,
-                                right: 20,
-                              ),
-                              child: new Container(
-                                padding: EdgeInsets.only(
-                                  top: 15,
-                                  bottom: 15,
-                                ),
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                    bottom: BorderSide(
-                                      color: Colors.grey.withOpacity(0.23),
-                                    ),
-                                  ),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    new Text(
-                                      "Informations personnelles",
-                                      style: TextStyle(fontSize: 20),
-                                    ),
-                                    new Icon(Icons.perm_identity)
-                                  ],
-                                ),
-                              ),
+                              text: "Informations personnelles",
+                              icon: Icons.perm_identity_outlined,
                             ),
-                            ClickableContainer(
-                              padding: EdgeInsets.only(
-                                top: 0,
-                                bottom: 0,
-                                left: 20,
-                                right: 20,
-                              ),
-                              child: new Container(
-                                padding: EdgeInsets.only(
-                                  top: 15,
-                                  bottom: 15,
-                                ),
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                    bottom: BorderSide(
-                                      color: Colors.grey.withOpacity(0.23),
-                                    ),
-                                  ),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    new Text(
-                                      "Paiements",
-                                      style: TextStyle(fontSize: 20),
-                                    ),
-                                    new Icon(Icons.payment)
-                                  ],
-                                ),
-                              ),
+                            CickableContainerProfil( 
+                              text: "Paiements",
+                              icon: Icons.payment_outlined,
                             ),
-                            ClickableContainer(
-                              padding: EdgeInsets.only(
-                                top: 0,
-                                bottom: 0,
-                                left: 20,
-                                right: 20,
-                              ),
-                              child: new Container(
-                                padding: EdgeInsets.only(
-                                  top: 20,
-                                  bottom: 10,
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    new Text(
-                                      "Notifications",
-                                      style: TextStyle(fontSize: 20),
-                                    ),
-                                    new Icon(Icons.notifications_outlined)
-                                  ],
-                                ),
-                              ),
+                            CickableContainerProfil(  
+                              text: "Notifications",
+                              icon: Icons.notifications_outlined,
+                              bottomBorder: false,
                             ),
                           ],
                         ),

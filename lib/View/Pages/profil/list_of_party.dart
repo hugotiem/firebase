@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/Model/components/back_appbar.dart';
 import 'package:pts/Model/services/auth_service.dart';
-import 'package:pts/View/Pages/search/search_party_card/build_party_card.dart';
+import 'package:pts/View/Pages/search/search_party_card/search_party_card.dart';
 
 class GetPartyData extends StatelessWidget {
   @override
