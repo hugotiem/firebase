@@ -15,6 +15,7 @@ class GuestWaitList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: PRIMARY_COLOR,
       appBar: PreferredSize(  
         preferredSize: Size.fromHeight(50),
         child: BackAppBar(  
