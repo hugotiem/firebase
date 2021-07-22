@@ -31,7 +31,7 @@ class GuestWaitList extends StatelessWidget {
           ),
         ),
       ),
-      body: Container(  
+      body: Container(
         child: StreamBuilder(  
           stream: getGuestWaitList(context),
           builder: (context, snapshot) {
