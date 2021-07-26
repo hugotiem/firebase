@@ -116,10 +116,12 @@ Widget buildPartyCard(BuildContext context, DocumentSnapshot party) {
                       onPressed: () async {
                         final _db = FirebaseFirestore.instance.collection('party');
                         final name = AuthService.currentUser.displayName;
+                        final uid = AuthService.currentUser.uid;
 
                         List waitList = [];
                           waitList.add({
                             "Name": name,
+                            "uid": uid
                           });
 
 

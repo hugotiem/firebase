@@ -12,6 +12,7 @@ import 'package:pts/Model/services/auth_service.dart';
 import 'package:pts/View/Pages/login/login.dart';
 import 'package:pts/View/Pages/profil/details.dart';
 import 'package:pts/View/Pages/profil/info_screen.dart';
+import 'package:pts/View/Pages/profil/party_wait_list.dart';
 
 import 'components/clickable_container_profil.dart';
 import 'components/title_text_profil.dart';
@@ -154,6 +155,7 @@ class _ProfilState extends State<Profil> {
                               text: "Listes d'attente",
                             ),
                             CickableContainerProfil(
+                              to: PartyWaitList(),
                               text: "Soirées",
                               icon: Icons.calendar_today_outlined,
                             ),

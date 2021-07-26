@@ -4,8 +4,7 @@ import 'package:pts/Model/components/ProfilPhoto.dart';
 import 'package:pts/Model/components/pts_box.dart';
 import 'package:pts/View/Pages/profil/components/title_text_profil.dart';
 
-
-Widget buildValidationCard(BuildContext context, DocumentSnapshot party) {  
+Widget buildValidationCard(BuildContext context, DocumentSnapshot party) { 
   return Stack(
     children: [
       Center(
@@ -31,7 +30,7 @@ Widget buildValidationCard(BuildContext context, DocumentSnapshot party) {
                           Container(
                             height: 50,
                             child: Text(
-                              party['wait list'][index]['Name'],
+                              party['wait list'].toString(),
                             ),
                           ),
                         ],
