@@ -114,7 +114,7 @@ Widget buildPartyCard(BuildContext context, DocumentSnapshot party) {
                     floatingActionButton: FABJoin(  
                       label: 'Rejoindre',
                       onPressed: () async {
-                        final _db = FirebaseFirestore.instance.collection('party');
+                        final _db = FirebaseFirestore.instance.collection('party').doc(party.id);
                         final name = AuthService.currentUser.displayName;
                         final uid = AuthService.currentUser.uid;
 
@@ -125,12 +125,12 @@ Widget buildPartyCard(BuildContext context, DocumentSnapshot party) {
                           });
 
 
-                        await _db.doc(party.id).update({
+                        await _db.update({
                           "wait list": FieldValue.arrayUnion(waitList),
                         });
                         
                         Navigator.push(context, 
-                        MaterialPageRoute(builder: (context) => JoinWaitList()
+                          MaterialPageRoute(builder: (context) => JoinWaitList()
                         ));
                       },
                     ),

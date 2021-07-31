@@ -31,6 +31,8 @@ class _DescriptionPageState extends State<DescriptionPage> {
           onPressed: () async {
             Soiree.setDataDescriptionPage(_description);
 
+            List waitList = [];
+
             await db.add(
               data: {
                 'Name': Soiree.nom.trimRight().trimLeft().inCaps,
@@ -47,6 +49,7 @@ class _DescriptionPageState extends State<DescriptionPage> {
                 'timestamp': DateTime.now(),
                 'StartTime': Soiree.datedebut,
                 'EndTime': Soiree.datefin,
+                'wait list': FieldValue.arrayUnion(waitList),
               },
             );
 

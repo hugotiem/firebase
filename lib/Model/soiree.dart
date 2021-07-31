@@ -12,6 +12,10 @@ class Soiree {
   static String adresse;
   static String ville;
   static String codepostal;
+  final List<WaitList> waitlist;
+  final String name;
+
+  Soiree({this.waitlist, this.name});
 
   static void setDataNamePage(String _nom) {
     nom = _nom;
@@ -47,4 +51,12 @@ class Soiree {
   static void setDataDescriptionPage(String _description) {
     description = _description;
   }
+}
+
+
+class WaitList {
+  final String name;
+  final String uid;
+
+  WaitList({this.name, this.uid});
 }
