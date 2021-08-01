@@ -1,4 +1,3 @@
-import 'package:device_preview/device_preview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -11,11 +10,7 @@ import 'package:flutter/services.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   //await Firebase.initializeApp();
-  runApp(DevicePreview(
-    builder: (context) => MyApp(),
-    enabled: !kReleaseMode,
-    )
-  );
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -31,7 +26,6 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       title: "PTS",
-     
       home: FutureBuilder(
         future: _fbApp,
         builder: (context, snapshot) {

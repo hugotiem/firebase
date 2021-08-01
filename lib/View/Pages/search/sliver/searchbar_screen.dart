@@ -1,5 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
+import 'package:pts/Model/services/firestore_service.dart';
+import 'package:pts/View/Pages/search/lastpartycreated/cardparty.dart';
+import 'package:pts/View/Pages/search/search_party_card/search_party_card.dart';
 import 'package:pts/View/Pages/search/sliver/searchbar.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'dart:math' as math;
@@ -20,6 +24,7 @@ class _SearchBarScreenState extends State<SearchBarScreen>
   AnimationController _animationController;
 
   String _search = "";
+  String _result;
   bool _hasResults = false;
   bool _isDissmissed = false;
 
@@ -27,6 +32,8 @@ class _SearchBarScreenState extends State<SearchBarScreen>
   double _rotation = 0;
 
   Brightness _brightness = Brightness.light;
+
+  FireStoreServices _firestore;
 
   // to save panel position
   double _panelPosition;
@@ -37,6 +44,7 @@ class _SearchBarScreenState extends State<SearchBarScreen>
       vsync: this,
       duration: Duration(milliseconds: 300),
     );
+    _firestore = FireStoreServices("party");
     super.initState();
   }
 
@@ -173,22 +181,37 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                               ),
                               color: PRIMARY_COLOR,
                             ),
-                            child: ListView.builder(
-                              controller: sc,
-                              itemCount: 10,
-                              itemBuilder: (context, index) {
-                                return Container(
-                                  margin: EdgeInsets.all(20),
-                                  height: 100,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(10),
-                                    ),
-                                    color: Colors.white,
-                                  ),
-                                );
-                              },
-                            ),
+                            child: FutureBuilder(
+                                future:
+                                    _firestore.getData(_result.split(",")[0]),
+                                builder: (context, snapshot) {
+                                  return ListView.builder(
+                                    controller: sc,
+                                    itemCount: snapshot.hasData
+                                        ? snapshot.data.docs.length
+                                        : 5,
+                                    itemBuilder: (context, index) {
+                                      if (snapshot.hasError) {
+                                        return Center(child: Text("ERROR"));
+                                      }
+                                      if (snapshot.hasData) {
+                                        var data = snapshot.data.docs;
+                                        return buildPartyCard(
+                                            context, data[index]);
+                                      }
+                                      return Container(
+                                        margin: EdgeInsets.all(20),
+                                        height: 100,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(10),
+                                          ),
+                                          color: Colors.white,
+                                        ),
+                                      );
+                                    },
+                                  );
+                                }),
                           )
                         : FutureBuilder(
                             future: applicationBloc.searchPlaces(_search),
@@ -210,6 +233,8 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                                         FocusScope.of(context).unfocus();
                                         setState(() {
                                           _hasResults = true;
+                                          _result = applicationBloc
+                                              .searchResults[index].description;
 
                                           _resultsPanelController
                                               .animatePanelToSnapPoint(
@@ -264,7 +289,6 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                           padding: EdgeInsets.all(0),
                           itemCount: applicationBloc.searchResults.length,
                           itemBuilder: (context, index) {
-                            
                             return ListTile(
                               title: Text(
                                 applicationBloc
@@ -275,6 +299,8 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                                 FocusScope.of(context).unfocus();
                                 setState(() {
                                   _hasResults = true;
+                                  _result = applicationBloc
+                                      .searchResults[index].description;
                                   _isDissmissed = true;
                                 });
                                 _resultsPanelController.animatePanelToSnapPoint(

@@ -10,20 +10,11 @@ class SearchBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      
       height: 60,
       padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(29.5),
-        boxShadow: [
-          BoxShadow(
-            color: PRIMARY_COLOR.withOpacity(0.3),
-            offset: Offset(1, 2),
-            blurRadius: 4,
-            spreadRadius: 2,
-          )
-        ],
       ),
       child: TextField(
         autofocus: true,

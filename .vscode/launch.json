@@ -10,6 +10,11 @@
             "type": "dart"
         },
         {
+            "name": "iPhone 12 Pro",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
             "name": "sdk gphone x86 arm",
             "request": "launch",
             "type": "dart",

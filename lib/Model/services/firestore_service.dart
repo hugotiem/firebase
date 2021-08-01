@@ -15,4 +15,12 @@ class FireStoreServices {
   Stream<QuerySnapshot<Map<String, dynamic>>> getSnapshots() {
     return this._firestore.collection(collection).snapshots();
   }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getData(String city) async {
+    return this
+        ._firestore
+        .collection(collection)
+        .where('city', isEqualTo: city)
+        .get();
+  }
 }
