@@ -32,6 +32,7 @@ class _DescriptionPageState extends State<DescriptionPage> {
             Soiree.setDataDescriptionPage(_description);
 
             List waitList = [];
+            List validateGuestList = [];
 
             await db.add(
               data: {
@@ -50,6 +51,7 @@ class _DescriptionPageState extends State<DescriptionPage> {
                 'StartTime': Soiree.datedebut,
                 'EndTime': Soiree.datefin,
                 'wait list': FieldValue.arrayUnion(waitList),
+                'validate guest list': FieldValue.arrayUnion(validateGuestList)
               },
             );
 

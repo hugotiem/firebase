@@ -115,7 +115,7 @@ Widget buildPartyCard(BuildContext context, DocumentSnapshot party) {
                       label: 'Rejoindre',
                       onPressed: () async {
                         final _db = FirebaseFirestore.instance.collection('party').doc(party.id);
-                        final name = AuthService.currentUser.displayName;
+                        final name = AuthService.currentUser.displayName.split(' ')[0];
                         final uid = AuthService.currentUser.uid;
 
                         List waitList = [];
@@ -123,7 +123,6 @@ Widget buildPartyCard(BuildContext context, DocumentSnapshot party) {
                             "Name": name,
                             "uid": uid
                           });
-
 
                         await _db.update({
                           "wait list": FieldValue.arrayUnion(waitList),

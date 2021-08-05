@@ -60,6 +60,7 @@ class GuestWaitList extends StatelessWidget {
 Widget buildValidationCard(BuildContext context, DocumentSnapshot party) { 
   String partyName = party['Name'];
   List nameList = party['wait list'];
+  final _db = FirebaseFirestore.instance.collection('party').doc(party.id);
 
   List list = nameList.map((doc) {
     return Padding(
@@ -89,7 +90,23 @@ Widget buildValidationCard(BuildContext context, DocumentSnapshot party) {
           Row( 
             children: [
               IconButton(
-                onPressed: () {}, 
+                onPressed: () async {
+                  List list1 = [];
+                    list1.add({
+                      'Name': doc['Name'],
+                      'uid': doc['uid']
+                    });
+                  
+                  await _db
+                      .update({
+                        'validate guest list': FieldValue.arrayUnion(list1)
+                      });
+                  
+                  await _db
+                      .update({
+                        'wait list': FieldValue.arrayRemove(list1)
+                      });
+                }, 
                 icon: Icon( 
                   Icons.check_outlined,
                   color: Colors.green,
@@ -103,16 +120,10 @@ Widget buildValidationCard(BuildContext context, DocumentSnapshot party) {
                       'uid': doc['uid']
                     });
 
-                  await FirebaseFirestore.instance
-                      .collection('party')
-                      .doc(party.id)
+                  await _db
                       .update({
-                        'wait list':
-                          FieldValue.arrayRemove(
-                            list1
-                        )
-                      } 
-                    );
+                        'wait list': FieldValue.arrayRemove(list1)
+                      });
                 },
                 icon: Icon(
                   Icons.close_outlined,
@@ -144,7 +155,7 @@ Widget buildValidationCard(BuildContext context, DocumentSnapshot party) {
               )
               : Center(
                 child: Text(
-                  "Vous n'avez pas encore reçu de demande",
+                  "Vous n'avez pas reçu de demande",
                   style: TextStyle(
                     fontSize: 17
                   ),

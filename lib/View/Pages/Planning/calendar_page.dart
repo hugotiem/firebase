@@ -102,7 +102,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
             child: SfCalendar(
               onTap: calendarTapped,
               monthViewSettings: MonthViewSettings(
-                navigationDirection: MonthNavigationDirection.horizontal
+                navigationDirection: MonthNavigationDirection.vertical
               ),
               dataSource: events,
               cellBorderColor: PRIMARY_COLOR,
