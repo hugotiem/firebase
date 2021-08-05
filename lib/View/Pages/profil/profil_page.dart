@@ -4,15 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/View/Pages/login/login.dart';
+import 'package:pts/View/Pages/profil/info_page.dart';
 import 'package:pts/components/ProfilPhoto.dart';
 import 'package:pts/components/pts_box.dart';
 import 'package:pts/components/text_materials.dart';
 import 'package:pts/components/pts_components.dart';
 import 'package:pts/Model/services/auth_service.dart';
-import 'package:pts/View/Pages/profil/info_screen.dart';
 import 'package:pts/view/pages/profil/subpage/list_user_party_page.dart';
-
 import 'package:pts/view/pages/profil/subpage/user_page.dart';
+
 import 'package:pts/view/pages/profil/subpage/waitlist_guest_page.dart';
 import 'package:pts/view/pages/profil/subpage/waitlist_party_page.dart';
 
