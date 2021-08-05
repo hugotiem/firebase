@@ -96,7 +96,24 @@ Widget buildValidationCard(BuildContext context, DocumentSnapshot party) {
                 )
               ),
               IconButton( 
-                onPressed: () {},
+                onPressed: () async {
+                  List list1 = [];
+                    list1.add({
+                      'Name': doc['Name'],
+                      'uid': doc['uid']
+                    });
+
+                  await FirebaseFirestore.instance
+                      .collection('party')
+                      .doc(party.id)
+                      .update({
+                        'wait list':
+                          FieldValue.arrayRemove(
+                            list1
+                        )
+                      } 
+                    );
+                },
                 icon: Icon(
                   Icons.close_outlined,
                   color: Colors.red,
