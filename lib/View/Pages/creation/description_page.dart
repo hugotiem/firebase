@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
-import 'package:pts/Model/Capitalize.dart';
-import 'package:pts/components/back_appbar.dart';
+import 'package:pts/Model/capitalize.dart';
 import 'package:pts/Model/services/auth_service.dart';
 import 'package:pts/Model/services/firestore_service.dart';
 import 'package:pts/Model/soiree.dart';
 import 'package:pts/View/Pages/creation/end_page.dart';
+import 'package:pts/components/back_appbar.dart';
 import 'package:pts/components/components_creation/headertext_one.dart';
 
 class DescriptionPage extends StatefulWidget {
