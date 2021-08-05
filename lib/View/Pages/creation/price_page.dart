@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
-import 'package:pts/Model/components/back_appbar.dart';
+import 'package:pts/components/back_appbar.dart';
 import 'package:pts/Model/soiree.dart';
-import 'package:pts/View/Pages/creation/components/Radio_and_text.dart';
-import 'package:pts/View/Pages/creation/components/fab_form.dart';
-import 'package:pts/View/Pages/creation/components/headertext_one.dart';
+import 'package:pts/components/components_creation/fab_form.dart';
+import 'package:pts/components/components_creation/headertext_one.dart';
+import 'package:pts/components/components_creation/headertext_two.dart';
+import 'package:pts/components/components_creation/hint_text.dart';
+import 'package:pts/components/components_creation/tff_number.dart';
 
-import 'components/headertext_two.dart';
-import 'components/hint_text.dart';
-import 'components/tff_number.dart';
 import 'description_page.dart';
 
 enum RadioChoix {
@@ -142,6 +141,51 @@ class _PricePageState extends State<PricePage> {
           ]
         )
       )
+    );
+  }
+}
+
+class RadioAndText extends StatelessWidget {
+  final dynamic value;
+  final dynamic groupValue;
+  final void Function(dynamic) onChanged;
+  final String text;
+
+  const RadioAndText({ 
+    @required this.value,
+    @required this.groupValue,
+    @required this.onChanged,
+    @required this.text,
+    Key key 
+    }) 
+    : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Radio(
+          activeColor: SECONDARY_COLOR,
+          value: this.value, 
+          groupValue: this.groupValue, 
+          onChanged: this.onChanged
+        ),
+        Padding(
+          padding: EdgeInsets.only(left: 8.0),
+          child: Container(  
+            child: Opacity( 
+              opacity: 0.7,
+              child: Text(
+                this.text,
+                style: TextStyle(  
+                  fontSize: 20,
+                  color: Colors.black
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

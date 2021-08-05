@@ -1,10 +1,77 @@
 import 'package:animations/animations.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:pts/Model/components/back_appbar.dart';
-import 'package:pts/View/Pages/search/search_party_card/search_party_card.dart';
+import 'package:pts/components/back_appbar.dart';
+import 'package:pts/components/party_card/party_card.dart';
 
-import '../../../../../Constant.dart';
+import '../../../../Constant.dart';
+
+class GridListThemes extends StatefulWidget {
+  const GridListThemes({ Key key }) : super(key: key);
+
+  @override
+  _GridListThemesState createState() => _GridListThemesState();
+}
+
+class _GridListThemesState extends State<GridListThemes> {
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Container(
+        margin: EdgeInsets.only(top: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: Column(
+                children: [
+                  Row(  
+                    children: [
+                      ThemeBox(
+                        text: 'Classique', 
+                        colors: [
+                          Color(0xFFf12711),
+                          Color(0xFFf5af19)
+                        ]
+                      ),
+                      ThemeBox(  
+                        text: 'Gaming',
+                        colors: [
+                          Color(0xFF1c92d2),
+                          Color(0xFFf2fcfe)
+                        ],
+                      )
+                    ]
+                  ),
+                  Row(
+                    children: [
+                      ThemeBox(
+                        text: 'Jeu de société', 
+                        colors: [
+                          Color(0xFFa8ff78),
+                          Color(0xFF78ffd6)
+                        ]
+                      ),
+                      ThemeBox(  
+                        text: 'Soirée à thème',
+                        colors: [
+                          Color(0xFFb24592),
+                          Color(0xFFf15f79)
+                        ],
+                      )
+                    ],
+                  )
+                ]
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
 
 class ThemeBox extends StatelessWidget {
   final List<Color> colors;

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
-import 'package:pts/Model/components/back_appbar.dart';
+import 'package:pts/components/back_appbar.dart';
 import 'package:pts/Model/services/auth_service.dart';
 
 class InfoScreen extends StatefulWidget {
@@ -20,6 +20,7 @@ class _InfoScreenState extends State<InfoScreen> {
   TextEditingController _nameController;
   TextEditingController _emailController;
 
+  // ignore: unused_field
   TextEditingController _passwordController;
 
   // variables

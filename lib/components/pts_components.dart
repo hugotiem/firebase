@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../Constant.dart';
-import 'components/pts_box.dart';
+import 'pts_box.dart';
 
 // containers with blue shadow
 

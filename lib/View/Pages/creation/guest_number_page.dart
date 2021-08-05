@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
-import 'package:pts/Model/components/back_appbar.dart';
+import 'package:pts/components/back_appbar.dart';
 import 'package:pts/Model/soiree.dart';
-import 'package:pts/View/Pages/creation/components/fab_form.dart';
-import 'package:pts/View/Pages/creation/components/hint_text.dart';
-import 'package:pts/View/Pages/creation/components/tff_number.dart';
+import 'package:pts/components/components_creation/fab_form.dart';
+import 'package:pts/components/components_creation/headertext_one.dart';
+import 'package:pts/components/components_creation/hint_text.dart';
+import 'package:pts/components/components_creation/tff_number.dart';
 
-import 'components/headertext_one.dart';
 import 'price_page.dart';
 
 class GuestNumber extends StatefulWidget {

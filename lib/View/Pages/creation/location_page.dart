@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pts/Constant.dart';
-import 'package:pts/Model/components/back_appbar.dart';
+import 'package:pts/components/back_appbar.dart';
 import 'package:pts/Model/soiree.dart';
-import 'package:pts/View/Pages/creation/components/fab_form.dart';
-import 'package:pts/View/Pages/creation/components/headertext_one.dart';
-import 'package:pts/View/Pages/creation/components/headertext_two.dart';
+import 'package:pts/components/components_creation/fab_form.dart';
+import 'package:pts/components/components_creation/headertext_one.dart';
+import 'package:pts/components/components_creation/headertext_two.dart';
+import 'package:pts/components/components_creation/tff_text.dart';
 
-import 'components/tff_text.dart';
-import 'guest_number.dart';
+import 'guest_number_page.dart';
 
 class LocationPage extends StatefulWidget {
   @override

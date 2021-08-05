@@ -1,14 +1,69 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:pts/Model/components/ProfilPhoto.dart';
-import 'package:pts/Model/components/pts_box.dart';
-import 'package:pts/View/Pages/profil/components/title_text_profil.dart';
+import 'package:pts/Constant.dart';
+import 'package:pts/components/ProfilPhoto.dart';
+import 'package:pts/components/back_appbar.dart';
+import 'package:pts/Model/services/auth_service.dart';
+import 'package:pts/components/pts_box.dart';
+
+import '../Profil_page.dart';
+
+
+class GuestWaitList extends StatelessWidget {
+  const GuestWaitList({ 
+    Key key 
+    }) 
+    : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: PRIMARY_COLOR,
+      appBar: PreferredSize(  
+        preferredSize: Size.fromHeight(50),
+        child: BackAppBar(  
+          title: Padding(
+            padding: EdgeInsets.only(top: 6),
+            child: Text( 
+              "Invités en attentes",
+              style: TextStyle(  
+                color: SECONDARY_COLOR,
+                fontWeight: FontWeight.bold
+              ),
+            ),
+          ),
+        ),
+      ),
+      body: Container(
+        child: StreamBuilder(  
+          stream: getGuestWaitList(context),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) return Center(child: const CircularProgressIndicator());
+            return ListView.builder(
+              itemCount: snapshot.data.docs.length,
+              itemBuilder: (BuildContext context, int index) => 
+                buildValidationCard(context, snapshot.data.docs[index]),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  Stream<QuerySnapshot> getGuestWaitList(BuildContext context) async* {
+    yield* FirebaseFirestore.instance
+        .collection('party')
+        .where('UID', isEqualTo: AuthService.currentUser.uid)
+        .snapshots();
+  }
+}
+
 
 Widget buildValidationCard(BuildContext context, DocumentSnapshot party) { 
   String partyName = party['Name'];
   List nameList = party['wait list'];
 
-  List list = nameList.map((doc){
+  List list = nameList.map((doc) {
     return Padding(
       padding: const EdgeInsets.only(left: 8, right: 8),
       child: Row(
@@ -56,9 +111,6 @@ Widget buildValidationCard(BuildContext context, DocumentSnapshot party) {
     );
   }).toList();
 
-  // https://stackoverflow.com/questions/60178478/how-to-convert-an-array-of-map-in-firestore-to-a-list-of-map-dart
-  // https://stackoverflow.com/questions/62978458/firebase-cloud-firestore-get-array-of-maps-in-flutter
-
   return Stack(
     children: [
       Center(
@@ -77,7 +129,10 @@ Widget buildValidationCard(BuildContext context, DocumentSnapshot party) {
               )
               : Center(
                 child: Text(
-                  "Vous n'avez pas encore reçu de demande"
+                  "Vous n'avez pas encore reçu de demande",
+                  style: TextStyle(
+                    fontSize: 17
+                  ),
                 ),
               )
             ],

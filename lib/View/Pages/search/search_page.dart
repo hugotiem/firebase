@@ -2,15 +2,14 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:pts/View/Pages/search/Components/title_text.dart';
 import 'package:animations/animations.dart';
+import 'package:pts/View/Pages/creation/name_page.dart';
 import 'package:pts/View/Pages/search/sliver/searchbar_screen.dart';
 import '../../../../../Constant.dart';
 
-import 'city/gridlistcity.dart';
-import 'lastpartycreated/cardparty.dart';
-import 'addparty/containeraddparty.dart';
-import 'theme/gridlistthemes.dart';
+import 'subpage/city_page.dart';
+import 'subpage/last_party_page.dart';
+import 'subpage/themes_page.dart';
 import 'sliver/backgroundtitle.dart';
 import 'sliver/custom_sliver.dart';
 
@@ -201,6 +200,99 @@ class _SearchState extends State<Search> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class ContainerAddParty extends StatefulWidget {
+  const ContainerAddParty({ Key key }) : super(key: key);
+
+  @override
+  _ContainerAddPartyState createState() => _ContainerAddPartyState();
+}
+
+class _ContainerAddPartyState extends State<ContainerAddParty> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 40, vertical: 60),
+      height: 500,
+      width: MediaQuery.of(context).size.width,
+      decoration: BoxDecoration(
+        color: SECONDARY_COLOR,
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Container(
+            margin: EdgeInsets.all(20),
+            child: Text(
+              "Organise ta propre soirée !",
+              style: TextStyle(
+                color: ICONCOLOR,
+                fontSize: 40,
+                fontWeight: FontWeight.w900,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(context, 
+                MaterialPageRoute(builder: (context) => NamePage())
+              );
+            },
+            child: Container(
+              //width: MediaQuery.of(context).size.width - 100,
+              margin: EdgeInsets.only(bottom: 20),
+              padding: EdgeInsets.symmetric(
+                vertical: 20, horizontal: 20),
+                decoration: BoxDecoration(
+                  color: ICONCOLOR,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(200),
+                  ),
+                ),
+                child: Text(
+                  "Créer maintenant !".toUpperCase(),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class TitleText extends StatelessWidget {
+  final EdgeInsetsGeometry margin;
+  final String text;
+  const TitleText({
+    this.margin,
+    @required this.text,
+    Key key 
+    }) 
+    : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: this.margin,
+      child: Text(
+        this.text,
+        style: TextStyle(  
+          fontWeight: FontWeight.w900,
+          fontSize: 20,
+          color: SECONDARY_COLOR
+        ),
       ),
     );
   }

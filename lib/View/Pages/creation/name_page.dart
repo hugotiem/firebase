@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
-import 'package:pts/Model/components/back_appbar.dart';
+import 'package:pts/components/back_appbar.dart';
 import 'package:pts/Model/soiree.dart';
-import 'package:pts/View/Pages/creation/components/fab_form.dart';
-import 'package:pts/View/Pages/creation/components/tff_text.dart';
 import 'package:pts/View/Pages/creation/theme_page.dart';
+import 'package:pts/components/components_creation/fab_form.dart';
+import 'package:pts/components/components_creation/headertext_one.dart';
+import 'package:pts/components/components_creation/tff_text.dart';
 
-import 'components/headertext_one.dart';
 
 class NamePage extends StatefulWidget {
   @override
