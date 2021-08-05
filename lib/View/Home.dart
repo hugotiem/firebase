@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
 import 'Pages/Planning/calendar_page.dart';
-import 'Pages/profil/Profil.dart';
+import 'Pages/profil/profil_page.dart';
 import 'Pages/search/search.dart';
 
 class Home extends StatefulWidget {

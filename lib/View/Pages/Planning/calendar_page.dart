@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pts/Constant.dart';
-import 'package:pts/View/Pages/Planning/components/CalendarWidget.dart';
+import 'package:pts/View/Pages/Planning/components/calendar_widget.dart';
 import 'package:pts/View/Pages/creation/name_page.dart';
 
 class CalendarPage extends StatelessWidget {

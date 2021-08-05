@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:pts/Model/components/ProfilPhoto.dart';
+import 'package:pts/Model/components/profil_photo.dart';
 import 'package:pts/Model/components/pts_box.dart';
 import 'package:pts/View/Pages/profil/components/title_text_profil.dart';
 

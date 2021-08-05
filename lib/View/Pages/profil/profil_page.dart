@@ -3,15 +3,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pts/Constant.dart';
-import 'package:pts/Model/components/ProfilPhoto.dart';
+import 'package:pts/Model/components/profil_photo.dart';
 import 'package:pts/Model/components/pts_box.dart';
 import 'package:pts/Model/components/text_materials.dart';
 import 'package:pts/Model/pts_components.dart';
 import 'package:pts/Model/services/auth_service.dart';
 
 import 'package:pts/View/Pages/login/login.dart';
-import 'package:pts/View/Pages/profil/details.dart';
-import 'package:pts/View/Pages/profil/info_screen.dart';
+import 'package:pts/View/Pages/profil/user_page.dart';
+import 'package:pts/View/Pages/profil/info_page.dart';
 import 'package:pts/View/Pages/profil/party_wait_list.dart';
 
 import 'components/clickable_container_profil.dart';

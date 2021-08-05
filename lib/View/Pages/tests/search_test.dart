@@ -2,8 +2,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:pts/Constant.dart';
-import 'package:pts/Model/Const_soiree.dart';
-import 'package:pts/Model/components/ProfilPhoto.dart';
+import 'package:pts/Model/const_soiree.dart';
+import 'package:pts/Model/components/profil_photo.dart';
 import 'package:pts/Model/components/back_appbar.dart';
 
 class Rechercher extends StatefulWidget {
