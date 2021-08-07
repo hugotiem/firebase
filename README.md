@@ -8,7 +8,7 @@ A new Flutter project.
 4. [APIs](#apis)
 5. [future ideas](#future-ideas)
 6. [Conventions](#conventions)
-    1. [Files and folders names](#files-and-folders-names)
+    1. [Files and folders](#files-and-folders)
     2. [Git branch names](#git-branch-names)
 
 ## Getting Started
@@ -81,6 +81,9 @@ assurance risque
 
 #### Naming :
 
-- Si le fichier est la base d'une page : `*pagename*_page.dart`
+- Pour les dossiers dans Model : `<class_name>.dart`
+- Pour les dossiers dans View : `<page_name>`
+    - Si le fichier est la base d'une page : `<page_name>_page.dart`.
+    - Pour les composants (non génériques) d'une page (function name) : `_buildComponentName() 
 
 ### Git branch names
