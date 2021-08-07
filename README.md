@@ -7,6 +7,9 @@ A new Flutter project.
 3. [BackLogs.](#backlogs)
 4. [APIs](#apis)
 5. [future ideas](#future-ideas)
+6. [Conventions](#conventions)
+    1. [Files and folders names](#files-and-folders-names)
+    2. [Git branch names](#git-branch-names)
 
 ## Getting Started
 
@@ -71,3 +74,13 @@ Backlogs list comming soon.
 ## Future ideas
 
 assurance risque
+
+## Conventions
+
+### Files and folders
+
+#### Naming :
+
+- Si le fichier est la base d'une page : `*pagename*_page.dart`
+
+### Git branch names
