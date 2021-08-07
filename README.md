@@ -81,8 +81,10 @@ assurance risque
 
 #### Naming :
 
-- Pour les dossiers dans Model : `<class_name>.dart`
+- Pour les dossiers dans Model : `<classes_group_name>`
+- Pour les fichiers dans Model : `<class_name>.dart`
 - Pour les dossiers dans View : `<page_name>`
+- Pour les fichiers dans View :
     - Si le fichier est la base d'une page : `<page_name>_page.dart`.
     - Pour les composants (non génériques) d'une page (function name) : `_buildComponentName()`
 
