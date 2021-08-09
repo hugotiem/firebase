@@ -24,6 +24,75 @@ import 'open/piechart_legend.dart';
 import 'open/price_information.dart';
 
 Widget buildPartyCard(BuildContext context, DocumentSnapshot party) {
+  List nameList = party['validate guest list'];
+
+  List list = nameList.map((doc) {
+    return Row(  
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Align(  
+          alignment: Alignment.center,
+          child: Column(  
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(left: 5),
+                child: Container(  
+                  padding: EdgeInsets.only(top: 16, left: 16),
+                  child: Text(  
+                    doc['Name'],
+                    style: TextStyle(  
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                      color: SECONDARY_COLOR
+                    ),
+                  ),
+                ),
+              ),
+              Padding(  
+                padding: EdgeInsets.only(left: 16),
+                child: Row(  
+                  children: [
+                    Icon(
+                      Icons.star_rate_rounded,
+                      color: ICONCOLOR,
+                    ),
+                    Text(
+                      '4.9 / 5 - 0 avis',
+                      style: TextStyle(   
+                        fontSize: 16,
+                        color: SECONDARY_COLOR,
+                      ),
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+        Align(
+          alignment: Alignment.center,
+          child: Container(  
+            child: Padding(
+              padding: EdgeInsets.only(top: 30, right: 21),
+              child: Container(  
+                height: 50,
+                width: 50,
+                clipBehavior: Clip.antiAlias,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle
+                ),
+                child: Image.network( 
+                  'https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png',
+                ),
+              )
+            ),
+          ),
+        )
+      ],
+    );
+  }).toList();
+
     return Stack(
       children: <Widget>[
         Padding(
@@ -162,84 +231,35 @@ Widget buildPartyCard(BuildContext context, DocumentSnapshot party) {
                             contact: 'Contacter ${party['NameOganizer'].split(' ')[0]}',
                           ),
                           HorzontalSeparator(),
-                          // graphique pourcentage homme/femme/autre
-                          PieChartInformation(
-                            valueHomme: 45,
-                            titleHomme: '45 %',
-                            valueFemme: 45,
-                            titleFemme: '45 %',
-                            valueAutre: 10,
-                            titleAutre: '10 %',
-                          ),
-                          PieChartLegend(),
-                          
-                          // faire la liste des invités
-                          SizedBox(
-                            child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Align(
-                                    alignment: Alignment.center,
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(left: 5),
-                                          child: Container(
-                                            padding: EdgeInsets.only(top: 16, left: 16),
-                                            child: Text(
-                                              'Jean',
-                                              style: TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.w700,
-                                                color: SECONDARY_COLOR
-                                              ),
-                                            )
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(left: 16),
-                                          child: Row(
-                                            children: [ 
-                                              Icon(
-                                                Icons.star_rate_rounded,
-                                                color: ICONCOLOR,
-                                              ),
-                                              Text(
-                                                '4.9 / 5 - 0 avis',
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  color: SECONDARY_COLOR
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  Align(
-                                    alignment: Alignment.center,
-                                    child: Container(
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(top: 30.0, right: 21),
-                                        child: Container(
-                                          height: 50,
-                                          width: 50,
-                                          clipBehavior: Clip.antiAlias,
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                          ),
-                                          child: Image.network(
-                                            'https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png',
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                ],
+                          nameList.isNotEmpty 
+                          ? Column(
+                            children: [
+                              // graphique pourcentage homme/femme/autre
+                              PieChartInformation(
+                                valueHomme: 45,
+                                titleHomme: '45 %',
+                                valueFemme: 45,
+                                titleFemme: '45 %',
+                                valueAutre: 10,
+                                titleAutre: '10 %',
+                              ),
+                              PieChartLegend(),
+                              // faire la liste des personnes acceptées à la soirée
+                              Column(  
+                                children: list
+                              )
+                            ],
+                          )
+                          : Opacity(
+                            opacity: 0.7,
+                            child: Text(
+                              "Il n'y a pas encore d'invité",
+                              style: TextStyle(  
+                                fontSize: 16,
+                                color: SECONDARY_COLOR
                               ),
                             ),
+                          ),
                           SizedBox( 
                             height: 50,
                           )
