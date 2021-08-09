@@ -24,27 +24,37 @@ class GetPartyData extends StatelessWidget {
           )
         ),
       ),
-      body: Container(
-        child: StreamBuilder(
-            stream: getPartyStreamSnapshots(context),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) return Center(child: const CircularProgressIndicator());
-              return ListView.builder(
-                itemCount: snapshot.data.docs.length,
-                itemBuilder: (BuildContext context, int index) =>
-                    buildPartyCard(context, snapshot.data.docs[index]),
-              );
-            }),
+      body: Column(
+        children: [
+          Expanded(
+            child: Container(
+              child: StreamBuilder(
+                  stream: getPartyStreamSnapshots(context),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) return Center(child: const CircularProgressIndicator());
+                    return ListView.builder(
+                      itemCount: snapshot.data.docs.length,
+                      itemBuilder: (BuildContext context, int index) =>
+                          buildPartyCard(context, snapshot.data.docs[index]),
+                    );
+                  }),
+            ),
+          ),
+        ],
       ),
     );
   }
 
   Stream<QuerySnapshot> getPartyStreamSnapshots(BuildContext context) async* {
-    //à ajouter les soirées que l'utilisateur a créé et à rejoind
-    //pour l'instant c'est la liste de toute les soirées créées par l'utilisateur
-    yield* FirebaseFirestore.instance
-        .collection('party')
+    final _db = FirebaseFirestore.instance.collection('party');
+    Map _uid = {
+      'Name': AuthService.currentUser.displayName.split(' ')[0],
+      'uid': AuthService.currentUser.uid
+    };
+    
+    yield* _db
         .where('UID', isEqualTo: AuthService.currentUser.uid)
+        .where('validate guest list', arrayContains: _uid)
         .snapshots();
   }
 }
