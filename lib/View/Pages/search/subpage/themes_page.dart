@@ -84,15 +84,15 @@ class ThemeBox extends StatelessWidget {
  
   @override
   Widget build(BuildContext context) {
-    return OpenContainer(
-      transitionDuration: Duration(milliseconds: 400),
-      closedColor: Colors.transparent,
-      openColor: PRIMARY_COLOR,
-      closedElevation: 0,
-      closedBuilder: (context, returnvalue) {
-        return Padding(
-          padding: const EdgeInsets.only(left: 40, bottom: 20),
-          child: Container(
+    return Padding(
+      padding: const EdgeInsets.only(left: 40, bottom: 20),
+      child: OpenContainer(
+        transitionDuration: Duration(milliseconds: 400),
+        closedColor: Colors.transparent,
+        openColor: PRIMARY_COLOR,
+        closedElevation: 0,
+        closedBuilder: (context, returnvalue) {
+          return Container(
             height: 145,
             width: 145,
             decoration: BoxDecoration(
@@ -113,41 +113,41 @@ class ThemeBox extends StatelessWidget {
                 ),
               ),
             ),
-          ),
-        );
-      },
-      openBuilder: (context, returnvalue) {
-        return Scaffold(
-          appBar: PreferredSize(
-            preferredSize: Size.fromHeight(50),
-            child: new BackAppBar(
-              title: Padding(
-                padding: const EdgeInsets.only(top: 6.0),
-                child: Text(
-                  this.text,
-                  style: TextStyle(  
-                    color: SECONDARY_COLOR,
-                    fontWeight: FontWeight.bold
+          );
+        },
+        openBuilder: (context, returnvalue) {
+          return Scaffold(
+            appBar: PreferredSize(
+              preferredSize: Size.fromHeight(50),
+              child: new BackAppBar(
+                title: Padding(
+                  padding: const EdgeInsets.only(top: 6.0),
+                  child: Text(
+                    this.text,
+                    style: TextStyle(  
+                      color: SECONDARY_COLOR,
+                      fontWeight: FontWeight.bold
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-          body: Container(
-            child: StreamBuilder(
-              stream: getPartyStreamSnapshot(context),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) return Center(child: const CircularProgressIndicator());
-                return ListView.builder(
-                  itemCount: snapshot.data.docs.length,
-                  itemBuilder: (BuildContext context, int index) =>
-                    buildPartyCard(context, snapshot.data.docs[index])
-                );
-              }, 
-            )
-          ),
-        );
-      },
+            body: Container(
+              child: StreamBuilder(
+                stream: getPartyStreamSnapshot(context),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) return Center(child: const CircularProgressIndicator());
+                  return ListView.builder(
+                    itemCount: snapshot.data.docs.length,
+                    itemBuilder: (BuildContext context, int index) =>
+                      buildPartyCard(context, snapshot.data.docs[index])
+                  );
+                }, 
+              )
+            ),
+          );
+        },
+      ),
     );
   }
   Stream<QuerySnapshot> getPartyStreamSnapshot(BuildContext context) async* {
