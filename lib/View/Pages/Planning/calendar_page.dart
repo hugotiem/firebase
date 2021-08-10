@@ -87,9 +87,6 @@ class _CalendarWidgetState extends State<CalendarWidget> {
         background: SECONDARY_COLOR,
         isAllDay: false ))
       .toList();
-    setState(() {
-      events = MeetingDataSource(list);
-    });
 
     Map _uid = {
       'Name': AuthService.currentUser.displayName.split(' ')[0],
@@ -111,7 +108,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
       .toList();
     
     list.insertAll(list.length - 1, list1);
-    
+
     setState(() {
       events = MeetingDataSource(list);
     });

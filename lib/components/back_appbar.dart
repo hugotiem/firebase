@@ -8,12 +8,14 @@ class BackAppBar extends PreferredSize {
   final List<Widget> actions;
   //final Brightness brightness;
   final Widget leading;
+  final PreferredSizeWidget bottom;
 
   BackAppBar({
     this.title,
     this.actions,
     //this.brightness,
     this.leading,
+    this.bottom
   });
 
   @override
@@ -37,6 +39,7 @@ class BackAppBar extends PreferredSize {
       actions: actions,
       systemOverlayStyle: SystemUiOverlayStyle.dark,
       //brightness: brightness != null ? brightness : Brightness.light,
+      bottom: bottom,
     );
   }
 }
