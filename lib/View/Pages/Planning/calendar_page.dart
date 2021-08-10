@@ -90,6 +90,32 @@ class _CalendarWidgetState extends State<CalendarWidget> {
     setState(() {
       events = MeetingDataSource(list);
     });
+
+    Map _uid = {
+      'Name': AuthService.currentUser.displayName.split(' ')[0],
+      'uid': AuthService.currentUser.uid
+    };
+
+    var snapShotValue1 = await databaseReference
+        .collection("party")
+        .where('validate guest list', arrayContains: _uid)
+        .get();
+    
+    List<Meeting> list1 = snapShotValue1.docs
+      .map((e) => Meeting(  
+        eventName: e.data()['Name'],
+        from: e.data()['StartTime'].toDate(),
+        to: e.data()['EndTime'].toDate(),
+        background: Colors.pink,
+        isAllDay: false ))
+      .toList();
+    
+    list.insertAll(list.length - 1, list1);
+    
+    setState(() {
+      events = MeetingDataSource(list);
+    });
+
   }
 
   @override

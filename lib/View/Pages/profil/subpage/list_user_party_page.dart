@@ -27,33 +27,50 @@ class GetPartyData extends StatelessWidget {
       body: Column(
         children: [
           Expanded(
-            child: Container(
-              child: StreamBuilder(
-                  stream: getPartyStreamSnapshots(context),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) return Center(child: const CircularProgressIndicator());
-                    return ListView.builder(
-                      itemCount: snapshot.data.docs.length,
-                      itemBuilder: (BuildContext context, int index) =>
-                          buildPartyCard(context, snapshot.data.docs[index]),
-                    );
-                  }),
-            ),
+            child: StreamBuilder(
+              stream: getPartyStreamSnapshots(context),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) return Center(child: const CircularProgressIndicator());
+                return ListView.builder(
+                  itemCount: snapshot.data.docs.length,
+                  itemBuilder: (BuildContext context, int index) =>
+                      buildPartyCard(context, snapshot.data.docs[index]),
+                );
+              }),
           ),
-        ],
-      ),
-    );
+            Expanded(
+              child: StreamBuilder(
+                stream: getStream(context),
+                builder: (context, snapshot) {
+                if (!snapshot.hasData) return Center(child: const CircularProgressIndicator());
+                return ListView.builder(
+                  itemCount: snapshot.data.docs.length,
+                  itemBuilder: (BuildContext context, int index) =>
+                      buildPartyCard(context, snapshot.data.docs[index]),
+                );
+              }),
+            ),
+        ])
+      );
   }
 
   Stream<QuerySnapshot> getPartyStreamSnapshots(BuildContext context) async* {
+    final _db = FirebaseFirestore.instance.collection('party');
+    
+    yield* _db
+        .where('UID', isEqualTo: AuthService.currentUser.uid)
+        .snapshots();
+  }
+
+
+  Stream<QuerySnapshot> getStream(BuildContext context) async* {
     final _db = FirebaseFirestore.instance.collection('party');
     Map _uid = {
       'Name': AuthService.currentUser.displayName.split(' ')[0],
       'uid': AuthService.currentUser.uid
     };
-    
+
     yield* _db
-        .where('UID', isEqualTo: AuthService.currentUser.uid)
         .where('validate guest list', arrayContains: _uid)
         .snapshots();
   }
