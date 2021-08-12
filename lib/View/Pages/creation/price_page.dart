@@ -8,7 +8,7 @@ import 'package:pts/components/components_creation/headertext_two.dart';
 import 'package:pts/components/components_creation/hint_text.dart';
 import 'package:pts/components/components_creation/tff_number.dart';
 
-import 'description_page.dart';
+import 'animal_smoke_page.dart';
 
 enum RadioChoix {
   Gratuit,
@@ -41,7 +41,7 @@ class _PricePageState extends State<PricePage> {
             _prix
           );
           Navigator.push(context, 
-            MaterialPageRoute(builder: (context) => DescriptionPage())
+            MaterialPageRoute(builder: (context) => AnimalSmokePage())
           );
         },
       ),

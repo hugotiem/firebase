@@ -37,25 +37,25 @@ class _ThemePageState extends State<ThemePage> {
           );
         },
       ),
-      body: SingleChildScrollView(
-        child: Column(  
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            HeaderText1(
-              text: 'Choississez un thème'
-            ),
-            Center(
-              child: Container(
-                height: HEIGHTCONTAINER,
-                width: MediaQuery.of(context).size.width * 0.9,
-                decoration: BoxDecoration(  
-                  color: PRIMARY_COLOR,
-                  borderRadius: BorderRadius.circular(15)
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 16, right: 8),
-                  child: Form(
-                    key: _formKey,
+      body: Form(
+        key: _formKey,
+        child: SingleChildScrollView(
+          child: Column(  
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              HeaderText1(
+                text: 'Choississez un thème'
+              ),
+              Center(
+                child: Container(
+                  height: HEIGHTCONTAINER,
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  decoration: BoxDecoration(  
+                    color: PRIMARY_COLOR,
+                    borderRadius: BorderRadius.circular(15)
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 16, right: 8),
                     child: Center(
                       child: DropdownButtonFormField<String>(
                         value: _theme,
@@ -118,8 +118,8 @@ class _ThemePageState extends State<ThemePage> {
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

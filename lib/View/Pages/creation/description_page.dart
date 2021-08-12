@@ -34,30 +34,33 @@ class _DescriptionPageState extends State<DescriptionPage> {
             List waitList = [];
             List validateGuestList = [];
 
-            await db.add(
-              data: {
-                'Name': Soiree.nom.trimRight().trimLeft().inCaps,
-                'Theme': Soiree.theme,
-                'Date': Soiree.date,
-                'Number': Soiree.nombre,
-                'Price': Soiree.prix,
-                'Description': Soiree.description,
-                'adress': Soiree.adresse.trimRight().trimLeft().inCaps,
-                'city': Soiree.ville.trimRight().trimLeft().inCaps,
-                'postal code': Soiree.codepostal,
-                'UID': AuthService.currentUser.uid,
-                'NameOganizer': AuthService.currentUser.displayName,
-                'timestamp': DateTime.now(),
-                'StartTime': Soiree.datedebut,
-                'EndTime': Soiree.datefin,
-                'wait list': FieldValue.arrayUnion(waitList),
-                'validate guest list': FieldValue.arrayUnion(validateGuestList)
-              },
-            );
+            // await db.add(
+            //   data: {
+            //     'Name': Soiree.nom.trimRight().trimLeft().inCaps,
+            //     'Theme': Soiree.theme,
+            //     'Date': Soiree.date,
+            //     'Number': Soiree.nombre,
+            //     'Price': Soiree.prix,
+            //     'Description': Soiree.description,
+            //     'adress': Soiree.adresse.trimRight().trimLeft().inCaps,
+            //     'city': Soiree.ville.trimRight().trimLeft().inCaps,
+            //     'postal code': Soiree.codepostal,
+            //     'UID': AuthService.currentUser.uid,
+            //     'NameOganizer': AuthService.currentUser.displayName,
+            //     'timestamp': DateTime.now(),
+            //     'StartTime': Soiree.datedebut,
+            //     'EndTime': Soiree.datefin,
+            //     'wait list': FieldValue.arrayUnion(waitList),
+            //     'validate guest list': FieldValue.arrayUnion(validateGuestList),
+            //     'smoke': Soiree.smoke,
+            //     'animals': Soiree.animals
+            //    },
+            // );
+            print(Soiree.animals);
 
-            Navigator.push(context, 
-              MaterialPageRoute(builder: (context) => EndPage())
-            );
+            // Navigator.push(context, 
+            //   MaterialPageRoute(builder: (context) => EndPage())
+            // );
           },
           backgroundColor: SECONDARY_COLOR,
           elevation: 0,

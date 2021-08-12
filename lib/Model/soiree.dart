@@ -12,6 +12,8 @@ class Soiree {
   static String adresse;
   static String ville;
   static String codepostal;
+  static String smoke;
+  static String animals;
 
   static void setDataNamePage(String _nom) {
     nom = _nom;
@@ -42,6 +44,11 @@ class Soiree {
 
   static void setDataPricePage(var _prix) {
     prix = _prix;
+  }
+
+  static void setDataAnimalSmokePage(String _animals, String _smoke) {
+    animals = _animals;
+    smoke = _smoke;
   }
     
   static void setDataDescriptionPage(String _description) {
