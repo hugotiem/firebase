@@ -2,9 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:pts/Constant.dart';
-import 'package:pts/Model/Const_soiree.dart';
-import 'package:pts/Model/components/ProfilPhoto.dart';
-import 'package:pts/Model/components/back_appbar.dart';
+import 'package:pts/components/back_appbar.dart';
 
 class Rechercher extends StatefulWidget {
   @override
@@ -29,7 +27,7 @@ class _RechercherState extends State<Rechercher> {
           SliverFillRemaining(
             hasScrollBody: true,
             fillOverscroll: true,
-            child: Scroll(),
+            // child: Scroll(),
           )
         ],
       ),
@@ -188,138 +186,138 @@ class __SearchState extends State<_Search> {
   }
 }
 
-class Scroll extends StatefulWidget {
-  @override
-  _ScrollState createState() => _ScrollState();
-}
+// class Scroll extends StatefulWidget {
+//   @override
+//   _ScrollState createState() => _ScrollState();
+// }
 
-class _ScrollState extends State<Scroll> {
-  ScrollController controller = ScrollController();
-  bool closeTopContainer = false;
-  double topContainer = 0;
-  final double start = 0;
+// class _ScrollState extends State<Scroll> {
+//   ScrollController controller = ScrollController();
+//   bool closeTopContainer = false;
+//   double topContainer = 0;
+//   final double start = 0;
 
-  List<Widget> itemsData = [];
+//   List<Widget> itemsData = [];
 
-  void getPostsData() {
-    List<dynamic> responseList = SOIREE_DATA;
-    List<Widget> listItems = [];
-    responseList.forEach((post) {
-      listItems.add(InkWell(
-        child: Container(
-          decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(36)),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.5),
-                  blurRadius: 10.0,
-                )
-              ]),
-          width: 400,
-          height: 200,
-          margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(top: 15.0, bottom: 5),
-                child: Text(
-                  post["nom"],
-                  style: const TextStyle(
-                      fontSize: 27, fontWeight: FontWeight.bold),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 7.5),
-                child: Container(
-                  decoration: BoxDecoration(
-                      border: Border(
-                          bottom: BorderSide(
-                              color: Colors.blueGrey.withOpacity(0.23)))),
-                  child: Text(
-                    post["theme"],
-                    style: const TextStyle(fontSize: 17, color: Colors.grey),
-                  ),
-                ),
-              ),
-              Text(
-                post["date_heure"],
-                style: const TextStyle(
-                  fontSize: 28,
-                ),
-              ),
-              ProfilPhoto()
-            ],
-          ),
-        ),
-        onTap: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => PartyDetail()));
-        },
-      ));
-    });
-    setState(() {
-      itemsData = listItems;
-    });
-  }
+//   void getPostsData() {
+//     List<dynamic> responseList = SOIREE_DATA;
+//     List<Widget> listItems = [];
+//     responseList.forEach((post) {
+//       listItems.add(InkWell(
+//         child: Container(
+//           decoration: BoxDecoration(
+//               color: Colors.white,
+//               borderRadius: BorderRadius.all(Radius.circular(36)),
+//               boxShadow: [
+//                 BoxShadow(
+//                   color: Colors.black.withOpacity(0.5),
+//                   blurRadius: 10.0,
+//                 )
+//               ]),
+//           width: 400,
+//           height: 200,
+//           margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+//           child: Column(
+//             children: <Widget>[
+//               Padding(
+//                 padding: const EdgeInsets.only(top: 15.0, bottom: 5),
+//                 child: Text(
+//                   post["nom"],
+//                   style: const TextStyle(
+//                       fontSize: 27, fontWeight: FontWeight.bold),
+//                 ),
+//               ),
+//               Padding(
+//                 padding: const EdgeInsets.only(bottom: 7.5),
+//                 child: Container(
+//                   decoration: BoxDecoration(
+//                       border: Border(
+//                           bottom: BorderSide(
+//                               color: Colors.blueGrey.withOpacity(0.23)))),
+//                   child: Text(
+//                     post["theme"],
+//                     style: const TextStyle(fontSize: 17, color: Colors.grey),
+//                   ),
+//                 ),
+//               ),
+//               Text(
+//                 post["date_heure"],
+//                 style: const TextStyle(
+//                   fontSize: 28,
+//                 ),
+//               ),
+//               ProfilPhoto()
+//             ],
+//           ),
+//         ),
+//         onTap: () {
+//           Navigator.push(
+//               context, MaterialPageRoute(builder: (context) => PartyDetail()));
+//         },
+//       ));
+//     });
+//     setState(() {
+//       itemsData = listItems;
+//     });
+//   }
 
-  @override
-  void initState() {
-    super.initState();
-    getPostsData();
-    controller.addListener(() {
-      double value = controller.offset / 199;
+//   @override
+//   void initState() {
+//     super.initState();
+//     getPostsData();
+//     controller.addListener(() {
+//       double value = controller.offset / 199;
 
-      setState(() {
-        topContainer = value;
-        closeTopContainer = controller.offset > 50;
-      });
-    });
-  }
+//       setState(() {
+//         topContainer = value;
+//         closeTopContainer = controller.offset > 50;
+//       });
+//     });
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
-    return SafeArea(
-      child: Scaffold(
-        floatingActionButton: Visibility(
-          child: FloatingActionButton(
-            child: Icon(Icons.arrow_upward),
-            onPressed: scrollUp,
-          ),
-          visible: true,
-        ),
-        backgroundColor: PRIMARY_COLOR,
-        body: Container(
-          height: size.height,
-          child: Column(
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-              ),
-              Expanded(
-                  child: ListView.builder(
-                      controller: controller,
-                      itemCount: itemsData.length,
-                      physics: BouncingScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        return Align(
-                            heightFactor: 1.0,
-                            alignment: Alignment.topCenter,
-                            child: itemsData[index]);
-                      })),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+//   @override
+//   Widget build(BuildContext context) {
+//     final Size size = MediaQuery.of(context).size;
+//     return SafeArea(
+//       child: Scaffold(
+//         floatingActionButton: Visibility(
+//           child: FloatingActionButton(
+//             child: Icon(Icons.arrow_upward),
+//             onPressed: scrollUp,
+//           ),
+//           visible: true,
+//         ),
+//         backgroundColor: PRIMARY_COLOR,
+//         body: Container(
+//           height: size.height,
+//           child: Column(
+//             children: <Widget>[
+//               Row(
+//                 mainAxisAlignment: MainAxisAlignment.spaceAround,
+//               ),
+//               Expanded(
+//                   child: ListView.builder(
+//                       controller: controller,
+//                       itemCount: itemsData.length,
+//                       physics: BouncingScrollPhysics(),
+//                       itemBuilder: (context, index) {
+//                         return Align(
+//                             heightFactor: 1.0,
+//                             alignment: Alignment.topCenter,
+//                             child: itemsData[index]);
+//                       })),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
 
-  void scrollUp() {
-    controller.animateTo(start,
-        duration: Duration(milliseconds: 500), curve: Curves.easeIn);
-  }
-}
+//   void scrollUp() {
+//     controller.animateTo(start,
+//         duration: Duration(milliseconds: 500), curve: Curves.easeIn);
+//   }
+// }
 
 // ce qui s'affiche quand tu cliques sur un container
 

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/Model/services/auth_service.dart';
 import 'package:pts/View/Pages/login/register_form_screen.dart';
@@ -18,7 +19,7 @@ class _LoginState extends State<Login> {
   PanelController _controller;
   TextEditingController _editingController;
 
-  Brightness _brightness;
+  SystemUiOverlayStyle _brightness;
 
   double _slideUp;
 
@@ -34,7 +35,7 @@ class _LoginState extends State<Login> {
     super.initState();
     _controller = new PanelController();
     _editingController = new TextEditingController();
-    _brightness = Brightness.light;
+    _brightness = SystemUiOverlayStyle.dark;
     _slideUp = 0;
     _email = "";
     _password = "";
@@ -52,13 +53,17 @@ class _LoginState extends State<Login> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        brightness: _brightness,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: ICONCOLOR,
+        toolbarHeight: 100,
+        systemOverlayStyle: _brightness,
+        leading: Container(
+          margin: EdgeInsets.only(top: 40),
+          child: IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+              color: ICONCOLOR,
+            ),
+            onPressed: () => Navigator.of(context).pop(),
           ),
-          onPressed: () => Navigator.of(context).pop(),
         ),
       ),
       body: GestureDetector(
@@ -570,13 +575,13 @@ class _LoginState extends State<Login> {
                   ),
                 ),
                 onPanelOpened: () {
-                  _brightness = Brightness.dark;
+                  _brightness = SystemUiOverlayStyle.light;
                   _editingController.clear();
                   _email = "";
                   _password = "";
                 },
                 onPanelClosed: () {
-                  _brightness = Brightness.light;
+                  _brightness = SystemUiOverlayStyle.dark;
                   _editingController.clear();
                   _email = "";
                   _password = "";

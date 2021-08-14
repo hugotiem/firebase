@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
 import 'Pages/Planning/calendar_page.dart';
-import 'Pages/profil/Profil.dart';
-import 'Pages/search/search.dart';
+import 'Pages/profil/profil_page.dart';
+import 'Pages/search/search_page.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -23,9 +23,10 @@ class _HomeState extends State<Home> {
     return Scaffold(
       body: _children[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
+        showSelectedLabels: true,
+        showUnselectedLabels: true,
         selectedItemColor: ICONCOLOR,
+        unselectedItemColor: SECONDARY_COLOR,
         onTap: onTabTapped,
         currentIndex: _currentIndex,
         items: [

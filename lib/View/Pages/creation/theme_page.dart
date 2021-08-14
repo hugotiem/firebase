@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:pts/Model/components/back_appbar.dart';
+import 'package:pts/components/back_appbar.dart';
 import 'package:pts/Model/soiree.dart';
+import 'package:pts/components/components_creation/fab_form.dart';
+import 'package:pts/components/components_creation/headertext_one.dart';
 
 import '../../../Constant.dart';
-import 'components/headertext_one.dart';
 import 'date_hour_page.dart';
 
 class ThemePage extends StatefulWidget {
@@ -23,13 +24,7 @@ class _ThemePageState extends State<ThemePage> {
         preferredSize: Size.fromHeight(50),
         child: BackAppBar(),
       ),
-      floatingActionButton: FloatingActionButton( 
-        backgroundColor: PRIMARY_COLOR,
-        elevation: 1,
-        child: Icon(
-          Icons.arrow_forward_outlined,
-          color: SECONDARY_COLOR,
-          ),
+      floatingActionButton: FABForm( 
         onPressed: () {
           if (!_formKey.currentState.validate()) {
             return;
@@ -42,25 +37,25 @@ class _ThemePageState extends State<ThemePage> {
           );
         },
       ),
-      body: SingleChildScrollView(
-        child: Column(  
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            HeaderText1(
-              text: 'Choississez un thème'
-            ),
-            Center(
-              child: Container(
-                height: HEIGHTCONTAINER,
-                width: MediaQuery.of(context).size.width * 0.9,
-                decoration: BoxDecoration(  
-                  color: PRIMARY_COLOR,
-                  borderRadius: BorderRadius.circular(15)
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 16, right: 8),
-                  child: Form(
-                    key: _formKey,
+      body: Form(
+        key: _formKey,
+        child: SingleChildScrollView(
+          child: Column(  
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              HeaderText1(
+                text: 'Choississez un thème'
+              ),
+              Center(
+                child: Container(
+                  height: HEIGHTCONTAINER,
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  decoration: BoxDecoration(  
+                    color: PRIMARY_COLOR,
+                    borderRadius: BorderRadius.circular(15)
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 16, right: 8),
                     child: Center(
                       child: DropdownButtonFormField<String>(
                         value: _theme,
@@ -123,8 +118,8 @@ class _ThemePageState extends State<ThemePage> {
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

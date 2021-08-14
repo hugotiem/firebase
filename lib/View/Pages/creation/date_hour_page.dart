@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:pts/Model/components/back_appbar.dart';
+import 'package:pts/components/back_appbar.dart';
 import 'package:pts/Model/soiree.dart';
+import 'package:pts/components/components_creation/date_hour_picker.dart';
+import 'package:pts/components/components_creation/fab_form.dart';
+import 'package:pts/components/components_creation/headertext_one.dart';
+import 'package:pts/components/components_creation/headertext_two.dart';
 
 import '../../../Constant.dart';
-import 'components/headertext_one.dart';
-import 'components/headertext_two.dart';
 import 'location_page.dart';
 
 
@@ -17,10 +19,14 @@ class DateHourPage extends StatefulWidget {
 
 class _DateHourPageState extends State<DateHourPage> {
   var _date;
-  var _heure;
+  var _heuredebut;
+  var _heurefin;
+  TextEditingController heurefinctl = TextEditingController();
+  TextEditingController heuredebutctl = TextEditingController();
   TextEditingController dateCtl = TextEditingController();
-  TextEditingController heureCtl = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  DateTime datedebut;
+  DateTime datefin;
 
   @override
   Widget build(BuildContext context) {
@@ -30,20 +36,25 @@ class _DateHourPageState extends State<DateHourPage> {
         preferredSize: Size.fromHeight(50),
         child: BackAppBar(),
       ),
-      floatingActionButton: FloatingActionButton( 
-        backgroundColor: PRIMARY_COLOR,
-        elevation: 1,
-        child: Icon(
-          Icons.arrow_forward_outlined,
-          color: SECONDARY_COLOR,
-          ),
+      floatingActionButton: FABForm( 
         onPressed: () {
           if (!_formKey.currentState.validate()) {
             return;
           }
+
+          var date = _date;
+          
+          DateTime datedebut = DateTime(date.year, date.month, date.day, _heuredebut.hour, _heuredebut.minute);
+          DateTime datefin = DateTime(date.year, date.month, date.day, _heurefin.hour, _heurefin.minute);
+
+          if (datefin.isBefore(datedebut)) {
+            datefin = datefin.add(Duration(days: 1));
+          }
+
           Soiree.setDataDateHourPage(
             _date,
-            _heure
+            datedebut,
+            datefin
           );
           Navigator.push(context, 
             MaterialPageRoute(builder: (context) => LocationPage())
@@ -57,97 +68,64 @@ class _DateHourPageState extends State<DateHourPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               HeaderText1(
-                text: "Quand se déroulera-t'elle ?",
+                text: "Quel jour ?"
+              ),
+              DateHourPicker(
+                onTap: () async {
+                  FocusScope.of(context).requestFocus(new FocusNode());
+                  await _selectionDate();
+                  dateCtl.text = DateFormat.MMMMEEEEd('fr').format(_date);
+                }, 
+                hintText: 'Choisir une date',
+                controller: dateCtl,
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return "Vous devez choisir une date";
+                  } else {
+                    return null;
+                  }
+                },
               ),
               HeaderText2(
-                text: 'Date',
+                text: "Heure d'arrivé",
+                padding: EdgeInsets.only(top: 40, bottom: 20),
               ),
-              Center(
-                child: Container(
-                  height: HEIGHTCONTAINER,
-                  width: MediaQuery.of(context).size.width * 0.9,
-                  decoration: BoxDecoration(  
-                    color: PRIMARY_COLOR,
-                    borderRadius: BorderRadius.circular(15)
-                  ),
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 16),
-                      child: TextFormField(
-                        controller: dateCtl,
-                        readOnly: true,
-                        onTap: () async {
-                          FocusScope.of(context).requestFocus(new FocusNode());
-                          await _selectionDate();
-                          dateCtl.text = DateFormat.MMMMEEEEd('fr').format(_date);
-                        },
-                        style: TextStyle(  
-                          fontSize: TEXTFIELDFONTSIZE
-                        ),
-                        decoration: InputDecoration(  
-                          hintText: 'Choisir une date',
-                          border: InputBorder.none,
-                          errorStyle: TextStyle(  
-                            height: 0
-                          )
-                        ),
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return "vous devez choisir une date";
-                          } else {
-                            return null;
-                          }
-                        },
-                      ),
-                    ),
-                  ),
-                ),
+              DateHourPicker(
+                onTap: () async {
+                  FocusScope.of(context).requestFocus(new FocusNode());
+                  await _selectionHeureArrivee();
+                  heuredebutctl.text = 'De ${_heuredebut.format(context)} ';
+                },
+                hintText: 'Choisir une heure',
+                controller: heuredebutctl,
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return "Vous devez choisir une heure d'arrivée";
+                  } else {
+                    return null;
+                  }
+                },
               ),
               HeaderText2(
-                text: 'Heure',
-                padding: EdgeInsets.only(bottom: 20, top: 40)
+                text: "Heure de départ",
+                padding: EdgeInsets.only(top: 40, bottom: 20),
               ),
-              Center(
-                child: Container(
-                  height: HEIGHTCONTAINER,
-                  width: MediaQuery.of(context).size.width * 0.9,
-                  decoration: BoxDecoration(  
-                    color: PRIMARY_COLOR,
-                    borderRadius: BorderRadius.circular(15)
-                  ),
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 16),
-                      child: TextFormField(
-                        controller: heureCtl,
-                        readOnly: true,
-                        onTap: () async {
-                          FocusScope.of(context).requestFocus(new FocusNode());
-                          await _selectionHeure();
-                          heureCtl.text = 'A ${_heure.format(context)} ';
-                        },
-                        style: TextStyle(  
-                          fontSize: TEXTFIELDFONTSIZE
-                        ),
-                        decoration: InputDecoration(  
-                          hintText: 'Choisir une heure',
-                          border: InputBorder.none,
-                          errorStyle: TextStyle(  
-                            height: 0
-                          )
-                        ),
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return "vous devez choisir une date";
-                          } else {
-                            return null;
-                          }
-                        },
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+              DateHourPicker(
+                onTap: () async {
+                  FocusScope.of(context).requestFocus(new FocusNode());
+                  await _selectionHeureDepart();
+                  heurefinctl.text = 'A ${_heurefin.format(context)} ';
+                }, 
+                hintText: 'Choisir une Heure',
+                controller: heurefinctl,
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return "Vous devez choisir une heure de départ";
+                  } else {
+                    return null;
+                  }
+                },
+              )
             ],
           ),
         ),
@@ -181,8 +159,8 @@ class _DateHourPageState extends State<DateHourPage> {
     }
   }
 
-  Future<Null> _selectionHeure() async {
-    TimeOfDay _heureChoisie = await showTimePicker(
+  Future<Null> _selectionHeureArrivee() async {
+    TimeOfDay _heureChoisieArrivee = await showTimePicker(
       context: context, 
       initialTime: TimeOfDay.now(),
       builder: (BuildContext context, Widget child) {
@@ -198,10 +176,35 @@ class _DateHourPageState extends State<DateHourPage> {
       }
     );
 
-    if (_heureChoisie != null && _heureChoisie != _heure) {
+    if (_heureChoisieArrivee != null && _heureChoisieArrivee != _heuredebut) {
       setState(() {
-        _heure = _heureChoisie;
+        _heuredebut = _heureChoisieArrivee;
       });
     }
   }
+
+  Future<Null> _selectionHeureDepart() async {
+    TimeOfDay _heureChoisieDepart = await showTimePicker(
+      context: context, 
+      initialTime: TimeOfDay.now(),
+      builder: (BuildContext context, Widget child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            colorScheme: ColorScheme.light().copyWith(
+              primary: SECONDARY_COLOR,
+              onPrimary: ICONCOLOR
+            ),
+          ), 
+          child: child
+        );
+      }
+    );
+
+    if (_heureChoisieDepart != null && _heureChoisieDepart != _heurefin) {
+      setState(() {
+        _heurefin = _heureChoisieDepart;
+      });
+    }
+  }
+  
 }

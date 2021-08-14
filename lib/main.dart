@@ -25,7 +25,6 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       title: "PTS",
-     
       home: FutureBuilder(
         future: _fbApp,
         builder: (context, snapshot) {

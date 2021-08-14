@@ -3,12 +3,17 @@ class Soiree {
   static String theme;
   static String nombre;
   static var date;
-  static var heure;
+  static var starthour;
+  static var endhour;
+  static DateTime datedebut;
+  static DateTime datefin;
   static var prix;
   static String description;
   static String adresse;
   static String ville;
   static String codepostal;
+  static String smoke;
+  static String animals;
 
   static void setDataNamePage(String _nom) {
     nom = _nom;
@@ -18,9 +23,10 @@ class Soiree {
     theme = _theme;
   }
 
-  static void setDataDateHourPage(var _date, var _heure) {
+  static void setDataDateHourPage(var _date, DateTime _datedebut, DateTime _datefin) {
     date = _date;
-    heure = _heure;
+    datedebut = _datedebut;
+    datefin = _datefin;
   }
 
   static void setDataLocationPage(String _adresse, String _ville, String _codepostal) {
@@ -29,16 +35,14 @@ class Soiree {
     codepostal = _codepostal;
   }
 
-  static void setDataNumberPage(var _nombre) {
+  static void setDataNumberPricePage(var _nombre, var _prix) {
     nombre = _nombre;
-  }
-
-  static void setDataPricePage(var _prix) {
     prix = _prix;
   }
     
-  static void setDataDescriptionPage(String _description) {
+  static void setDataDescriptionPage(String _animals, String _smoke, String _description) {
+    animals = _animals;
+    smoke = _smoke;
     description = _description;
   }
-
 }
