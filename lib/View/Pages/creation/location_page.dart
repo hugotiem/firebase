@@ -8,7 +8,7 @@ import 'package:pts/components/components_creation/headertext_one.dart';
 import 'package:pts/components/components_creation/headertext_two.dart';
 import 'package:pts/components/components_creation/tff_text.dart';
 
-import 'guest_number_page.dart';
+import 'guestnumber_price_page.dart';
 
 class LocationPage extends StatefulWidget {
   @override

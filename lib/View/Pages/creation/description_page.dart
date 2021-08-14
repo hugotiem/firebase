@@ -8,6 +8,7 @@ import 'package:pts/Model/soiree.dart';
 import 'package:pts/View/Pages/creation/end_page.dart';
 import 'package:pts/components/back_appbar.dart';
 import 'package:pts/components/components_creation/headertext_one.dart';
+import 'package:pts/components/components_creation/headertext_two.dart';
 
 class DescriptionPage extends StatefulWidget {
   @override
@@ -15,9 +16,12 @@ class DescriptionPage extends StatefulWidget {
 }
 
 class _DescriptionPageState extends State<DescriptionPage> {
+  String _smoke;
+  String _animals;
   String _description = "";
   final db = FireStoreServices("party");
   final databaseReference = FirebaseFirestore.instance;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -29,38 +33,45 @@ class _DescriptionPageState extends State<DescriptionPage> {
       ),
       floatingActionButton: FloatingActionButton.extended(
           onPressed: () async {
-            Soiree.setDataDescriptionPage(_description);
+            if (!_formKey.currentState.validate()) {
+            return;
+          }
+            
+            Soiree.setDataDescriptionPage(
+              _animals,
+              _smoke,
+              _description
+            );
 
             List waitList = [];
             List validateGuestList = [];
 
-            // await db.add(
-            //   data: {
-            //     'Name': Soiree.nom.trimRight().trimLeft().inCaps,
-            //     'Theme': Soiree.theme,
-            //     'Date': Soiree.date,
-            //     'Number': Soiree.nombre,
-            //     'Price': Soiree.prix,
-            //     'Description': Soiree.description,
-            //     'adress': Soiree.adresse.trimRight().trimLeft().inCaps,
-            //     'city': Soiree.ville.trimRight().trimLeft().inCaps,
-            //     'postal code': Soiree.codepostal,
-            //     'UID': AuthService.currentUser.uid,
-            //     'NameOganizer': AuthService.currentUser.displayName,
-            //     'timestamp': DateTime.now(),
-            //     'StartTime': Soiree.datedebut,
-            //     'EndTime': Soiree.datefin,
-            //     'wait list': FieldValue.arrayUnion(waitList),
-            //     'validate guest list': FieldValue.arrayUnion(validateGuestList),
-            //     'smoke': Soiree.smoke,
-            //     'animals': Soiree.animals
-            //    },
-            // );
-            print(Soiree.animals);
-
-            // Navigator.push(context, 
-            //   MaterialPageRoute(builder: (context) => EndPage())
-            // );
+            await db.add(
+              data: {
+                'Name': Soiree.nom.trimRight().trimLeft().inCaps,
+                'Theme': Soiree.theme,
+                'Date': Soiree.date,
+                'Number': Soiree.nombre,
+                'Price': Soiree.prix,
+                'Description': Soiree.description,
+                'adress': Soiree.adresse.trimRight().trimLeft().inCaps,
+                'city': Soiree.ville.trimRight().trimLeft().inCaps,
+                'postal code': Soiree.codepostal,
+                'UID': AuthService.currentUser.uid,
+                'NameOganizer': AuthService.currentUser.displayName,
+                'timestamp': DateTime.now(),
+                'StartTime': Soiree.datedebut,
+                'EndTime': Soiree.datefin,
+                'wait list': FieldValue.arrayUnion(waitList),
+                'validate guest list': FieldValue.arrayUnion(validateGuestList),
+                'smoke': Soiree.smoke,
+                'animals': Soiree.animals
+               },
+            );
+            
+           Navigator.push(context, 
+              MaterialPageRoute(builder: (context) => EndPage())
+            );
           },
           backgroundColor: SECONDARY_COLOR,
           elevation: 0,
@@ -72,46 +83,206 @@ class _DescriptionPageState extends State<DescriptionPage> {
           )
         ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            HeaderText1(
-              text: "Un mot à ajouter pour décrire votre soirée ?",
-            ),
-            Center(
-              child: Container(
-                height: 226,
-                width: MediaQuery.of(context).size.width * 0.9,
-                decoration: BoxDecoration(
-                  color: PRIMARY_COLOR, 
-                  borderRadius: BorderRadius.circular(15)
+      body: Form(
+        key: _formKey,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              HeaderText1(
+                  text: 'Pour vos invités'
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 16, right: 16),
-                  child: TextFormField(
-                    onChanged: (value) {
-                      _description = value;
-                    },
-                    style: TextStyle(
-                      fontSize: TEXTFIELDFONTSIZE,
+                HeaderText2(
+                  text: 'Où peut-on fumer ?'
+                ),
+                Center(  
+                  child: Container(  
+                    height: HEIGHTCONTAINER,
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    decoration: BoxDecoration(  
+                      color: PRIMARY_COLOR,
+                      borderRadius: BorderRadius.circular(15)
                     ),
-                    maxLength: 500,
-                    keyboardType: TextInputType.multiline,
-                    minLines: 1,
-                    maxLines: 10,
-                    decoration: InputDecoration(
-                      hintText: 'ex: Ambiance boîte de nuit !!',
-                      border: InputBorder.none,
-                      counterStyle: TextStyle(  
-                        height: 1
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 16, right: 8),
+                      child: Center(  
+                        child: DropdownButtonFormField<String>(  
+                          value: _smoke,
+                          items: [
+                            "A l'intérieur",
+                            'Dans un fumoir',
+                            'Dehors'
+                          ].map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(  
+                             value: value,
+                             child: Text(  
+                               value,
+                               style: TextStyle(  
+                                 fontSize: TEXTFIELDFONTSIZE
+                               ),
+                             ), 
+                            );
+                          }).toList(),
+                          hint: Text( 
+                            'Choisissez un lieu',
+                            style: TextStyle(  
+                              fontSize: TEXTFIELDFONTSIZE
+                            ),
+                          ),
+                          elevation: 0,
+                          onChanged: (String value) {
+                            setState(() {
+                              _smoke = value;
+                            });
+                          },
+                          decoration: InputDecoration(  
+                            errorStyle: TextStyle(  
+                              height: 0,
+                              background: Paint()..color = Colors.transparent,
+                            ),
+                            errorBorder: OutlineInputBorder(  
+                              borderSide: BorderSide(  
+                                color: Colors.transparent
+                              )
+                            ),
+                            border: OutlineInputBorder(  
+                              borderRadius: BorderRadius.circular(15)
+                            ),
+                            enabledBorder: UnderlineInputBorder(  
+                              borderSide: BorderSide(  
+                                color: Colors.transparent
+                              )
+                            )
+                          ),
+                          validator: (value) {
+                            if (value == null) {
+                              return 'Vous devez faire un choix';
+                            } else {
+                              return null;
+                            }
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                HeaderText2(
+                  text: "Y aura-t'il des animaux ?",
+                  padding: EdgeInsets.only(bottom: 20, top: 40)
+                ),
+                Center(  
+                  child: Container(  
+                    height: HEIGHTCONTAINER,
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    decoration: BoxDecoration(  
+                      color: PRIMARY_COLOR,
+                      borderRadius: BorderRadius.circular(15)
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 16, right: 8),
+                      child: Center(  
+                        child: DropdownButtonFormField<String>(  
+                          value: _animals,
+                          items: [
+                            "Oui",
+                            'Non',
+                          ].map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(  
+                             value: value,
+                             child: Text(  
+                               value,
+                               style: TextStyle(  
+                                 fontSize: TEXTFIELDFONTSIZE
+                               ),
+                             ), 
+                            );
+                          }).toList(),
+                          hint: Text( 
+                            'Cliquer pour choisir',
+                            style: TextStyle(  
+                              fontSize: TEXTFIELDFONTSIZE
+                            ),
+                          ),
+                          elevation: 0,
+                          onChanged: (String value) {
+                            setState(() {
+                              _animals = value;
+                            });
+                          },
+                          decoration: InputDecoration(  
+                            errorStyle: TextStyle(  
+                              height: 0,
+                              background: Paint()..color = Colors.transparent,
+                            ),
+                            errorBorder: OutlineInputBorder(  
+                              borderSide: BorderSide(  
+                                color: Colors.transparent
+                              )
+                            ),
+                            border: OutlineInputBorder(  
+                              borderRadius: BorderRadius.circular(15)
+                            ),
+                            enabledBorder: UnderlineInputBorder(  
+                              borderSide: BorderSide(  
+                                color: Colors.transparent
+                              )
+                            )
+                          ),
+                          validator: (value) {
+                            if (value == null) {
+                              return 'Vous devez faire un choix';
+                            } else {
+                              return null;
+                            }
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+              HeaderText1(
+                text: "Un mot à ajouter pour décrire votre soirée ?",
+              ),
+              Center(
+                child: Container(
+                  height: 226,
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  decoration: BoxDecoration(
+                    color: PRIMARY_COLOR, 
+                    borderRadius: BorderRadius.circular(15)
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 16, right: 16),
+                    child: TextFormField(
+                      onChanged: (value) {
+                        _description = value;
+                      },
+                      style: TextStyle(
+                        fontSize: TEXTFIELDFONTSIZE,
+                      ),
+                      maxLength: 500,
+                      keyboardType: TextInputType.multiline,
+                      minLines: 1,
+                      maxLines: 10,
+                      decoration: InputDecoration(
+                        hintText: 'ex: Ambiance boîte de nuit !!',
+                        border: InputBorder.none,
+                        counterStyle: TextStyle(  
+                          height: 1
+                        )
                       )
-                    )
+                    ),
                   ),
                 ),
               ),
-            ),
-          ]
-        )
+              SizedBox(  
+                height: 70,
+              )
+            ]
+          )
+        ),
       ),
     );
   }

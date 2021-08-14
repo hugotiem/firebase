@@ -23,11 +23,8 @@ class Soiree {
     theme = _theme;
   }
 
-  static void setDataDatePage(var _date) {
+  static void setDataDateHourPage(var _date, DateTime _datedebut, DateTime _datefin) {
     date = _date;
-  }
-
-  static void setDataHourPage(DateTime _datedebut, DateTime _datefin) {
     datedebut = _datedebut;
     datefin = _datefin;
   }
@@ -38,20 +35,14 @@ class Soiree {
     codepostal = _codepostal;
   }
 
-  static void setDataNumberPage(var _nombre) {
+  static void setDataNumberPricePage(var _nombre, var _prix) {
     nombre = _nombre;
-  }
-
-  static void setDataPricePage(var _prix) {
     prix = _prix;
   }
-
-  static void setDataAnimalSmokePage(String _animals, String _smoke) {
+    
+  static void setDataDescriptionPage(String _animals, String _smoke, String _description) {
     animals = _animals;
     smoke = _smoke;
-  }
-    
-  static void setDataDescriptionPage(String _description) {
     description = _description;
   }
 }

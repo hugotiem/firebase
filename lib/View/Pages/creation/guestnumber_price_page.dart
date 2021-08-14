@@ -7,8 +7,7 @@ import 'package:pts/components/components_creation/headertext_one.dart';
 import 'package:pts/components/components_creation/headertext_two.dart';
 import 'package:pts/components/components_creation/hint_text.dart';
 import 'package:pts/components/components_creation/tff_number.dart';
-
-import 'animal_smoke_page.dart';
+import 'package:pts/view/pages/creation/description_page.dart';
 
 enum RadioChoix {
   Gratuit,
@@ -18,12 +17,13 @@ enum RadioChoix {
   Vingt
 }
 
-class PricePage extends StatefulWidget {
+class GuestNumber extends StatefulWidget {
   @override
-  _PricePageState createState() => _PricePageState();
+  _GuestNumberState createState() => _GuestNumberState();
 }
 
-class _PricePageState extends State<PricePage> {
+class _GuestNumberState extends State<GuestNumber> {
+  var _nombre = '20';
   var _prix = '10';
   RadioChoix _choixRadio = RadioChoix.Dix;
 
@@ -37,11 +37,12 @@ class _PricePageState extends State<PricePage> {
       ),
       floatingActionButton: FABForm( 
         onPressed: () {
-          Soiree.setDataPricePage(
+          Soiree.setDataNumberPricePage(
+            _nombre,
             _prix
           );
           Navigator.push(context, 
-            MaterialPageRoute(builder: (context) => AnimalSmokePage())
+            MaterialPageRoute(builder: (context) => DescriptionPage())
           );
         },
       ),
@@ -49,6 +50,25 @@ class _PricePageState extends State<PricePage> {
         child: Column(  
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            HeaderText1(
+              text: "Combien de personnes souhaitez-vous inviter ?",
+            ),
+            Row(
+              children: [
+                TFFNumber(
+                  onChanged: (value) {
+                    _nombre = value;
+                  }, 
+                  hintText: '20'
+                ),
+                HintText(
+                  text: 'invités'
+                )
+              ],
+            ),
+            SizedBox(
+              height: 30,
+            ),
             HeaderText1(
               text: "A combien fixez-vous le prix d'entré ?",
             ),
@@ -138,12 +158,13 @@ class _PricePageState extends State<PricePage> {
             SizedBox( 
               height: 50,
             )
-          ]
-        )
-      )
+          ],
+        ),
+      ),
     );
   }
 }
+
 
 class RadioAndText extends StatelessWidget {
   final dynamic value;
