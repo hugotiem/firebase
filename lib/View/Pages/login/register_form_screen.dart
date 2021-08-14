@@ -160,7 +160,10 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                       var user = AuthService.auth.currentUser;
                       user
                           .updateProfile(displayName: _name + " " + _surname)
-                          .then((value) => Navigator.of(context).pop());
+                          .then(
+                            (value) => Navigator.of(context)
+                                .popUntil((route) => route.isFirst),
+                          );
                     },
                   ),
                 ),

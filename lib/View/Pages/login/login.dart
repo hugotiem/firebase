@@ -265,10 +265,8 @@ class _LoginState extends State<Login> {
                               _auth
                                   .signInWithGoogle()
                                   .then(
-                                    (value) =>
-                                        Navigator.of(context).pushReplacement(
+                                    (value) => Navigator.of(context).push(
                                       CupertinoPageRoute(
-                                        fullscreenDialog: true,
                                         builder: (context) =>
                                             RegisterFormScreen(
                                           user: value.user,
