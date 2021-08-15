@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/Model/calendar_data_source.dart';
 import 'package:pts/Model/services/auth_service.dart';
+import 'package:pts/View/Pages/creation/creation_page.dart';
 import 'package:pts/View/Pages/creation/name_page.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
@@ -30,7 +31,7 @@ class CalendarPage extends StatelessWidget {
             child: GestureDetector(
               onTap: () {
                 Navigator.push(context, 
-                  MaterialPageRoute(builder: (context) => NamePage())
+                  MaterialPageRoute(builder: (context) => CreationPage())
                 );
               },
               child: Icon(

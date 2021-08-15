@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pts/blocs/parties/build_parties_cubit.dart';
 import 'package:pts/components/back_appbar.dart';
-import 'package:pts/Model/soiree.dart';
 import 'package:pts/components/components_creation/fab_form.dart';
 import 'package:pts/components/components_creation/headertext_one.dart';
 
 import '../../../Constant.dart';
-import 'date_hour_page.dart';
 
 class ThemePage extends StatefulWidget {
+  final void Function() onNext;
+
+  const ThemePage({Key key, this.onNext}) : super(key: key);
   @override
   _ThemePageState createState() => _ThemePageState();
 }
@@ -19,41 +22,42 @@ class _ThemePageState extends State<ThemePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: FORMBACKGROUNDCOLOR,      
+      backgroundColor: FORMBACKGROUNDCOLOR,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50),
         child: BackAppBar(),
       ),
-      floatingActionButton: FABForm( 
+      floatingActionButton: FABForm(
         onPressed: () {
           if (!_formKey.currentState.validate()) {
             return;
           }
-          Soiree.setDataThemePage(
-            _theme
-          );
-          Navigator.push(context, 
-            MaterialPageRoute(builder: (context) => DateHourPage())
-          );
+
+          BlocProvider.of<BuildPartiesCubit>(context).addItem("theme", _theme);
+          widget.onNext();
+
+          // Soiree.setDataThemePage(
+          //   _theme
+          // );
+          // Navigator.push(context,
+          //   MaterialPageRoute(builder: (context) => DateHourPage())
+          // );
         },
       ),
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
-          child: Column(  
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              HeaderText1(
-                text: 'Choississez un thème'
-              ),
+              HeaderText1(text: 'Choississez un thème'),
               Center(
                 child: Container(
                   height: HEIGHTCONTAINER,
                   width: MediaQuery.of(context).size.width * 0.9,
-                  decoration: BoxDecoration(  
-                    color: PRIMARY_COLOR,
-                    borderRadius: BorderRadius.circular(15)
-                  ),
+                  decoration: BoxDecoration(
+                      color: PRIMARY_COLOR,
+                      borderRadius: BorderRadius.circular(15)),
                   child: Padding(
                     padding: const EdgeInsets.only(left: 16, right: 8),
                     child: Center(
@@ -69,37 +73,29 @@ class _ThemePageState extends State<ThemePage> {
                             value: value,
                             child: Text(
                               value,
-                              style: TextStyle(  
-                                fontSize: TEXTFIELDFONTSIZE
-                              ),
+                              style: TextStyle(fontSize: TEXTFIELDFONTSIZE),
                             ),
                           );
                         }).toList(),
                         hint: Text(
                           "Choisir un thème",
-                          style: TextStyle(
-                            fontSize: TEXTFIELDFONTSIZE
-                          ),
+                          style: TextStyle(fontSize: TEXTFIELDFONTSIZE),
                         ),
                         elevation: 0,
                         decoration: InputDecoration(
-                          errorStyle: TextStyle(  
+                          errorStyle: TextStyle(
                             height: 0,
-                            background: Paint()..color = Colors.transparent
+                            background: Paint()..color = Colors.transparent,
                           ),
-                          errorBorder: OutlineInputBorder( 
-                            borderSide: BorderSide(
-                              color: Colors.transparent
-                            )
+                          errorBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.transparent),
                           ),
-                          border: OutlineInputBorder( 
-                            borderRadius: BorderRadius.circular(15)
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
                           ),
                           enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Colors.transparent
-                            )
-                          )
+                            borderSide: BorderSide(color: Colors.transparent),
+                          ),
                         ),
                         onChanged: (String value) {
                           setState(() {

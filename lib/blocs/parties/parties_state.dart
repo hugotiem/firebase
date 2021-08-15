@@ -1,6 +1,6 @@
 part of 'parties_cubit.dart';
 
-enum PartiesStatus { initial, adding, loading, added, loaded }
+enum PartiesStatus { initial, loading, loaded }
 
 class PartiesState extends AppBaseState<PartiesStatus> {
   final Map<String, dynamic> parties;
@@ -17,11 +17,8 @@ class PartiesState extends AppBaseState<PartiesStatus> {
             requestFailureMessage: requestFailureMessage);
 
   const PartiesState.initial() : this(PartiesStatus.initial);
-  const PartiesState.adding() : this(PartiesStatus.adding);
   const PartiesState.loading()
       : this(PartiesStatus.loading, requestInProgress: true);
-  const PartiesState.added(parties)
-      : this(PartiesStatus.added, parties: parties);
   const PartiesState.loaded(parties)
       : this(PartiesStatus.loaded, parties: parties);
 }

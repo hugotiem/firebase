@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pts/Model/services/firestore_service.dart';
 import 'package:pts/blocs/base/app_base_cubit.dart';
 import 'package:pts/blocs/base/app_base_state.dart';
@@ -9,17 +10,17 @@ class PartiesCubit extends AppBaseCubit<PartiesState> {
 
   FireStoreServices services = FireStoreServices("parties");
 
-  void set(String key, dynamic item) {
-    var parties = state.parties;
-    emit(PartiesState.adding());
-    parties[key] = item;
-    emit(PartiesState.added(parties));
+  Future fetchParties() async {
+    emit(state.setRequestInProgress());
+    var parties =
+        await services.firestore.collection(services.collection).get();
+    emit(PartiesState.loaded(parties));
   }
 
-  Future<void> addToFireStore() async {
+  Future fetchPartiesByIdentifier(String id) async {
     emit(state.setRequestInProgress());
-    await services.add(data: state.parties).then(
-          (_) => emit(PartiesState.loaded(state.parties)),
-        );
+    var parties =
+        await services.firestore.collection(services.collection).doc(id).get();
+    emit(PartiesState.loaded(parties));
   }
 }

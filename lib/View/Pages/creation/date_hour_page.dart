@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:pts/blocs/parties/build_parties_cubit.dart';
 import 'package:pts/components/back_appbar.dart';
 import 'package:pts/Model/soiree.dart';
 import 'package:pts/components/components_creation/date_hour_picker.dart';
@@ -10,9 +12,10 @@ import 'package:pts/components/components_creation/headertext_two.dart';
 import '../../../Constant.dart';
 import 'location_page.dart';
 
-
-
 class DateHourPage extends StatefulWidget {
+  final void Function() onNext;
+
+  const DateHourPage({Key key, this.onNext}) : super(key: key);
   @override
   _DateHourPageState createState() => _DateHourPageState();
 }
@@ -31,51 +34,53 @@ class _DateHourPageState extends State<DateHourPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: FORMBACKGROUNDCOLOR,      
+      backgroundColor: FORMBACKGROUNDCOLOR,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50),
         child: BackAppBar(),
       ),
-      floatingActionButton: FABForm( 
+      floatingActionButton: FABForm(
         onPressed: () {
           if (!_formKey.currentState.validate()) {
             return;
           }
 
           var date = _date;
-          
-          DateTime datedebut = DateTime(date.year, date.month, date.day, _heuredebut.hour, _heuredebut.minute);
-          DateTime datefin = DateTime(date.year, date.month, date.day, _heurefin.hour, _heurefin.minute);
+
+          DateTime datedebut = DateTime(date.year, date.month, date.day,
+              _heuredebut.hour, _heuredebut.minute);
+          DateTime datefin = DateTime(date.year, date.month, date.day,
+              _heurefin.hour, _heurefin.minute);
 
           if (datefin.isBefore(datedebut)) {
             datefin = datefin.add(Duration(days: 1));
           }
 
-          Soiree.setDataDateHourPage(
-            _date,
-            datedebut,
-            datefin
-          );
-          Navigator.push(context, 
-            MaterialPageRoute(builder: (context) => LocationPage())
-          );
+          BlocProvider.of<BuildPartiesCubit>(context)
+            ..addItem("date", _date)
+            ..addItem("startTime", datedebut)
+            ..addItem("endTime", datefin);
+
+          widget.onNext();
+
+          // Soiree.setDataDateHourPage(_date, datedebut, datefin);
+          // Navigator.push(
+          //     context, MaterialPageRoute(builder: (context) => LocationPage()));
         },
       ),
       body: SingleChildScrollView(
         child: Form(
           key: _formKey,
-          child: Column(  
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              HeaderText1(
-                text: "Quel jour ?"
-              ),
+              HeaderText1(text: "Quel jour ?"),
               DateHourPicker(
                 onTap: () async {
                   FocusScope.of(context).requestFocus(new FocusNode());
                   await _selectionDate();
                   dateCtl.text = DateFormat.MMMMEEEEd('fr').format(_date);
-                }, 
+                },
                 hintText: 'Choisir une date',
                 controller: dateCtl,
                 validator: (value) {
@@ -115,7 +120,7 @@ class _DateHourPageState extends State<DateHourPage> {
                   FocusScope.of(context).requestFocus(new FocusNode());
                   await _selectionHeureDepart();
                   heurefinctl.text = 'A ${_heurefin.format(context)} ';
-                }, 
+                },
                 hintText: 'Choisir une Heure',
                 controller: heurefinctl,
                 validator: (value) {
@@ -135,22 +140,18 @@ class _DateHourPageState extends State<DateHourPage> {
 
   Future<Null> _selectionDate() async {
     DateTime _dateChoisie = await showDatePicker(
-      context: context, 
-      initialDate: DateTime.now(), 
-      firstDate: DateTime.now(), 
-      lastDate: DateTime(2030),
-      builder: (BuildContext context, Widget child) {
-        return Theme(
-          data: ThemeData.light().copyWith(
-            colorScheme: ColorScheme.light().copyWith(
-              primary: SECONDARY_COLOR,
-              onPrimary: ICONCOLOR
-            ),
-          ), 
-          child: child
-        );
-      }
-    );
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime.now(),
+        lastDate: DateTime(2030),
+        builder: (BuildContext context, Widget child) {
+          return Theme(
+              data: ThemeData.light().copyWith(
+                colorScheme: ColorScheme.light()
+                    .copyWith(primary: SECONDARY_COLOR, onPrimary: ICONCOLOR),
+              ),
+              child: child);
+        });
 
     if (_dateChoisie != null && _dateChoisie != _date) {
       setState(() {
@@ -161,20 +162,16 @@ class _DateHourPageState extends State<DateHourPage> {
 
   Future<Null> _selectionHeureArrivee() async {
     TimeOfDay _heureChoisieArrivee = await showTimePicker(
-      context: context, 
-      initialTime: TimeOfDay.now(),
-      builder: (BuildContext context, Widget child) {
-        return Theme(
-          data: ThemeData.light().copyWith(
-            colorScheme: ColorScheme.light().copyWith(
-              primary: SECONDARY_COLOR,
-              onPrimary: ICONCOLOR
-            ),
-          ), 
-          child: child
-        );
-      }
-    );
+        context: context,
+        initialTime: TimeOfDay.now(),
+        builder: (BuildContext context, Widget child) {
+          return Theme(
+              data: ThemeData.light().copyWith(
+                colorScheme: ColorScheme.light()
+                    .copyWith(primary: SECONDARY_COLOR, onPrimary: ICONCOLOR),
+              ),
+              child: child);
+        });
 
     if (_heureChoisieArrivee != null && _heureChoisieArrivee != _heuredebut) {
       setState(() {
@@ -185,20 +182,16 @@ class _DateHourPageState extends State<DateHourPage> {
 
   Future<Null> _selectionHeureDepart() async {
     TimeOfDay _heureChoisieDepart = await showTimePicker(
-      context: context, 
-      initialTime: TimeOfDay.now(),
-      builder: (BuildContext context, Widget child) {
-        return Theme(
-          data: ThemeData.light().copyWith(
-            colorScheme: ColorScheme.light().copyWith(
-              primary: SECONDARY_COLOR,
-              onPrimary: ICONCOLOR
-            ),
-          ), 
-          child: child
-        );
-      }
-    );
+        context: context,
+        initialTime: TimeOfDay.now(),
+        builder: (BuildContext context, Widget child) {
+          return Theme(
+              data: ThemeData.light().copyWith(
+                colorScheme: ColorScheme.light()
+                    .copyWith(primary: SECONDARY_COLOR, onPrimary: ICONCOLOR),
+              ),
+              child: child);
+        });
 
     if (_heureChoisieDepart != null && _heureChoisieDepart != _heurefin) {
       setState(() {
@@ -206,5 +199,4 @@ class _DateHourPageState extends State<DateHourPage> {
       });
     }
   }
-  
 }
