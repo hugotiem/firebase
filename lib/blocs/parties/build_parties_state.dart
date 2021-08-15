@@ -24,4 +24,15 @@ class BuildPartiesState extends AppBaseState<BuildPartiesStatus> {
       : this(BuildPartiesStatus.added, parties: parties);
   const BuildPartiesState.loaded(parties)
       : this(BuildPartiesStatus.loaded, parties: parties);
+
+  @override
+  AppBaseState<BuildPartiesStatus> copyWith(
+          {bool requestInProgress = false,
+          String requestFailureCode,
+          String requestFailureMessage}) =>
+      BuildPartiesState(status,
+          parties: this.parties,
+          requestInProgress: requestInProgress,
+          requestFailureCode: requestFailureCode,
+          requestFailureMessage: requestFailureMessage);
 }

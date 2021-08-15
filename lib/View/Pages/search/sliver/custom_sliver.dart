@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 class CustomSliver extends StatelessWidget {
   final Widget appBar, body, searchBar;
   final Color backgroundColor, toolbarColor;
-  final SystemUiOverlayStyle brightness;
+  final Brightness brightness;
   final Function(ScrollNotification) onNotification;
   CustomSliver({
     Key key,
@@ -23,7 +23,7 @@ class CustomSliver extends StatelessWidget {
       backgroundColor: backgroundColor,
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        systemOverlayStyle: brightness,
+        brightness: brightness,
         backgroundColor: Colors.transparent,
         toolbarHeight: 0,
         elevation: 0,

@@ -10,7 +10,7 @@ class BuildPartiesCubit extends AppBaseCubit<BuildPartiesState> {
   FireStoreServices services = FireStoreServices("parties");
 
   void addItem(String key, dynamic item) {
-    var parties = state.parties;
+    var parties = state.parties ?? Map<String, dynamic>();
     emit(BuildPartiesState.adding());
     parties[key] = item;
     emit(BuildPartiesState.added(parties));

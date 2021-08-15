@@ -26,9 +26,9 @@ class _SearchState extends State<Search> {
   double _opacity;
   double _barSizeWidth;
   double _barSizeHeight;
-  SystemUiOverlayStyle _brightness;
+  Brightness _brightness;
   Color _toolbarColor;
-  
+
   @override
   void initState() {
     setState(() {
@@ -37,7 +37,7 @@ class _SearchState extends State<Search> {
       _opacity = 1;
       _barSizeWidth = 350;
       _barSizeHeight = 60;
-      _brightness = SystemUiOverlayStyle.light;
+      _brightness = Brightness.dark;
       _toolbarColor = Colors.transparent;
     });
     super.initState();
@@ -82,29 +82,24 @@ class _SearchState extends State<Search> {
             SizedBox(
               height: 400,
             ),
-            // liste des 10 villes les plus grandes de france 
+            // liste des 10 villes les plus grandes de france
             // quand on clique dessus on arrive sur une liste des soirées dans cette ville
             TitleText(
               text: 'Villes',
               margin: EdgeInsets.only(left: 20),
             ),
-            GridViewCity(),   
+            GridViewCity(),
             // liste des dernières soirées créées
             Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  TitleText(
+                child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TitleText(
                     text: 'Dernières créées',
-                    margin: EdgeInsets.only(top: 30, left: 20)
-                  ),
-                  SizedBox(
-                    height: 220,
-                    child: CardParty()
-                  ),
-                ],
-              )
-            ),
+                    margin: EdgeInsets.only(top: 30, left: 20)),
+                SizedBox(height: 220, child: CardParty()),
+              ],
+            )),
             // listes des thèmes de soirées
             TitleText(
               text: 'Thèmes',
@@ -116,7 +111,6 @@ class _SearchState extends State<Search> {
           ],
         ),
       ),
-
       onNotification: (notification) {
         setState(() {
           if (!(notification is ScrollStartNotification) &&
@@ -124,7 +118,7 @@ class _SearchState extends State<Search> {
             double _pixels = notification.metrics.pixels;
             if (_pixels <= 400 && (400 - _pixels) >= 100) {
               _size = 400 - _pixels;
-              _brightness = SystemUiOverlayStyle.light;
+              _brightness = Brightness.dark;
               _toolbarColor = Colors.transparent;
 
               if (_pixels >= 250) {
@@ -137,7 +131,7 @@ class _SearchState extends State<Search> {
             } else if (_pixels > 300) {
               _size = 100;
               _opacity = 0;
-              _brightness = SystemUiOverlayStyle.dark;
+              _brightness = Brightness.light;
               _toolbarColor = PRIMARY_COLOR;
             }
           }
@@ -145,7 +139,6 @@ class _SearchState extends State<Search> {
 
         return true;
       },
-      
       searchBar: Column(
         children: [
           SizedBox(
@@ -206,7 +199,7 @@ class _SearchState extends State<Search> {
 }
 
 class ContainerAddParty extends StatefulWidget {
-  const ContainerAddParty({ Key key }) : super(key: key);
+  const ContainerAddParty({Key key}) : super(key: key);
 
   @override
   _ContainerAddPartyState createState() => _ContainerAddPartyState();
@@ -240,28 +233,26 @@ class _ContainerAddPartyState extends State<ContainerAddParty> {
           ),
           GestureDetector(
             onTap: () {
-              Navigator.push(context, 
-                MaterialPageRoute(builder: (context) => NamePage())
-              );
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => NamePage()));
             },
             child: Container(
               //width: MediaQuery.of(context).size.width - 100,
               margin: EdgeInsets.only(bottom: 20),
-              padding: EdgeInsets.symmetric(
-                vertical: 20, horizontal: 20),
-                decoration: BoxDecoration(
-                  color: ICONCOLOR,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(200),
-                  ),
+              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+              decoration: BoxDecoration(
+                color: ICONCOLOR,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(200),
                 ),
-                child: Text(
-                  "Créer maintenant !".toUpperCase(),
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+              ),
+              child: Text(
+                "Créer maintenant !".toUpperCase(),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -275,12 +266,8 @@ class _ContainerAddPartyState extends State<ContainerAddParty> {
 class TitleText extends StatelessWidget {
   final EdgeInsetsGeometry margin;
   final String text;
-  const TitleText({
-    this.margin,
-    @required this.text,
-    Key key 
-    }) 
-    : super(key: key);
+  const TitleText({this.margin, @required this.text, Key key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -288,11 +275,8 @@ class TitleText extends StatelessWidget {
       margin: this.margin,
       child: Text(
         this.text,
-        style: TextStyle(  
-          fontWeight: FontWeight.w900,
-          fontSize: 20,
-          color: SECONDARY_COLOR
-        ),
+        style: TextStyle(
+            fontWeight: FontWeight.w900, fontSize: 20, color: SECONDARY_COLOR),
       ),
     );
   }

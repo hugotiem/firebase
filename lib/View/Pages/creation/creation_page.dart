@@ -19,9 +19,20 @@ class CreationPage extends StatefulWidget {
 class _CreationPageState extends State<CreationPage> {
   PageController _controller;
 
+  List<Widget> _children;
+
   @override
   void initState() {
     _controller = PageController();
+    _children = [
+      NamePage(onNext: onNext),
+      ThemePage(onNext: onNext),
+      DateHourPage(onNext: onNext),
+      LocationPage(onNext: onNext),
+      GuestNumber(onNext: onNext),
+      DescriptionPage(),
+      EndPage(),
+    ];
     super.initState();
   }
 
@@ -36,21 +47,24 @@ class _CreationPageState extends State<CreationPage> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => BuildPartiesCubit(),
-      child: BlocBuilder<BuildPartiesCubit, BuildPartiesState>(
-          builder: (context, state) {
-        return PageView(
-          controller: _controller,
-          children: <Widget>[
-            NamePage(onNext: onNext),
-            ThemePage(onNext: onNext),
-            DateHourPage(onNext: onNext),
-            LocationPage(onNext: onNext),
-            GuestNumber(onNext: onNext),
-            DescriptionPage(onNext: onNext),
-            EndPage(),
-          ],
-        );
-      }),
+      child: BlocListener<BuildPartiesCubit, BuildPartiesState>(
+        listener: (BuildContext context, state) {
+          if (state.status == BuildPartiesStatus.loaded) {
+            _controller.animateToPage(
+              _children.length - 1,
+              duration: const Duration(milliseconds: 200),
+              curve: Curves.easeIn,
+            );
+          }
+        },
+        child: BlocBuilder<BuildPartiesCubit, BuildPartiesState>(
+            builder: (context, state) {
+          return PageView(
+            controller: _controller,
+            children: _children,
+          );
+        }),
+      ),
     );
   }
 }

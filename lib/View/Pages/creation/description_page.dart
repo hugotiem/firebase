@@ -13,9 +13,6 @@ import 'package:pts/components/components_creation/headertext_one.dart';
 import 'package:pts/components/components_creation/headertext_two.dart';
 
 class DescriptionPage extends StatefulWidget {
-  final void Function() onNext;
-
-  const DescriptionPage({Key key, this.onNext}) : super(key: key);
   @override
   _DescriptionPageState createState() => _DescriptionPageState();
 }
@@ -60,7 +57,6 @@ class _DescriptionPageState extends State<DescriptionPage> {
                   FieldValue.arrayUnion(validateGuestList));
 
             await BlocProvider.of<BuildPartiesCubit>(context).addToFireStore();
-            widget.onNext();
 
             // await db.add(
             //   data: {
