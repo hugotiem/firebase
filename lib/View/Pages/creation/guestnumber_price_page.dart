@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pts/Constant.dart';
@@ -22,9 +23,23 @@ class GuestNumber extends StatefulWidget {
 }
 
 class _GuestNumberState extends State<GuestNumber> {
-  var _nombre = '20';
-  var _prix = '10';
+  String _nombre = '20';
+  String _prix = '10';
   RadioChoix _choixRadio = RadioChoix.Dix;
+  double _revenu;
+
+  changText() {
+    double _nombre1 = double.parse(_nombre);
+    double _prix1 = double.parse(_prix);
+
+    setState(() {
+      if (_prix1 == 0) {
+        _revenu = 0;
+      } else {
+        _revenu = (_nombre1 * _prix1) * (1 - (0.17 + 0.014)) - 0.25;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -148,9 +163,53 @@ class _GuestNumberState extends State<GuestNumber> {
                 )
               ],
             ),
-            SizedBox(
+            SizedBox( 
+              height: 30,
+            ),
+            HeaderText1(
+              text: 'Revenu estimé'
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 26),
+              child: Row( 
+                children: [
+                  OutlinedButton(
+                    onPressed: () => changText(),
+                    child: Text(
+                      'Simuler',
+                      style: TextStyle(  
+                        color: SECONDARY_COLOR,
+                        wordSpacing: 1.5,
+                        fontSize: 17,
+                        fontWeight: FontWeight.w500
+                      ),
+                    )
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 6),
+                    child: Text(  
+                      _revenu == null
+                      ? ''
+                      : '${_revenu.toStringAsFixed(2)}',
+                      style: TextStyle(  
+                        wordSpacing: 1.5,
+                        fontSize: 22,
+                        color: SECONDARY_COLOR,
+                        fontWeight: FontWeight.w500
+                      ),
+                    ),
+                  ),
+                  HintText(  
+                    text: _revenu == null
+                    ? ''
+                    : '€'
+                  )
+                ]
+              ),
+            ),
+            SizedBox( 
               height: 50,
-            )
+            ),
           ],
         ),
       ),
