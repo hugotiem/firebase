@@ -3,14 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:pts/blocs/parties/build_parties_cubit.dart';
 import 'package:pts/components/back_appbar.dart';
-import 'package:pts/Model/soiree.dart';
 import 'package:pts/components/components_creation/date_hour_picker.dart';
 import 'package:pts/components/components_creation/fab_form.dart';
 import 'package:pts/components/components_creation/headertext_one.dart';
 import 'package:pts/components/components_creation/headertext_two.dart';
 
 import '../../../Constant.dart';
-import 'location_page.dart';
 
 class DateHourPage extends StatefulWidget {
   final void Function() onNext;

@@ -4,14 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/blocs/parties/build_parties_cubit.dart';
 import 'package:pts/components/back_appbar.dart';
-import 'package:pts/Model/soiree.dart';
 import 'package:pts/Model/capitalize.dart';
 import 'package:pts/components/components_creation/fab_form.dart';
 import 'package:pts/components/components_creation/headertext_one.dart';
 import 'package:pts/components/components_creation/headertext_two.dart';
 import 'package:pts/components/components_creation/tff_text.dart';
 
-import 'guestnumber_price_page.dart';
 
 class LocationPage extends StatefulWidget {
   final void Function() onNext;
