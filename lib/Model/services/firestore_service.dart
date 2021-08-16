@@ -16,11 +16,24 @@ class FireStoreServices {
     return this._firestore.collection(collection).snapshots();
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getData(String city) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getData() async {
+    return this._firestore.collection(collection).get();
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getDataWithWhere(
+      String key, String data) async {
     return this
         ._firestore
         .collection(collection)
-        .where('city', isEqualTo: city)
+        .where(key, isEqualTo: data)
+        .get();
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getDataByOrder() async {
+    return this
+        ._firestore
+        .collection(collection)
+        .orderBy("timestamp", descending: true)
         .get();
   }
 }

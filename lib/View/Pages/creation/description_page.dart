@@ -47,7 +47,7 @@ class _DescriptionPageState extends State<DescriptionPage> {
             BlocProvider.of<BuildPartiesCubit>(context)
               ..addItem("animals", _animals)
               ..addItem("smoke", _smoke)
-              ..addItem("description", _description)
+              ..addItem("desc", _description)
               ..addItem("wait list", FieldValue.arrayUnion(waitList))
               ..addItem("validate guest list",
                   FieldValue.arrayUnion(validateGuestList));

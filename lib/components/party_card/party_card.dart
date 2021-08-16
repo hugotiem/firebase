@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pts/Model/capitalize.dart';
+import 'package:pts/Model/party.dart';
 import 'package:pts/Model/services/auth_service.dart';
 import 'package:pts/components/back_appbar.dart';
 import 'open/custombnb.dart';
@@ -23,8 +24,8 @@ import 'open/piechart_informartion.dart';
 import 'open/piechart_legend.dart';
 import 'open/price_information.dart';
 
-Widget buildPartyCard(BuildContext context, DocumentSnapshot party) {
-  List nameList = party['validate guest list'];
+Widget buildPartyCard(BuildContext context, Party party) {
+  List nameList = party.validateGuestList;
 
   List list = nameList.map((doc) {
     return Row(  
@@ -40,7 +41,7 @@ Widget buildPartyCard(BuildContext context, DocumentSnapshot party) {
                 child: Container(  
                   padding: EdgeInsets.only(top: 16, left: 16),
                   child: Text(  
-                    doc['Name'],
+                    doc['name'],
                     style: TextStyle(  
                       fontSize: 20,
                       fontWeight: FontWeight.w700,
@@ -122,9 +123,9 @@ Widget buildPartyCard(BuildContext context, DocumentSnapshot party) {
                             padding: EdgeInsets.only(left: 5),
                             alignment: Alignment.centerLeft,
                             child: TimeText(
-                              heure: "${DateFormat.Hm('fr').format(party['StartTime'].toDate()).split(':')[0]}h${DateFormat.Hm('fr').format(party['StartTime'].toDate()).split(':')[1]}",
-                              mois: "${DateFormat.MMMM('fr').format(party['StartTime'].toDate())}",
-                              jour: "${DateFormat.E('fr').format(party['StartTime'].toDate())}${DateFormat.d('fr').format(party['StartTime'].toDate())}",
+                              heure: "${DateFormat.Hm('fr').format(party.startTime).split(':')[0]}h${DateFormat.Hm('fr').format(party.startTime).split(':')[1]}",
+                              mois: "${DateFormat.MMMM('fr').format(party.startTime)}",
+                              jour: "${DateFormat.E('fr').format(party.startTime)}${DateFormat.d('fr').format(party.startTime)}",
                             )
                           ),
                         ),
@@ -139,8 +140,8 @@ Widget buildPartyCard(BuildContext context, DocumentSnapshot party) {
                                 Row(
                                   children: [
                                     TitleText(
-                                      name: party['Name'],
-                                      theme: party['Theme']
+                                      name: party.name,
+                                      theme: party.theme
                                     )
                                   ],
                                 ),
@@ -149,17 +150,17 @@ Widget buildPartyCard(BuildContext context, DocumentSnapshot party) {
                                   children: [
                                     Textdetail(
                                       headerText: 'invités', 
-                                      detailText: party['Number'],
+                                      detailText: party.number,
                                     ),
                                     Textdetail(
                                       headerText: 'Prix', 
-                                      detailText: party['Price'] != '0'
-                                      ? '${party['Price']}€'
+                                      detailText: party.price != '0'
+                                      ? '${party.price}€'
                                       : 'Gratuit'
                                     ),
                                     Textdetail(   
                                       headerText: 'ville',
-                                      detailText: party['city'],
+                                      detailText: party.city,
                                     ),
                                   ],
                                 )
@@ -207,28 +208,28 @@ Widget buildPartyCard(BuildContext context, DocumentSnapshot party) {
                       child: Column(  
                         children: [
                           NameThemeInformation(
-                            nom: party['Name'].toUpperCase(),
-                            theme: party["Theme"],
+                            nom: party.name.toUpperCase(),
+                            theme: party.theme,
                           ),
                           DateInformation(
-                            date: '${DateFormat.E('fr').format(party['StartTime'].toDate()).inCaps} ${DateFormat.d('fr').format(party['StartTime'].toDate())} ${DateFormat.MMMM('fr').format(party['StartTime'].toDate())}',
+                            date: '${DateFormat.E('fr').format(party.startTime).inCaps} ${DateFormat.d('fr').format(party.startTime)} ${DateFormat.MMMM('fr').format(party.startTime)}',
                           ),
                           HourInformation( 
-                            heuredebut: 'De ${DateFormat.Hm('fr').format(party['StartTime'].toDate()).split(":")[0]}h${DateFormat.Hm('fr').format(party['StartTime'].toDate()).split(":")[1]}',
-                            heurefin: 'A ${DateFormat.Hm('fr').format(party['EndTime'].toDate()).split(':')[0]}h${DateFormat.Hm('fr').format(party['EndTime'].toDate()).split(':')[1]}',
+                            heuredebut: 'De ${DateFormat.Hm('fr').format(party.startTime).split(":")[0]}h${DateFormat.Hm('fr').format(party.startTime).split(":")[1]}',
+                            heurefin: 'A ${DateFormat.Hm('fr').format(party.endTime).split(':')[0]}h${DateFormat.Hm('fr').format(party.endTime).split(':')[1]}',
                           ),
                           SizedBox(height: 50),
                           PriceInformation(
-                            prix: '${party['Price']} €',
+                            prix: '${party.price} €',
                           ),
                           DescriptionInformation(
-                            nomOrganisateur: party['NameOganizer'],
+                            nomOrganisateur: party.owner,
                             avis: '4.9 / 5 - 0 avis',
-                            description: party['Description'],
+                            description: party.desc,
                           ),
                           ContactInformation(
                             onPressed: () {},
-                            contact: 'Contacter ${party['NameOganizer'].split(' ')[0]}',
+                            contact: 'Contacter ${party.owner.split(' ')[0]}',
                           ),
                           HorzontalSeparator(),
                           nameList.isNotEmpty 
