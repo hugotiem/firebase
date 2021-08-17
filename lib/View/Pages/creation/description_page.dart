@@ -7,6 +7,9 @@ import 'package:pts/blocs/parties/build_parties_cubit.dart';
 import 'package:pts/components/back_appbar.dart';
 import 'package:pts/components/components_creation/headertext_one.dart';
 import 'package:pts/components/components_creation/headertext_two.dart';
+import 'package:pts/model/services/auth_service.dart';
+
+import 'end_page.dart';
 
 class DescriptionPage extends StatefulWidget {
   @override
@@ -45,6 +48,7 @@ class _DescriptionPageState extends State<DescriptionPage> {
             List validateGuestList = [];
 
             BlocProvider.of<BuildPartiesCubit>(context)
+              ..addItem('timeStamp', DateTime.now())
               ..addItem("animals", _animals)
               ..addItem("smoke", _smoke)
               ..addItem("desc", _description)
@@ -77,8 +81,8 @@ class _DescriptionPageState extends State<DescriptionPage> {
             //   },
             // );
 
-            // Navigator.push(
-            //     context, MaterialPageRoute(builder: (context) => EndPage()));
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => EndPage()));
           },
           backgroundColor: SECONDARY_COLOR,
           elevation: 0,

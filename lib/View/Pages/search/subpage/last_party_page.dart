@@ -20,7 +20,7 @@ class _CardPartyState extends State<CardParty> {
     return BlocProvider(
       create: (context) => PartiesCubit()..fetchPartiesByOrder(),
       child: BlocBuilder<PartiesCubit, PartiesState>(builder: (context, state) {
-        if (state.parties == null) return const Text('Loading...');
+        if (state.parties == null) return Center(child: const CircularProgressIndicator());
         return PageView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: state.parties.length,

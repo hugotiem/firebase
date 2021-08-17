@@ -33,7 +33,7 @@ class FireStoreServices {
     return this
         ._firestore
         .collection(collection)
-        .orderBy("timestamp", descending: true)
+        .orderBy("timeStamp", descending: true)
         .get();
   }
 }

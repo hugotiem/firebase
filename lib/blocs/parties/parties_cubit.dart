@@ -31,4 +31,11 @@ class PartiesCubit extends AppBaseCubit<PartiesState> {
         await services.firestore.collection(services.collection).doc(id).get();
     emit(PartiesState.loaded(parties));
   }
+
+  Future fetchPartiesWithWhere(var key, String data) async {
+    emit(state.setRequestInProgress());
+    var partiesSnapShots = await services.getDataWithWhere(key, data);
+    List<Party> parties = partiesSnapShots.docs.map((e) => Party.fromSnapShots(e));
+    emit(PartiesState.loaded(parties));
+  }
 }
