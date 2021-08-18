@@ -182,7 +182,7 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                             ),
                             child: FutureBuilder(
                                 future:
-                                    _firestore.getDataWithWhere("city", _result.split(",")[0]),
+                                    _firestore.getDataWithWhereIsEqualTo("city", _result.split(",")[0]),
                                 builder: (context, snapshot) {
                                   return ListView.builder(
                                     controller: sc,

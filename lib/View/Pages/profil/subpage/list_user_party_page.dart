@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pts/Constant.dart';
+import 'package:pts/blocs/parties/parties_cubit.dart';
 import 'package:pts/components/back_appbar.dart';
 import 'package:pts/Model/services/auth_service.dart';
 import 'package:pts/components/party_card/party_card.dart';
@@ -66,32 +67,36 @@ class PartyJoin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: StreamBuilder(
-        stream: getStream(context),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) return Center(child: const CircularProgressIndicator());
+    return BlocProvider(
+      create: (context) => PartiesCubit()..fetchPartiesWithWhereArrayContains(
+        'validate guest list', 
+        AuthService.currentUser.displayName.split(' ')[0],  
+        AuthService.currentUser.uid
+      ),
+      child: BlocBuilder<PartiesCubit, PartiesState>(
+        builder: (context, state) {
+          if (state.parties == null) return Center(child: const CircularProgressIndicator());
           return ListView.builder(
-            itemCount: snapshot.data.docs.length,
+            itemCount: state.parties.length,
             itemBuilder: (BuildContext context, int index) =>
-            buildPartyCard(context, snapshot.data.docs[index]),
+            buildPartyCard(context, state.parties[index]),
           );
         }
       ),
     );
   }
 
-  Stream<QuerySnapshot> getStream(BuildContext context) async* {
-    final _db = FirebaseFirestore.instance.collection('party');
-    Map _uid = {
-      'Name': AuthService.currentUser.displayName.split(' ')[0],
-      'uid': AuthService.currentUser.uid
-    };
+  // Stream<QuerySnapshot> getStream(BuildContext context) async* {
+  //   final _db = FirebaseFirestore.instance.collection('party');
+  //   Map _uid = {
+  //     'Name': AuthService.currentUser.displayName.split(' ')[0],
+  //     'uid': AuthService.currentUser.uid
+  //   };
 
-    yield* _db
-        .where('validate guest list', arrayContains: _uid)
-        .snapshots();
-  }
+  //   yield* _db
+  //       .where('validate guest list', arrayContains: _uid)
+  //       .snapshots();
+  // }
 }
 
 
@@ -100,28 +105,31 @@ class PartyCreate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: StreamBuilder(
-        stream: getPartyStreamSnapshots(context),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) return Center(child: const CircularProgressIndicator());
+    return BlocProvider(
+      create: (context) => PartiesCubit()..fetchPartiesWithWhereIsEqualTo(
+        'uid', 
+        AuthService.currentUser.uid
+      ),
+      child: BlocBuilder<PartiesCubit, PartiesState>(
+        builder: (context, state) {
+          if (state.parties == null) return Center(child: const CircularProgressIndicator());
           return ListView.builder(
-            itemCount: snapshot.data.docs.length,
+            itemCount: state.parties.length,
             itemBuilder: (BuildContext context, int index) =>
-            buildPartyCard(context, snapshot.data.docs[index]),
+            buildPartyCard(context, state.parties[index]),
           );
         }
       ),
     );
   }
 
-  Stream<QuerySnapshot> getPartyStreamSnapshots(BuildContext context) async* {
-    final _db = FirebaseFirestore.instance.collection('party');
+  // Stream<QuerySnapshot> getPartyStreamSnapshots(BuildContext context) async* {
+  //   final _db = FirebaseFirestore.instance.collection('party');
     
-    yield* _db
-        .where('UID', isEqualTo: AuthService.currentUser.uid)
-        .snapshots();
-  }
+  //   yield* _db
+  //       .where('UID', isEqualTo: AuthService.currentUser.uid)
+  //       .snapshots();
+  // }
 }
 
 

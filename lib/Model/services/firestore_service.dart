@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:pts/model/party.dart';
 
 class FireStoreServices {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -20,12 +21,24 @@ class FireStoreServices {
     return this._firestore.collection(collection).get();
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getDataWithWhere(
+  Future<QuerySnapshot<Map<String, dynamic>>> getDataWithWhereIsEqualTo(
       String key, String data) async {
     return this
         ._firestore
         .collection(collection)
         .where(key, isEqualTo: data)
+        .get();
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getDataWithWhereArrayContains(
+    String key, String name, String uid ) async {
+    Map _map = {
+      'name': name,
+      'uid':uid
+    };
+    return this._firestore
+        .collection(collection)
+        .where(key, arrayContains: _map)
         .get();
   }
 

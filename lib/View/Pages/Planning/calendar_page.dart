@@ -7,7 +7,6 @@ import 'package:pts/Constant.dart';
 import 'package:pts/Model/calendar_data_source.dart';
 import 'package:pts/Model/services/auth_service.dart';
 import 'package:pts/View/Pages/creation/creation_page.dart';
-import 'package:pts/View/Pages/creation/name_page.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class CalendarPage extends StatelessWidget {
@@ -76,34 +75,34 @@ class _CalendarWidgetState extends State<CalendarWidget> {
 
   Future<void> getDataFromFireStore() async {
     var snapShotValue = await databaseReference
-        .collection("party")
-        .where('UID', isEqualTo: AuthService.currentUser.uid)
+        .collection("parties")
+        .where('uid', isEqualTo: AuthService.currentUser.uid)
         .get();
     
     List<Meeting> list = snapShotValue.docs
       .map((e) => Meeting(  
-        eventName: e.data()['Name'],
-        from: e.data()['StartTime'].toDate(),
-        to: e.data()['EndTime'].toDate(),
+        eventName: e.data()['name'],
+        from: e.data()['startTime'].toDate(),
+        to: e.data()['endTime'].toDate(),
         background: SECONDARY_COLOR,
         isAllDay: false ))
       .toList();
 
     Map _uid = {
-      'Name': AuthService.currentUser.displayName.split(' ')[0],
+      'name': AuthService.currentUser.displayName.split(' ')[0],
       'uid': AuthService.currentUser.uid
     };
 
     var snapShotValue1 = await databaseReference
-        .collection("party")
+        .collection("parties")
         .where('validate guest list', arrayContains: _uid)
         .get();
     
     List<Meeting> list1 = snapShotValue1.docs
       .map((e) => Meeting(  
-        eventName: e.data()['Name'],
-        from: e.data()['StartTime'].toDate(),
-        to: e.data()['EndTime'].toDate(),
+        eventName: e.data()['name'],
+        from: e.data()['startTime'].toDate(),
+        to: e.data()['endTime'].toDate(),
         background: Colors.pink,
         isAllDay: false ))
       .toList();

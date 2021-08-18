@@ -51,16 +51,16 @@ class GuestWaitList extends StatelessWidget {
 
   Stream<QuerySnapshot> getGuestWaitList(BuildContext context) async* {
     yield* FirebaseFirestore.instance
-        .collection('party')
-        .where('UID', isEqualTo: AuthService.currentUser.uid)
+        .collection('parties')
+        .where('uid', isEqualTo: AuthService.currentUser.uid)
         .snapshots();
   }
 }
 
 Widget buildValidationCard(BuildContext context, DocumentSnapshot party) { 
-  String partyName = party['Name'];
+  String partyName = party['name'];
   List nameList = party['wait list'];
-  final _db = FirebaseFirestore.instance.collection('party').doc(party.id);
+  final _db = FirebaseFirestore.instance.collection('parties').doc(party.id);
 
   List list = nameList.map((doc) {
     return Padding(
@@ -78,7 +78,7 @@ Widget buildValidationCard(BuildContext context, DocumentSnapshot party) {
                 height: 70,
                 child: Center(
                   child: Text(
-                    doc['Name'],
+                    doc['name'],
                     style: TextStyle(  
                       fontSize: 17
                     ),
@@ -93,7 +93,7 @@ Widget buildValidationCard(BuildContext context, DocumentSnapshot party) {
                 onPressed: () async {
                   List list1 = [];
                     list1.add({
-                      'Name': doc['Name'],
+                      'name': doc['name'],
                       'uid': doc['uid']
                     });
                   
@@ -116,7 +116,7 @@ Widget buildValidationCard(BuildContext context, DocumentSnapshot party) {
                 onPressed: () async {
                   List list1 = [];
                     list1.add({
-                      'Name': doc['Name'],
+                      'name': doc['name'],
                       'uid': doc['uid']
                     });
 

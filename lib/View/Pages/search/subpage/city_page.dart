@@ -144,7 +144,7 @@ class CityBox extends StatelessWidget {
               ),
             ),
             body: BlocProvider(
-              create: (context) => PartiesCubit()..fetchPartiesWithWhere('city', this.text),
+              create: (context) => PartiesCubit()..fetchPartiesWithWhereIsEqualTo('city', this.text),
               child: BlocBuilder<PartiesCubit, PartiesState>( 
                 builder: (context, state) {
                   if (state.parties == null) return Center(child: const CircularProgressIndicator());

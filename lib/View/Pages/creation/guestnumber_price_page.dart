@@ -4,13 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/blocs/parties/build_parties_cubit.dart';
 import 'package:pts/components/back_appbar.dart';
-import 'package:pts/Model/party.dart';
 import 'package:pts/components/components_creation/fab_form.dart';
 import 'package:pts/components/components_creation/headertext_one.dart';
 import 'package:pts/components/components_creation/headertext_two.dart';
 import 'package:pts/components/components_creation/hint_text.dart';
 import 'package:pts/components/components_creation/tff_number.dart';
-import 'package:pts/view/pages/creation/description_page.dart';
 
 enum RadioChoix { Gratuit, Cinq, Dix, Quinze, Vingt }
 

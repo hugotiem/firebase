@@ -7,7 +7,6 @@ import 'package:pts/blocs/parties/build_parties_cubit.dart';
 import 'package:pts/components/back_appbar.dart';
 import 'package:pts/components/components_creation/headertext_one.dart';
 import 'package:pts/components/components_creation/headertext_two.dart';
-import 'package:pts/model/services/auth_service.dart';
 
 import 'end_page.dart';
 
@@ -37,7 +36,6 @@ class _DescriptionPageState extends State<DescriptionPage> {
             if (!_formKey.currentState.validate()) {
               return;
             }
-
             // Soiree.setDataDescriptionPage(
             //   _animals,
             //   _smoke,
@@ -48,6 +46,8 @@ class _DescriptionPageState extends State<DescriptionPage> {
             List validateGuestList = [];
 
             BlocProvider.of<BuildPartiesCubit>(context)
+              // ..addItem('uid', AuthService.currentUser.uid)
+              // ..addItem('owner', AuthService.currentUser.displayName)
               ..addItem('timeStamp', DateTime.now())
               ..addItem("animals", _animals)
               ..addItem("smoke", _smoke)

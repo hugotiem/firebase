@@ -15,8 +15,9 @@ class Party {
   String postalCode;
   String smoke;
   String animals;
-  String owner;
-  List<String> validateGuestList;
+  var owner;
+  var uid;
+  List<dynamic> validateGuestList;
 
   Party(
     this.id,
@@ -34,27 +35,30 @@ class Party {
     this.smoke,
     this.animals,
     this.owner,
+    this.uid,
     this.validateGuestList,
   );
 
   factory Party.fromSnapShots(
       QueryDocumentSnapshot<Map<String, dynamic>> snapshots) {
     var id = snapshots.id;
-    var name = snapshots['name'];
-    var theme = snapshots['theme'];
-    var number = snapshots['number'];
-    var date = snapshots['date'].toDate();
-    var startTime = snapshots['startTime'].toDate();
-    var endTime = snapshots['endTime'].toDate();
-    var price = snapshots['price'];
-    var desc = snapshots['desc'];
-    var address = snapshots['address'];
-    var city = snapshots['city'];
-    var postalCode = snapshots['postal code'];
-    var smoke = snapshots['smoke'];
-    var animals = snapshots['animals'];
-    var owner = snapshots['owner'];
-    var validateGuestList = snapshots['validate guest list'];
+    var data = snapshots.data();
+    var name = data['name'];
+    var theme = data['theme'];
+    var number = data['number'];
+    var date = data['date'].toDate();
+    var startTime = data['startTime'].toDate();
+    var endTime = data['endTime'].toDate();
+    var price = data['price'];
+    var desc = data['desc'];
+    var address = data['address'];
+    var city = data['city'];
+    var postalCode = data['postal code'];
+    var smoke = data['smoke'];
+    var animals = data['animals'];
+    var owner = data['owner'];
+    var uid = data['uid'];
+    var validateGuestList = data['validate guest list'];
     return Party(
       id,
       name,
@@ -71,6 +75,7 @@ class Party {
       smoke,
       animals,
       owner,
+      uid,
       validateGuestList,
     );
   }

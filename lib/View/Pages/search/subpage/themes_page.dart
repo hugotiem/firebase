@@ -1,6 +1,7 @@
 import 'package:animations/animations.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pts/blocs/parties/parties_cubit.dart';
 import 'package:pts/components/back_appbar.dart';
 import 'package:pts/components/party_card/party_card.dart';
 
@@ -132,15 +133,15 @@ class ThemeBox extends StatelessWidget {
                 ),
               ),
             ),
-            body: Container(
-              child: StreamBuilder(
-                stream: getPartyStreamSnapshot(context),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) return Center(child: const CircularProgressIndicator());
+            body: BlocProvider(
+              create: (context) => PartiesCubit()..fetchPartiesWithWhereIsEqualTo('theme', this.text),
+              child: BlocBuilder<PartiesCubit, PartiesState>(
+                builder: (context, state) {
+                  if (state.parties == null) return Center(child: const CircularProgressIndicator());
                   return ListView.builder(
-                    itemCount: snapshot.data.docs.length,
+                    itemCount: state.parties.length,
                     itemBuilder: (BuildContext context, int index) =>
-                      buildPartyCard(context, snapshot.data.docs[index])
+                      buildPartyCard(context, state.parties[index])
                   );
                 }, 
               )
@@ -150,10 +151,10 @@ class ThemeBox extends StatelessWidget {
       ),
     );
   }
-  Stream<QuerySnapshot> getPartyStreamSnapshot(BuildContext context) async* {
-    yield* FirebaseFirestore.instance
-    .collection('party')
-    .where('Theme', isEqualTo: this.text)
-    .snapshots();
-  }
+  // Stream<QuerySnapshot> getPartyStreamSnapshot(BuildContext context) async* {
+  //   yield* FirebaseFirestore.instance
+  //   .collection('party')
+  //   .where('Theme', isEqualTo: this.text)
+  //   .snapshots();
+  // }
 }

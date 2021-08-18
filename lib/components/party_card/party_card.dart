@@ -184,13 +184,13 @@ Widget buildPartyCard(BuildContext context, Party party) {
                     floatingActionButton: FABJoin(  
                       label: 'Rejoindre',
                       onPressed: () async {
-                        final _db = FirebaseFirestore.instance.collection('party').doc(party.id);
+                        final _db = FirebaseFirestore.instance.collection('parties').doc(party.id);
                         final name = AuthService.currentUser.displayName.split(' ')[0];
                         final uid = AuthService.currentUser.uid;
 
                         List waitList = [];
                           waitList.add({
-                            "Name": name,
+                            "name": name,
                             "uid": uid
                           });
 
