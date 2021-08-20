@@ -225,11 +225,13 @@ Widget buildPartyCard(BuildContext context, Party party) {
                           DescriptionInformation(
                             nomOrganisateur: party.owner,
                             avis: '4.9 / 5 - 0 avis',
-                            description: party.desc,
+                            description: party.desc != null
+                            ? party.desc
+                            : ''
                           ),
                           ContactInformation(
                             onPressed: () {},
-                            contact: 'Contacter ${party.owner.split(' ')[0]}',
+                            contact: 'contacter ${party.owner.split(' ')[0]}',
                           ),
                           HorzontalSeparator(),
                           nameList.isNotEmpty 

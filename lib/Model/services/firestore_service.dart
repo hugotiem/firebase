@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:pts/model/party.dart';
 
 class FireStoreServices {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;

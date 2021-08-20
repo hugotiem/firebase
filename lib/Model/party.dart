@@ -50,7 +50,7 @@ class Party {
     var startTime = data['startTime'].toDate();
     var endTime = data['endTime'].toDate();
     var price = data['price'];
-    var desc = data['desc'];
+    var desc = data['description'];
     var address = data['address'];
     var city = data['city'];
     var postalCode = data['postal code'];
