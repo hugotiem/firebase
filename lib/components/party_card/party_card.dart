@@ -6,6 +6,7 @@ import 'package:pts/Model/capitalize.dart';
 import 'package:pts/Model/party.dart';
 import 'package:pts/Model/services/auth_service.dart';
 import 'package:pts/components/back_appbar.dart';
+import 'open/animalsmoke_information.dart';
 import 'open/custombnb.dart';
 import 'open/fab_join.dart';
 import '../../../../Constant.dart';
@@ -222,6 +223,11 @@ Widget buildPartyCard(BuildContext context, Party party) {
                           PriceInformation(
                             prix: '${party.price} €',
                           ),
+                          AnimalSmokeInformation( 
+                            animal: party.animals,
+                            smoke: party.smoke
+                          ),
+                          HorzontalSeparator(),
                           DescriptionInformation(
                             nomOrganisateur: party.owner,
                             avis: '4.9 / 5 - 0 avis',

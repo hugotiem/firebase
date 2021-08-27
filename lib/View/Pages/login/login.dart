@@ -3,7 +3,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pts/Constant.dart';
-import 'package:pts/Model/services/auth_service.dart';
 import 'package:pts/View/Pages/login/register_form_screen.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -27,9 +26,6 @@ class _LoginState extends State<Login> {
   String _email;
   String _password;
 
-  // Firebase auth
-  AuthService _auth;
-
   @override
   void initState() {
     super.initState();
@@ -39,7 +35,6 @@ class _LoginState extends State<Login> {
     _slideUp = 0;
     _email = "";
     _password = "";
-    _auth = AuthService();
   }
 
   @override
@@ -211,27 +206,12 @@ class _LoginState extends State<Login> {
                               ),
                             ),
                             onTap: () {
-                              _auth
-                                  .register(_email, _password)
-                                  .then((value) => {
-                                        if (value.containsKey("success"))
-                                          {
-                                            Navigator.of(context)
-                                                .pushReplacement(
-                                              CupertinoPageRoute(
-                                                fullscreenDialog: true,
-                                                builder: (context) =>
-                                                    RegisterFormScreen(),
-                                              ),
-                                            )
-                                          }
-                                        else
-                                          {
-                                            value.forEach((key, value) {
-                                              print(key);
-                                            })
-                                          }
-                                      });
+                              Navigator.of(context).pushReplacement(
+                                CupertinoPageRoute(
+                                  fullscreenDialog: true,
+                                  builder: (context) => RegisterFormScreen(),
+                                ),
+                              );
                             },
                           ),
                           GestureDetector(
@@ -267,19 +247,13 @@ class _LoginState extends State<Login> {
                               ),
                             ),
                             onTap: () {
-                              _auth
-                                  .signInWithGoogle()
-                                  .then(
-                                    (value) => Navigator.of(context).push(
-                                      CupertinoPageRoute(
-                                        builder: (context) =>
-                                            RegisterFormScreen(
-                                          user: value.user,
-                                        ),
+                              Navigator.of(context).push(
+                                CupertinoPageRoute(
+                                  builder: (context) => RegisterFormScreen(
+                                      // user: value.user,
                                       ),
-                                    ),
-                                  )
-                                  .catchError((onError) => print(onError));
+                                ),
+                              );
                             },
                           ),
                         ],
@@ -529,20 +503,7 @@ class _LoginState extends State<Login> {
                             ),
                           ),
                           onTap: () async {
-                            _auth.signIn(_email, _password).then(
-                                  (value) => {
-                                    if (value.containsKey("success"))
-                                      {
-                                        Navigator.of(context).pop(),
-                                      }
-                                    else
-                                      {
-                                        value.forEach((key, value) {
-                                          print(key);
-                                        }),
-                                      }
-                                  },
-                                );
+                            Navigator.of(context).pop();
                           },
                         ),
                         SizedBox(
