@@ -18,8 +18,8 @@ class UserState extends AppBaseState<UserStatus> {
             requestFailureMessage: requestFailureMessage);
 
   const UserState.initial() : this(UserStatus.initial);
-  const UserState.dataLoaded(User user)
-      : this(UserStatus.dataLoaded, user: user);
+  const UserState.dataLoaded({User user, String token})
+      : this(UserStatus.dataLoaded, token: token, user: user);
 
   @override
   AppBaseState<UserStatus> copyWith(

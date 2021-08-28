@@ -33,7 +33,7 @@ class _InfoScreenState extends State<InfoScreen> {
 
   @override
   void initState() {
-    this.user = AuthService.auth.currentUser;
+    this.user = _service.currentUser;
 
     this._surname = user.displayName.split(" ")[1];
     this._name = user.displayName.split(" ")[0];
@@ -146,9 +146,9 @@ class _InfoScreenState extends State<InfoScreen> {
                   Text("Email"),
                   CupertinoTextField.borderless(
                     controller: _emailController,
-                    readOnly:
-                        AuthService.currentUser.providerData[0].providerId ==
-                            "google.com",
+                    // readOnly:
+                    //     AuthService.currentUser.providerData[0].providerId ==
+                    //         "google.com",
                     onChanged: (value) => _email = value,
                   ),
                 ],

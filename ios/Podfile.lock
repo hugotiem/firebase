@@ -408,9 +408,6 @@ PODS:
     - PromisesObjC (< 3.0, >= 1.2)
   - GoogleMaps (5.1.0):
     - GoogleMaps/Maps (= 5.1.0)
-  - GoogleMaps/Base (5.1.0)
-  - GoogleMaps/Maps (5.1.0):
-    - GoogleMaps/Base
   - GoogleSignIn (5.0.2):
     - AppAuth (~> 1.2)
     - GTMAppAuth (~> 1.0)
@@ -549,6 +546,6 @@ SPEC CHECKSUMS:
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
 
-PODFILE CHECKSUM: 0cf566a449783f671cb42522310dfcf21955ea34
+PODFILE CHECKSUM: 75b020114780c41bc195612e8dcadc881d53bfb1
 
 COCOAPODS: 1.10.1
