@@ -20,6 +20,10 @@ class FireStoreServices {
     return this._firestore.collection(collection).get();
   }
 
+  Future<DocumentSnapshot<Map<String, dynamic>>> getDataById(String id) async {
+    return this._firestore.collection(collection).doc(id).get();
+  }
+
   Future<QuerySnapshot<Map<String, dynamic>>> getDataWithWhereIsEqualTo(
       String key, String data) async {
     return this

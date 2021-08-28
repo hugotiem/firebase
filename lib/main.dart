@@ -35,10 +35,6 @@ class MyApp extends StatelessWidget {
             print("ERROR");
             return Text("ERROR");
           } else if (snapshot.hasData) {
-            AuthService.setAuth();
-            AuthService.auth.authStateChanges().listen((user) {
-              AuthService.logged = user != null;
-            });
             return Home();
           } else {
             return Center(

@@ -182,17 +182,17 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                   if (!_formKey.currentState.validate()) {
                     return;
                   }
-                  var user = AuthService.auth.currentUser;
-                  user.updateProfile(displayName: _name + " " + _surname).then(
-                        (value) => Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => IdFormScreen(
-                              name: _name,
-                              surname: _surname,
-                            ),
-                          ),
-                        ),
-                      );
+                  // var user = AuthService.auth.currentUser;
+                  // user.updateProfile(displayName: _name + " " + _surname).then(
+                  //       (value) => Navigator.of(context).push(
+                  //         MaterialPageRoute(
+                  //           builder: (context) => IdFormScreen(
+                  //             name: _name,
+                  //             surname: _surname,
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     );
                 },
               ),
             ),

@@ -1,30 +1,34 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:pts/Model/services/firestore_service.dart';
 
 class AuthService extends ChangeNotifier {
-  static FirebaseAuth _auth;
-  static bool isLogged = false;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  static FirebaseAuth get auth => _auth;
+  final FireStoreServices services = FireStoreServices("user");
 
-  static User get currentUser => _auth.currentUser;
+  FirebaseAuth get instance => _auth;
 
-  static void setAuth() {
-    _auth = FirebaseAuth.instance;
+  User get currentUser => _auth.currentUser;
+
+  Future<void> setToken(String token) async {
+    // secure storage
   }
 
-  static set logged(bool val) {
-    isLogged = val;
+  Future<String> getToken() async {
+    return "token";
   }
 
-  Future<User> register(String _email, String _password) async {
+  Future<User> register(String _email, String _password,
+      {Map<String, dynamic> data}) async {
     try {
       UserCredential userCredential =
           await _auth.createUserWithEmailAndPassword(
         email: _email,
         password: _password,
       );
+      services.add(data: data);
       return userCredential.user;
     } on FirebaseAuthException catch (e) {
       // if (e.code == 'weak-password') {
