@@ -6,6 +6,7 @@ import 'package:pts/Model/capitalize.dart';
 import 'package:pts/Model/party.dart';
 import 'package:pts/Model/services/auth_service.dart';
 import 'package:pts/components/back_appbar.dart';
+import 'package:pts/view/pages/search/subpage/choosepayment_page.dart';
 import 'open/animalsmoke_information.dart';
 import 'open/custombnb.dart';
 import 'open/fab_join.dart';
@@ -185,23 +186,30 @@ Widget buildPartyCard(BuildContext context, Party party) {
                     floatingActionButton: FABJoin(  
                       label: 'Rejoindre',
                       onPressed: () async {
-                        final _db = FirebaseFirestore.instance.collection('parties').doc(party.id);
-                        final name = AuthService.currentUser.displayName.split(' ')[0];
-                        final uid = AuthService.currentUser.uid;
+                        if (party.price == '0') {
+                          final _db = FirebaseFirestore.instance.collection('parties').doc(party.id);
+                          final name = AuthService.currentUser.displayName.split(' ')[0];
+                          final uid = AuthService.currentUser.uid;
 
-                        List waitList = [];
-                          waitList.add({
-                            "name": name,
-                            "uid": uid
+                          List waitList = [];
+                            waitList.add({
+                              "name": name,
+                              "uid": uid
+                            });
+
+                          await _db.update({
+                            "wait list": FieldValue.arrayUnion(waitList),
                           });
-
-                        await _db.update({
-                          "wait list": FieldValue.arrayUnion(waitList),
-                        });
+                          
+                          Navigator.push(context, 
+                            MaterialPageRoute(builder: (context) => JoinWaitList()
+                          ));
+                        } else {
+                          Navigator.push(context, 
+                            MaterialPageRoute(builder: (context) => ChoosePayment()
+                          ));
+                        }
                         
-                        Navigator.push(context, 
-                          MaterialPageRoute(builder: (context) => JoinWaitList()
-                        ));
                       },
                     ),
                     floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

@@ -6,6 +6,7 @@ import 'package:pts/blocs/parties/parties_cubit.dart';
 import 'package:pts/components/back_appbar.dart';
 import 'package:pts/Model/services/auth_service.dart';
 import 'package:pts/components/party_card/party_card.dart';
+import 'package:pts/components/title_appbar.dart';
 
 class GetPartyData extends StatelessWidget {
   @override
@@ -26,15 +27,8 @@ class GetPartyData extends StatelessWidget {
                   Navigator.pop(context);
                 },
               ),
-              title: Padding(  
-                padding: const EdgeInsets.only(top: 6),
-                child: Text(
-                  'Soirées',
-                  style: TextStyle(  
-                    color: SECONDARY_COLOR,
-                    fontWeight: FontWeight.bold
-                  ),
-                )
+              title: TitleAppBar(
+                title: 'Soirées',
               ),
               bottom: TabBar(  
                 indicatorColor: SECONDARY_COLOR,

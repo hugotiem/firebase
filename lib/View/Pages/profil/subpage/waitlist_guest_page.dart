@@ -4,6 +4,7 @@ import 'package:pts/Model/services/auth_service.dart';
 import 'package:pts/components/ProfilPhoto.dart';
 import 'package:pts/components/back_appbar.dart';
 import 'package:pts/components/pts_box.dart';
+import 'package:pts/components/title_appbar.dart';
 
 import '../../../../Constant.dart';
 import '../Profil_page.dart';
@@ -21,16 +22,9 @@ class GuestWaitList extends StatelessWidget {
       appBar: PreferredSize(  
         preferredSize: Size.fromHeight(50),
         child: BackAppBar(  
-          title: Padding(
-            padding: EdgeInsets.only(top: 6),
-            child: Text( 
-              "Invités en attentes",
-              style: TextStyle(  
-                color: SECONDARY_COLOR,
-                fontWeight: FontWeight.bold
-              ),
-            ),
-          ),
+          title: TitleAppBar(
+            title: "Invités en attentes",
+          )
         ),
       ),
       body: Container(

@@ -9,6 +9,7 @@ import 'package:pts/components/pts_box.dart';
 import 'package:pts/components/text_materials.dart';
 import 'package:pts/components/pts_components.dart';
 import 'package:pts/Model/services/auth_service.dart';
+import 'package:pts/view/pages/profil/subpage/existingcard_page.dart';
 import 'package:pts/view/pages/profil/subpage/info_page.dart';
 import 'package:pts/view/pages/profil/subpage/list_user_party_page.dart';
 import 'package:pts/view/pages/profil/subpage/user_page.dart';
@@ -181,6 +182,7 @@ class _ProfilState extends State<Profil> {
                               icon: Icons.perm_identity_outlined,
                             ),
                             CickableContainerProfil( 
+                              to: ExistingCard(),
                               text: "Paiements",
                               icon: Icons.payment_outlined,
                             ),
