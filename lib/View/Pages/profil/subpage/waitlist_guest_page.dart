@@ -46,7 +46,7 @@ class GuestWaitList extends StatelessWidget {
   Stream<QuerySnapshot> getGuestWaitList(BuildContext context) async* {
     yield* FirebaseFirestore.instance
         .collection('parties')
-        .where('uid', isEqualTo: AuthService.currentUser.uid)
+        .where('uid', isEqualTo: "AuthService.currentUser.uid") // NEED TO BE CHANGED
         .snapshots();
   }
 }

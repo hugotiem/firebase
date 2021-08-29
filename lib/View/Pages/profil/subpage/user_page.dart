@@ -14,7 +14,7 @@ class ProfilDetails extends StatefulWidget {
 class _ProfilDetailsState extends State<ProfilDetails> {
   @override
   Widget build(BuildContext context) {
-    var _creationDate = AuthService.auth.currentUser.metadata.creationTime;
+    // var _creationDate = AuthService.auth.currentUser.metadata.creationTime;
 
     List _month = [
       "Janv.",
@@ -67,7 +67,7 @@ class _ProfilDetailsState extends State<ProfilDetails> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(
-                                  AuthService.auth.currentUser.displayName,
+                                  "AuthService.auth.currentUser.displayName",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 22,
@@ -79,7 +79,7 @@ class _ProfilDetailsState extends State<ProfilDetails> {
                                 Opacity(
                                   opacity: 0.5,
                                   child: Text(
-                                    "A rejoint en ${_month[_creationDate.month - 1]} ${_creationDate.year}",
+                                    "A rejoint en ",//${_month[_creationDate.month - 1]} ${_creationDate.year}",
                                     style: TextStyle(fontSize: 18),
                                   ),
                                 ),

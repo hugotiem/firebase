@@ -2,22 +2,24 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pts/Model/services/firestore_service.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class AuthService extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-
   final FireStoreServices services = FireStoreServices("user");
+  final FlutterSecureStorage storage = FlutterSecureStorage();
 
   FirebaseAuth get instance => _auth;
 
   User get currentUser => _auth.currentUser;
 
   Future<void> setToken(String token) async {
-    // secure storage
+    await storage.write(key: "token", value: token);
   }
 
   Future<String> getToken() async {
-    return "token";
+    var token = await storage.read(key: "token");
+    return token;
   }
 
   Future<User> register(String _email, String _password,

@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/blocs/parties/parties_cubit.dart';
 import 'package:pts/components/back_appbar.dart';
-import 'package:pts/Model/services/auth_service.dart';
 import 'package:pts/components/party_card/party_card.dart';
 import 'package:pts/components/title_appbar.dart';
 
@@ -12,10 +11,10 @@ class GetPartyData extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: DefaultTabController(  
-        length: 2,
-        child: Scaffold(  
-          appBar: PreferredSize(  
+        home: DefaultTabController(
+      length: 2,
+      child: Scaffold(
+          appBar: PreferredSize(
             preferredSize: Size.fromHeight(110),
             child: new BackAppBar(
               leading: CupertinoButton(
@@ -30,53 +29,42 @@ class GetPartyData extends StatelessWidget {
               title: TitleAppBar(
                 title: 'Soirées',
               ),
-              bottom: TabBar(  
+              bottom: TabBar(
                 indicatorColor: SECONDARY_COLOR,
                 indicatorWeight: 1.2,
                 tabs: [
                   TabText(
                     text: 'Rejoints',
                   ),
-                  TabText(  
+                  TabText(
                     text: 'Créées',
                   )
                 ],
               ),
             ),
           ),
-          body: TabBarView(
-            children: [
-              PartyJoin(),
-              PartyCreate()
-            ]
-          )
-        ),
-      )
-    );
+          body: TabBarView(children: [PartyJoin(), PartyCreate()])),
+    ));
   }
 }
 
 class PartyJoin extends StatelessWidget {
-  const PartyJoin({ Key key }) : super(key: key);
+  const PartyJoin({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => PartiesCubit()..fetchPartiesWithWhereArrayContains(
-        'validate guest list', 
-        AuthService.currentUser.displayName.split(' ')[0],  
-        AuthService.currentUser.uid
-      ),
-      child: BlocBuilder<PartiesCubit, PartiesState>(
-        builder: (context, state) {
-          if (state.parties == null) return Center(child: const CircularProgressIndicator());
-          return ListView.builder(
-            itemCount: state.parties.length,
-            itemBuilder: (BuildContext context, int index) =>
-            buildPartyCard(context, state.parties[index]),
-          );
-        }
-      ),
+      create: (context) => PartiesCubit()
+        ..fetchPartiesWithWhereArrayContains('validate guest list'),
+      child: BlocBuilder<PartiesCubit, PartiesState>(builder: (context, state) {
+        if (state.parties == null)
+          return Center(child: const CircularProgressIndicator());
+        return ListView.builder(
+          itemCount: state.parties.length,
+          itemBuilder: (BuildContext context, int index) =>
+              buildPartyCard(context, state.parties[index]),
+        );
+      }),
     );
   }
 
@@ -93,47 +81,38 @@ class PartyJoin extends StatelessWidget {
   // }
 }
 
-
 class PartyCreate extends StatelessWidget {
-  const PartyCreate({ Key key }) : super(key: key);
+  const PartyCreate({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => PartiesCubit()..fetchPartiesWithWhereIsEqualTo(
-        'uid', 
-        AuthService.currentUser.uid
-      ),
-      child: BlocBuilder<PartiesCubit, PartiesState>(
-        builder: (context, state) {
-          if (state.parties == null) return Center(child: const CircularProgressIndicator());
-          return ListView.builder(
-            itemCount: state.parties.length,
-            itemBuilder: (BuildContext context, int index) =>
-            buildPartyCard(context, state.parties[index]),
-          );
-        }
-      ),
+      create: (context) =>
+          PartiesCubit()..fetchPartiesWithWhereIsEqualTo('uid', 'uid'),
+      child: BlocBuilder<PartiesCubit, PartiesState>(builder: (context, state) {
+        if (state.parties == null)
+          return Center(child: const CircularProgressIndicator());
+        return ListView.builder(
+          itemCount: state.parties.length,
+          itemBuilder: (BuildContext context, int index) =>
+              buildPartyCard(context, state.parties[index]),
+        );
+      }),
     );
   }
 
   // Stream<QuerySnapshot> getPartyStreamSnapshots(BuildContext context) async* {
   //   final _db = FirebaseFirestore.instance.collection('party');
-    
+
   //   yield* _db
   //       .where('UID', isEqualTo: AuthService.currentUser.uid)
   //       .snapshots();
   // }
 }
 
-
 class TabText extends StatelessWidget {
   final String text;
-  const TabText({
-    this.text, 
-    Key key 
-    }) 
-    : super(key: key);
+  const TabText({this.text, Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -142,10 +121,7 @@ class TabText extends StatelessWidget {
       child: Center(
         child: Text(
           this.text,
-          style: TextStyle(  
-            color: SECONDARY_COLOR,
-            fontWeight: FontWeight.w500
-          ),
+          style: TextStyle(color: SECONDARY_COLOR, fontWeight: FontWeight.w500),
         ),
       ),
     );

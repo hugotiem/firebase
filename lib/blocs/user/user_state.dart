@@ -13,6 +13,7 @@ class UserState extends AppBaseState<UserStatus> {
       String requestFailureCode,
       String requestFailureMessage})
       : super(
+            status: status,
             requestInProgress: requestInProgress,
             requestFailureCode: requestFailureCode,
             requestFailureMessage: requestFailureMessage);

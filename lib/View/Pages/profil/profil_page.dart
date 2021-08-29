@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -186,6 +185,7 @@ class _ProfilState extends State<Profil> {
                     ),
                     GestureDetector(
                       onTap: () async {
+                        await service.setToken(null);
                         await service.instance.signOut();
                       },
                       child: Container(
