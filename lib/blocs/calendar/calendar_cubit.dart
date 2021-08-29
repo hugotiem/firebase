@@ -23,10 +23,12 @@ class CalendarCubit extends AppBaseCubit<CalendarState> {
     var invitedPartiesData = await services.getDataWithWhereArrayContains(
         'validate guest list', user.name, user.id);
 
-    var organisedParties =
-        organisedPartiesData.docs.map((e) => Meeting.fromSnapShot(e, SECONDARY_COLOR));
-    var invitedParties =
-        invitedPartiesData.docs.map((e) => Meeting.fromSnapShot(e, Colors.pink));
+    var organisedParties = organisedPartiesData.docs
+        .map((e) => Meeting.fromSnapShot(e, SECONDARY_COLOR))
+        .toList();
+    var invitedParties = invitedPartiesData.docs
+        .map((e) => Meeting.fromSnapShot(e, Colors.pink))
+        .toList();
 
     emit(CalendarState.dataLoaded(organisedParties, invitedParties));
   }
