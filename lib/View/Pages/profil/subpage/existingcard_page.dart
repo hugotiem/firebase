@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_credit_card/credit_card_widget.dart';
 import 'package:pts/components/back_appbar.dart';
 import 'package:pts/components/title_appbar.dart';
-import 'package:pts/constant.dart';
 
 import 'new_credid_card_page.dart';
 

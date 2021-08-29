@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:pts/Model/services/auth_service.dart';
 import 'package:pts/components/ProfilPhoto.dart';
 import 'package:pts/components/back_appbar.dart';
 import 'package:pts/components/pts_box.dart';

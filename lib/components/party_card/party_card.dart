@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:pts/Model/capitalize.dart';
 import 'package:pts/Model/party.dart';
-import 'package:pts/Model/services/auth_service.dart';
 import 'package:pts/Model/user.dart';
 import 'package:pts/blocs/user/user_cubit.dart';
 import 'package:pts/components/back_appbar.dart';

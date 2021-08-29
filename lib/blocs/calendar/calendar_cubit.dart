@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/Model/calendar_data_source.dart';
-import 'package:pts/Model/services/auth_service.dart';
 import 'package:pts/Model/services/firestore_service.dart';
 import 'package:pts/Model/user.dart';
 import 'package:pts/blocs/base/app_base_cubit.dart';

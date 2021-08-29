@@ -45,7 +45,9 @@ class _NewCreditCardState extends State<NewCreditCard> {
               TTFNewCreditCard(  
                 hintText: 'ex: Martin Morel',
                 onChanged: (value) {},
-                validator: (value) {},
+                validator: (value) {
+                  return null;
+                },
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -62,7 +64,9 @@ class _NewCreditCardState extends State<NewCreditCard> {
                         width: MediaQuery.of(context).size.width * 0.4,
                         hintText: 'XX/XX',
                         onChanged: (value) {},
-                        validator: (value) {},
+                        validator: (value) {
+                          return null;
+                        },
                       ),
                     ],
                   ),
@@ -79,7 +83,9 @@ class _NewCreditCardState extends State<NewCreditCard> {
                         width: MediaQuery.of(context).size.width * 0.4,
                         hintText: 'XXX',
                         onChanged: (value) {},
-                        validator: (value) {},
+                        validator: (value) {
+                          return null;
+                        },
                       ),
                     ],
                   )
@@ -91,7 +97,9 @@ class _NewCreditCardState extends State<NewCreditCard> {
               TTFNewCreditCard(  
                 hintText: 'XXXX XXXX XXXX XXXX',
                 onChanged: (value) {},
-                validator: (value) {},
+                validator: (value) {
+                  return null;
+                },
               ),
             ],
           ),
