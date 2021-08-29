@@ -88,7 +88,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
       child: BlocBuilder<CalendarCubit, CalendarState>(
         builder: (context, state) {
           if (state.status != CalendarStatus.dataLoaded) {
-            return Center(child: CircularProgressIndicator());
+            return Center(child: CalendarProgressIndicator());
           }
           events = MeetingDataSource(state.organisedParties + state.invitedParties);
           return SafeArea(
@@ -229,6 +229,37 @@ class OpacityText extends StatelessWidget {
         this.data,
         style: TextStyle(color: this.color),
       ),
+    );
+  }
+}
+
+class CalendarProgressIndicator extends StatelessWidget {
+  const CalendarProgressIndicator({ Key key }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Expanded(
+          flex: 4,
+          child: SfCalendar(
+            monthViewSettings: MonthViewSettings(
+              navigationDirection: MonthNavigationDirection.vertical),
+            cellBorderColor: PRIMARY_COLOR,
+            view: CalendarView.month,
+            initialSelectedDate: DateTime.now(),
+            todayHighlightColor: SECONDARY_COLOR,
+            selectionDecoration: BoxDecoration(
+            border: Border.all(color: SECONDARY_COLOR, width: 1.5)),
+          ),
+        ),
+        Expanded(
+          flex: 1,
+          child: Container(
+            color: Colors.white,
+          )
+        )
+      ],
     );
   }
 }
