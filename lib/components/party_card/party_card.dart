@@ -8,7 +8,7 @@ import 'package:pts/Model/party.dart';
 import 'package:pts/Model/user.dart';
 import 'package:pts/blocs/user/user_cubit.dart';
 import 'package:pts/components/back_appbar.dart';
-import 'package:pts/view/pages/search/subpage/choosepayment_page.dart';
+import 'package:pts/view/pages/profil/subpage/existingcard_page.dart';
 import 'open/animalsmoke_information.dart';
 import 'open/custombnb.dart';
 import 'open/fab_join.dart';
@@ -216,7 +216,7 @@ Widget buildPartyCard(BuildContext context, Party party) {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                ChoosePayment()));
+                                                ExistingCard()));
                                   }
                                 },
                         ),

@@ -9,6 +9,8 @@ class TFFText extends StatelessWidget {
   final String Function(String) validator;
   final TextInputType keyboardType;
   final List<TextInputFormatter> inputFormatters;
+  final double width;
+  final TextCapitalization textCapitalization;
 
   const TFFText({ 
     @required this.onChanged,
@@ -17,6 +19,8 @@ class TFFText extends StatelessWidget {
     @required this.validator,
     this.keyboardType,
     this.inputFormatters,
+    this.width,
+    this.textCapitalization,
     Key key 
     }) 
     : super(key: key);
@@ -26,7 +30,9 @@ class TFFText extends StatelessWidget {
     return Center(
       child: Container(
         height: HEIGHTCONTAINER,
-        width: MediaQuery.of(context).size.width * 0.9,
+        width: this.width == null
+        ? MediaQuery.of(context).size.width * 0.9
+        : this.width,
         decoration: BoxDecoration(
           color: PRIMARY_COLOR,
           borderRadius: BorderRadius.circular(15)
@@ -35,6 +41,9 @@ class TFFText extends StatelessWidget {
           padding: const EdgeInsets.only(left: 16),
           child: Center(
             child: TextFormField(  
+              textCapitalization: this.textCapitalization != null
+              ? this.textCapitalization
+              : TextCapitalization.none,
               onChanged: this.onChanged,
               style: TextStyle(  
                 fontSize: TEXTFIELDFONTSIZE,

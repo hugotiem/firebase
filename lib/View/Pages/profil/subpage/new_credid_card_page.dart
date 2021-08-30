@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pts/components/back_appbar.dart';
+import 'package:pts/components/components_creation/tff_text.dart';
+import 'package:pts/components/custom_input_formatters.dart';
 import 'package:pts/components/party_card/open/fab_join.dart';
 import 'package:pts/components/title_appbar.dart';
 
@@ -15,6 +17,10 @@ class NewCreditCard extends StatefulWidget {
 }
 
 class _NewCreditCardState extends State<NewCreditCard> {
+  String _holderName;
+  String _endDate;
+  String _cvv;
+  String _cardNumber;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
@@ -30,7 +36,15 @@ class _NewCreditCardState extends State<NewCreditCard> {
       ),
       floatingActionButton: FABJoin(  
         label: 'Ajouter',
-        onPressed: () {},
+        onPressed: () {
+          if (!_formKey.currentState.validate()) {
+            return;
+          }
+          print(_cardNumber);
+          print(_endDate);
+          print(_cvv);
+          print(_holderName);
+        },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: SingleChildScrollView(
@@ -42,11 +56,17 @@ class _NewCreditCardState extends State<NewCreditCard> {
               TextNewCreditCard(
                 text: 'Titulaire de la carte'
               ),
-              TTFNewCreditCard(  
+              TFFText(  
                 hintText: 'ex: Martin Morel',
-                onChanged: (value) {},
+                onChanged: (value) {
+                  _holderName = value;
+                },
                 validator: (value) {
-                  return null;
+                  if (value.isEmpty) {
+                    return 'Entrer le nom du propriétaire de la carte';
+                  } else {
+                    return null;
+                  }
                 },
               ),
               Row(
@@ -60,12 +80,25 @@ class _NewCreditCardState extends State<NewCreditCard> {
                           text: "Date d'expiration",
                         ),
                       ),
-                      TTFNewCreditCard(  
+                      TFFText(  
                         width: MediaQuery.of(context).size.width * 0.4,
                         hintText: 'XX/XX',
-                        onChanged: (value) {},
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          MaskedTextInputFormatter(
+                            mask: 'XX/XX',
+                            separator: '/'
+                          )
+                        ],
+                        onChanged: (value) {
+                          _endDate = value;
+                        },
                         validator: (value) {
-                          return null;
+                          if (value.length < 5){
+                            return 'Date invalide';
+                          } else {
+                            return null;
+                          }
                         },
                       ),
                     ],
@@ -79,12 +112,23 @@ class _NewCreditCardState extends State<NewCreditCard> {
                           text: "CVV",
                         ),
                       ),
-                      TTFNewCreditCard(  
+                      TFFText(  
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
                         width: MediaQuery.of(context).size.width * 0.4,
                         hintText: 'XXX',
-                        onChanged: (value) {},
+                        maxLength: 3,
+                        onChanged: (value) {
+                          _cvv = value;
+                        },
                         validator: (value) {
-                          return null;
+                          if (value.length < 3) {
+                            return 'CVV invalide';
+                          } else {
+                            return null;
+                          }
                         },
                       ),
                     ],
@@ -94,11 +138,24 @@ class _NewCreditCardState extends State<NewCreditCard> {
               TextNewCreditCard(
                 text: 'Numéro de carte'
               ),
-              TTFNewCreditCard(  
+              TFFText(  
+                textCapitalization: TextCapitalization.characters,
                 hintText: 'XXXX XXXX XXXX XXXX',
-                onChanged: (value) {},
+                onChanged: (value) {
+                  _cardNumber = value;
+                },
+                inputFormatters: [
+                  MaskedTextInputFormatter(  
+                    mask: 'XXXX XXXX XXXX XXXX',
+                    separator: ' '
+                  )
+                ],
                 validator: (value) {
-                  return null;
+                  if (value.length < 19) {
+                    return 'Numéro de carte invalide';
+                  } else {
+                    return null;
+                  }
                 },
               ),
             ],
@@ -131,67 +188,6 @@ class TextNewCreditCard extends StatelessWidget {
               color: SECONDARY_COLOR,
               fontSize: 16,
               fontWeight: FontWeight.w500
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class TTFNewCreditCard extends StatelessWidget {
-  final void Function(String) onChanged;
-  final String hintText;
-  final int maxLength;
-  final String Function(String) validator;
-  final TextInputType keyboardType;
-  final List<TextInputFormatter> inputFormatters;
-  final double width;
-
-  const TTFNewCreditCard({ 
-    @required this.onChanged,
-    @required this.hintText,
-    this.maxLength,
-    @required this.validator,
-    this.keyboardType,
-    this.inputFormatters,
-    this.width,
-    Key key 
-    }) 
-    : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        height: HEIGHTCONTAINER,
-        width: this.width == null
-        ? MediaQuery.of(context).size.width * 0.9
-        : this.width,
-        decoration: BoxDecoration(
-          color: PRIMARY_COLOR,
-          borderRadius: BorderRadius.circular(15)
-        ),
-        child: Padding( 
-          padding: const EdgeInsets.only(left: 16),
-          child: Center(
-            child: TextFormField(  
-              onChanged: this.onChanged,
-              style: TextStyle(  
-                fontSize: TEXTFIELDFONTSIZE,
-              ),
-              decoration: InputDecoration(  
-                hintText: this.hintText,
-                border: InputBorder.none,
-                counterText: '',
-                errorStyle: TextStyle(  
-                  height: 0
-                )
-              ),
-              maxLength: this.maxLength,
-              validator: this.validator,
-              keyboardType: this.keyboardType,
-              inputFormatters: this.inputFormatters,
             ),
           ),
         ),
