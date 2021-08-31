@@ -24,10 +24,10 @@ class LoginCubit extends AppBaseCubit<LoginState> {
         .onError((onHandleError));
   }
 
-  Future<void> signInWithGoogle(bool isRegister) async {
+  Future<void> signInWithGoogle() async {
     await auth
         .signInWithGoogle()
-        .then((_) => isRegister ? LoginState.signedUp() : LoginState.logged())
+        .then((_) => LoginState.logged())
         .catchError(onHandleError);
   }
 }

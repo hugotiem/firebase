@@ -181,8 +181,8 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                               color: PRIMARY_COLOR,
                             ),
                             child: FutureBuilder(
-                                future:
-                                    _firestore.getDataWithWhereIsEqualTo("city", _result.split(",")[0]),
+                                future: _firestore.getDataWithWhereIsEqualTo(
+                                    "city", _result.split(",")[0]),
                                 builder: (context, snapshot) {
                                   return ListView.builder(
                                     controller: sc,

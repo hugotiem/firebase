@@ -12,50 +12,43 @@ class TFFText extends StatelessWidget {
   final double width;
   final TextCapitalization textCapitalization;
 
-  const TFFText({ 
-    @required this.onChanged,
-    @required this.hintText,
-    this.maxLength,
-    @required this.validator,
-    this.keyboardType,
-    this.inputFormatters,
-    this.width,
-    this.textCapitalization,
-    Key key 
-    }) 
-    : super(key: key);
+  const TFFText(
+      {@required this.onChanged,
+      @required this.hintText,
+      this.maxLength,
+      @required this.validator,
+      this.keyboardType,
+      this.inputFormatters,
+      this.width,
+      this.textCapitalization,
+      Key key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Container(
         height: HEIGHTCONTAINER,
-        width: this.width == null
-        ? MediaQuery.of(context).size.width * 0.9
-        : this.width,
+        width: this.width ?? MediaQuery.of(context).size.width * 0.9,
         decoration: BoxDecoration(
           color: PRIMARY_COLOR,
-          borderRadius: BorderRadius.circular(15)
+          borderRadius: BorderRadius.circular(15),
         ),
-        child: Padding( 
+        child: Padding(
           padding: const EdgeInsets.only(left: 16),
           child: Center(
-            child: TextFormField(  
-              textCapitalization: this.textCapitalization != null
-              ? this.textCapitalization
-              : TextCapitalization.none,
+            child: TextFormField(
+              textCapitalization:
+                  this.textCapitalization ?? TextCapitalization.none,
               onChanged: this.onChanged,
-              style: TextStyle(  
+              style: TextStyle(
                 fontSize: TEXTFIELDFONTSIZE,
               ),
-              decoration: InputDecoration(  
-                hintText: this.hintText,
-                border: InputBorder.none,
-                counterText: '',
-                errorStyle: TextStyle(  
-                  height: 0
-                )
-              ),
+              decoration: InputDecoration(
+                  hintText: this.hintText,
+                  border: InputBorder.none,
+                  counterText: '',
+                  errorStyle: TextStyle(height: 0)),
               maxLength: this.maxLength,
               validator: this.validator,
               keyboardType: this.keyboardType,

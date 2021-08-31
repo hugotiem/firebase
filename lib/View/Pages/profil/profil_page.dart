@@ -56,11 +56,16 @@ class _ProfilState extends State<Profil> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        showModalBottomSheet(
-                          context: context,
-                          builder: (context) => LoginPage(),
-                          isScrollControlled: true,
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                              builder: (context) => LoginPage(),
+                              fullscreenDialog: true),
                         );
+                        // showModalBottomSheet(
+                        //   context: context,
+                        //   builder: (context) => LoginPage(),
+                        //   isScrollControlled: true,
+                        // );
                       },
                       child: Container(
                         margin: EdgeInsets.all(10),
