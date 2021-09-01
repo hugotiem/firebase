@@ -176,7 +176,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                       ),
                     ),
                   ),
-                ),
+                ) 
               ],
             ),
           );
@@ -190,7 +190,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
       setState(() {
         _appointmentDetails = calendarTapDetails.appointments.cast<Meeting>();
       });
-    }
+    } 
   }
 }
 

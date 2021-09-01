@@ -3,8 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:animations/animations.dart';
-import 'package:pts/View/Pages/creation/name_page.dart';
 import 'package:pts/View/Pages/search/sliver/searchbar_screen.dart';
+import 'package:pts/view/pages/creation/creation_page.dart';
 import '../../../../../Constant.dart';
 
 import 'subpage/city_page.dart';
@@ -234,7 +234,7 @@ class _ContainerAddPartyState extends State<ContainerAddParty> {
           GestureDetector(
             onTap: () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => NamePage()));
+                  context, MaterialPageRoute(builder: (context) => CreationPage()));
             },
             child: Container(
               //width: MediaQuery.of(context).size.width - 100,
