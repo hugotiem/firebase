@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pts/Constant.dart';
@@ -10,20 +11,21 @@ class LoginPage extends StatefulWidget {
   State<StatefulWidget> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
+class _LoginPageState extends State<LoginPage>
+    with SingleTickerProviderStateMixin {
   String _signInEmail;
   String _signInPassword;
 
   String _registerEmail;
   String _registerPassword;
 
-  // TabController _controller;
+  TabController _controller;
 
   int _currentIndex = 0;
 
   @override
   void initState() {
-    // _controller = TabController(length: 2, vsync: null);
+    _controller = TabController(length: 2, vsync: this);
     super.initState();
   }
 
@@ -33,66 +35,77 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
       length: 2,
       child: BlocProvider(
         create: (context) => LoginCubit(),
-        child: BlocBuilder<LoginCubit, LoginState>(builder: (context, state) {
-          return Scaffold(
-            appBar: AppBar(
-              elevation: 0,
-              backgroundColor: Colors.transparent,
-              iconTheme: Theme.of(context).iconTheme.copyWith(color: ICONCOLOR),
-            ),
-            body: Container(
-              // margin: EdgeInsets.only(top: 80),
-              child: Column(
-                children: [
-                  Container(
-                    child: Placeholder(
-                      fallbackHeight: 100,
-                    ),
-                  ),
-                  Container(
-                    child: TabBar(
-                      indicatorColor: SECONDARY_COLOR,
-                      unselectedLabelColor: SECONDARY_COLOR.withOpacity(.5),
-                      labelColor: SECONDARY_COLOR,
-                      unselectedLabelStyle: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      labelStyle: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      tabs: [
-                        Container(
-                          padding: EdgeInsets.symmetric(vertical: 20),
-                          child: Text(
-                            "Se connecter",
-                          ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.symmetric(vertical: 20),
-                          child: Text(
-                            "S'inscrire",
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: TabBarView(
-                      physics: BouncingScrollPhysics(),
-                      // controller: _controller,
-                      children: [
-                        _buildSignInContent(context),
-                        _buildRegisterContent(context),
-                      ],
-                    ),
-                  ),
-                ],
+        child: BlocListener<LoginCubit, LoginState>(
+          listener: (context, state) {
+            if (state.status == LoginStatus.logged) {
+              Navigator.of(context).pop();
+            }
+          },
+          child: BlocBuilder<LoginCubit, LoginState>(builder: (context, state) {
+            return Scaffold(
+              extendBodyBehindAppBar: true,
+              appBar: AppBar(
+                elevation: 0,
+                backgroundColor: Colors.transparent,
+                iconTheme:
+                    Theme.of(context).iconTheme.copyWith(color: ICONCOLOR),
               ),
-            ),
-          );
-        }),
+              body: SafeArea(
+                // margin: EdgeInsets.only(top: 80),
+                child: Column(
+                  children: [
+                    Container(
+                      child: Icon(
+                        Icons.house_rounded,
+                        color: SECONDARY_COLOR,
+                        size: 100,
+                      ),
+                    ),
+                    Container(
+                      child: TabBar(
+                        indicatorColor: SECONDARY_COLOR,
+                        unselectedLabelColor: SECONDARY_COLOR.withOpacity(.5),
+                        labelColor: SECONDARY_COLOR,
+                        unselectedLabelStyle: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        labelStyle: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        tabs: [
+                          Container(
+                            padding: EdgeInsets.symmetric(vertical: 20),
+                            child: Text(
+                              "Se connecter",
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(vertical: 20),
+                            child: Text(
+                              "S'inscrire",
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: TabBarView(
+                        physics: BouncingScrollPhysics(),
+                        controller: _controller,
+                        children: [
+                          _buildSignInContent(context),
+                          _buildRegisterContent(context),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }),
+        ),
       ),
     );
   }
@@ -127,6 +140,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                   height: 20,
                 ),
                 TFFText(
+                  obscureText: true,
                   hintText: 'Mot de passe',
                   onChanged: (value) {
                     this._signInPassword = value;
@@ -210,6 +224,26 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
               ),
             ),
           ),
+          SizedBox(
+            height: 20,
+          ),
+          RichText(
+            text: TextSpan(
+              text: "Pas de compte ? ",
+              style: TextStyle(color: SECONDARY_COLOR),
+              children: [
+                TextSpan(
+                  text: "Clique ici",
+                  style: TextStyle(
+                    color: ICONCOLOR,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () => _controller.animateTo(1),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -245,6 +279,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                   height: 20,
                 ),
                 TFFText(
+                  obscureText: true,
                   hintText: 'Mot de passe',
                   onChanged: (value) {
                     this._registerPassword = value;
@@ -262,7 +297,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
           GestureDetector(
             onTap: () async {
               await BlocProvider.of<LoginCubit>(context)
-                  .signIn(_signInEmail, _signInPassword);
+                  .register(_signInEmail, _signInPassword);
             },
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: 20),

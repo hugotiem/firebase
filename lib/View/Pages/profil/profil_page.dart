@@ -72,7 +72,7 @@ class _ProfilState extends State<Profil> {
                         padding: EdgeInsets.all(20),
                         decoration: BoxDecoration(
                           color: ICONCOLOR,
-                          borderRadius: BorderRadius.circular(100),
+                          borderRadius: BorderRadius.circular(15),
                         ),
                         child: BoldText(
                           text: "Se connecter",
