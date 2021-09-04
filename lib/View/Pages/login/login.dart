@@ -25,33 +25,41 @@ class _LoginPageState extends State<LoginPage>
 
   @override
   void initState() {
-    _controller = TabController(length: 2, vsync: this);
+    _controller = TabController(length: 2, vsync: this)
+      ..addListener(() {
+        setState(() {
+          _currentIndex = _controller.index;
+        });
+      });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: BlocProvider(
-        create: (context) => LoginCubit(),
-        child: BlocListener<LoginCubit, LoginState>(
-          listener: (context, state) {
-            if (state.status == LoginStatus.logged) {
-              Navigator.of(context).pop();
-            }
-          },
-          child: BlocBuilder<LoginCubit, LoginState>(builder: (context, state) {
+    return BlocProvider(
+      create: (context) => LoginCubit(),
+      child: BlocListener<LoginCubit, LoginState>(
+        listener: (context, state) {
+          if (state.status == LoginStatus.logged) {
+            Navigator.of(context).pop();
+          }
+        },
+        child: BlocBuilder<LoginCubit, LoginState>(
+          builder: (context, state) {
             return Scaffold(
+              backgroundColor: Colors.white,
               extendBodyBehindAppBar: true,
               appBar: AppBar(
                 elevation: 0,
                 backgroundColor: Colors.transparent,
+                textTheme: Theme.of(context).textTheme,
                 iconTheme:
                     Theme.of(context).iconTheme.copyWith(color: ICONCOLOR),
+                title: _currentIndex == 0
+                    ? Text("Connexion")
+                    : Text("Inscription"),
               ),
               body: SafeArea(
-                // margin: EdgeInsets.only(top: 80),
                 child: Column(
                   children: [
                     Container(
@@ -66,6 +74,7 @@ class _LoginPageState extends State<LoginPage>
                         indicatorColor: SECONDARY_COLOR,
                         unselectedLabelColor: SECONDARY_COLOR.withOpacity(.5),
                         labelColor: SECONDARY_COLOR,
+                        controller: _controller,
                         unselectedLabelStyle: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -104,34 +113,30 @@ class _LoginPageState extends State<LoginPage>
                 ),
               ),
             );
-          }),
+          },
         ),
       ),
     );
   }
 
-  Widget _buildSignInContent(BuildContext context) {
+  Widget _buildFormContent(BuildContext context,
+      {String textBtn,
+      void Function(String) onEmailChanged,
+      void Function(String) onPasswordChanged,
+      void Function() onTapBtn,
+      String textGoogleBtn,
+      void Function() onTapGoogleBtn,
+      RichText bottomText}) {
     return SingleChildScrollView(
       child: Column(
         children: [
-          Container(
-            margin: EdgeInsets.symmetric(vertical: 40),
-            child: Text(
-              "Connexion",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-              ),
-            ),
-          ),
           Form(
             child: Column(
               children: [
+                SizedBox(height: 40),
                 TFFText(
                   hintText: 'Email',
-                  onChanged: (value) {
-                    this._signInEmail = value;
-                  },
+                  onChanged: onEmailChanged,
                   validator: (value) {
                     return null;
                   },
@@ -142,9 +147,7 @@ class _LoginPageState extends State<LoginPage>
                 TFFText(
                   obscureText: true,
                   hintText: 'Mot de passe',
-                  onChanged: (value) {
-                    this._signInPassword = value;
-                  },
+                  onChanged: onPasswordChanged,
                   validator: (value) {
                     return null;
                   },
@@ -156,10 +159,7 @@ class _LoginPageState extends State<LoginPage>
             height: 40,
           ),
           GestureDetector(
-            onTap: () async {
-              await BlocProvider.of<LoginCubit>(context)
-                  .signIn(_signInEmail, _signInPassword);
-            },
+            onTap: onTapBtn,
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: 20),
               width: MediaQuery.of(context).size.width,
@@ -170,7 +170,7 @@ class _LoginPageState extends State<LoginPage>
               child: Container(
                 margin: EdgeInsets.symmetric(vertical: 20),
                 child: Text(
-                  "Se connecter",
+                  textBtn,
                   style: TextStyle(
                     color: ICONCOLOR,
                     fontSize: 18,
@@ -181,13 +181,30 @@ class _LoginPageState extends State<LoginPage>
               ),
             ),
           ),
-          SizedBox(
-            height: 10,
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            child: Wrap(
+              children: [
+                Stack(
+                  alignment: AlignmentDirectional.center,
+                  children: [
+                    Divider(
+                      height: 2,
+                      color: Colors.grey,
+                    ),
+                    Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+                      child: Text("ou"),
+                      color: Colors.white,
+                    )
+                  ],
+                ),
+              ],
+            ),
           ),
           GestureDetector(
-            onTap: () async {
-              await BlocProvider.of<LoginCubit>(context).signInWithGoogle();
-            },
+            onTap: onTapGoogleBtn,
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: 20),
               width: MediaQuery.of(context).size.width,
@@ -211,7 +228,7 @@ class _LoginPageState extends State<LoginPage>
                       width: 10,
                     ),
                     Text(
-                      "Se connecter avec Google",
+                      textGoogleBtn,
                       style: TextStyle(
                         color: SECONDARY_COLOR,
                         fontSize: 18,
@@ -227,143 +244,78 @@ class _LoginPageState extends State<LoginPage>
           SizedBox(
             height: 20,
           ),
-          RichText(
-            text: TextSpan(
-              text: "Pas de compte ? ",
-              style: TextStyle(color: SECONDARY_COLOR),
-              children: [
-                TextSpan(
-                  text: "Clique ici",
-                  style: TextStyle(
-                    color: ICONCOLOR,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  recognizer: TapGestureRecognizer()
-                    ..onTap = () => _controller.animateTo(1),
-                ),
-              ],
-            ),
-          ),
+          bottomText
         ],
       ),
     );
   }
 
-  Widget _buildRegisterContent(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Container(
-            margin: EdgeInsets.symmetric(vertical: 40),
-            child: Text(
-              "Inscription",
+  Widget _buildSignInContent(BuildContext context) {
+    return _buildFormContent(
+      context,
+      onEmailChanged: (value) {
+        this._signInEmail = value;
+      },
+      onPasswordChanged: (value) {
+        this._signInPassword = value;
+      },
+      textBtn: "Se connecter",
+      onTapBtn: () async {
+        await BlocProvider.of<LoginCubit>(context)
+            .signIn(_signInEmail, _signInPassword);
+      },
+      textGoogleBtn: "Se connecter avec Google",
+      onTapGoogleBtn: () async {
+        await BlocProvider.of<LoginCubit>(context).signInWithGoogle();
+      },
+      bottomText: RichText(
+        text: TextSpan(
+          text: "Pas de compte ? ",
+          style: TextStyle(color: SECONDARY_COLOR),
+          children: [
+            TextSpan(
+              text: "Clique ici",
               style: TextStyle(
+                color: ICONCOLOR,
                 fontWeight: FontWeight.bold,
-                fontSize: 20,
               ),
+              recognizer: TapGestureRecognizer()
+                ..onTap = () => _controller.animateTo(1),
             ),
-          ),
-          Form(
-            child: Column(
-              children: [
-                TFFText(
-                  hintText: 'Email',
-                  onChanged: (value) {
-                    this._registerEmail = value;
-                  },
-                  validator: (value) {
-                    return null;
-                  },
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRegisterContent(BuildContext context) {
+    return _buildFormContent(
+      context,
+      onEmailChanged: (value) {
+        this._registerEmail = value;
+      },
+      onPasswordChanged: (value) {
+        this._registerPassword = value;
+      },
+      textBtn: "S'inscrire",
+      onTapBtn: () {},
+      textGoogleBtn: "S'inscrire avec Google",
+      onTapGoogleBtn: () {},
+      bottomText: RichText(
+        text: TextSpan(
+            text: "Déjà un compte ? ",
+            style: TextStyle(color: SECONDARY_COLOR),
+            children: [
+              TextSpan(
+                text: "Clique ici",
+                style: TextStyle(
+                  color: ICONCOLOR,
+                  fontWeight: FontWeight.bold,
                 ),
-                SizedBox(
-                  height: 20,
-                ),
-                TFFText(
-                  obscureText: true,
-                  hintText: 'Mot de passe',
-                  onChanged: (value) {
-                    this._registerPassword = value;
-                  },
-                  validator: (value) {
-                    return null;
-                  },
-                ),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 40,
-          ),
-          GestureDetector(
-            onTap: () async {
-              await BlocProvider.of<LoginCubit>(context)
-                  .register(_signInEmail, _signInPassword);
-            },
-            child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 20),
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                color: SECONDARY_COLOR,
-                borderRadius: BorderRadius.circular(15),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () => _controller.animateTo(0),
               ),
-              child: Container(
-                margin: EdgeInsets.symmetric(vertical: 20),
-                child: Text(
-                  "S'inscrire",
-                  style: TextStyle(
-                    color: ICONCOLOR,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          GestureDetector(
-            onTap: () async {
-              await BlocProvider.of<LoginCubit>(context).signInWithGoogle();
-            },
-            child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 20),
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                color: PRIMARY_COLOR,
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: Container(
-                margin: EdgeInsets.symmetric(vertical: 10),
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      child: Image.asset(
-                        "assets/images/google-logo.png",
-                        height: 40,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      "S'inscrire avec Google",
-                      style: TextStyle(
-                        color: SECONDARY_COLOR,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
+            ]),
       ),
     );
   }
