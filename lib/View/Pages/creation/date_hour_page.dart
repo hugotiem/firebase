@@ -12,8 +12,9 @@ import '../../../Constant.dart';
 
 class DateHourPage extends StatefulWidget {
   final void Function() onNext;
+  final void Function() onPrevious;
 
-  const DateHourPage({Key key, this.onNext}) : super(key: key);
+  const DateHourPage({Key key, this.onNext, this.onPrevious}) : super(key: key);
   @override
   _DateHourPageState createState() => _DateHourPageState();
 }
@@ -35,7 +36,11 @@ class _DateHourPageState extends State<DateHourPage> {
       backgroundColor: FORMBACKGROUNDCOLOR,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50),
-        child: BackAppBar(),
+        child: BackAppBar(
+          onPressed: () {
+            widget.onPrevious();
+          },
+        ),
       ),
       floatingActionButton: FABForm(
         onPressed: () {

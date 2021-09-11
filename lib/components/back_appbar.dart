@@ -9,13 +9,15 @@ class BackAppBar extends PreferredSize {
   //final Brightness brightness;
   final Widget leading;
   final PreferredSizeWidget bottom;
+  final void Function() onPressed;
 
   BackAppBar({
     this.title,
     this.actions,
     //this.brightness,
     this.leading,
-    this.bottom
+    this.bottom,
+    this.onPressed
   });
 
   @override
@@ -31,9 +33,11 @@ class BackAppBar extends PreferredSize {
                 Icons.arrow_back_sharp,
                 color: ICONCOLOR,
               ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
+              onPressed: onPressed == null 
+                ? () {
+                  Navigator.pop(context);
+                }
+                : onPressed
             ),
       title: title,
       actions: actions,

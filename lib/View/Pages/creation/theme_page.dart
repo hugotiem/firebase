@@ -9,8 +9,9 @@ import '../../../Constant.dart';
 
 class ThemePage extends StatefulWidget {
   final void Function() onNext;
-
-  const ThemePage({Key key, this.onNext}) : super(key: key);
+  final void Function() onPrevious;
+  
+  const ThemePage({Key key, this.onNext, this.onPrevious}) : super(key: key);
   @override
   _ThemePageState createState() => _ThemePageState();
 }
@@ -25,7 +26,11 @@ class _ThemePageState extends State<ThemePage> {
       backgroundColor: FORMBACKGROUNDCOLOR,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50),
-        child: BackAppBar(),
+        child: BackAppBar(
+          onPressed: () {
+            widget.onPrevious();
+          },
+        ), 
       ),
       floatingActionButton: FABForm(
         onPressed: () {

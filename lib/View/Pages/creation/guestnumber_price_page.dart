@@ -14,8 +14,9 @@ enum RadioChoix { Gratuit, Cinq, Dix, Quinze, Vingt }
 
 class GuestNumber extends StatefulWidget {
   final void Function() onNext;
+  final void Function() onPrevious;
 
-  const GuestNumber({Key key, this.onNext}) : super(key: key);
+  const GuestNumber({Key key, this.onNext, this.onPrevious}) : super(key: key);
   @override
   _GuestNumberState createState() => _GuestNumberState();
 }
@@ -45,7 +46,11 @@ class _GuestNumberState extends State<GuestNumber> {
       backgroundColor: FORMBACKGROUNDCOLOR,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50),
-        child: BackAppBar(),
+        child: BackAppBar(
+          onPressed: () {
+            widget.onPrevious();
+          },
+        ),
       ),
       floatingActionButton: FABForm(
         onPressed: () {

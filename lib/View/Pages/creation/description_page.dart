@@ -11,6 +11,10 @@ import 'package:pts/components/components_creation/headertext_two.dart';
 import 'end_page.dart';
 
 class DescriptionPage extends StatefulWidget {
+  final void Function() onNext;
+  final void Function() onPrevious;
+
+  const DescriptionPage({Key key, this.onNext, this.onPrevious});
   @override
   _DescriptionPageState createState() => _DescriptionPageState();
 }
@@ -29,7 +33,11 @@ class _DescriptionPageState extends State<DescriptionPage> {
       backgroundColor: FORMBACKGROUNDCOLOR,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50),
-        child: BackAppBar(),
+        child: BackAppBar(
+          onPressed: () {
+            widget.onPrevious();
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton.extended(
           onPressed: () async {
@@ -58,6 +66,8 @@ class _DescriptionPageState extends State<DescriptionPage> {
 
             await BlocProvider.of<BuildPartiesCubit>(context).addToFireStore();
 
+            widget.onNext();
+
             // await db.add(
             //   data: {
             //     'Name': Soiree.nom.trimRight().trimLeft().inCaps,
@@ -81,8 +91,8 @@ class _DescriptionPageState extends State<DescriptionPage> {
             //   },
             // );
 
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => EndPage()));
+            // Navigator.push(
+            //     context, MaterialPageRoute(builder: (context) => EndPage()));
           },
           backgroundColor: SECONDARY_COLOR,
           elevation: 0,

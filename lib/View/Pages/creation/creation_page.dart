@@ -26,11 +26,11 @@ class _CreationPageState extends State<CreationPage> {
     _controller = PageController();
     _children = [
       NamePage(onNext: onNext),
-      ThemePage(onNext: onNext),
-      DateHourPage(onNext: onNext),
-      LocationPage(onNext: onNext),
-      GuestNumber(onNext: onNext),
-      DescriptionPage(),
+      ThemePage(onNext: onNext, onPrevious: onPrevious),
+      DateHourPage(onNext: onNext, onPrevious: onPrevious),
+      LocationPage(onNext: onNext, onPrevious: onPrevious),
+      GuestNumber(onNext: onNext, onPrevious: onPrevious),
+      DescriptionPage(onNext: onNext, onPrevious: onPrevious),
       EndPage(),
     ];
     super.initState();
@@ -40,6 +40,13 @@ class _CreationPageState extends State<CreationPage> {
     _controller.nextPage(
       duration: const Duration(milliseconds: 200),
       curve: Curves.easeIn,
+    );
+  }
+
+  void onPrevious() {
+    _controller.previousPage(
+      duration: const Duration(milliseconds:  200), 
+      curve: Curves.easeIn
     );
   }
 
@@ -62,6 +69,7 @@ class _CreationPageState extends State<CreationPage> {
           return PageView(
             controller: _controller,
             children: _children,
+            physics: NeverScrollableScrollPhysics(),
           );
         }),
       ),

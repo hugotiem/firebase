@@ -13,8 +13,9 @@ import 'package:pts/components/components_creation/tff_text.dart';
 
 class LocationPage extends StatefulWidget {
   final void Function() onNext;
+  final void Function() onPrevious;
 
-  const LocationPage({Key key, this.onNext}) : super(key: key);
+  const LocationPage({Key key, this.onNext, this.onPrevious}) : super(key: key);
   @override
   _LocationPageState createState() => _LocationPageState();
 }
@@ -31,7 +32,11 @@ class _LocationPageState extends State<LocationPage> {
       backgroundColor: FORMBACKGROUNDCOLOR,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50),
-        child: BackAppBar(),
+        child: BackAppBar(
+          onPressed: () {
+            widget.onPrevious();
+          },
+        ),
       ),
       floatingActionButton: FABForm(
         onPressed: () {
