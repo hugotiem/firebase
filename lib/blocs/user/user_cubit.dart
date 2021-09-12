@@ -13,23 +13,22 @@ class UserCubit extends AppBaseCubit<UserState> {
   FireStoreServices firestore = FireStoreServices("user");
 
   Future<void> init() async {
-    service.getToken().then(
-        (value) => emit(UserState.dataLoaded(token: value, user: state.user)));
-    print("token : " + state.token);
+    await service
+        .getToken()
+        .then((value) => emit(UserState.tokenLoaded(value)));
+    print("token : " + state.token.toString());
     service.instance.authStateChanges().listen((user) async {
+      print("Current user : " + user.toString());
       if (user != null) {
-        user.getIdToken().then((value) =>
-            emit(UserState.dataLoaded(token: value, user: state.user)));
-        await this.loadData();
+        await this.loadData(user: user);
       }
     });
   }
 
-  Future<void> loadData() async {
-    var token = await service.currentUser.getIdToken();
+  Future<void> loadData({var user}) async {
+    var token = user?.uid ?? await service.getToken();
     firestore.getDataById(token).then((value) {
-      emit(UserState.dataLoaded(
-          user: User.fromSnapshot(value), token: state.token));
+      emit(UserState.dataLoaded(user: User.fromSnapshot(value), token: token));
     }).catchError(onHandleError);
   }
 }

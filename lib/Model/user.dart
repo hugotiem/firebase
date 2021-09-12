@@ -12,7 +12,7 @@ class User {
   String gender;
   int age;
 
-  User({this.id});
+  User({this.id, this.name, this.surname});
 
   Future<User> get currentUser async {
     var token = await authService.getToken();
@@ -22,7 +22,10 @@ class User {
 
   factory User.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> snapshot) {
     var id = snapshot.id;
+    var data = snapshot.data();
+    var name = data['name'];
+    var surname = data['surname'];
 
-    return User(id: id);
+    return User(id: id, name: name, surname: surname);
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pts/Constant.dart';
+import 'package:pts/View/Pages/login/register_form_screen.dart';
 import 'package:pts/blocs/login/login_cubit.dart';
 import 'package:pts/components/components_creation/tff_text.dart';
 
@@ -42,6 +43,9 @@ class _LoginPageState extends State<LoginPage>
         listener: (context, state) {
           if (state.status == LoginStatus.logged) {
             Navigator.of(context).pop();
+          }
+          if (state.status == LoginStatus.signedUp) {
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => RegisterFormScreen(),),);
           }
         },
         child: BlocBuilder<LoginCubit, LoginState>(
@@ -298,9 +302,14 @@ class _LoginPageState extends State<LoginPage>
         this._registerPassword = value;
       },
       textBtn: "S'inscrire",
-      onTapBtn: () {},
+      onTapBtn: () async {
+        await BlocProvider.of<LoginCubit>(context)
+            .register(_registerEmail, _registerPassword);
+      },
       textGoogleBtn: "S'inscrire avec Google",
-      onTapGoogleBtn: () {},
+      onTapGoogleBtn: () async {
+        await BlocProvider.of<LoginCubit>(context).signInWithGoogle();
+      },
       bottomText: RichText(
         text: TextSpan(
             text: "Déjà un compte ? ",

@@ -4,7 +4,7 @@ import 'package:pts/blocs/base/app_base_state.dart';
 abstract class AppBaseCubit<U extends AppBaseState> extends Cubit<U> {
   AppBaseCubit(U initialState) : super(initialState);
 
-  void onHandleError(Object error, StackTrace stackTrace) {
+  Future<Null> onHandleError(Object error, StackTrace stackTrace) async {
     emit(state.setRequestInProgress(inProgress: false));
 
     emit(state.setErrorReceived(
