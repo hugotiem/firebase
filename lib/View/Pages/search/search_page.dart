@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:animations/animations.dart';
 import 'package:pts/View/Pages/search/sliver/searchbar_screen.dart';
+import 'package:pts/constant.dart';
 import 'package:pts/view/pages/creation/creation_page.dart';
-import '../../../../../Constant.dart';
 
 import 'subpage/city_page.dart';
 import 'subpage/last_party_page.dart';
@@ -277,7 +277,7 @@ class TitleText extends StatelessWidget {
       child: Text(
         this.text,
         style: TextStyle(
-            fontWeight: FontWeight.w900, fontSize: 20, color: SECONDARY_COLOR),
+            fontWeight: FontWeight.w900, fontSize: 20, color: SECONDARY_COLOR, fontFamily: PRIMARY_FONT),
       ),
     );
   }

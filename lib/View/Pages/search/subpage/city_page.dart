@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pts/blocs/parties/parties_cubit.dart';
 import 'package:pts/components/back_appbar.dart';
 import 'package:pts/components/party_card.dart';
+import 'package:pts/constant.dart';
 
-import '../../../../Constant.dart';
 
 class GridViewCity extends StatefulWidget {
   @override
@@ -118,7 +118,8 @@ class CityBox extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w900,
-                  color: FOCUS_COLOR
+                  color: FOCUS_COLOR,
+                  fontFamily: PRIMARY_FONT
               ),
             ),
           ),
@@ -136,7 +137,8 @@ class CityBox extends StatelessWidget {
                     this.text,
                     style: TextStyle(  
                       color: SECONDARY_COLOR,
-                      fontWeight: FontWeight.bold
+                      fontWeight: FontWeight.bold,
+                      fontFamily: PRIMARY_FONT
                     ),
                   ),
                 ),

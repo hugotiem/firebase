@@ -13,3 +13,7 @@ const Color SECONDARY_COLOR = Color(0xff232f3e);
 const Color FORMBACKGROUNDCOLOR = Colors.white;
 const double HEIGHTCONTAINER = 58;
 const double TEXTFIELDFONTSIZE = 18;
+
+
+// FontFamily
+const String PRIMARY_FONT = "MerriweatherSans";
