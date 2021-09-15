@@ -10,7 +10,7 @@ class HorzontalSeparator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 30, bottom: 50, left: 21, right: 21),
+      padding: const EdgeInsets.only(top: 40, bottom: 40, left: 21, right: 21),
       child: Container(
         decoration: BoxDecoration(  
           border: Border(  

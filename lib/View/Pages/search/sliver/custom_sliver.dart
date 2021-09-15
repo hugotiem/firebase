@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class CustomSliver extends StatelessWidget {
-  final Widget appBar, body, searchBar;
+  final Widget appBar, body, searchBar, bottomNavigationBar;
   final Color backgroundColor, toolbarColor;
   final Brightness brightness;
   final Function(ScrollNotification) onNotification;
@@ -15,6 +15,7 @@ class CustomSliver extends StatelessWidget {
     this.toolbarColor,
     this.brightness,
     @required this.searchBar,
+    this.bottomNavigationBar,
   }) : super(key: key);
 
   @override
@@ -42,6 +43,7 @@ class CustomSliver extends StatelessWidget {
           ],
         ),
       ),
+      bottomNavigationBar: bottomNavigationBar,
     );
   }
 }

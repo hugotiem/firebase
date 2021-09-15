@@ -220,7 +220,7 @@ class _LoginPageState extends State<LoginPage>
                   children: [
                     Container(
                       child: Image.asset(
-                        "assets/images/google-logo.png",
+                        "assets/google-logo.png",
                         height: 40,
                       ),
                     ),

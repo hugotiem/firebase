@@ -95,9 +95,9 @@ class _SearchState extends State<Search> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TitleText(
-                    text: 'Dernières créées',
+                    text: 'Dernières soirées créées',
                     margin: EdgeInsets.only(top: 30, left: 20)),
-                SizedBox(height: 220, child: CardParty()),
+                SizedBox(height: 270, child: CardParty()),
               ],
             )),
             // listes des thèmes de soirées
@@ -128,6 +128,7 @@ class _SearchState extends State<Search> {
               }
               _barSizeWidth = 350 - (_pixels / 8);
               _barSizeHeight = 60 - (_pixels / 15);
+              
             } else if (_pixels > 300) {
               _size = 100;
               _opacity = 0;

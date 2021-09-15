@@ -8,8 +8,6 @@ import 'package:pts/components/back_appbar.dart';
 import 'package:pts/components/components_creation/headertext_one.dart';
 import 'package:pts/components/components_creation/headertext_two.dart';
 
-import 'end_page.dart';
-
 class DescriptionPage extends StatefulWidget {
   final void Function() onNext;
   final void Function() onPrevious;

@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:pts/components/back_appbar.dart';
 import 'package:pts/components/components_creation/tff_text.dart';
 import 'package:pts/components/custom_input_formatters.dart';
-import 'package:pts/components/party_card/open/fab_join.dart';
+import 'package:pts/components/fab_join.dart';
 import 'package:pts/components/title_appbar.dart';
 
 import '../../../../constant.dart';

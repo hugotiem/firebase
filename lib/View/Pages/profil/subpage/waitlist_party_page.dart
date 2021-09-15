@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/blocs/parties/parties_cubit.dart';
 import 'package:pts/components/back_appbar.dart';
-import 'package:pts/components/party_card/party_card.dart';
+import 'package:pts/components/party_card.dart';
 import 'package:pts/components/title_appbar.dart';
 
 class PartyWaitList extends StatelessWidget {
