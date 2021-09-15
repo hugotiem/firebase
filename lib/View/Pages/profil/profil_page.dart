@@ -39,190 +39,192 @@ class _ProfilState extends State<Profil> {
       ),
       backgroundColor: PRIMARY_COLOR,
       body: BlocProvider(
-        create: (context) => UserCubit()..loadData(),
-        child: BlocBuilder<UserCubit, UserState>(builder: (context, state) {
-          var isLogged = state.token != null;
-          if (!isLogged) {
-            return SafeArea(
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      child: Text(
-                        "Vous n'etes pas connecté",
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                              builder: (context) => LoginPage(),
-                              fullscreenDialog: true),
-                        );
-                        // showModalBottomSheet(
-                        //   context: context,
-                        //   builder: (context) => LoginPage(),
-                        //   isScrollControlled: true,
-                        // );
-                      },
-                      child: Container(
-                        margin: EdgeInsets.all(10),
-                        padding: EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          color: ICONCOLOR,
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: BoldText(
-                          text: "Se connecter",
+        create: (context) => UserCubit()..init(),
+        child: BlocBuilder<UserCubit, UserState>(
+          builder: (context, state) {
+            var isLogged = state.token != null;
+            if (!isLogged) {
+              return SafeArea(
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        child: Text(
+                          "Vous n'etes pas connecté",
+                          textAlign: TextAlign.center,
                         ),
                       ),
-                    ),
-                  ],
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) => LoginPage(),
+                                fullscreenDialog: true),
+                          );
+                          // showModalBottomSheet(
+                          //   context: context,
+                          //   builder: (context) => LoginPage(),
+                          //   isScrollControlled: true,
+                          // );
+                        },
+                        child: Container(
+                          margin: EdgeInsets.all(10),
+                          padding: EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            color: ICONCOLOR,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: BoldText(
+                            text: "Se connecter",
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            );
-          }
+              );
+            }
 
-          var user = state.user;
+            var user = state.user;
 
-          if (user == null) {
-            return Center(child: CircularProgressIndicator());
-          }
+            if (user == null) {
+              return Center(child: CircularProgressIndicator());
+            }
 
-          return SingleChildScrollView(
-            child: Container(
-              color: PRIMARY_COLOR,
-              child: Center(
-                child: Column(
-                  children: <Widget>[
-                    ClickableContainer(
-                      to: ProfilDetails(),
-                      containerShadow: true,
-                      child: Row(
-                        children: <Widget>[
-                          ProfilPhoto(),
-                          Container(
-                            margin: EdgeInsets.only(left: 20),
-                            child: new Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                BoldText(text: user.name ?? ""),
-                                Opacity(
-                                  opacity: 0.7,
-                                  child: new Text("Afficher le profil"),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    PTSBox(
-                      padding: EdgeInsets.only(top: 20, bottom: 20),
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            TitleTextProfil(
-                              text: 'Activités',
-                            ),
-                            CickableContainerProfil(
-                              to: GetPartyData(),
-                              text: "Vos soirées",
-                              icon: Icons.calendar_today_outlined,
-                            ),
-                            CickableContainerProfil(
-                              text: "Messagerie",
-                              icon: Icons.message_outlined,
-                              bottomBorder: false,
-                            ),
-                          ]),
-                    ),
-                    PTSBox(
-                      padding: EdgeInsets.only(top: 20, bottom: 20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          TitleTextProfil(
-                            text: "Listes d'attente",
-                          ),
-                          CickableContainerProfil(
-                            to: PartyWaitList(),
-                            text: "Soirées",
-                            icon: Icons.calendar_today_outlined,
-                          ),
-                          CickableContainerProfil(
-                            to: GuestWaitList(),
-                            text: 'Invités',
-                            icon: Icons.perm_identity_outlined,
-                            bottomBorder: false,
-                          )
-                        ],
-                      ),
-                    ),
-                    PTSBox(
-                      padding: EdgeInsets.only(top: 20, bottom: 20),
-                      // creer une list avec tous les elements
-                      child: new Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          TitleTextProfil(
-                            text: 'Paramètres du compte',
-                          ),
-                          CickableContainerProfil(
-                            to: InfoScreen(),
-                            text: "Informations personnelles",
-                            icon: Icons.perm_identity_outlined,
-                          ),
-                          CickableContainerProfil(
-                            to: ExistingCard(),
-                            text: "Paiements",
-                            icon: Icons.payment_outlined,
-                          ),
-                          CickableContainerProfil(
-                            text: "Notifications",
-                            icon: Icons.notifications_outlined,
-                            bottomBorder: false,
-                          ),
-                        ],
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () async {
-                        await service.setToken(null);
-                        await service.instance.signOut();
-                      },
-                      child: Container(
-                        margin: EdgeInsets.all(10),
-                        padding: EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20)),
+            return SingleChildScrollView(
+              child: Container(
+                color: PRIMARY_COLOR,
+                child: Center(
+                  child: Column(
+                    children: <Widget>[
+                      ClickableContainer(
+                        to: ProfilDetails(),
+                        containerShadow: true,
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            Text(
-                              "Se deconnecter",
-                              style: TextStyle(
-                                color: Colors.red,
-                                fontSize: 20,
+                            ProfilPhoto(),
+                            Container(
+                              margin: EdgeInsets.only(left: 20),
+                              child: new Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  BoldText(text: user.name ?? ""),
+                                  Opacity(
+                                    opacity: 0.7,
+                                    child: new Text("Afficher le profil"),
+                                  ),
+                                ],
                               ),
-                            ),
-                            Icon(
-                              Icons.logout,
-                              color: Colors.red,
                             ),
                           ],
                         ),
                       ),
-                    ),
-                  ],
+                      PTSBox(
+                        padding: EdgeInsets.only(top: 20, bottom: 20),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              TitleTextProfil(
+                                text: 'Activités',
+                              ),
+                              CickableContainerProfil(
+                                to: GetPartyData(),
+                                text: "Vos soirées",
+                                icon: Icons.calendar_today_outlined,
+                              ),
+                              CickableContainerProfil(
+                                text: "Messagerie",
+                                icon: Icons.message_outlined,
+                                bottomBorder: false,
+                              ),
+                            ]),
+                      ),
+                      PTSBox(
+                        padding: EdgeInsets.only(top: 20, bottom: 20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            TitleTextProfil(
+                              text: "Listes d'attente",
+                            ),
+                            CickableContainerProfil(
+                              to: PartyWaitList(),
+                              text: "Soirées",
+                              icon: Icons.calendar_today_outlined,
+                            ),
+                            CickableContainerProfil(
+                              to: GuestWaitList(),
+                              text: 'Invités',
+                              icon: Icons.perm_identity_outlined,
+                              bottomBorder: false,
+                            )
+                          ],
+                        ),
+                      ),
+                      PTSBox(
+                        padding: EdgeInsets.only(top: 20, bottom: 20),
+                        // creer une list avec tous les elements
+                        child: new Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            TitleTextProfil(
+                              text: 'Paramètres du compte',
+                            ),
+                            CickableContainerProfil(
+                              to: InfoScreen(),
+                              text: "Informations personnelles",
+                              icon: Icons.perm_identity_outlined,
+                            ),
+                            CickableContainerProfil(
+                              to: ExistingCard(),
+                              text: "Paiements",
+                              icon: Icons.payment_outlined,
+                            ),
+                            CickableContainerProfil(
+                              text: "Notifications",
+                              icon: Icons.notifications_outlined,
+                              bottomBorder: false,
+                            ),
+                          ],
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () async {
+                          await service.setToken(null);
+                          await service.instance.signOut();
+                        },
+                        child: Container(
+                          margin: EdgeInsets.all(10),
+                          padding: EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text(
+                                "Se deconnecter",
+                                style: TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 20,
+                                ),
+                              ),
+                              Icon(
+                                Icons.logout,
+                                color: Colors.red,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          );
-        }),
+            );
+          },
+        ),
       ),
     );
   }

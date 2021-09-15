@@ -8,8 +8,12 @@ class FireStoreServices {
 
   FirebaseFirestore get firestore => _firestore;
 
-  Future add({Map<String, dynamic> data}) async {
+  Future<void> add({Map<String, dynamic> data}) async {
     await this._firestore.collection(collection).add(data);
+  }
+
+  Future<void> addWithId(String id, {Map<String, dynamic> data}) async {
+    await this._firestore.collection(collection).doc(id).set(data);
   }
 
   Stream<QuerySnapshot<Map<String, dynamic>>> getSnapshots() {

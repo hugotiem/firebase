@@ -12,6 +12,8 @@ class TFFText extends StatelessWidget {
   final double width;
   final TextCapitalization textCapitalization;
   final bool obscureText;
+  final TextEditingController controller;
+  final Brightness keyboardAppearance;
 
   const TFFText(
       {@required this.onChanged,
@@ -22,7 +24,10 @@ class TFFText extends StatelessWidget {
       this.inputFormatters,
       this.width,
       this.textCapitalization,
-      Key key, this.obscureText})
+      Key key,
+      this.obscureText,
+      this.controller,
+      this.keyboardAppearance})
       : super(key: key);
 
   @override
@@ -39,6 +44,8 @@ class TFFText extends StatelessWidget {
           padding: const EdgeInsets.only(left: 16),
           child: Center(
             child: TextFormField(
+              keyboardAppearance: keyboardAppearance,
+              controller: controller,
               obscureText: this.obscureText ?? false,
               textCapitalization:
                   this.textCapitalization ?? TextCapitalization.none,
@@ -47,10 +54,11 @@ class TFFText extends StatelessWidget {
                 fontSize: TEXTFIELDFONTSIZE,
               ),
               decoration: InputDecoration(
-                  hintText: this.hintText,
-                  border: InputBorder.none,
-                  counterText: '',
-                  errorStyle: TextStyle(height: 0),),
+                hintText: this.hintText,
+                border: InputBorder.none,
+                counterText: '',
+                errorStyle: TextStyle(height: 0),
+              ),
               maxLength: this.maxLength,
               validator: this.validator,
               keyboardType: this.keyboardType,
