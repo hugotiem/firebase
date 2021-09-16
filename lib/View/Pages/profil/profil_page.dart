@@ -10,6 +10,7 @@ import 'package:pts/components/pts_box.dart';
 import 'package:pts/components/text_materials.dart';
 import 'package:pts/components/pts_components.dart';
 import 'package:pts/Model/services/auth_service.dart';
+import 'package:pts/view/pages/messaging/message_list.dart';
 import 'package:pts/view/pages/profil/subpage/existingcard_page.dart';
 import 'package:pts/view/pages/profil/subpage/info_page.dart';
 import 'package:pts/view/pages/profil/subpage/list_user_party_page.dart';
@@ -134,6 +135,7 @@ class _ProfilState extends State<Profil> {
                                 icon: Icons.calendar_today_outlined,
                               ),
                               CickableContainerProfil(
+                                to: MessagePage(),
                                 text: "Messagerie",
                                 icon: Icons.message_outlined,
                                 bottomBorder: false,

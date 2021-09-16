@@ -4,12 +4,12 @@ import 'package:flutter/services.dart';
 import 'package:pts/Constant.dart';
 
 class BackAppBar extends PreferredSize {
-  final Widget title;
+  final Widget title, leading;
   final List<Widget> actions;
   //final Brightness brightness;
-  final Widget leading;
   final PreferredSizeWidget bottom;
   final void Function() onPressed;
+  final Color backgroundColor;
 
   BackAppBar({
     this.title,
@@ -17,13 +17,14 @@ class BackAppBar extends PreferredSize {
     //this.brightness,
     this.leading,
     this.bottom,
-    this.onPressed
+    this.onPressed,
+    this.backgroundColor,
   });
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.transparent,
+      backgroundColor: backgroundColor == null ? Colors.transparent : backgroundColor,
       elevation: 0.0,
       //centerTitle: true,
       leading: leading != null
