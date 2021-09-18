@@ -16,7 +16,7 @@ class TFFText extends StatelessWidget {
   final Brightness keyboardAppearance;
 
   const TFFText(
-      {@required this.onChanged,
+      {this.onChanged,
       @required this.hintText,
       this.maxLength,
       @required this.validator,

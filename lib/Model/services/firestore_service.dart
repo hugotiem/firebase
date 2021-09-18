@@ -12,8 +12,12 @@ class FireStoreServices {
     await this._firestore.collection(collection).add(data);
   }
 
-  Future<void> addWithId(String id, {Map<String, dynamic> data}) async {
-    await this._firestore.collection(collection).doc(id).set(data);
+  Future<void> setWithId(String id, {Map<String, dynamic> data}) async {
+    await this
+        ._firestore
+        .collection(collection)
+        .doc(id)
+        .set(data, SetOptions(merge: true));
   }
 
   Stream<QuerySnapshot<Map<String, dynamic>>> getSnapshots() {

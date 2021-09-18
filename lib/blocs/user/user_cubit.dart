@@ -31,4 +31,25 @@ class UserCubit extends AppBaseCubit<UserState> {
       emit(UserState.dataLoaded(user: User.fromSnapshot(value), token: token));
     }).catchError(onHandleError);
   }
+
+  Future<void> updateUserInfo({String name, String surname}) async {
+    emit(state.setRequestInProgress());
+    var id = await service.getToken();
+    Map<String, dynamic> data = <String, dynamic>{
+      "name": name,
+      // "surname": surname,
+    };
+    await firestore.setWithId(id, data: data);
+    emit(UserState.dataLoaded(user: state.user, token: state.token));
+  }
+
+  Future<void> addIdRef() async {
+    emit(state.setRequestInProgress());
+    var id = await service.getToken();
+    Map<String, dynamic> data = <String, dynamic>{
+      "idRef": "id",
+    };
+    await firestore.setWithId(id, data: data);
+    emit(UserState.dataLoaded(user: state.user, token: state.token));
+  }
 }
