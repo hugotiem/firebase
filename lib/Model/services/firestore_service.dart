@@ -58,4 +58,10 @@ class FireStoreServices {
         .orderBy("timeStamp", descending: true)
         .get();
   }
+
+  Stream<QuerySnapshot> getStreamSnapshot() async* {
+    yield* this.firestore
+    .collection(collection)
+    .snapshots();
+  }
 }
