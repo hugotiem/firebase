@@ -11,6 +11,8 @@ import 'package:pts/Model/party.dart';
 import 'package:pts/Model/user.dart';
 import 'package:pts/blocs/user/user_cubit.dart';
 import 'package:pts/components/text_descpription_show_hide.dart';
+import 'package:pts/model/services/auth_service.dart';
+import 'package:pts/view/pages/messaging/subpage/chatpage.dart';
 import 'package:pts/view/pages/profil/subpage/existingcard_page.dart';
 import 'package:pts/view/pages/search/sliver/custom_sliver.dart';
 import '../../../Constant.dart';
@@ -162,6 +164,63 @@ Widget buildPartyCard(BuildContext context, Party party) {
     ];
   }
 
+  void contacter() async {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    var chatCollection = firestore.collection('chat');
+    var currentUserID = AuthService().currentUser.uid;
+    var currentUserName = AuthService().currentUser.displayName;
+    var otherUserUID = party.uid;
+    List currentUIDList = [];
+    List otherUIDList = [];
+    List emptyList = [];
+
+    currentUIDList.add({ 'uid': currentUserID, 'name': currentUserName });
+    otherUIDList.add({ 'uid': party.uid, 'name': party.owner });
+
+    chatCollection.doc(party.uid).snapshots().listen((datasnapshot) async {
+      chatCollection.doc(currentUserID).snapshots().listen((datasnapshot) async {
+        if (datasnapshot.exists) {
+          return;
+        } else {
+          await chatCollection.doc(currentUserID).set({
+            'userid': FieldValue.arrayUnion(emptyList),
+          });
+        }
+      });
+      if (datasnapshot.exists) {
+        await chatCollection.doc(party.uid).update({
+          'userid': FieldValue.arrayUnion(currentUIDList),
+        }).then((value) {
+          chatCollection.doc(currentUserID).update({
+            'userid': FieldValue.arrayUnion(otherUIDList),
+          }).then((value) {
+            Navigator.push(context, 
+            MaterialPageRoute(builder: (context) => ChatPage(otherUserUID, otherUserName: party.owner)));
+          });
+        });
+      } else {
+        await chatCollection.doc(party.uid).set({
+          'userid': emptyList
+        }).then((value) {
+          chatCollection.doc(currentUserID).set({
+            'userid': emptyList
+          });
+        });
+        
+        await chatCollection.doc(party.uid).update({
+          'userid': FieldValue.arrayUnion(currentUIDList),
+        }).then((value) {
+          chatCollection.doc(currentUserID).update({
+            'userid': FieldValue.arrayUnion(otherUIDList),
+          }).then((value) {
+            Navigator.push(context, 
+            MaterialPageRoute(builder: (context) => ChatPage(otherUserUID, otherUserName: party.owner)));
+          });
+        });
+      }
+    });
+  }
+
   return Stack(
     children: <Widget>[
       Padding(
@@ -278,63 +337,6 @@ Widget buildPartyCard(BuildContext context, Party party) {
                             ),
                           ],
                         ),
-                        // child: Row(
-                        //   mainAxisAlignment: MainAxisAlignment.start,
-                        //   children: [
-                        //     Expanded(
-                        //       flex: 2,
-                        //       child: Container(
-                        //           padding: EdgeInsets.only(left: 5),
-                        //           alignment: Alignment.centerLeft,
-                        //           child: TimeText(
-                        //             heure:
-                        //                 "${DateFormat.Hm('fr').format(party.startTime).split(':')[0]}h${DateFormat.Hm('fr').format(party.startTime).split(':')[1]}",
-                        //             mois:
-                        //                 "${DateFormat.MMMM('fr').format(party.startTime)}",
-                        //             jour:
-                        //                 "${DateFormat.E('fr').format(party.startTime)}${DateFormat.d('fr').format(party.startTime)}",
-                        //           )),
-                        //     ),
-                        //     VerticalSeparator(),
-                        //     Expanded(
-                        //       flex: 8,
-                        //       child: Container(
-                        //         padding:
-                        //             EdgeInsets.only(left: 16, bottom: 10, right: 16),
-                        //         child: Column(
-                        //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //           children: [
-                        //             Row(
-                        //               children: [
-                        //                 TitleText(
-                        //                     name: party.name, theme: party.theme)
-                        //               ],
-                        //             ),
-                        //             Row(
-                        //               mainAxisAlignment:
-                        //                   MainAxisAlignment.spaceBetween,
-                        //               children: [
-                        //                 Textdetail(
-                        //                   headerText: 'invités',
-                        //                   detailText: party.number,
-                        //                 ),
-                        //                 Textdetail(
-                        //                     headerText: 'Prix',
-                        //                     detailText: party.price != '0'
-                        //                         ? '${party.price}€'
-                        //                         : 'Gratuit'),
-                        //                 Textdetail(
-                        //                   headerText: 'ville',
-                        //                   detailText: party.city,
-                        //                 ),
-                        //               ],
-                        //             )
-                        //           ],
-                        //         ),
-                        //       ),
-                        //     )
-                        //   ],
-                        // ),
                       ),
                     ),
                     Expanded( 
@@ -432,6 +434,7 @@ Widget buildPartyCard(BuildContext context, Party party) {
                             smoke: party.smoke,
                             list: list,
                             nameList: nameList,
+                            contacter: () => contacter(),
                           ),
                         ),
                       ),
@@ -475,116 +478,6 @@ Widget buildPartyCard(BuildContext context, Party party) {
                         }
                       ),
                     );
-                    // Scaffold(
-                    //     appBar: PreferredSize(
-                    //       preferredSize: Size.fromHeight(50),
-                    //       child: BackAppBar(),
-                    //     ),
-                    //     bottomNavigationBar: CustomBNB(),
-                    //     floatingActionButton: FABJoin(
-                    //       label: 'Rejoindre',
-                    //       onPressed: user == null
-                    //           ? null
-                    //           : () async {
-                    //               if (party.price == '0') {
-                    //                 final _db = FirebaseFirestore.instance
-                    //                     .collection('parties')
-                    //                     .doc(party.id);
-                    //                 final name = user.name;
-
-                    //                 final uid = user.id;
-
-                    //                 List waitList = [];
-                    //                 waitList.add({"name": name, "uid": uid});
-
-                    //                 await _db.update({
-                    //                   "wait list":
-                    //                       FieldValue.arrayUnion(waitList),
-                    //                 });
-
-                    //                 Navigator.push(
-                    //                     context,
-                    //                     MaterialPageRoute(
-                    //                         builder: (context) =>
-                    //                             JoinWaitList()));
-                    //               } else {
-                    //                 Navigator.push(
-                    //                     context,
-                    //                     MaterialPageRoute(
-                    //                         builder: (context) =>
-                    //                             ExistingCard()));
-                    //               }
-                    //             },
-                    //     ),
-                    //     floatingActionButtonLocation:
-                    //         FloatingActionButtonLocation.centerDocked,
-                    //     body: SingleChildScrollView(
-                    //       child: Column(
-                    //         children: [
-                    //           NameThemeInformation(
-                    //             nom: party.name.toUpperCase(),
-                    //             theme: party.theme,
-                    //           ),
-                    //           DateInformation(
-                    //             date:
-                    //                 '${DateFormat.E('fr').format(party.startTime).inCaps} ${DateFormat.d('fr').format(party.startTime)} ${DateFormat.MMMM('fr').format(party.startTime)}',
-                    //           ),
-                    //           HourInformation(
-                    //             heuredebut:
-                    //                 'De ${DateFormat.Hm('fr').format(party.startTime).split(":")[0]}h${DateFormat.Hm('fr').format(party.startTime).split(":")[1]}',
-                    //             heurefin:
-                    //                 'A ${DateFormat.Hm('fr').format(party.endTime).split(':')[0]}h${DateFormat.Hm('fr').format(party.endTime).split(':')[1]}',
-                    //           ),
-                    //           SizedBox(height: 50),
-                    //           PriceInformation(
-                    //             prix: '${party.price} €',
-                    //           ),
-                    //           AnimalSmokeInformation(
-                    //               animal: party.animals, smoke: party.smoke),
-                    //           HorzontalSeparator(),
-                    //           DescriptionInformation(
-                    //               nomOrganisateur: party.owner,
-                    //               avis: '4.9 / 5 - 0 avis',
-                    //               description:
-                    //                   party.desc != null ? party.desc : ''),
-                    //           ContactInformation(
-                    //             onPressed: () {},
-                    //             contact:
-                    //                 'contacter ${party.owner.split(' ')[0]}',
-                    //           ),
-                    //           HorzontalSeparator(),
-                    //           nameList.isNotEmpty
-                    //               ? Column(
-                    //                   children: [
-                    //                     // graphique pourcentage homme/femme/autre
-                    //                     PieChartInformation(
-                    //                       valueHomme: 45,
-                    //                       titleHomme: '45 %',
-                    //                       valueFemme: 45,
-                    //                       titleFemme: '45 %',
-                    //                       valueAutre: 10,
-                    //                       titleAutre: '10 %',
-                    //                     ),
-                    //                     PieChartLegend(),
-                    //                     // faire la liste des personnes acceptées à la soirée
-                    //                     Column(children: list)
-                    //                   ],
-                    //                 )
-                    //               : Opacity(
-                    //                   opacity: 0.7,
-                    //                   child: Text(
-                    //                     "Il n'y a pas encore d'invité",
-                    //                     style: TextStyle(
-                    //                         fontSize: 16,
-                    //                         color: SECONDARY_COLOR),
-                    //                   ),
-                    //                 ),
-                    //           SizedBox(
-                    //             height: 50,
-                    //           )
-                    //         ],
-                    //       ),
-                    //     ));
                   }),
                 );
               },
@@ -595,7 +488,7 @@ Widget buildPartyCard(BuildContext context, Party party) {
     ],
   );
 }
-
+ 
 
 class CustomSliverCard extends StatefulWidget {
   final List<Color> color;
@@ -834,6 +727,7 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
 class CardBody extends StatelessWidget {
   final String desc, nomOrganisateur, avis, animal, smoke, nombre;
   final List nameList, list;
+  final void Function() contacter;
 
   const CardBody({ Key key, 
   this.desc, 
@@ -843,7 +737,8 @@ class CardBody extends StatelessWidget {
   this.smoke,
   this.nameList,
   this.list,
-  this.nombre
+  this.nombre,
+  this.contacter,
   }) 
   : super(key: key);
 
@@ -926,7 +821,7 @@ class CardBody extends StatelessWidget {
                   fontSize: 16
                 )
               ),
-              onPressed: () {},
+              onPressed: this.contacter,
             )
           ),
         ),

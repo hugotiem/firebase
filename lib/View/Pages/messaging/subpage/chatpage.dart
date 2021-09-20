@@ -9,10 +9,9 @@ import 'package:pts/model/services/auth_service.dart';
 class ChatPage extends StatelessWidget {
   final otherUserID;
   final otherUserName;
-  final otherUserSurname;
 
-  const ChatPage(String this.otherUserID, this.otherUserName, this.otherUserSurname,
-  { Key key }) 
+  const ChatPage(String this.otherUserID,
+  { this.otherUserName, Key key }) 
   : super(key: key);
 
   @override
@@ -25,7 +24,9 @@ class ChatPage extends StatelessWidget {
           title: Row(
             children: [
               Text(  
-                "$otherUserName $otherUserSurname",
+                otherUserName == null 
+                ? ''
+                : otherUserName,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(  
                   color: SECONDARY_COLOR

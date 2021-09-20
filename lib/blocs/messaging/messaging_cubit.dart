@@ -9,7 +9,7 @@ class MessagingCubit extends AppBaseCubit<MessagingState> {
 
   FireStoreServices userServices = FireStoreServices("user");
 
-  Stream fetchListUser() async* {
-    var messageSnapshot = userServices.getSnapshots();
-  }
+  // Stream fetchListUser() async* {
+  //   var messageSnapshot = userServices.getSnapshots();
+  // }
 }
