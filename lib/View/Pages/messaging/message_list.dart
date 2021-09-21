@@ -33,46 +33,44 @@ class ListMessage extends StatefulWidget {
 
 class _ListMessageState extends State<ListMessage> {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-  List<DocumentSnapshot> _docs;
-  var currentUserId = AuthService().currentUser.uid;
-  var currentUserName = AuthService().currentUser.displayName;
+  dynamic _docs;
+  String currentUserId = AuthService().currentUser.uid;
+  String currentUserName = AuthService().currentUser.displayName;
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
       stream: getmessageStreamSnapshot(context),
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if (!snapshot.hasData) return const Center(child: CircularProgressIndicator(),);
-        _docs = snapshot.data.docs;
-        if (_docs.isEmpty) return EmptyList();
+        _docs = snapshot.data;
+        if (_docs.exists == false) return EmptyList();
+        List listUser = snapshot.data['userid'];
         return Container(
           margin: const EdgeInsets.only(bottom: 40),
           child: Column(  
-            children: _docs.map((document) {
+            children: listUser.map((doc) {
               return InkWell(
-                onTap: () => openChat(  
-                  document.id),
-                child: UserLineDesign(
-                  userID: document.id),
-                );
-            }).toList(),
-          ),
+                onTap: () => openChat(doc['uid'], doc['name']),
+                child: UserLineDesign(userID: doc['uid'], userName: doc['name'],)
+              );
+            }).toList()
+          )
         );
       },
     );
   }
 
-  Stream<QuerySnapshot> getmessageStreamSnapshot(BuildContext context) async* {
-    Map map = {'uid': currentUserId, 'name':  currentUserName};
+  Stream<DocumentSnapshot> getmessageStreamSnapshot(BuildContext context) async* {
     yield* FirebaseFirestore.instance
         .collection('chat')
-        .where('userid', arrayContains: map)
+        .doc(currentUserId)
         .snapshots();
   }
 
-  void openChat(String userID) {
+  void openChat(String userID, String userName) {
     Navigator.push(context, 
-      MaterialPageRoute(builder: (context) => ChatPage(userID))
+      MaterialPageRoute(builder: (context) => ChatPage(userID, otherUserName: userName,))
     );
   }
 }
@@ -109,7 +107,7 @@ class UserLineDesign extends StatelessWidget {
                 this.userName,
                 style: TextStyle( fontSize: 20, fontWeight: FontWeight.bold))
               : Text(''),
-              Text(this.userID, style: TextStyle(fontSize: 17))
+              GetLastMessage(this.userID)
             ],
           )
         ],
@@ -136,6 +134,34 @@ class EmptyList extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class GetLastMessage extends StatelessWidget {
+  final String otherUserID;
+  const GetLastMessage(this.otherUserID, {Key key}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    CollectionReference chatService = FirebaseFirestore.instance.collection('chat');
+    String currentUserID = AuthService().currentUser.uid;
+    List<dynamic> _docs;
+    return FutureBuilder<QuerySnapshot>(
+      future: chatService
+          .doc(currentUserID)
+          .collection(otherUserID)
+          .orderBy('date')
+          .limitToLast(1)
+          .get(),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (!snapshot.hasData) return Text('');
+        _docs = snapshot.data.docs;
+        return Row(  
+          children: _docs.map((doc) {
+            return Text(doc['text']);
+          }).toList()
+        );
+      },
     );
   }
 }
