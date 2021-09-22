@@ -52,7 +52,7 @@ class _ListMessageState extends State<ListMessage> {
             children: listUser.map((doc) {
               return InkWell(
                 onTap: () => openChat(doc['uid'], doc['name']),
-                child: UserLineDesign(userID: doc['uid'], userName: doc['name'],)
+                child: UserLineDesign(userID: doc['uid'], userName: doc['name'])
               );
             }).toList()
           )
@@ -84,12 +84,12 @@ class UserLineDesign extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(left: 15, top: 15, right: 10, bottom: 10),
+      padding: const EdgeInsets.only(left: 24, top: 15, right: 24, bottom: 10),
       child: Row(  
         children: [
           Container(
-            height: 50,
-            width: 50,
+            height: 45,
+            width: 45,
             decoration: BoxDecoration(  
               image: DecorationImage(
                 image: AssetImage(  
@@ -98,14 +98,17 @@ class UserLineDesign extends StatelessWidget {
               )
             ),
           ),
-          const SizedBox(width: 20),
+          const SizedBox(width: 16),
           Column(  
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               this.userName != null
-              ? Text(
-                this.userName,
-                style: TextStyle( fontSize: 20, fontWeight: FontWeight.bold))
+              ? Container(
+                padding: EdgeInsets.only(bottom: 2),
+                child: Text(
+                  this.userName,
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
+              )
               : Text(''),
               GetLastMessage(this.userID)
             ],
@@ -158,7 +161,16 @@ class GetLastMessage extends StatelessWidget {
         _docs = snapshot.data.docs;
         return Row(  
           children: _docs.map((doc) {
-            return Text(doc['text']);
+            return Container(
+              width: MediaQuery.of(context).size.width * 0.65,
+              child: Opacity(
+                opacity: 0.6,
+                child: Text(
+                  doc['text'], 
+                  overflow: TextOverflow.ellipsis,
+                ),
+              )
+            );
           }).toList()
         );
       },

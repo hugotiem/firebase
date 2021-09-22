@@ -136,7 +136,7 @@ class _ProfilState extends State<Profil> {
                               ),
                               CickableContainerProfil(
                                 to: MessagePage(),
-                                text: "Messagerie",
+                                text: "Messages",
                                 icon: Icons.message_outlined,
                                 bottomBorder: false,
                               ),

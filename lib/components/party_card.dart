@@ -757,14 +757,16 @@ class CardBody extends StatelessWidget {
               Column(  
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  this.nomOrganisateur != null
+                  ?Text(
                     this.nomOrganisateur,
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w500,
                       color: SECONDARY_COLOR
                     )
-                  ),
+                  )
+                  :Text(''),
                   Opacity(
                     opacity: 0.7,
                     child: Row(
@@ -815,7 +817,9 @@ class CardBody extends StatelessWidget {
             alignment: Alignment.centerLeft,
             child: TextButton(
               child: Text(
-                "contacter ${this.nomOrganisateur.split(" ")[0]}",
+                this.nomOrganisateur != null
+                ?"contacter ${this.nomOrganisateur.split(" ")[0]}"
+                :'Contacter',
                 style: TextStyle(  
                   color: Colors.blue,
                   fontSize: 16
