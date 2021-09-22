@@ -7,25 +7,24 @@ import 'package:pts/model/services/auth_service.dart';
 import 'package:pts/view/pages/messaging/subpage/chatpage.dart';
 
 class MessagePage extends StatelessWidget {
-  const MessagePage({ Key key }) : super(key: key);
+  const MessagePage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: PRIMARY_COLOR,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(50),
-        child: BackAppBar(
-          title: TitleAppBar(title: "Boîte de réception"),
-        )
-      ),
+          preferredSize: Size.fromHeight(50),
+          child: BackAppBar(
+            title: TitleAppBar(title: "Boîte de réception"),
+          )),
       body: ListMessage(),
     );
   }
 }
 
 class ListMessage extends StatefulWidget {
-  const ListMessage({ Key key }) : super(key: key);
+  const ListMessage({Key key}) : super(key: key);
 
   @override
   _ListMessageState createState() => _ListMessageState();
@@ -41,27 +40,30 @@ class _ListMessageState extends State<ListMessage> {
   Widget build(BuildContext context) {
     return StreamBuilder(
       stream: getmessageStreamSnapshot(context),
-      builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-        if (!snapshot.hasData) return const Center(child: CircularProgressIndicator(),);
+      builder:
+          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        if (!snapshot.hasData)
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
         _docs = snapshot.data;
         if (_docs.exists == false) return EmptyList();
         List listUser = snapshot.data['userid'];
         return Container(
-          margin: const EdgeInsets.only(bottom: 40),
-          child: Column(  
-            children: listUser.map((doc) {
+            margin: const EdgeInsets.only(bottom: 40),
+            child: Column(
+                children: listUser.map((doc) {
               return InkWell(
-                onTap: () => openChat(doc['uid'], doc['name']),
-                child: UserLineDesign(userID: doc['uid'], userName: doc['name'])
-              );
-            }).toList()
-          )
-        );
+                  onTap: () => openChat(doc['uid'], doc['name']),
+                  child: UserLineDesign(
+                      userID: doc['uid'], userName: doc['name']));
+            }).toList()));
       },
     );
   }
 
-  Stream<DocumentSnapshot> getmessageStreamSnapshot(BuildContext context) async* {
+  Stream<DocumentSnapshot> getmessageStreamSnapshot(
+      BuildContext context) async* {
     yield* FirebaseFirestore.instance
         .collection('chat')
         .doc(currentUserId)
@@ -69,47 +71,46 @@ class _ListMessageState extends State<ListMessage> {
   }
 
   void openChat(String userID, String userName) {
-    Navigator.push(context, 
-      MaterialPageRoute(builder: (context) => ChatPage(userID, otherUserName: userName,))
-    );
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => ChatPage(
+                  userID,
+                  otherUserName: userName,
+                )));
   }
 }
 
 class UserLineDesign extends StatelessWidget {
   final String userID, userName;
 
-  const UserLineDesign({this.userID, this.userName, Key key }) 
-   : super(key: key);
+  const UserLineDesign({this.userID, this.userName, Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(left: 24, top: 15, right: 24, bottom: 10),
-      child: Row(  
+      child: Row(
         children: [
           Container(
             height: 45,
             width: 45,
-            decoration: BoxDecoration(  
-              image: DecorationImage(
-                image: AssetImage(  
-                  "assets/roundBlankProfilPicture.png"
-                )
-              )
-            ),
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage("assets/roundBlankProfilPicture.png"))),
           ),
           const SizedBox(width: 16),
-          Column(  
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               this.userName != null
-              ? Container(
-                padding: EdgeInsets.only(bottom: 2),
-                child: Text(
-                  this.userName,
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
-              )
-              : Text(''),
+                  ? Container(
+                      padding: EdgeInsets.only(bottom: 2),
+                      child: Text(this.userName,
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.w600)),
+                    )
+                  : Text(''),
               GetLastMessage(this.userID)
             ],
           )
@@ -120,20 +121,18 @@ class UserLineDesign extends StatelessWidget {
 }
 
 class EmptyList extends StatelessWidget {
-  const EmptyList({ Key key }) : super(key: key);
+  const EmptyList({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 26, right: 18, left: 18),
-      child: Container(  
+      child: Container(
         child: Opacity(
           opacity: 0.85,
           child: Text(
             "Pas de message pour l'instant. Rejoingnez ou créez une soirée pour contacter quelqu'un.",
-            style: TextStyle(  
-              color: SECONDARY_COLOR
-            ),
+            style: TextStyle(color: SECONDARY_COLOR),
           ),
         ),
       ),
@@ -146,7 +145,8 @@ class GetLastMessage extends StatelessWidget {
   const GetLastMessage(this.otherUserID, {Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    CollectionReference chatService = FirebaseFirestore.instance.collection('chat');
+    CollectionReference chatService =
+        FirebaseFirestore.instance.collection('chat');
     String currentUserID = AuthService().currentUser.uid;
     List<dynamic> _docs;
     return FutureBuilder<QuerySnapshot>(
@@ -159,20 +159,18 @@ class GetLastMessage extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) return Text('');
         _docs = snapshot.data.docs;
-        return Row(  
-          children: _docs.map((doc) {
-            return Container(
+        return Row(
+            children: _docs.map((doc) {
+          return Container(
               width: MediaQuery.of(context).size.width * 0.65,
               child: Opacity(
                 opacity: 0.6,
                 child: Text(
-                  doc['text'], 
+                  doc['text'],
                   overflow: TextOverflow.ellipsis,
                 ),
-              )
-            );
-          }).toList()
-        );
+              ));
+        }).toList());
       },
     );
   }
