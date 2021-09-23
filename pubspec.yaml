@@ -69,8 +69,19 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-   - assets/roundBlankProfilPicture.png
-   - assets/google-logo.png
+    - assets/roundBlankProfilPicture.png
+    - assets/google-logo.png
+    - assets/marseille_nuit.jpg
+    - assets/paris_nuit.jpg
+    - assets/lyon_nuit.jpg
+    - assets/nice_nuit.jpg
+    - assets/toulouse_nuit.jpg
+    - assets/nantes_nuit.jpg
+    - assets/strasbourg_nuit.jpg
+    - assets/montpellier_nuit.jpg
+    - assets/bordeaux_nuit.jpg
+    - assets/lille_nuit.jpg
+    - assets/map.png
 
   fonts: 
     - family: MerriweatherSans

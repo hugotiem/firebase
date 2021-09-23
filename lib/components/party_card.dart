@@ -13,6 +13,7 @@ import 'package:pts/view/pages/messaging/subpage/chatpage.dart';
 import 'package:pts/view/pages/profil/subpage/existingcard_page.dart';
 import 'package:pts/view/pages/search/sliver/custom_sliver.dart';
 import '../../../Constant.dart';
+import 'custom_text.dart';
 import 'horizontal_separator.dart';
 import 'join_wait_list.dart';
 import 'piechart_informartion.dart';
@@ -34,25 +35,21 @@ Widget buildPartyCard(BuildContext context, Party party) {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
+                  CText(
                     doc['name'],
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                      color: SECONDARY_COLOR
-                    ),
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    color: SECONDARY_COLOR
                   ),
                   Opacity(
                     opacity: 0.7,
                     child: Row(
                       children: [
                         Icon( Icons.star_border_rounded, color: ICONCOLOR),
-                        Text(
+                        CText(
                           '4.9 / 5 - 0 avis',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: SECONDARY_COLOR,
-                          ),
+                          fontSize: 16,
+                          color: SECONDARY_COLOR,
                         )
                       ],
                     ),
@@ -269,13 +266,11 @@ Widget buildPartyCard(BuildContext context, Party party) {
                                 crossAxisAlignment: CrossAxisAlignment.start,  
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  Text(  
-                                    party.name,
-                                    style: TextStyle(  
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.w500,
-                                      color: PRIMARY_COLOR
-                                    ),
+                                  CText(  
+                                    party.name, 
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.w500,
+                                    color: PRIMARY_COLOR
                                   ),
                                   Row(
                                     children: [
@@ -283,11 +278,9 @@ Widget buildPartyCard(BuildContext context, Party party) {
                                         Icons.location_on_outlined,
                                         color: PRIMARY_COLOR,
                                       ),
-                                      Text(  
+                                      CText(  
                                         party.city,
-                                        style: TextStyle(  
-                                          color: PRIMARY_COLOR,
-                                        ),
+                                        color: PRIMARY_COLOR,
                                       ),
                                     ],
                                   )
@@ -301,7 +294,7 @@ Widget buildPartyCard(BuildContext context, Party party) {
                                 child: BlurryContainer(
                                   bgColor: Colors.red[100],
                                   width: 75,
-                                  height: 90,
+                                  height: 94,
                                   blur: 2,
                                   borderRadius: BorderRadius.all(Radius.circular(30)),
                                   child: Column( 
@@ -310,22 +303,18 @@ Widget buildPartyCard(BuildContext context, Party party) {
                                     children: [
                                       Padding(
                                         padding: const EdgeInsets.only(bottom: 4),
-                                        child: Text(
+                                        child: CText(
                                           "${DateFormat.MMM('fr').format(party.startTime).split(".")[0]}",
-                                          style: TextStyle(  
-                                            fontWeight: FontWeight.w700,
-                                            color: PRIMARY_COLOR,
-                                            fontSize: 19
-                                          ),
+                                          fontWeight: FontWeight.w700,
+                                          color: PRIMARY_COLOR,
+                                          fontSize: 19
                                         ),
                                       ),
-                                      Text(
+                                      CText(
                                         "${DateFormat.d('fr').format(party.startTime)}",
-                                        style: TextStyle(  
                                           fontWeight: FontWeight.w800,
                                           color: PRIMARY_COLOR,
                                           fontSize: 25
-                                        ),
                                       )
                                     ]
                                   ),
@@ -366,12 +355,10 @@ Widget buildPartyCard(BuildContext context, Party party) {
                                           borderRadius: BorderRadius.circular(25)
                                         ),
                                         child: Center(
-                                          child: Text(  
+                                          child: CText(  
                                             "  +${listPhoto.length - 3}  ",
-                                            style: TextStyle(  
                                               fontSize: 16,
                                               color: SECONDARY_COLOR
-                                            ),
                                           ),
                                         ),
                                       ),
@@ -388,13 +375,11 @@ Widget buildPartyCard(BuildContext context, Party party) {
                                   borderRadius: BorderRadius.all(Radius.circular(30))
                                 ),
                                 child: Center(
-                                  child: Text(
+                                  child: CText(
                                     'Rejoindre',
-                                    style: TextStyle(
                                       color: PRIMARY_COLOR,
                                       fontSize: 18,
                                       fontWeight: FontWeight.w700
-                                    )
                                   ),
                                 )
                               ),
@@ -442,7 +427,7 @@ Widget buildPartyCard(BuildContext context, Party party) {
                         onTap: user == null
                         ? () {
                           final snackBar = SnackBar(  
-                            content: const Text("Vous n'êtes pas connecté"),
+                            content: const CText("Vous n'êtes pas connecté"),
                             duration: Duration(seconds: 2),
                           );
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -598,12 +583,10 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(bottom: 16),
-                          child: Text(
+                          child: CText(
                             widget.name,
-                            style: TextStyle(  
-                              fontSize: 22,
-                              fontWeight: FontWeight.w500
-                            ),
+                            fontSize: 22,
+                            fontWeight: FontWeight.w500
                           ),
                         ),
                         Padding(
@@ -618,11 +601,9 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
                                   color: SECONDARY_COLOR,
                                 ),
                               ),
-                              Text(
+                              CText(
                                 widget.date,
-                                style: TextStyle(  
-                                  color: SECONDARY_COLOR
-                                )
+                                color: SECONDARY_COLOR
                               )
                             ],
                           )
@@ -638,11 +619,9 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
                                 color: SECONDARY_COLOR,
                               ),
                             ),
-                            Text(
+                            CText(
                               widget.location,
-                              style: TextStyle(  
-                                color: SECONDARY_COLOR,
-                              ),
+                              color: SECONDARY_COLOR,
                             )
                           ],
                         )
@@ -662,12 +641,10 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
                         ),
                       ),
                       Center(
-                        child: Text( 
+                        child: CText( 
                           widget.name,
-                          style: TextStyle(  
                             fontSize: 22,
                             fontWeight: FontWeight.w500
-                          ),
                         ),
                       ),
                     ],
@@ -755,26 +732,22 @@ class CardBody extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   this.nomOrganisateur != null
-                  ?Text(
+                  ?CText(
                     this.nomOrganisateur,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                      color: SECONDARY_COLOR
-                    )
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    color: SECONDARY_COLOR
                   )
-                  :Text(''),
+                  :CText(''),
                   Opacity(
                     opacity: 0.7,
                     child: Row(
                       children:[
                         Icon(Icons.star_border_outlined, color: ICONCOLOR),
-                        Text(
+                        CText(
                           this.avis,
-                          style: TextStyle(  
-                            fontSize: 16,
-                            color: SECONDARY_COLOR
-                          ),
+                          fontSize: 16,
+                          color: SECONDARY_COLOR
                         ),
                       ]
                     ),
@@ -813,14 +786,12 @@ class CardBody extends StatelessWidget {
           child: Align(
             alignment: Alignment.centerLeft,
             child: TextButton(
-              child: Text(
+              child: CText(
                 this.nomOrganisateur != null
                 ?"contacter ${this.nomOrganisateur.split(" ")[0]}"
                 :'Contacter',
-                style: TextStyle(  
                   color: Colors.blue,
                   fontSize: 16
-                )
               ),
               onPressed: this.contacter,
             )
@@ -852,22 +823,18 @@ class CardBody extends StatelessWidget {
                     this.animal == 'Oui'
                     ? Padding(
                       padding: const EdgeInsets.only(left: 4),
-                      child: Text(
+                      child: CText(
                         "Les animaux sont autorisés",
-                        style: TextStyle(  
                           fontSize: 17,
                           color: SECONDARY_COLOR
-                        ),
                       ),
                     )
                     : Padding(
                       padding: const EdgeInsets.only(left: 4),
-                      child: Text(
+                      child: CText(
                         'Les animaux sont interdits',
-                        style: TextStyle(  
-                          fontSize: 17,
-                          color: SECONDARY_COLOR
-                        ),
+                        fontSize: 17,
+                        color: SECONDARY_COLOR
                       ),
                     )
                   ]
@@ -896,34 +863,28 @@ class CardBody extends StatelessWidget {
                   if (this.smoke == "A l'intérieur") Padding(
                     padding: const EdgeInsets.only(left: 4),
                     child: (
-                      Text(
+                      CText(
                         "Vous pouvez fumer à l'intérieur",
-                        style: TextStyle(  
                           fontSize: 17,
                           color: SECONDARY_COLOR
-                        ),
                       )
                     ),
                   ) else if (this.smoke == "Dans un fumoir") Padding(
                     padding: const EdgeInsets.only(left: 4),
                     child: (
-                      Text(
+                      CText(
                         "Vous pouvez fumer dans un fumoir",
-                        style: TextStyle(  
-                          fontSize: 17,
-                          color: SECONDARY_COLOR
-                        ),
+                        fontSize: 17,
+                        color: SECONDARY_COLOR
                       )
                     ),
                   ) else if (this.smoke == "Dehors") Padding(
                     padding: const EdgeInsets.only(left: 4),
                     child: (
-                      Text(
+                      CText(
                         "Vous devez fumer dehors",
-                        style: TextStyle(  
                           fontSize: 17,
                           color: SECONDARY_COLOR
-                        ),
                       )
                     ),
                   )
@@ -941,12 +902,10 @@ class CardBody extends StatelessWidget {
               color: SECONDARY_COLOR,
               borderRadius: BorderRadius.circular(15)
             ),
-            child: Text(
+            child: CText(
               "Personnes acceptées : ${list.length}/$nombre",
-              style: TextStyle(  
                 color: PRIMARY_COLOR,
                 fontSize: 16
-              )
             )
           ),
         ),
@@ -969,11 +928,10 @@ class CardBody extends StatelessWidget {
           )
         : Opacity(
             opacity: 0.7,
-            child: Text(
+            child: CText(
               "Il n'y a pas encore d'invité",
-              style: TextStyle(
-                fontSize: 16,
-                color: SECONDARY_COLOR),
+              fontSize: 16,
+              color: SECONDARY_COLOR
           ),
         ),
         SizedBox(height: this.list.isNotEmpty ? 34 : 50)
@@ -1010,17 +968,15 @@ class CardBNB extends StatelessWidget {
               children: [
                 Row(  
                   children: [
-                    Text(
-                      this.prix,
-                      style: TextStyle(  
-                        fontWeight: FontWeight.w600,
-                        fontSize: 20
-                      )
+                    CText(
+                      this.prix, 
+                      fontWeight: FontWeight.w600,
+                      fontSize: 20
                     ),
                     Icon(Icons.euro_outlined, size: 20)
                   ],
                 ),
-                Text(  
+                CText(  
                   'De ${this.heureDebut} à ${this.heureFin}'
                 )
               ],
@@ -1033,12 +989,10 @@ class CardBNB extends StatelessWidget {
                   color: SECONDARY_COLOR,
                   borderRadius: BorderRadius.all(Radius.circular(15))
                 ),
-                child: Text(
+                child: CText(
                   'Rejoindre',
-                  style: TextStyle(   
-                    color: PRIMARY_COLOR,
-                    fontSize: 16
-                  ),
+                  color: PRIMARY_COLOR,
+                  fontSize: 16
                 ),
               ),
             )
