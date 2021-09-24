@@ -83,20 +83,31 @@ class CityBox extends StatelessWidget {
         closedBuilder: (context, returnvalue) {
           return Container(
             height: 75,
-            width: 150,
-            decoration: BoxDecoration(
-              image: image != null
-                  ? DecorationImage(image: AssetImage(image), fit: BoxFit.cover)
-                  : null,
-              borderRadius: BorderRadius.circular(15),
-            ),
-            child: Center(
-              child: CText(
-                this.text,
-                fontSize: 20,
-                fontWeight: FontWeight.w900,
-                color: FOCUS_COLOR,
-              ),
+            width: MediaQuery.of(context).size.width * 0.55,
+            child: Row(
+              children: [
+                Container(  
+                  height: 75,
+                  width: 75,
+                  decoration: BoxDecoration(
+                    image: image != null
+                        ? DecorationImage(image: AssetImage(image), fit: BoxFit.cover)
+                        : null,
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                ),
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 12.0),
+                    child: CText(
+                      this.text,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: SECONDARY_COLOR,
+                    ),
+                  ),
+                ),
+              ],
             ),
           );
         },
