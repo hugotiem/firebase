@@ -1,4 +1,5 @@
 import 'package:animations/animations.dart';
+import 'package:blurrycontainer/blurrycontainer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,7 +19,6 @@ import 'horizontal_separator.dart';
 import 'join_wait_list.dart';
 import 'piechart_informartion.dart';
 import 'piechart_legend.dart';
-import 'package:blurrycontainer/blurrycontainer.dart';
 
 Widget buildPartyCard(BuildContext context, Party party) {
   List nameList = party.validateGuestList;
