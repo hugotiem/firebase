@@ -1,5 +1,4 @@
 import 'package:animations/animations.dart';
-import 'package:blurrycontainer/blurrycontainer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,6 +7,7 @@ import 'package:pts/Model/capitalize.dart';
 import 'package:pts/Model/party.dart';
 import 'package:pts/Model/user.dart';
 import 'package:pts/blocs/user/user_cubit.dart';
+import 'package:pts/components/blurry_container.dart';
 import 'package:pts/components/text_descpription_show_hide.dart';
 import 'package:pts/model/services/auth_service.dart';
 import 'package:pts/view/pages/messaging/subpage/chatpage.dart';
@@ -494,7 +494,7 @@ class CustomSliverCard extends StatefulWidget {
 }
 
 class _CustomSliverCardState extends State<CustomSliverCard> {
-  double _size, _barSizeWidth, _barSizeHeight, _borderRadius;
+  double _size, _barSizeWidth, _barSizeHeight, _borderRadius, _opacity;
   Brightness _brightness;
   Color _toolbarColor;
   bool _headerName, _headerLocation, _headerDate;
@@ -511,6 +511,7 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
       _headerLocation = true;
       _headerDate = true;
       _borderRadius = 60;
+      _opacity = 1;
     });
     super.initState();
   }
@@ -521,19 +522,22 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
       backgroundColor: PRIMARY_COLOR,
       brightness: _brightness,
       toolbarColor: _toolbarColor,
-      appBar: Container(  
-        height: _size,
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(  
-          gradient: LinearGradient(  
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: widget.color
+      appBar: Opacity(
+        opacity: _opacity,
+        child: Container(  
+          height: _size,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(  
+            gradient: LinearGradient(  
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: widget.color
+            ),
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(60),
+              bottomRight: Radius.circular(60)
+            )
           ),
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(60),
-            bottomRight: Radius.circular(60)
-          )
         ),
       ),
       body:  widget.body, 
@@ -680,6 +684,12 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
               
               if (_pixels > 120) {
                 _headerDate = false;
+              }
+
+              if (_pixels > 150 ) {
+                _opacity = (_size - 100) / 50;
+              } else if ( _opacity <= 150 ) {
+                _opacity = 1;
               }
 
             } else if (_pixels > 200) {
