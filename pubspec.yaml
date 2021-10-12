@@ -32,7 +32,6 @@ dependencies:
   firebase_core: ^1.0.3
   firebase_auth: ^3.0.2
   intro_slider: ^3.0.2
-  # expansion_card: ^0.1.0
   http: ^0.13.1
   sliding_up_panel: ^2.0.0+1
   google_maps_flutter: ^2.0.3
@@ -48,7 +47,7 @@ dependencies:
   flutter_bloc: ^7.1.0
   flutter_secure_storage: ^4.2.1
   flutter_stripe: ^1.2.0
-  blurrycontainer: ^0.0.1
+  # blurrycontainer: ^0.0.1
   firebase_storage: ^10.0.3
   # device_preview: ^0.7.4
 
@@ -70,8 +69,19 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-   - assets/roundBlankProfilPicture.png
-   - assets/google-logo.png
+    - assets/roundBlankProfilPicture.png
+    - assets/google-logo.png
+    - assets/marseille_nuit.jpg
+    - assets/paris_nuit.jpg
+    - assets/lyon_nuit.jpg
+    - assets/nice_nuit.jpg
+    - assets/toulouse_nuit.jpg
+    - assets/nantes_nuit.jpg
+    - assets/strasbourg_nuit.jpg
+    - assets/montpellier_nuit.jpg
+    - assets/bordeaux_nuit.jpg
+    - assets/lille_nuit.jpg
+    - assets/map.png
 
   fonts: 
     - family: MerriweatherSans

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -136,7 +135,7 @@ class _ProfilState extends State<Profil> {
                               ),
                               CickableContainerProfil(
                                 to: MessagePage(),
-                                text: "Messagerie",
+                                text: "Messages",
                                 icon: Icons.message_outlined,
                                 bottomBorder: false,
                               ),

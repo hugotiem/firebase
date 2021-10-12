@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pts/blocs/parties/parties_cubit.dart';
 import 'package:pts/components/back_appbar.dart';
+import 'package:pts/components/custom_text.dart';
 import 'package:pts/components/party_card.dart';
 import 'package:pts/constant.dart';
 
-
 class GridListThemes extends StatefulWidget {
-  const GridListThemes({ Key key }) : super(key: key);
+  const GridListThemes({Key key}) : super(key: key);
 
   @override
   _GridListThemesState createState() => _GridListThemesState();
@@ -28,45 +28,27 @@ class _GridListThemesState extends State<GridListThemes> {
               width: MediaQuery.of(context).size.width,
               child: Column(
                 children: [
-                  Row(  
-                    children: [
-                      ThemeBox(
-                        text: 'Classique', 
-                        colors: [
-                          Color(0xFFf12711),
-                          Color(0xFFf5af19)
-                        ]
-                      ),
-                      ThemeBox(  
-                        text: 'Gaming',
-                        colors: [
-                          Color(0xFF1c92d2),
-                          Color(0xFFf2fcfe)
-                        ],
-                      )
-                    ]
-                  ),
+                  Row(children: [
+                    ThemeBox('Classique',
+                        colors: [Color(0xFFf12711), Color(0xFFf5af19)]),
+                    ThemeBox(
+                      'Gaming',
+                      colors: [Color(0xFF1c92d2), Color(0xFFf2fcfe)],
+                    )
+                  ]),
                   Row(
                     children: [
+                      ThemeBox('Jeu de société',
+                          colors: [Color(0xFFa8ff78), Color(0xFF78ffd6)]),
                       ThemeBox(
-                        text: 'Jeu de société', 
-                        colors: [
-                          Color(0xFFa8ff78),
-                          Color(0xFF78ffd6)
-                        ]
+                        'Soirée à thème',
+                        colors: [Color(0xFFb24592), Color(0xFFf15f79)],
                       ),
-                      ThemeBox(  
-                        text: 'Soirée à thème',
-                        colors: [
-                          Color(0xFFb24592),
-                          Color(0xFFf15f79)
-                        ],
-                      )
                     ],
-                  )
-                ]
+                  ),
+                ],
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -77,12 +59,8 @@ class _GridListThemesState extends State<GridListThemes> {
 class ThemeBox extends StatelessWidget {
   final List<Color> colors;
   final String text;
-  const ThemeBox({
-    @required this.text,
-    @required this.colors,
-    Key key 
-    }) : super(key: key);
- 
+  const ThemeBox(this.text, {@required this.colors, Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -97,22 +75,17 @@ class ThemeBox extends StatelessWidget {
             height: 145,
             width: 145,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: this.colors
-              )
-            ),
+                borderRadius: BorderRadius.circular(20),
+                gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: this.colors)),
             child: Center(
-              child: Text(
+              child: CText(
                 this.text,
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w900,
-                  color: Colors.white,
-                  fontFamily: PRIMARY_FONT
-                ),
+                fontSize: 20,
+                fontWeight: FontWeight.w900,
+                color: Colors.white,
               ),
             ),
           );
@@ -124,30 +97,27 @@ class ThemeBox extends StatelessWidget {
               child: new BackAppBar(
                 title: Padding(
                   padding: const EdgeInsets.only(top: 6.0),
-                  child: Text(
+                  child: CText(
                     this.text,
-                    style: TextStyle(  
-                      color: SECONDARY_COLOR,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: PRIMARY_FONT
-                    ),
+                    color: SECONDARY_COLOR,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
             ),
             body: BlocProvider(
-              create: (context) => PartiesCubit()..fetchPartiesWithWhereIsEqualTo('theme', this.text),
-              child: BlocBuilder<PartiesCubit, PartiesState>(
-                builder: (context, state) {
-                  if (state.parties == null) return Center(child: const CircularProgressIndicator());
-                  return ListView.builder(
-                    itemCount: state.parties.length,
-                    itemBuilder: (BuildContext context, int index) =>
-                      buildPartyCard(context, state.parties[index])
-                  );
-                }, 
-              )
-            ),
+                create: (context) => PartiesCubit()
+                  ..fetchPartiesWithWhereIsEqualTo('theme', this.text),
+                child: BlocBuilder<PartiesCubit, PartiesState>(
+                  builder: (context, state) {
+                    if (state.parties == null)
+                      return Center(child: const CircularProgressIndicator());
+                    return ListView.builder(
+                        itemCount: state.parties.length,
+                        itemBuilder: (BuildContext context, int index) =>
+                            buildPartyCard(context, state.parties[index]));
+                  },
+                )),
           );
         },
       ),

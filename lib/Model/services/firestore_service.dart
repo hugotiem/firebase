@@ -59,9 +59,13 @@ class FireStoreServices {
         .get();
   }
 
-  Stream<QuerySnapshot> getStreamSnapshot() async* {
-    yield* this.firestore
-    .collection(collection)
-    .snapshots();
+  Stream<QuerySnapshot> getMessageStreamSnapshot(
+    String currentUserID, String otherUserID) async* {
+    yield* this._firestore
+        .collection(collection)
+        .doc(currentUserID)
+        .collection(otherUserID)
+        .orderBy("date")
+        .snapshots();
   }
 }

@@ -1,10 +1,13 @@
 part of 'messaging_cubit.dart';
 
-enum MessagingStatus { initial, send, received }
+enum MessagingStatus { initial, loading, loaded }
 
 class MessagingState extends AppBaseState<MessagingStatus> {
+  final List<Message> messages;
+
   const MessagingState(MessagingStatus status,
-      {bool requestInProgress = false,
+      { this.messages,
+      bool requestInProgress = false,
       String requestFailureCode,
       String requestFailureMessage})
       : super(  
@@ -14,8 +17,10 @@ class MessagingState extends AppBaseState<MessagingStatus> {
             requestFailureMessage: requestFailureMessage);
 
   const MessagingState.initial() : this(MessagingStatus.initial);
-  const MessagingState.send() : this(MessagingStatus.send);
-  const MessagingState.received() : this(MessagingStatus.received);
+  const MessagingState.loading() 
+      : this(MessagingStatus.loading, requestInProgress: true);
+  const MessagingState.loaded(messages) 
+      : this(MessagingStatus.loaded, messages: messages);
 
   @override 
   AppBaseState<MessagingStatus> copyWith(  
@@ -23,6 +28,7 @@ class MessagingState extends AppBaseState<MessagingStatus> {
           String requestFailureCode,
           String requestFailureMessage}) =>
       MessagingState(status,
+          messages: this.messages,
           requestInProgress: requestInProgress,
           requestFailureCode: requestFailureCode,
           requestFailureMessage: requestFailureMessage);

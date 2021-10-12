@@ -1,9 +1,7 @@
-import 'dart:ui';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:animations/animations.dart';
 import 'package:pts/View/Pages/search/sliver/searchbar_screen.dart';
+import 'package:pts/components/custom_text.dart';
 import 'package:pts/constant.dart';
 import 'package:pts/view/pages/creation/creation_page.dart';
 
@@ -53,7 +51,11 @@ class _SearchState extends State<Search> {
         height: _size,
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
-          color: SECONDARY_COLOR.withOpacity(_opacity),
+          // opacity: _opacity,
+          image: DecorationImage( 
+            fit: BoxFit.cover, 
+            image: AssetImage('assets/map.png')
+          ),
           borderRadius: BorderRadius.only(
             bottomLeft: Radius.circular(36),
             bottomRight: Radius.circular(36),
@@ -64,11 +66,32 @@ class _SearchState extends State<Search> {
             children: [
               Positioned(
                 top: (_size - 100) / 2,
+                right: 75,
                 width: MediaQuery.of(context).size.width,
                 child: Opacity(
                   opacity: _opacity,
                   child: Center(
-                    child: BackGroundtitle(),
+                    child: Icon( // BackGroundtitle(),
+                      Icons.location_on_outlined,
+                      size: 50,
+                      color: ICONCOLOR
+                    ) 
+                  ),
+                ),
+              ),
+              Positioned(
+                top: (_size - 100) / 2,
+                left: 90,
+                bottom: 29,
+                width: MediaQuery.of(context).size.width,
+                child: Opacity(
+                  opacity: _opacity,
+                  child: Center(
+                    child: Icon( 
+                      Icons.location_on_outlined,
+                      size: 50,
+                      color: ICONCOLOR
+                    ) 
                   ),
                 ),
               ),
@@ -128,7 +151,6 @@ class _SearchState extends State<Search> {
               }
               _barSizeWidth = 350 - (_pixels / 8);
               _barSizeHeight = 60 - (_pixels / 15);
-              
             } else if (_pixels > 300) {
               _size = 100;
               _opacity = 0;
@@ -177,9 +199,9 @@ class _SearchState extends State<Search> {
                           opacity: 0.7,
                           child: Container(
                             padding: EdgeInsets.only(left: 20),
-                            child: Text(
+                            child: CText(
                               "Rechercher",
-                              style: TextStyle(fontSize: 18),
+                              fontSize: 18,
                             ),
                           ),
                         ),
@@ -222,20 +244,18 @@ class _ContainerAddPartyState extends State<ContainerAddParty> {
         children: <Widget>[
           Container(
             margin: EdgeInsets.all(20),
-            child: Text(
+            child: CText(
               "Organise ta propre soirée !",
-              style: TextStyle(
-                color: ICONCOLOR,
-                fontSize: 40,
-                fontWeight: FontWeight.w900,
-              ),
+              color: ICONCOLOR,
+              fontSize: 40,
+              fontWeight: FontWeight.w900,
               textAlign: TextAlign.center,
             ),
           ),
           GestureDetector(
             onTap: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => CreationPage()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => CreationPage()));
             },
             child: Container(
               //width: MediaQuery.of(context).size.width - 100,
@@ -247,13 +267,11 @@ class _ContainerAddPartyState extends State<ContainerAddParty> {
                   Radius.circular(200),
                 ),
               ),
-              child: Text(
+              child: CText(
                 "Créer maintenant !".toUpperCase(),
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
                 textAlign: TextAlign.center,
               ),
             ),
@@ -274,10 +292,10 @@ class TitleText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: this.margin,
-      child: Text(
+      child: CText(
         this.text,
-        style: TextStyle(
-            fontWeight: FontWeight.w900, fontSize: 20, color: SECONDARY_COLOR, fontFamily: PRIMARY_FONT),
+        fontWeight: FontWeight.w900,
+        fontSize: 20,
       ),
     );
   }
