@@ -1,16 +1,20 @@
+import 'dart:io';
+
 import 'package:pts/Model/services/auth_service.dart';
 import 'package:pts/Model/services/firestore_service.dart';
+import 'package:pts/Model/services/storage_service.dart';
 import 'package:pts/Model/user.dart';
 import 'package:pts/blocs/base/app_base_cubit.dart';
 import 'package:pts/blocs/base/app_base_state.dart';
+import 'package:path/path.dart';
 
 part 'user_state.dart';
 
 class UserCubit extends AppBaseCubit<UserState> {
   UserCubit() : super(UserState.initial());
 
-  AuthService service = AuthService();
-  FireStoreServices firestore = FireStoreServices("user");
+  final AuthService service = AuthService();
+  final FireStoreServices firestore = FireStoreServices("user");
 
   Future<void> init() async {
     await service
@@ -43,13 +47,20 @@ class UserCubit extends AppBaseCubit<UserState> {
     emit(UserState.dataLoaded(user: state.user, token: state.token));
   }
 
-  Future<void> addIdRef() async {
+  Future<void> addId(File file, String ref) async {
+    final filename = basename(file.path);
+    final destination = '$ref/$filename';
     emit(state.setRequestInProgress());
-    var id = await service.getToken();
-    Map<String, dynamic> data = <String, dynamic>{
-      "idRef": "id",
-    };
-    await firestore.setWithId(id, data: data);
-    emit(UserState.dataLoaded(user: state.user, token: state.token));
+    var task = StorageService(destination).uploadFile(file);
+    if (task == null) return;
+    task.then((value) async {
+      var id = await service.getToken();
+      var url = await value.ref.getDownloadURL();
+      Map<String, dynamic> data = <String, dynamic>{
+        "$ref": url,
+      };
+      await firestore.setWithId(id, data: data);
+      emit(UserState.dataLoaded(user: state.user, token: state.token));
+    });
   }
 }

@@ -32,7 +32,7 @@ dependencies:
   firebase_core: ^1.0.3
   firebase_auth: ^3.0.2
   intro_slider: ^3.0.2
-  expansion_card: ^0.1.0
+  # expansion_card: ^0.1.0
   http: ^0.13.1
   sliding_up_panel: ^2.0.0+1
   google_maps_flutter: ^2.0.3
@@ -49,6 +49,7 @@ dependencies:
   flutter_secure_storage: ^4.2.1
   flutter_stripe: ^1.2.0
   blurrycontainer: ^0.0.1
+  firebase_storage: ^10.0.3
   # device_preview: ^0.7.4
 
 dev_dependencies:
