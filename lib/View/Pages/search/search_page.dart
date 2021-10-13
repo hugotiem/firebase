@@ -55,6 +55,7 @@ class _SearchState extends State<Search> {
               opacity: _opacity,
               fit: BoxFit.cover,
               image: AssetImage('assets/map.png')),
+          // opacity: _opacity,
           borderRadius: BorderRadius.only(
             bottomLeft: Radius.circular(36),
             bottomRight: Radius.circular(36),

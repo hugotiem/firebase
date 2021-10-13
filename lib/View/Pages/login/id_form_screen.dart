@@ -3,11 +3,13 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
 import 'package:pts/Constant.dart';
+import 'package:pts/blocs/user/user_cubit.dart';
 
 class IdFormScreen extends StatefulWidget {
   final String name;
@@ -27,158 +29,198 @@ class _IdFormScreenState extends State<IdFormScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        actions: <Widget>[
-          Container(
-            margin: EdgeInsets.only(right: 10),
-            child: TextButton(
-              onPressed: () {},
-              child: Text(
-                "Passer",
-                style: TextStyle(color: SECONDARY_COLOR),
-              ),
-            ),
-          ),
-        ],
-      ),
       body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            SizedBox(
-              height: 10,
-            ),
-            Text("Photo carte d'identité (Recto) :"),
-            Center(
-              child: Container(
-                margin: EdgeInsets.symmetric(vertical: 20),
-                clipBehavior: Clip.antiAlias,
-                width: MediaQuery.of(context).size.width * 0.9,
-                height: 50,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                child: TextButton(
-                  style: ButtonStyle(),
-                  onPressed: () => _idFrontImage != null
-                      ? _showBottomModalSheet(
-                          image: _idFrontImage,
-                          onPressed: () => _showCupertinoModalPopup('front'),
-                          type: 'front',
-                        )
-                      : _showCupertinoModalPopup('front'),
-                  child: _idFrontImage == null
-                      ? Text("Sélectionner une image")
-                      : Text("Voir l'image"),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Text("Photo carte d'identité (Verso) :"),
-            Center(
-              child: Container(
-                margin: EdgeInsets.symmetric(vertical: 20),
-                clipBehavior: Clip.antiAlias,
-                width: MediaQuery.of(context).size.width * 0.9,
-                height: 50,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                child: TextButton(
-                  onPressed: () => _idBackImage != null
-                      ? _showBottomModalSheet(
-                          image: _idBackImage,
-                          onPressed: () => _showCupertinoModalPopup('back'),
-                          type: 'front',
-                        )
-                      : _showCupertinoModalPopup('back'),
-                  child: _idBackImage == null
-                      ? Text("Sélectionner une image")
-                      : Text("Voir l'image"),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Text("Selfie : "),
-            Center(
-              child: Container(
-                margin: EdgeInsets.symmetric(vertical: 20),
-                clipBehavior: Clip.antiAlias,
-                width: MediaQuery.of(context).size.width * 0.9,
-                height: 50,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                child: TextButton(
-                  onPressed: () => _faceImage == null
-                      ? _getImage(ImageSource.camera).then((value) {
-                          setState(() {
-                            _faceImage = value;
-                          });
-                        })
-                      : _showBottomModalSheet(
-                          image: _faceImage,
-                          onPressed: () =>
-                              _getImage(ImageSource.camera).then((value) {
-                            setState(() {
-                              _faceImage = value;
-                            });
-                          }),
-                          type: 'selfie',
+        child: BlocProvider(
+          create: (context) => UserCubit(),
+          child: BlocBuilder<UserCubit, UserState>(
+            builder: (context, state) {
+              return Scaffold(
+                appBar: AppBar(
+                  automaticallyImplyLeading: false,
+                  backgroundColor: Colors.transparent,
+                  elevation: 0,
+                  leading: Builder(
+                    builder: (context) => IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: Icon(
+                        Icons.arrow_back_ios_new_rounded,
+                        color: SECONDARY_COLOR,
+                      ),
+                    ),
+                  ),
+                  actions: <Widget>[
+                    Container(
+                      margin: EdgeInsets.only(right: 10),
+                      child: TextButton(
+                        onPressed: () {},
+                        child: Text(
+                          "Passer",
+                          style: TextStyle(color: SECONDARY_COLOR),
                         ),
-                  child: _faceImage == null
-                      ? Text("Prendre une photo")
-                      : Text("Voir l'image"),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ),
-          ],
-        ),
-      ),
-      bottomSheet: Wrap(
-        children: <Widget>[
-          Center(
-            child: GestureDetector(
-              child: Container(
-                margin: EdgeInsets.symmetric(vertical: 20),
-                width: size.width - 100,
-                padding: EdgeInsets.symmetric(vertical: 20),
-                decoration: BoxDecoration(
-                  color: ICONCOLOR,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(200),
+                body: Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text("Photo carte d'identité (Recto) :"),
+                      Center(
+                        child: Container(
+                          margin: EdgeInsets.symmetric(vertical: 20),
+                          clipBehavior: Clip.antiAlias,
+                          width: MediaQuery.of(context).size.width * 0.9,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: TextButton(
+                            style: ButtonStyle(),
+                            onPressed: () => _idFrontImage != null
+                                ? _showBottomModalSheet(
+                                    image: _idFrontImage,
+                                    onPressed: () =>
+                                        _showCupertinoModalPopup('front'),
+                                    type: 'front',
+                                  )
+                                : _showCupertinoModalPopup('front'),
+                            child: _idFrontImage == null
+                                ? Text("Sélectionner une image")
+                                : Text("Voir l'image"),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text("Photo carte d'identité (Verso) :"),
+                      Center(
+                        child: Container(
+                          margin: EdgeInsets.symmetric(vertical: 20),
+                          clipBehavior: Clip.antiAlias,
+                          width: MediaQuery.of(context).size.width * 0.9,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: TextButton(
+                            onPressed: () => _idBackImage != null
+                                ? _showBottomModalSheet(
+                                    image: _idBackImage,
+                                    onPressed: () =>
+                                        _showCupertinoModalPopup('back'),
+                                    type: 'front',
+                                  )
+                                : _showCupertinoModalPopup('back'),
+                            child: _idBackImage == null
+                                ? Text("Sélectionner une image")
+                                : Text("Voir l'image"),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text("Selfie : "),
+                      Center(
+                        child: Container(
+                          margin: EdgeInsets.symmetric(vertical: 20),
+                          clipBehavior: Clip.antiAlias,
+                          width: MediaQuery.of(context).size.width * 0.9,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: TextButton(
+                            onPressed: () => _faceImage == null
+                                ? _getImage(ImageSource.camera).then((value) {
+                                    setState(() {
+                                      _faceImage = value;
+                                    });
+                                  })
+                                : _showBottomModalSheet(
+                                    image: _faceImage,
+                                    onPressed: () =>
+                                        _getImage(ImageSource.camera)
+                                            .then((value) {
+                                      setState(() {
+                                        _faceImage = value;
+                                      });
+                                    }),
+                                    type: 'selfie',
+                                  ),
+                            child: _faceImage == null
+                                ? Text("Prendre une photo")
+                                : Text("Voir l'image"),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                child: Text(
-                  "enregistrer".toUpperCase(),
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
+                bottomSheet: Wrap(
+                  children: <Widget>[
+                    Center(
+                      child: GestureDetector(
+                        child: Container(
+                          margin: EdgeInsets.symmetric(vertical: 20),
+                          width: size.width - 100,
+                          padding: EdgeInsets.symmetric(vertical: 20),
+                          decoration: BoxDecoration(
+                            color: ICONCOLOR,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                          child: Text(
+                            "enregistrer".toUpperCase(),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        onTap: () async {
+                          if (_idFrontImage == null) {
+                            var message = "Veuillez saisir une image"; 
+                            return;
+                          }
+                          if (_idBackImage == null) {
+                            return;
+                          }
+                          if (_faceImage == null) {
+                            return;
+                          }
+                          await BlocProvider.of<UserCubit>(context)
+                              .addId(File(_idFrontImage.path), "idFront")
+                              .whenComplete(
+                                () => BlocProvider.of<UserCubit>(context)
+                                    .addId(File(_idBackImage.path), "idBack")
+                                    .whenComplete(() =>
+                                        BlocProvider.of<UserCubit>(context)
+                                            .addId(File(_faceImage.path),
+                                                "selfie")),
+                              );
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-              onTap: () {
-                sendPicturesByEmail(
-                  "${widget.surname.toUpperCase()} ${widget.name}",
-                  File(_idFrontImage.path),
-                  File(_idBackImage.path),
-                  File(_faceImage.path),
-                ).then((value) => null);
-              },
-            ),
+              );
+            },
           ),
-        ],
+        ),
       ),
     );
   }
@@ -275,7 +317,7 @@ class _IdFormScreenState extends State<IdFormScreen> {
           Container(
             width: MediaQuery.of(context).size.width,
             color: Colors.transparent,
-            height: 100,
+            // height: 100,
             child: TextButton(
               onPressed: () {
                 setState(() {
@@ -301,35 +343,5 @@ class _IdFormScreenState extends State<IdFormScreen> {
         ],
       ),
     );
-  }
-}
-
-Future<void> sendPicturesByEmail(
-    String mail, File idFront, File idBack, File selfie) async {
-  String username = 'pourtasoiree@gmail.com';
-  String password = 'MHJ.du_1461';
-
-  final smtpServer = hotmail(username, password);
-
-  final message = Message()
-    ..from = Address(username, 'PTS')
-    ..recipients.add(username)
-    ..subject = '$mail - ID Verification :: ${DateTime.now()}'
-    ..text = 'This is the plain text.\nThis is line 2 of the text part.'
-    ..html = "<h1>Test</h1>\n<p>Hey! Here's some HTML content</p>"
-    ..attachments = [
-      FileAttachment(idFront),
-      FileAttachment(idBack),
-      FileAttachment(selfie)
-    ];
-
-  try {
-    final sendReport = await send(message, smtpServer);
-    print('Message sent: ' + sendReport.toString());
-  } on MailerException catch (e) {
-    print('Message not sent. ${e.message}');
-    for (var p in e.problems) {
-      print('Problem: ${p.code}: ${p.msg}');
-    }
   }
 }
