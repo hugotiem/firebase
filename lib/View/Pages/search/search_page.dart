@@ -4,12 +4,12 @@ import 'package:pts/View/Pages/search/sliver/searchbar_screen.dart';
 import 'package:pts/components/custom_text.dart';
 import 'package:pts/constant.dart';
 import 'package:pts/view/pages/creation/creation_page.dart';
-
 import 'subpage/city_page.dart';
 import 'subpage/last_party_page.dart';
 import 'subpage/themes_page.dart';
-import 'sliver/backgroundtitle.dart';
 import 'sliver/custom_sliver.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
 
 class Search extends StatefulWidget {
   Search({Key key}) : super(key: key);
@@ -51,11 +51,10 @@ class _SearchState extends State<Search> {
         height: _size,
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
-          image: DecorationImage( 
-            opacity: _opacity,
-            fit: BoxFit.cover, 
-            image: AssetImage('assets/map.png')
-          ),
+          image: DecorationImage(
+              opacity: _opacity,
+              fit: BoxFit.cover,
+              image: AssetImage('assets/map.png')),
           borderRadius: BorderRadius.only(
             bottomLeft: Radius.circular(36),
             bottomRight: Radius.circular(36),
@@ -71,12 +70,11 @@ class _SearchState extends State<Search> {
                 child: Opacity(
                   opacity: _opacity,
                   child: Center(
-                    child: Icon( // BackGroundtitle(),
-                      Icons.location_on_outlined,
-                      size: 50,
-                      color: ICONCOLOR
-                    ) 
-                  ),
+                      child: Icon(
+                          // BackGroundtitle(),
+                          Icons.location_on_outlined,
+                          size: 50,
+                          color: ICONCOLOR)),
                 ),
               ),
               Positioned(
@@ -87,12 +85,8 @@ class _SearchState extends State<Search> {
                 child: Opacity(
                   opacity: _opacity,
                   child: Center(
-                    child: Icon( 
-                      Icons.location_on_outlined,
-                      size: 50,
-                      color: ICONCOLOR
-                    ) 
-                  ),
+                      child: Icon(Icons.location_on_outlined,
+                          size: 50, color: ICONCOLOR)),
                 ),
               ),
             ],
@@ -112,6 +106,7 @@ class _SearchState extends State<Search> {
               margin: EdgeInsets.only(left: 20),
             ),
             GridViewCity(),
+            GeolocationWidget(),
             // liste des dernières soirées créées
             Container(
                 child: Column(
@@ -298,5 +293,47 @@ class TitleText extends StatelessWidget {
         fontSize: 20,
       ),
     );
+  }
+}
+
+class GeolocationWidget extends StatefulWidget {
+  const GeolocationWidget({Key key}) : super(key: key);
+
+  @override
+  _GeolocationWidgetState createState() => _GeolocationWidgetState();
+}
+
+class _GeolocationWidgetState extends State<GeolocationWidget> {
+  Geolocator geolocator = Geolocator();
+  Position userLocation;
+  List<Placemark> currentCity;
+
+  @override
+  void initState() {
+    super.initState();
+    _getLocation().then((position) {
+      userLocation = position;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(userLocation.latitude.toString()),
+        Text(userLocation.longitude.toString()),
+      ],
+    );
+  }
+
+  Future<Position> _getLocation() async {
+    var currentLocation;
+    try {
+      currentLocation = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.best);
+    } catch (e) {
+      currentLocation = null;
+    }
+    return currentLocation;
   }
 }
