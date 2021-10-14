@@ -307,24 +307,36 @@ class GeolocationWidget extends StatefulWidget {
 class _GeolocationWidgetState extends State<GeolocationWidget> {
   Geolocator geolocator = Geolocator();
   Position userLocation;
-  List<Placemark> currentCity;
+  String _currentCity;
 
   @override
   void initState() {
     super.initState();
     _getLocation().then((position) {
       userLocation = position;
+      _getcity();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(userLocation.latitude.toString()),
-        Text(userLocation.longitude.toString()),
-      ],
-    );
+    return userLocation.latitude == null
+        ? Container()
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _currentCity == null
+                  ? Container()
+                  : TitleText(
+                      text: 'Proche de $_currentCity',
+                      margin: EdgeInsets.only(top: 30, left: 20),
+                    ),
+              SizedBox(
+                height: 182,
+                child: null,
+              )
+            ],
+          );
   }
 
   Future<Position> _getLocation() async {
@@ -336,5 +348,20 @@ class _GeolocationWidgetState extends State<GeolocationWidget> {
       currentLocation = null;
     }
     return currentLocation;
+  }
+
+  Future<void> _getcity() async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+          userLocation.latitude, userLocation.longitude);
+
+      Placemark place = placemarks[0];
+
+      setState(() {
+        _currentCity = place.locality;
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 }
