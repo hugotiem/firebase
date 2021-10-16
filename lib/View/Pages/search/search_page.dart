@@ -47,50 +47,56 @@ class _SearchState extends State<Search> {
       backgroundColor: PRIMARY_COLOR,
       brightness: _brightness,
       toolbarColor: _toolbarColor,
-      appBar: Container(
-        height: _size,
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-              opacity: _opacity,
-              fit: BoxFit.cover,
-              image: AssetImage('assets/map.png')),
-          // opacity: _opacity,
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(36),
-            bottomRight: Radius.circular(36),
-          ),
-        ),
+      appBar: Opacity(
+        opacity: _opacity,
         child: Container(
-          child: Stack(
-            children: [
-              Positioned(
-                top: (_size - 100) / 2,
-                right: 75,
-                width: MediaQuery.of(context).size.width,
-                child: Opacity(
-                  opacity: _opacity,
-                  child: Center(
+          height: _size,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              // opacity: _opacity,
+              fit: BoxFit.cover,
+              image: AssetImage('assets/map.png'),
+            ),
+            // opacity: _opacity,
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(36),
+              bottomRight: Radius.circular(36),
+            ),
+          ),
+          child: Container(
+            child: Stack(
+              children: [
+                Positioned(
+                  top: (_size - 100) / 2,
+                  right: 75,
+                  width: MediaQuery.of(context).size.width,
+                  child: Opacity(
+                    opacity: _opacity,
+                    child: Center(
                       child: Icon(
-                          // BackGroundtitle(),
-                          Icons.location_on_outlined,
-                          size: 50,
-                          color: ICONCOLOR)),
+                        // BackGroundtitle(),
+                        Icons.location_on_outlined,
+                        size: 50,
+                        color: ICONCOLOR,
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-              Positioned(
-                top: (_size - 100) / 2,
-                left: 90,
-                bottom: 29,
-                width: MediaQuery.of(context).size.width,
-                child: Opacity(
-                  opacity: _opacity,
-                  child: Center(
-                      child: Icon(Icons.location_on_outlined,
-                          size: 50, color: ICONCOLOR)),
+                Positioned(
+                  top: (_size - 100) / 2,
+                  left: 90,
+                  bottom: 29,
+                  width: MediaQuery.of(context).size.width,
+                  child: Opacity(
+                    opacity: _opacity,
+                    child: Center(
+                        child: Icon(Icons.location_on_outlined,
+                            size: 50, color: ICONCOLOR)),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -107,7 +113,7 @@ class _SearchState extends State<Search> {
               margin: EdgeInsets.only(left: 20),
             ),
             GridViewCity(),
-            GeolocationWidget(),
+            // GeolocationWidget(),
             // liste des dernières soirées créées
             Container(
                 child: Column(

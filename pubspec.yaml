@@ -52,6 +52,7 @@ dependencies:
   # blurrycontainer: ^0.0.1
   firebase_storage: ^10.0.3
   firebase_storage_web: ^3.0.3
+  flutter_typeahead: ^3.2.1
   # device_preview: ^0.7.4
 
 dev_dependencies:

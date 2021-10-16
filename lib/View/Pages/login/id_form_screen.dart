@@ -54,7 +54,10 @@ class _IdFormScreenState extends State<IdFormScreen> {
                     Container(
                       margin: EdgeInsets.only(right: 10),
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context)
+                              .popUntil((route) => route.isFirst);
+                        },
                         child: Text(
                           "Passer",
                           style: TextStyle(color: SECONDARY_COLOR),
@@ -193,7 +196,7 @@ class _IdFormScreenState extends State<IdFormScreen> {
                         ),
                         onTap: () async {
                           if (_idFrontImage == null) {
-                            var message = "Veuillez saisir une image"; 
+                            var message = "Veuillez saisir une image";
                             return;
                           }
                           if (_idBackImage == null) {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pts/Constant.dart';
+import 'package:pts/Model/address.dart';
 import 'package:pts/blocs/parties/build_parties_cubit.dart';
 import 'package:pts/components/back_appbar.dart';
 import 'package:pts/Model/capitalize.dart';
@@ -9,7 +10,6 @@ import 'package:pts/components/components_creation/fab_form.dart';
 import 'package:pts/components/components_creation/headertext_one.dart';
 import 'package:pts/components/components_creation/headertext_two.dart';
 import 'package:pts/components/components_creation/tff_text.dart';
-
 
 class LocationPage extends StatefulWidget {
   final void Function() onNext;
@@ -21,9 +21,10 @@ class LocationPage extends StatefulWidget {
 }
 
 class _LocationPageState extends State<LocationPage> {
-  String _adresse;
-  String _ville;
-  String _codepostal;
+  TextEditingController _addressController = TextEditingController();
+  TextEditingController _cityController = TextEditingController();
+  TextEditingController _postCodeController = TextEditingController();
+  bool _showAddressLabel = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
@@ -45,20 +46,13 @@ class _LocationPageState extends State<LocationPage> {
           }
 
           BlocProvider.of<BuildPartiesCubit>(context)
-            ..addItem("address", _adresse.trimRight().trimLeft().inCaps)
-            ..addItem("city", _ville.trimRight().trimLeft().inCaps)
-            ..addItem("postal code", _codepostal);
+            ..addItem("address",
+                _addressController.text.trimRight().trimLeft().inCaps)
+            ..addItem(
+                "city", _cityController.text.trimRight().trimLeft().inCaps)
+            ..addItem("postal code", _postCodeController.text);
 
           widget.onNext();
-
-          // Soiree.setDataLocationPage(
-          //   _adresse,
-          //   _ville,
-          //   _codepostal
-          // );
-          // Navigator.push(context,
-          //   MaterialPageRoute(builder: (context) => GuestNumber())
-          // );
         },
       ),
       body: SingleChildScrollView(
@@ -73,10 +67,8 @@ class _LocationPageState extends State<LocationPage> {
               HeaderText2(
                 text: "Adresse",
               ),
-              TFFText(
-                onChanged: (value) {
-                  _adresse = value;
-                },
+              TypeAheadTFFText(
+                controller: _addressController,
                 validator: (value) {
                   if (value.isEmpty) {
                     return "Vous devez remplir l'adresse";
@@ -85,13 +77,35 @@ class _LocationPageState extends State<LocationPage> {
                   }
                 },
                 hintText: 'ex: 7 avenue des champs élysés',
+                suggestionsCallback: (value) {
+                  if (value.length > 2) {
+                    return BlocProvider.of<BuildPartiesCubit>(context)
+                        .searchAddress(value);
+                  }
+                  return null;
+                },
+                itemBuilder: (BuildContext context, items) {
+                  return ListTile(
+                    title: Text((items as Address).label),
+                  );
+                },
+                transitionBuilder: (context, widget, controller) {
+                  return widget;
+                },
+                onSuggestionSelected: (suggestion) {
+                  Address address = suggestion as Address;
+                  setState(() {
+                    _addressController.text =
+                        address.streetNumber + " " + address.streetName;
+                    _cityController.text = address.city;
+                    _postCodeController.text = address.postalCode;
+                  });
+                },
               ),
               HeaderText2(
                   text: "Ville", padding: EdgeInsets.only(bottom: 20, top: 40)),
               TFFText(
-                onChanged: (value) {
-                  _ville = value;
-                },
+                controller: _cityController,
                 validator: (value) {
                   if (value.isEmpty) {
                     return "Vous devez remplir la ville";
@@ -105,9 +119,7 @@ class _LocationPageState extends State<LocationPage> {
                   text: "Code postal",
                   padding: EdgeInsets.only(bottom: 20, top: 40)),
               TFFText(
-                  onChanged: (value) {
-                    _codepostal = value;
-                  },
+                  controller: _postCodeController,
                   hintText: 'ex: 75008',
                   validator: (value) {
                     if (value.isEmpty) {
