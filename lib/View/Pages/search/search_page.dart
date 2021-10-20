@@ -10,6 +10,7 @@ import 'subpage/themes_page.dart';
 import 'sliver/custom_sliver.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class Search extends StatefulWidget {
   Search({Key key}) : super(key: key);
@@ -113,7 +114,7 @@ class _SearchState extends State<Search> {
               margin: EdgeInsets.only(left: 20),
             ),
             GridViewCity(),
-            // GeolocationWidget(),
+            GeolocationWidget(),
             // liste des dernières soirées créées
             Container(
                 child: Column(
@@ -326,34 +327,40 @@ class _GeolocationWidgetState extends State<GeolocationWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return userLocation.latitude == null
-        ? Container()
-        : Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _currentCity == null
-                  ? Container()
-                  : TitleText(
-                      text: 'Proche de $_currentCity',
-                      margin: EdgeInsets.only(top: 30, left: 20),
-                    ),
-              SizedBox(
-                height: 182,
-                child: null,
-              )
-            ],
-          );
+    if (_currentCity == null) {
+      return Container();
+    } else {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _currentCity == null
+              ? Container()
+              : TitleText(
+                  text: 'Proche de $_currentCity',
+                  margin: EdgeInsets.only(top: 30, left: 20),
+                ),
+          SizedBox(
+            height: 182,
+            child: null,
+          )
+        ],
+      );
+    }
   }
 
   Future<Position> _getLocation() async {
     var currentLocation;
-    try {
-      currentLocation = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.best);
-    } catch (e) {
-      currentLocation = null;
+    if (await Permission.locationWhenInUse.serviceStatus.isEnabled) {
+      try {
+        currentLocation = await Geolocator.getCurrentPosition(
+            desiredAccuracy: LocationAccuracy.best);
+      } catch (e) {
+        currentLocation = null;
+      }
+      return currentLocation;
+    } else {
+      return currentLocation = null;
     }
-    return currentLocation;
   }
 
   Future<void> _getcity() async {
