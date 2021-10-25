@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:animations/animations.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pts/View/Pages/search/sliver/searchbar_screen.dart';
+import 'package:pts/blocs/parties/parties_cubit.dart';
 import 'package:pts/components/custom_text.dart';
 import 'package:pts/constant.dart';
+import 'package:pts/Model/party.dart';
+import 'package:pts/model/address.dart';
 import 'package:pts/view/pages/creation/creation_page.dart';
 import 'subpage/city_page.dart';
 import 'subpage/last_party_page.dart';
@@ -341,8 +345,26 @@ class _GeolocationWidgetState extends State<GeolocationWidget> {
                 ),
           SizedBox(
             height: 182,
-            child: null,
-          )
+            child: BlocProvider(
+              create: (context) => PartiesCubit()..fetchParties(),
+              child: BlocBuilder<PartiesCubit, PartiesState>(
+                  builder: (context, state) {
+                if (state.parties == null)
+                  return Center(
+                    child: const CircularProgressIndicator(),
+                  );
+                return ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: state.parties.length,
+                  itemBuilder: (
+                    BuildContext context,
+                    int index,
+                  ) =>
+                      buildPartyCardDistance(context, state.parties[index]),
+                );
+              }),
+            ),
+          ),
         ],
       );
     }
@@ -376,5 +398,40 @@ class _GeolocationWidgetState extends State<GeolocationWidget> {
     } catch (e) {
       print(e);
     }
+  }
+
+  Widget buildPartyCardDistance(BuildContext context, Party party) {
+    String longitude;
+    String latitude;
+    
+
+    _getCoordinates() async {
+      // à l'aide des adresses retrouver longitudes et latitude
+      List<Location> coordinates =
+          await locationFromAddress('${party.address}, ${party.city}');
+
+      Location place = coordinates[0];
+      double longitude = place.longitude;
+      double latitude = place.latitude;
+
+      // calculer la distance entre notre position et celle de la soirée
+      double distanceBetweenCoordinates = Geolocator.distanceBetween(
+          userLocation.latitude, userLocation.longitude, latitude, longitude);
+
+      double distanceInKm = distanceBetweenCoordinates / 1000;
+      int distanceInKmRound = distanceInKm.round();
+
+      return distanceInKmRound;
+    }
+
+    
+
+    _getCoordinates().then((val) {
+      print(val);
+    });
+    // trier du plus proche au plus loin
+    return Column( 
+      children: [],
+    );
   }
 }
