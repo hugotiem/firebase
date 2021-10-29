@@ -66,261 +66,266 @@ class _SearchBarScreenState extends State<SearchBarScreen>
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      body: Column(
-        children: <Widget>[
-          Container(
-            width: _size.width,
-            color: PRIMARY_COLOR.withOpacity(1 - _factor),
-            padding: EdgeInsets.only(top: 50, bottom: 40),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: Transform.rotate(
-                    angle:
-                        _isDissmissed ? (-90 * _rotation) * math.pi / 180 : 0,
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.arrow_back,
-                        color: _factor == 1 ? ICONCOLOR : SECONDARY_COLOR,
-                      ),
-                      onPressed: () async {
-                        if (!_isDissmissed || _hasResults)
-                          Navigator.of(context).pop();
-                        else {
-                          FocusScope.of(context).unfocus();
-
-                          _searchPanelController.close().whenComplete(
-                                () => setState(
-                                  () {
-                                    _hasResults = true;
-                                  },
-                                ),
-                              );
-                          setState(() {
-                            if (!_resultsPanelController.isPanelOpen) {
-                              _factor = 0;
-                              _brightness = Brightness.dark;
-                            }
-                          });
-
-                          _animationController.animateTo(0, curve: Curves.ease);
-                          _animationController.addListener(() {
-                            setState(() {
-                              _rotation = _animationController.value;
-                            });
-                          });
-                        }
-                      },
-                    ),
-                  ),
-                ),
-                Expanded(
-                  flex: 8,
-                  child: Container(
-                    child: SearchBar(
-                      onChanged: (value) {
-                        setState(() {
-                          _search = value;
-                        });
-                      },
-                      onTap: () {
-                        setState(() {
-                          _hasResults = false;
-                          _brightness = Brightness.light;
-                        });
-
-                        _searchPanelController.open();
-                        _panelPosition = _resultsPanelController.panelPosition;
-                        _animationController.animateTo(1, curve: Curves.ease);
-
-                        _animationController.addListener(() {
-                          setState(() {
-                            if (!_resultsPanelController.isPanelOpen)
-                              _factor = 1 - _animationController.value;
-                            _rotation = _animationController.value;
-                          });
-                        });
-                      },
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Stack(
+      body: Stack(
+        children: [
+          // afficher la carte soit paris si loc désactivé sinon location actuelle
+          Column(
             children: <Widget>[
               Container(
-                height: _size.height - 150,
-                child: SlidingUpPanel(
-                  isDraggable: _isDissmissed,
-                  defaultPanelState: PanelState.OPEN,
-                  controller: _resultsPanelController,
-                  snapPoint: 0.5,
-                  minHeight: 100,
-                  maxHeight: _size.height - 150,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(36 * _factor),
-                    topRight: Radius.circular(36 * _factor),
-                  ),
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                      blurRadius: 8.0 * _factor,
-                      color: Color.fromRGBO(0, 0, 0, 0.25),
-                    ),
-                  ],
-                  panelBuilder: (ScrollController sc) {
-                    return _isDissmissed
-                        ? Container(
-                            clipBehavior: Clip.antiAlias,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(36 * _factor),
-                                topRight: Radius.circular(36 * _factor),
-                              ),
-                              color: PRIMARY_COLOR,
-                            ),
-                            child: FutureBuilder(
-                                future: _firestore.getDataWithWhereIsEqualTo(
-                                    "city", _result.split(",")[0]),
-                                builder: (context, snapshot) {
-                                  return ListView.builder(
-                                    controller: sc,
-                                    itemCount: snapshot.hasData
-                                        ? snapshot.data.docs.length
-                                        : 5,
-                                    itemBuilder: (context, index) {
-                                      if (snapshot.hasError) {
-                                        return Center(child: Text("ERROR"));
-                                      }
-                                      if (snapshot.hasData) {
-                                        var data = snapshot.data.docs;
-                                        return buildPartyCard(
-                                            context, data[index]);
-                                      }
-                                      return Container(
-                                        margin: EdgeInsets.all(20),
-                                        height: 100,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(10),
-                                          ),
-                                          color: Colors.white,
-                                        ),
-                                      );
-                                    },
-                                  );
-                                }),
-                          )
-                        : FutureBuilder(
-                            future: applicationBloc.searchPlaces(_search),
-                            builder: (context, snapshots) {
-                              return Container(
-                                color: PRIMARY_COLOR,
-                                child: ListView.builder(
-                                  padding: EdgeInsets.all(0),
-                                  itemCount:
-                                      applicationBloc.searchResults.length,
-                                  itemBuilder: (context, index) {
-                                    return ListTile(
-                                      title: Text(
-                                        applicationBloc
-                                            .searchResults[index].description,
-                                        style: TextStyle(color: Colors.black),
-                                      ),
-                                      onTap: () {
-                                        FocusScope.of(context).unfocus();
-                                        setState(() {
-                                          _hasResults = true;
-                                          _result = applicationBloc
-                                              .searchResults[index].description;
+                width: _size.width,
+                color: PRIMARY_COLOR.withOpacity(1 - _factor),
+                padding: EdgeInsets.only(top: 50, bottom: 40),
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: Transform.rotate(
+                        angle:
+                            _isDissmissed ? (-90 * _rotation) * math.pi / 180 : 0,
+                        child: IconButton(
+                          icon: Icon(
+                            Icons.arrow_back,
+                            color: _factor == 1 ? ICONCOLOR : SECONDARY_COLOR,
+                          ),
+                          onPressed: () async {
+                            if (!_isDissmissed || _hasResults)
+                              Navigator.of(context).pop();
+                            else {
+                              FocusScope.of(context).unfocus();
 
-                                          _resultsPanelController
-                                              .animatePanelToSnapPoint(
-                                            duration:
-                                                Duration(milliseconds: 300),
-                                            curve: Curves.ease,
-                                          );
-                                          _isDissmissed = true;
-                                          _animationController.animateTo(0,
-                                              curve: Curves.ease);
-                                          _animationController.addListener(() {
-                                            setState(() {
-                                              _rotation =
-                                                  _animationController.value;
-                                            });
-                                          });
-                                        });
+                              _searchPanelController.close().whenComplete(
+                                    () => setState(
+                                      () {
+                                        _hasResults = true;
                                       },
-                                    );
-                                  },
-                                ),
-                              );
-                            },
-                          );
-                  },
-                  onPanelSlide: (position) {
-                    setState(() {
-                      if (position >= 0.8) {
-                        _factor = 1 - ((position * 5) - 4);
-                        _brightness = Brightness.light;
-                      } else if (position < 0.8) {
-                        _factor = 1;
-                        _brightness = Brightness.dark;
-                      }
-                    });
-                  },
-                ),
-              ),
-              Container(
-                height: _hasResults ? 0 : _size.height - 150,
-                child: SlidingUpPanel(
-                  minHeight: 0,
-                  maxHeight: _size.height - 150,
-                  controller: _searchPanelController,
-                  boxShadow: [],
-                  panelBuilder: (sc) => FutureBuilder(
-                    future: applicationBloc.searchPlaces(_search),
-                    builder: (context, snapshots) {
-                      return Container(
-                        color: PRIMARY_COLOR,
-                        child: ListView.builder(
-                          padding: EdgeInsets.all(0),
-                          itemCount: applicationBloc.searchResults.length,
-                          itemBuilder: (context, index) {
-                            return ListTile(
-                              title: Text(
-                                applicationBloc
-                                    .searchResults[index].description,
-                                style: TextStyle(color: Colors.black),
-                              ),
-                              onTap: () {
-                                FocusScope.of(context).unfocus();
+                                    ),
+                                  );
+                              setState(() {
+                                if (!_resultsPanelController.isPanelOpen) {
+                                  _factor = 0;
+                                  _brightness = Brightness.dark;
+                                }
+                              });
+
+                              _animationController.animateTo(0, curve: Curves.ease);
+                              _animationController.addListener(() {
                                 setState(() {
-                                  _hasResults = true;
-                                  _result = applicationBloc
-                                      .searchResults[index].description;
-                                  _isDissmissed = true;
+                                  _rotation = _animationController.value;
                                 });
-                                _resultsPanelController.animatePanelToSnapPoint(
-                                  duration: Duration(milliseconds: 300),
-                                  curve: Curves.ease,
-                                );
-                                _animationController.animateTo(0,
-                                    curve: Curves.ease);
-                                _animationController.addListener(() {
-                                  setState(() {
-                                    _rotation = _animationController.value;
-                                  });
-                                });
-                              },
-                            );
+                              });
+                            }
                           },
                         ),
-                      );
-                    },
-                  ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 8,
+                      child: Container(
+                        child: SearchBar(
+                          onChanged: (value) {
+                            setState(() {
+                              _search = value;
+                            });
+                          },
+                          onTap: () {
+                            setState(() {
+                              _hasResults = false;
+                              _brightness = Brightness.light;
+                            });
+
+                            _searchPanelController.open();
+                            _panelPosition = _resultsPanelController.panelPosition;
+                            _animationController.animateTo(1, curve: Curves.ease);
+
+                            _animationController.addListener(() {
+                              setState(() {
+                                if (!_resultsPanelController.isPanelOpen)
+                                  _factor = 1 - _animationController.value;
+                                _rotation = _animationController.value;
+                              });
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
+              ),
+              Stack(
+                children: <Widget>[
+                  Container(
+                    height: _size.height - 150,
+                    child: SlidingUpPanel(
+                      isDraggable: _isDissmissed,
+                      defaultPanelState: PanelState.OPEN,
+                      controller: _resultsPanelController,
+                      snapPoint: 0.5,
+                      minHeight: 100,
+                      maxHeight: _size.height - 150,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(36 * _factor),
+                        topRight: Radius.circular(36 * _factor),
+                      ),
+                      boxShadow: <BoxShadow>[
+                        BoxShadow(
+                          blurRadius: 8.0 * _factor,
+                          color: Color.fromRGBO(0, 0, 0, 0.25),
+                        ),
+                      ],
+                      panelBuilder: (ScrollController sc) {
+                        return _isDissmissed
+                            ? Container(
+                                clipBehavior: Clip.antiAlias,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(36 * _factor),
+                                    topRight: Radius.circular(36 * _factor),
+                                  ),
+                                  color: PRIMARY_COLOR,
+                                ),
+                                child: FutureBuilder(
+                                    future: _firestore.getDataWithWhereIsEqualTo(
+                                        "city", _result.split(",")[0]),
+                                    builder: (context, snapshot) {
+                                      return ListView.builder(
+                                        controller: sc,
+                                        itemCount: snapshot.hasData
+                                            ? snapshot.data.docs.length
+                                            : 5,
+                                        itemBuilder: (context, index) {
+                                          if (snapshot.hasError) {
+                                            return Center(child: Text("ERROR"));
+                                          }
+                                          if (snapshot.hasData) {
+                                            var data = snapshot.data.docs;
+                                            return buildPartyCard(
+                                                context, data[index]);
+                                          }
+                                          return Container(
+                                            margin: EdgeInsets.all(20),
+                                            height: 100,
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(10),
+                                              ),
+                                              color: Colors.white,
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    }),
+                              )
+                            : FutureBuilder(
+                                future: applicationBloc.searchPlaces(_search),
+                                builder: (context, snapshots) {
+                                  return Container(
+                                    color: PRIMARY_COLOR,
+                                    child: ListView.builder(
+                                      padding: EdgeInsets.all(0),
+                                      itemCount:
+                                          applicationBloc.searchResults.length,
+                                      itemBuilder: (context, index) {
+                                        return ListTile(
+                                          title: Text(
+                                            applicationBloc
+                                                .searchResults[index].description,
+                                            style: TextStyle(color: Colors.black),
+                                          ),
+                                          onTap: () {
+                                            FocusScope.of(context).unfocus();
+                                            setState(() {
+                                              _hasResults = true;
+                                              _result = applicationBloc
+                                                  .searchResults[index].description;
+
+                                              _resultsPanelController
+                                                  .animatePanelToSnapPoint(
+                                                duration:
+                                                    Duration(milliseconds: 300),
+                                                curve: Curves.ease,
+                                              );
+                                              _isDissmissed = true;
+                                              _animationController.animateTo(0,
+                                                  curve: Curves.ease);
+                                              _animationController.addListener(() {
+                                                setState(() {
+                                                  _rotation =
+                                                      _animationController.value;
+                                                });
+                                              });
+                                            });
+                                          },
+                                        );
+                                      },
+                                    ),
+                                  );
+                                },
+                              );
+                      },
+                      onPanelSlide: (position) {
+                        setState(() {
+                          if (position >= 0.8) {
+                            _factor = 1 - ((position * 5) - 4);
+                            _brightness = Brightness.light;
+                          } else if (position < 0.8) {
+                            _factor = 1;
+                            _brightness = Brightness.dark;
+                          }
+                        });
+                      },
+                    ),
+                  ),
+                  Container(
+                    height: _hasResults ? 0 : _size.height - 150,
+                    child: SlidingUpPanel(
+                      minHeight: 0,
+                      maxHeight: _size.height - 150,
+                      controller: _searchPanelController,
+                      boxShadow: [],
+                      panelBuilder: (sc) => FutureBuilder(
+                        future: applicationBloc.searchPlaces(_search),
+                        builder: (context, snapshots) {
+                          return Container(
+                            color: PRIMARY_COLOR,
+                            child: ListView.builder(
+                              padding: EdgeInsets.all(0),
+                              itemCount: applicationBloc.searchResults.length,
+                              itemBuilder: (context, index) {
+                                return ListTile(
+                                  title: Text(
+                                    applicationBloc
+                                        .searchResults[index].description,
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                  onTap: () {
+                                    FocusScope.of(context).unfocus();
+                                    setState(() {
+                                      _hasResults = true;
+                                      _result = applicationBloc
+                                          .searchResults[index].description;
+                                      _isDissmissed = true;
+                                    });
+                                    _resultsPanelController.animatePanelToSnapPoint(
+                                      duration: Duration(milliseconds: 300),
+                                      curve: Curves.ease,
+                                    );
+                                    _animationController.animateTo(0,
+                                        curve: Curves.ease);
+                                    _animationController.addListener(() {
+                                      setState(() {
+                                        _rotation = _animationController.value;
+                                      });
+                                    });
+                                  },
+                                );
+                              },
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

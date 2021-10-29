@@ -401,10 +401,7 @@ class _GeolocationWidgetState extends State<GeolocationWidget> {
   }
 
   Widget buildPartyCardDistance(BuildContext context, Party party) {
-    String longitude;
-    String latitude;
-    
-
+  
     _getCoordinates() async {
       // à l'aide des adresses retrouver longitudes et latitude
       List<Location> coordinates =
@@ -424,14 +421,22 @@ class _GeolocationWidgetState extends State<GeolocationWidget> {
       return distanceInKmRound;
     }
 
-    
+    // _getCoordinates().then((val) {
+    //   print(val);
+    // });
 
-    _getCoordinates().then((val) {
-      print(val);
-    });
+    foo() async {
+      int distance = await _getCoordinates();
+      return distance;
+    }
+    foo();
+
     // trier du plus proche au plus loin
+    
     return Column( 
-      children: [],
+      children: [
+        Text(foo().toString())
+      ],
     );
   }
 }
