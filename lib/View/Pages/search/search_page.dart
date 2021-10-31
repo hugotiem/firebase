@@ -421,22 +421,19 @@ class _GeolocationWidgetState extends State<GeolocationWidget> {
       return distanceInKmRound;
     }
 
-    // _getCoordinates().then((val) {
-    //   print(val);
-    // });
-
-    foo() async {
-      int distance = await _getCoordinates();
-      return distance;
-    }
-    foo();
-
     // trier du plus proche au plus loin
     
-    return Column( 
-      children: [
-        Text(foo().toString())
-      ],
+    return FutureBuilder(
+      future: _getCoordinates(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return Center(child: CircularProgressIndicator(),);
+        String distance = snapshot.data.toString();
+        return Column( 
+          children: [
+            Text('$distance km ')
+          ],
+        );
+      }
     );
   }
 }
