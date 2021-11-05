@@ -402,7 +402,7 @@ class _GeolocationWidgetState extends State<GeolocationWidget> {
 
   Widget buildPartyCardDistance(BuildContext context, Party party) {
   
-    _getCoordinates() async {
+    Future<int> _getCoordinates() async {
       // à l'aide des adresses retrouver longitudes et latitude
       List<Location> coordinates =
           await locationFromAddress('${party.address}, ${party.city}');
