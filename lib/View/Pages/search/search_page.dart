@@ -1,20 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:animations/animations.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pts/View/Pages/search/sliver/searchbar_screen.dart';
-import 'package:pts/blocs/parties/parties_cubit.dart';
 import 'package:pts/components/custom_text.dart';
 import 'package:pts/constant.dart';
-import 'package:pts/Model/party.dart';
-import 'package:pts/model/address.dart';
 import 'package:pts/view/pages/creation/creation_page.dart';
+import 'package:pts/view/pages/search/subpage/geolocalisation_page.dart';
 import 'subpage/city_page.dart';
 import 'subpage/last_party_page.dart';
 import 'subpage/themes_page.dart';
 import 'sliver/custom_sliver.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class Search extends StatefulWidget {
   Search({Key key}) : super(key: key);
@@ -304,136 +298,6 @@ class TitleText extends StatelessWidget {
         fontWeight: FontWeight.w900,
         fontSize: 20,
       ),
-    );
-  }
-}
-
-class GeolocationWidget extends StatefulWidget {
-  const GeolocationWidget({Key key}) : super(key: key);
-
-  @override
-  _GeolocationWidgetState createState() => _GeolocationWidgetState();
-}
-
-class _GeolocationWidgetState extends State<GeolocationWidget> {
-  Geolocator geolocator = Geolocator();
-  Position userLocation;
-  String _currentCity;
-
-  @override
-  void initState() {
-    super.initState();
-    _getLocation().then((position) {
-      userLocation = position;
-      _getcity();
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (_currentCity == null) {
-      return Container();
-    } else {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _currentCity == null
-              ? Container()
-              : TitleText(
-                  text: 'Proche de $_currentCity',
-                  margin: EdgeInsets.only(top: 30, left: 20),
-                ),
-          SizedBox(
-            height: 182,
-            child: BlocProvider(
-              create: (context) => PartiesCubit()..fetchParties(),
-              child: BlocBuilder<PartiesCubit, PartiesState>(
-                  builder: (context, state) {
-                if (state.parties == null)
-                  return Center(
-                    child: const CircularProgressIndicator(),
-                  );
-                return ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: state.parties.length,
-                  itemBuilder: (
-                    BuildContext context,
-                    int index,
-                  ) =>
-                      buildPartyCardDistance(context, state.parties[index]),
-                );
-              }),
-            ),
-          ),
-        ],
-      );
-    }
-  }
-
-  Future<Position> _getLocation() async {
-    var currentLocation;
-    if (await Permission.locationWhenInUse.serviceStatus.isEnabled) {
-      try {
-        currentLocation = await Geolocator.getCurrentPosition(
-            desiredAccuracy: LocationAccuracy.best);
-      } catch (e) {
-        currentLocation = null;
-      }
-      return currentLocation;
-    } else {
-      return currentLocation = null;
-    }
-  }
-
-  Future<void> _getcity() async {
-    try {
-      List<Placemark> placemarks = await placemarkFromCoordinates(
-          userLocation.latitude, userLocation.longitude);
-
-      Placemark place = placemarks[0];
-
-      setState(() {
-        _currentCity = place.locality;
-      });
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  Widget buildPartyCardDistance(BuildContext context, Party party) {
-  
-    Future<int> _getCoordinates() async {
-      // à l'aide des adresses retrouver longitudes et latitude
-      List<Location> coordinates =
-          await locationFromAddress('${party.address}, ${party.city}');
-
-      Location place = coordinates[0];
-      double longitude = place.longitude;
-      double latitude = place.latitude;
-
-      // calculer la distance entre notre position et celle de la soirée
-      double distanceBetweenCoordinates = Geolocator.distanceBetween(
-          userLocation.latitude, userLocation.longitude, latitude, longitude);
-
-      double distanceInKm = distanceBetweenCoordinates / 1000;
-      int distanceInKmRound = distanceInKm.round();
-
-      return distanceInKmRound;
-    }
-
-    // trier du plus proche au plus loin
-    
-    return FutureBuilder(
-      future: _getCoordinates(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) return Center(child: CircularProgressIndicator(),);
-        String distance = snapshot.data.toString();
-        return Column( 
-          children: [
-            Text('$distance km ')
-          ],
-        );
-      }
     );
   }
 }
