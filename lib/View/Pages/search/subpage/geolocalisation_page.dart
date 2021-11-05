@@ -62,7 +62,12 @@ class _GeolocationWidgetState extends State<GeolocationWidget> {
                   });
                   // trier les soirées dans l'ordre croissant
                   state.parties
-                      .sort((a, b) => a.distance.compareTo(b.distance));
+                      .sort((a, b)  {
+                        if (a.distance == null || b.distance == null) {
+                          return 1;
+                        }
+                        return a.distance.compareTo(b.distance);
+                      });
                 }
                 return PageView.builder(
                   scrollDirection: Axis.horizontal,
