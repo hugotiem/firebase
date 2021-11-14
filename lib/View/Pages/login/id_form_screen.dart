@@ -19,9 +19,9 @@ class IdFormScreen extends StatefulWidget {
 }
 
 class _IdFormScreenState extends State<IdFormScreen> {
-  PickedFile _idFrontImage;
-  PickedFile _idBackImage;
-  PickedFile _faceImage;
+  XFile _idFrontImage;
+  XFile _idBackImage;
+  XFile _faceImage;
 
   @override
   Widget build(BuildContext context) {
@@ -145,7 +145,7 @@ class _IdFormScreenState extends State<IdFormScreen> {
                             onPressed: () => _faceImage == null
                                 ? _getImage(ImageSource.camera).then((value) {
                                     setState(() {
-                                      _faceImage = value as PickedFile;
+                                      _faceImage = value;
                                     });
                                   })
                                 : _showBottomModalSheet(
@@ -154,7 +154,7 @@ class _IdFormScreenState extends State<IdFormScreen> {
                                         _getImage(ImageSource.camera)
                                             .then((value) {
                                       setState(() {
-                                        _faceImage = value as PickedFile;
+                                        _faceImage = value;
                                       });
                                     }),
                                     type: 'selfie',
@@ -243,10 +243,10 @@ class _IdFormScreenState extends State<IdFormScreen> {
                 setState(() {
                   switch (idImage) {
                     case 'front':
-                      _idFrontImage = value as PickedFile;
+                      _idFrontImage = value;
                       break;
                     case 'back':
-                      _idBackImage = value as PickedFile;
+                      _idBackImage = value;
                       break;
                     default:
                       break;
@@ -263,10 +263,10 @@ class _IdFormScreenState extends State<IdFormScreen> {
                 setState(() {
                   switch (idImage) {
                     case 'front':
-                      _idFrontImage = value as PickedFile;
+                      _idFrontImage = value;
                       break;
                     case 'back':
-                      _idBackImage = value as PickedFile;
+                      _idBackImage = value;
                       break;
                     default:
                       break;
@@ -287,7 +287,7 @@ class _IdFormScreenState extends State<IdFormScreen> {
   }
 
   Future<dynamic> _showBottomModalSheet(
-      {PickedFile image, void Function() onPressed, String type}) {
+      {XFile image, void Function() onPressed, String type}) {
     return showModalBottomSheet(
       enableDrag: true,
       isScrollControlled: true,
