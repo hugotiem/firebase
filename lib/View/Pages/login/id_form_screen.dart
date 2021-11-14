@@ -6,8 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'package:mailer/mailer.dart';
-import 'package:mailer/smtp_server.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/blocs/user/user_cubit.dart';
 
@@ -147,7 +145,7 @@ class _IdFormScreenState extends State<IdFormScreen> {
                             onPressed: () => _faceImage == null
                                 ? _getImage(ImageSource.camera).then((value) {
                                     setState(() {
-                                      _faceImage = value;
+                                      _faceImage = value as PickedFile;
                                     });
                                   })
                                 : _showBottomModalSheet(
@@ -156,7 +154,7 @@ class _IdFormScreenState extends State<IdFormScreen> {
                                         _getImage(ImageSource.camera)
                                             .then((value) {
                                       setState(() {
-                                        _faceImage = value;
+                                        _faceImage = value as PickedFile;
                                       });
                                     }),
                                     type: 'selfie',
@@ -196,7 +194,7 @@ class _IdFormScreenState extends State<IdFormScreen> {
                         ),
                         onTap: () async {
                           if (_idFrontImage == null) {
-                            var message = "Veuillez saisir une image";
+                            //var message = "Veuillez saisir une image";
                             return;
                           }
                           if (_idBackImage == null) {
@@ -228,10 +226,10 @@ class _IdFormScreenState extends State<IdFormScreen> {
     );
   }
 
-  Future<PickedFile> _getImage(ImageSource imageSource) async {
+  Future<XFile> _getImage(ImageSource imageSource) async {
     var imagePicker = new ImagePicker();
 
-    return await imagePicker.getImage(source: imageSource);
+    return await imagePicker.pickImage(source: imageSource);
   }
 
   Future<dynamic> _showCupertinoModalPopup(String idImage) {
@@ -245,10 +243,10 @@ class _IdFormScreenState extends State<IdFormScreen> {
                 setState(() {
                   switch (idImage) {
                     case 'front':
-                      _idFrontImage = value;
+                      _idFrontImage = value as PickedFile;
                       break;
                     case 'back':
-                      _idBackImage = value;
+                      _idBackImage = value as PickedFile;
                       break;
                     default:
                       break;
@@ -265,10 +263,10 @@ class _IdFormScreenState extends State<IdFormScreen> {
                 setState(() {
                   switch (idImage) {
                     case 'front':
-                      _idFrontImage = value;
+                      _idFrontImage = value as PickedFile;
                       break;
                     case 'back':
-                      _idBackImage = value;
+                      _idBackImage = value as PickedFile;
                       break;
                     default:
                       break;

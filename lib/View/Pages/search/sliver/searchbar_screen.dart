@@ -67,6 +67,7 @@ class _SearchBarScreenState extends State<SearchBarScreen>
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        // ignore: deprecated_member_use
         brightness: _brightness,
         toolbarHeight: 0,
         backgroundColor: Colors.transparent,
