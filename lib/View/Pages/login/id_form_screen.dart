@@ -6,8 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'package:mailer/mailer.dart';
-import 'package:mailer/smtp_server.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/blocs/user/user_cubit.dart';
 
@@ -21,9 +19,9 @@ class IdFormScreen extends StatefulWidget {
 }
 
 class _IdFormScreenState extends State<IdFormScreen> {
-  PickedFile _idFrontImage;
-  PickedFile _idBackImage;
-  PickedFile _faceImage;
+  XFile _idFrontImage;
+  XFile _idBackImage;
+  XFile _faceImage;
 
   @override
   Widget build(BuildContext context) {
@@ -196,7 +194,7 @@ class _IdFormScreenState extends State<IdFormScreen> {
                         ),
                         onTap: () async {
                           if (_idFrontImage == null) {
-                            var message = "Veuillez saisir une image";
+                            //var message = "Veuillez saisir une image";
                             return;
                           }
                           if (_idBackImage == null) {
@@ -228,10 +226,10 @@ class _IdFormScreenState extends State<IdFormScreen> {
     );
   }
 
-  Future<PickedFile> _getImage(ImageSource imageSource) async {
+  Future<XFile> _getImage(ImageSource imageSource) async {
     var imagePicker = new ImagePicker();
 
-    return await imagePicker.getImage(source: imageSource);
+    return await imagePicker.pickImage(source: imageSource);
   }
 
   Future<dynamic> _showCupertinoModalPopup(String idImage) {
@@ -289,7 +287,7 @@ class _IdFormScreenState extends State<IdFormScreen> {
   }
 
   Future<dynamic> _showBottomModalSheet(
-      {PickedFile image, void Function() onPressed, String type}) {
+      {XFile image, void Function() onPressed, String type}) {
     return showModalBottomSheet(
       enableDrag: true,
       isScrollControlled: true,

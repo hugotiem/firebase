@@ -1,4 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:pts/Constant.dart';
 import 'package:pts/Model/services/firestore_service.dart';
 import 'package:pts/View/Pages/search/sliver/searchbar.dart';
@@ -20,6 +24,7 @@ class _SearchBarScreenState extends State<SearchBarScreen>
   PanelController _resultsPanelController = PanelController();
   PanelController _searchPanelController = PanelController();
   AnimationController _animationController;
+  Completer<GoogleMapController> mapController = Completer();
 
   String _search = "";
   String _result;
@@ -56,11 +61,13 @@ class _SearchBarScreenState extends State<SearchBarScreen>
   @override
   Widget build(BuildContext context) {
     Size _size = MediaQuery.of(context).size;
+    // print(_result);
     return Scaffold(
       backgroundColor: SECONDARY_COLOR,
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        // ignore: deprecated_member_use
         brightness: _brightness,
         toolbarHeight: 0,
         backgroundColor: Colors.transparent,
@@ -68,6 +75,25 @@ class _SearchBarScreenState extends State<SearchBarScreen>
       ),
       body: Stack(
         children: [
+          FutureBuilder(
+              future: _getCoordinates(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData)
+                  return Center(child: CircularProgressIndicator());
+
+                String longitude = snapshot.data.toString().split(' ')[0];
+                String latitude = snapshot.data.toString().split(' ')[1];
+                double long = double.parse(longitude);
+                double lat = double.parse(latitude);
+
+                return GoogleMap(
+                  onMapCreated: (controller) =>
+                      mapController.complete(controller),
+                  initialCameraPosition:
+                      CameraPosition(target: LatLng(lat, long), zoom: 14),
+                  mapType: MapType.normal,
+                );
+              }),
           // afficher la carte soit paris si loc désactivé sinon location actuelle
           Column(
             children: <Widget>[
@@ -80,8 +106,9 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                     Expanded(
                       flex: 1,
                       child: Transform.rotate(
-                        angle:
-                            _isDissmissed ? (-90 * _rotation) * math.pi / 180 : 0,
+                        angle: _isDissmissed
+                            ? (-90 * _rotation) * math.pi / 180
+                            : 0,
                         child: IconButton(
                           icon: Icon(
                             Icons.arrow_back,
@@ -107,7 +134,8 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                                 }
                               });
 
-                              _animationController.animateTo(0, curve: Curves.ease);
+                              _animationController.animateTo(0,
+                                  curve: Curves.ease);
                               _animationController.addListener(() {
                                 setState(() {
                                   _rotation = _animationController.value;
@@ -134,8 +162,10 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                             });
 
                             _searchPanelController.open();
-                            _panelPosition = _resultsPanelController.panelPosition;
-                            _animationController.animateTo(1, curve: Curves.ease);
+                            _panelPosition =
+                                _resultsPanelController.panelPosition;
+                            _animationController.animateTo(1,
+                                curve: Curves.ease);
 
                             _animationController.addListener(() {
                               setState(() {
@@ -184,8 +214,9 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                                   color: PRIMARY_COLOR,
                                 ),
                                 child: FutureBuilder(
-                                    future: _firestore.getDataWithWhereIsEqualTo(
-                                        "city", _result.split(",")[0]),
+                                    future:
+                                        _firestore.getDataWithWhereIsEqualTo(
+                                            "city", _result.split(",")[0]),
                                     builder: (context, snapshot) {
                                       return ListView.builder(
                                         controller: sc,
@@ -227,16 +258,18 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                                       itemBuilder: (context, index) {
                                         return ListTile(
                                           title: Text(
-                                            applicationBloc
-                                                .searchResults[index].description,
-                                            style: TextStyle(color: Colors.black),
+                                            applicationBloc.searchResults[index]
+                                                .description,
+                                            style:
+                                                TextStyle(color: Colors.black),
                                           ),
                                           onTap: () {
                                             FocusScope.of(context).unfocus();
                                             setState(() {
                                               _hasResults = true;
                                               _result = applicationBloc
-                                                  .searchResults[index].description;
+                                                  .searchResults[index]
+                                                  .description;
 
                                               _resultsPanelController
                                                   .animatePanelToSnapPoint(
@@ -247,10 +280,12 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                                               _isDissmissed = true;
                                               _animationController.animateTo(0,
                                                   curve: Curves.ease);
-                                              _animationController.addListener(() {
+                                              _animationController
+                                                  .addListener(() {
                                                 setState(() {
                                                   _rotation =
-                                                      _animationController.value;
+                                                      _animationController
+                                                          .value;
                                                 });
                                               });
                                             });
@@ -305,7 +340,8 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                                           .searchResults[index].description;
                                       _isDissmissed = true;
                                     });
-                                    _resultsPanelController.animatePanelToSnapPoint(
+                                    _resultsPanelController
+                                        .animatePanelToSnapPoint(
                                       duration: Duration(milliseconds: 300),
                                       curve: Curves.ease,
                                     );
@@ -332,5 +368,16 @@ class _SearchBarScreenState extends State<SearchBarScreen>
         ],
       ),
     );
+  }
+
+  Future _getCoordinates() async {
+    List<Location> coordinates =
+        await locationFromAddress(_result.split(',')[0]);
+
+    Location place = coordinates[0];
+    double longitude = place.longitude;
+    double latitude = place.latitude;
+
+    return '$longitude $latitude';
   }
 }

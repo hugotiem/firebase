@@ -84,7 +84,7 @@ class AuthService extends ChangeNotifier {
   }
 
   Future<void> updateDisplayName(String name) async {
-    await _auth.currentUser.updateProfile(displayName: name);
+    await _auth.currentUser.updateDisplayName(name);
     notifyListeners();
   }
 

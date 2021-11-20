@@ -18,6 +18,7 @@ class Party {
   var owner;
   var uid;
   List<dynamic> validateGuestList;
+  int distance;
 
   Party(
     this.id,
@@ -37,6 +38,9 @@ class Party {
     this.owner,
     this.uid,
     this.validateGuestList,
+    {
+      this.distance
+    }
   );
 
   factory Party.fromSnapShots(
