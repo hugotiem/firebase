@@ -24,7 +24,6 @@ class _LocationPageState extends State<LocationPage> {
   TextEditingController _addressController = TextEditingController();
   TextEditingController _cityController = TextEditingController();
   TextEditingController _postCodeController = TextEditingController();
-  bool _showAddressLabel = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
@@ -112,7 +111,7 @@ class _LocationPageState extends State<LocationPage> {
                   } else {
                     return null;
                   }
-                },
+                },  
                 hintText: 'ex: Paris',
               ),
               HeaderText2(

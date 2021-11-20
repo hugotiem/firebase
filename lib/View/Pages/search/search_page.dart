@@ -353,6 +353,8 @@ class _GeolocationWidgetState extends State<GeolocationWidget> {
                   return Center(
                     child: const CircularProgressIndicator(),
                   );
+                
+                
                 return ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: state.parties.length,
@@ -401,7 +403,6 @@ class _GeolocationWidgetState extends State<GeolocationWidget> {
   }
 
   Widget buildPartyCardDistance(BuildContext context, Party party) {
-  
     _getCoordinates() async {
       // à l'aide des adresses retrouver longitudes et latitude
       List<Location> coordinates =
@@ -422,18 +423,18 @@ class _GeolocationWidgetState extends State<GeolocationWidget> {
     }
 
     // trier du plus proche au plus loin
-    
+
     return FutureBuilder(
-      future: _getCoordinates(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) return Center(child: CircularProgressIndicator(),);
-        String distance = snapshot.data.toString();
-        return Column( 
-          children: [
-            Text('$distance km ')
-          ],
-        );
-      }
-    );
+        future: _getCoordinates(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData)
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          String distance = snapshot.data.toString();
+          return Column(
+            children: [Text('$distance km ')],
+          );
+        });
   }
 }
