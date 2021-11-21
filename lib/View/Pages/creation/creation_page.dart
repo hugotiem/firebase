@@ -10,16 +10,16 @@ import 'package:pts/View/Pages/creation/theme_page.dart';
 import 'package:pts/blocs/parties/build_parties_cubit.dart';
 
 class CreationPage extends StatefulWidget {
-  CreationPage({Key key}) : super(key: key);
+  CreationPage({Key? key}) : super(key: key);
 
   @override
   _CreationPageState createState() => _CreationPageState();
 }
 
 class _CreationPageState extends State<CreationPage> {
-  PageController _controller;
+  PageController? _controller;
 
-  List<Widget> _children;
+  late List<Widget> _children;
 
   @override
   void initState() {
@@ -37,14 +37,14 @@ class _CreationPageState extends State<CreationPage> {
   }
 
   void onNext() {
-    _controller.nextPage(
+    _controller!.nextPage(
       duration: const Duration(milliseconds: 200),
       curve: Curves.easeIn,
     );
   }
 
   void onPrevious() {
-    _controller.previousPage(
+    _controller!.previousPage(
       duration: const Duration(milliseconds:  200), 
       curve: Curves.easeIn
     );
@@ -57,7 +57,7 @@ class _CreationPageState extends State<CreationPage> {
       child: BlocListener<BuildPartiesCubit, BuildPartiesState>(
         listener: (BuildContext context, state) {
           if (state.status == BuildPartiesStatus.loaded) {
-            _controller.animateToPage(
+            _controller!.animateToPage(
               _children.length - 1,
               duration: const Duration(milliseconds: 200),
               curve: Curves.easeIn,

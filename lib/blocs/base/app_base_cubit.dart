@@ -5,12 +5,12 @@ abstract class AppBaseCubit<U extends AppBaseState> extends Cubit<U> {
   AppBaseCubit(U initialState) : super(initialState);
 
   Future<Null> onHandleError(Object error, StackTrace stackTrace) async {
-    emit(state.setRequestInProgress(inProgress: false));
+    emit(state.setRequestInProgress(inProgress: false) as U);
 
     emit(state.setErrorReceived(
       requestFailureCode: error.toString(),
       requestFailureMessage: error.toString(),
-    ));
+    ) as U);
   }
 
 }

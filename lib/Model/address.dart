@@ -1,10 +1,10 @@
 class Address {
-  final String label;
-  final String streetName;
-  final String streetNumber;
-  final String city;
-  final String postalCode;
-  final String region;
+  final String? label;
+  final String? streetName;
+  final String? streetNumber;
+  final String? city;
+  final String? postalCode;
+  final String? region;
 
   const Address(
       {this.label,

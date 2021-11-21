@@ -7,8 +7,8 @@ import 'pts_box.dart';
 
 // Clickable container
 class ClickableContainer extends StatelessWidget {
-  final Widget child;
-  final Widget to;
+  final Widget? child;
+  final Widget? to;
   final Color color;
   final Color focusColor;
   final bool containerShadow;
@@ -16,7 +16,7 @@ class ClickableContainer extends StatelessWidget {
   final EdgeInsetsGeometry padding;
   final EdgeInsetsGeometry margin;
   ClickableContainer({
-    Key key,
+    Key? key,
     this.child,
     this.color = const Color(0xffffffff),
     this.focusColor = FOCUS_COLOR,
@@ -34,7 +34,7 @@ class ClickableContainer extends StatelessWidget {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) =>
-                to != null ? to : new Container(color: Colors.white),
+                to != null ? to! : new Container(color: Colors.white),
           ),
         ),
       },

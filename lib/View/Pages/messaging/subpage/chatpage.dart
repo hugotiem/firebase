@@ -12,7 +12,7 @@ class ChatPage extends StatelessWidget {
   final otherUserName;
 
   const ChatPage(String this.otherUserID,
-  { this.otherUserName, Key key }) 
+  { this.otherUserName, Key? key }) 
   : super(key: key);
 
   @override
@@ -37,7 +37,7 @@ class ChatPage extends StatelessWidget {
 
 class MessageField extends StatefulWidget {
   final String otherUserID;
-  const MessageField(this.otherUserID, { Key key }) : super(key: key);
+  const MessageField(this.otherUserID, { Key? key }) : super(key: key);
 
   @override
   _MessageFieldState createState() => _MessageFieldState();
@@ -45,7 +45,7 @@ class MessageField extends StatefulWidget {
 
 class _MessageFieldState extends State<MessageField> {
   TextEditingController textfield = TextEditingController();
-  bool selected;
+  bool? selected;
 
   @override 
   void initState() {
@@ -57,7 +57,7 @@ class _MessageFieldState extends State<MessageField> {
 
   void sendMessage() {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
-    var currentUserId = AuthService().currentUser.uid;
+    var currentUserId = AuthService().currentUser!.uid;
     DateTime now = DateTime.now();
     String formattedDate = DateFormat('yyyy-MM-dd - kk:mm:ss').format(now);
     try {
@@ -184,15 +184,15 @@ class _MessageFieldState extends State<MessageField> {
 
 class ListMessage extends StatefulWidget {
   final String otherUserID;
-  const ListMessage(this.otherUserID, { Key key }) : super(key: key);
+  const ListMessage(this.otherUserID, { Key? key }) : super(key: key);
 
   @override
   _ListMessageState createState() => _ListMessageState();
 }
 
 class _ListMessageState extends State<ListMessage> {
-  List<DocumentSnapshot> _docs;
-  var currentUserId = AuthService().currentUser.uid;
+  late List<DocumentSnapshot> _docs;
+  var currentUserId = AuthService().currentUser!.uid;
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -201,7 +201,7 @@ class _ListMessageState extends State<ListMessage> {
         stream: getmessageStreamSnapshot(context),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) return Center(child: CircularProgressIndicator(),);
-          _docs = snapshot.data.docs;
+          _docs = snapshot.data!.docs;
           if (_docs.isEmpty) {
             return const Center(child: Text("Envoyer votre premier message"),);
           }
@@ -230,9 +230,9 @@ class _ListMessageState extends State<ListMessage> {
 }
 
 class CurrentUserMessage extends StatelessWidget {
-  final String textMessage;
-  final String dateMessage;
-  const CurrentUserMessage(this.textMessage, this.dateMessage, {Key key})
+  final String? textMessage;
+  final String? dateMessage;
+  const CurrentUserMessage(this.textMessage, this.dateMessage, {Key? key})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -257,11 +257,11 @@ class CurrentUserMessage extends StatelessWidget {
             child: Center(
               child: Container(
                 padding: EdgeInsets.only(top: 10, left: 5, bottom: 10, right: 5),
-                width: textMessage.length >= 50
+                width: textMessage!.length >= 50
                 ? MediaQuery.of(context).size.width * 0.6
                 : null,
                 child: Text(
-                  textMessage,
+                  textMessage!,
                   style: const TextStyle(color: Colors.white, fontSize: 17),
                 ),
               ),
@@ -274,9 +274,9 @@ class CurrentUserMessage extends StatelessWidget {
 }
 
 class OtherUserMessage extends StatelessWidget {
-  final String textMessage;
-  final String dateMessage;
-  const OtherUserMessage(this.textMessage, this.dateMessage, {Key key})
+  final String? textMessage;
+  final String? dateMessage;
+  const OtherUserMessage(this.textMessage, this.dateMessage, {Key? key})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -295,11 +295,11 @@ class OtherUserMessage extends StatelessWidget {
             child: Center(
               child: Container(
                 padding: EdgeInsets.only(top: 10, left: 5, bottom: 10, right: 5),
-                width: textMessage.length >= 50
+                width: textMessage!.length >= 50
                 ? MediaQuery.of(context).size.width * 0.6
                 : null,
                 child: Text(
-                  textMessage,
+                  textMessage!,
                   style: const TextStyle(fontSize: 17),
                 ),
               ),

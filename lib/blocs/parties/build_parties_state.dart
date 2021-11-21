@@ -3,13 +3,13 @@ part of 'build_parties_cubit.dart';
 enum BuildPartiesStatus { initial, adding, loading, added, loaded }
 
 class BuildPartiesState extends AppBaseState<BuildPartiesStatus> {
-  final Map<String, dynamic> parties;
+  final Map<String, dynamic>? parties;
 
-  const BuildPartiesState(BuildPartiesStatus status,
+  const BuildPartiesState(BuildPartiesStatus? status,
       {this.parties,
       bool requestInProgress = false,
-      String requestFailureCode,
-      String requestFailureMessage})
+      String? requestFailureCode,
+      String? requestFailureMessage})
       : super(
             status: status,
             requestInProgress: requestInProgress,
@@ -28,8 +28,8 @@ class BuildPartiesState extends AppBaseState<BuildPartiesStatus> {
   @override
   AppBaseState<BuildPartiesStatus> copyWith(
           {bool requestInProgress = false,
-          String requestFailureCode,
-          String requestFailureMessage}) =>
+          String? requestFailureCode,
+          String? requestFailureMessage}) =>
       BuildPartiesState(status,
           parties: this.parties,
           requestInProgress: requestInProgress,

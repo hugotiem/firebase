@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class PieChartLegend extends StatelessWidget {
   const PieChartLegend({ 
-    Key key 
+    Key? key 
     }) 
     : super(key: key);
 
@@ -50,11 +50,11 @@ class PieChartLegend extends StatelessWidget {
 }
 
 class CircleLegend extends StatelessWidget {
-  final Color color;
+  final Color? color;
 
   const CircleLegend({ 
     this.color,
-    Key key 
+    Key? key 
     }) 
     : super(key: key);
 
@@ -72,11 +72,11 @@ class CircleLegend extends StatelessWidget {
 }
 
 class TextLegend extends StatelessWidget {
-  final String legend;
+  final String? legend;
 
   const TextLegend({ 
     this.legend,
-    Key key 
+    Key? key 
     }) 
     : super(key: key);
 
@@ -85,7 +85,7 @@ class TextLegend extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(left: 8, right: 8, bottom: 4, top: 4),
       child: Text(
-        this.legend,
+        this.legend!,
         style: TextStyle(  
           fontSize: 15,
           fontWeight: FontWeight.bold

@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
 
 class SearchBar extends StatelessWidget {
-  final void Function(String) onChanged;
-  final void Function() onTap;
+  final void Function(String)? onChanged;
+  final void Function()? onTap;
 
-  const SearchBar({Key key, this.onChanged, this.onTap}) : super(key: key);
+  const SearchBar({Key? key, this.onChanged, this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

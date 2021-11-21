@@ -8,13 +8,13 @@ class AppBaseState<T> extends Equatable {
       this.requestFailureCode,
       this.requestFailureMessage});
 
-  final T status;
+  final T? status;
   final bool requestInProgress;
-  final String requestFailureCode;
-  final String requestFailureMessage;
+  final String? requestFailureCode;
+  final String? requestFailureMessage;
 
   @override
-  List<Object> get props =>
+  List<Object?> get props =>
       [status, requestInProgress, requestFailureCode, requestFailureMessage];
 
   @override
@@ -31,8 +31,8 @@ class AppBaseState<T> extends Equatable {
   }
 
   AppBaseState<T> setErrorReceived(
-      {@required String requestFailureCode,
-      @required String requestFailureMessage}) {
+      {required String requestFailureCode,
+      required String requestFailureMessage}) {
     return this.copyWith(
         requestFailureCode: requestFailureCode,
         requestFailureMessage: requestFailureMessage);
@@ -40,8 +40,8 @@ class AppBaseState<T> extends Equatable {
 
   AppBaseState<T> copyWith(
       {bool requestInProgress = false,
-      String requestFailureCode,
-      String requestFailureMessage}) {
+      String? requestFailureCode,
+      String? requestFailureMessage}) {
     throw UnimplementedError();
   }
 }

@@ -36,8 +36,8 @@ class BuildPartiesCubit extends AppBaseCubit<BuildPartiesState> {
   }
 
   Future<void> addToFireStore() async {
-    emit(state.setRequestInProgress());
-    await services.add(data: state.parties).then(
+    emit(state.setRequestInProgress() as BuildPartiesState);
+    await services.add(data: state.parties!).then(
           (_) => emit(BuildPartiesState.loaded(state.parties)),
         );
   }

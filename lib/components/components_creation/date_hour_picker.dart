@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
 
 class DateHourPicker extends StatelessWidget {
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final void Function() onTap;
   final String hintText;
-  final String Function(String) validator;
+  final String? Function(String?)? validator;
 
   const DateHourPicker({ 
     this.controller,
-    @required this.onTap,
-    @required this.hintText,
+    required this.onTap,
+    required this.hintText,
     this.validator,
-    Key key 
+    Key? key 
     }) 
     : super(key: key);
 

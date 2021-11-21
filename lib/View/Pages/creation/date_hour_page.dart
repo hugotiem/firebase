@@ -11,10 +11,10 @@ import 'package:pts/components/components_creation/headertext_two.dart';
 import '../../../Constant.dart';
 
 class DateHourPage extends StatefulWidget {
-  final void Function() onNext;
-  final void Function() onPrevious;
+  final void Function()? onNext;
+  final void Function()? onPrevious;
 
-  const DateHourPage({Key key, this.onNext, this.onPrevious}) : super(key: key);
+  const DateHourPage({Key? key, this.onNext, this.onPrevious}) : super(key: key);
   @override
   _DateHourPageState createState() => _DateHourPageState();
 }
@@ -27,8 +27,8 @@ class _DateHourPageState extends State<DateHourPage> {
   TextEditingController heuredebutctl = TextEditingController();
   TextEditingController dateCtl = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  DateTime datedebut;
-  DateTime datefin;
+  DateTime? datedebut;
+  DateTime? datefin;
 
   @override
   Widget build(BuildContext context) {
@@ -38,13 +38,13 @@ class _DateHourPageState extends State<DateHourPage> {
         preferredSize: Size.fromHeight(50),
         child: BackAppBar(
           onPressed: () {
-            widget.onPrevious();
+            widget.onPrevious!();
           },
         ),
       ),
       floatingActionButton: FABForm(
         onPressed: () {
-          if (!_formKey.currentState.validate()) {
+          if (!_formKey.currentState!.validate()) {
             return;
           }
 
@@ -64,7 +64,7 @@ class _DateHourPageState extends State<DateHourPage> {
             ..addItem("startTime", datedebut)
             ..addItem("endTime", datefin);
 
-          widget.onNext();
+          widget.onNext!();
 
           // Soiree.setDataDateHourPage(_date, datedebut, datefin);
           // Navigator.push(
@@ -87,7 +87,7 @@ class _DateHourPageState extends State<DateHourPage> {
                 hintText: 'Choisir une date',
                 controller: dateCtl,
                 validator: (value) {
-                  if (value.isEmpty) {
+                  if (value == null || value.isEmpty) {
                     return "Vous devez choisir une date";
                   } else {
                     return null;
@@ -107,7 +107,7 @@ class _DateHourPageState extends State<DateHourPage> {
                 hintText: 'Choisir une heure',
                 controller: heuredebutctl,
                 validator: (value) {
-                  if (value.isEmpty) {
+                  if (value == null || value.isEmpty) {
                     return "Vous devez choisir une heure d'arrivée";
                   } else {
                     return null;
@@ -127,7 +127,7 @@ class _DateHourPageState extends State<DateHourPage> {
                 hintText: 'Choisir une Heure',
                 controller: heurefinctl,
                 validator: (value) {
-                  if (value.isEmpty) {
+                  if (value == null || value.isEmpty) {
                     return "Vous devez choisir une heure de départ";
                   } else {
                     return null;
@@ -142,18 +142,18 @@ class _DateHourPageState extends State<DateHourPage> {
   }
 
   Future<Null> _selectionDate() async {
-    DateTime _dateChoisie = await showDatePicker(
+    DateTime? _dateChoisie = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
         firstDate: DateTime.now(),
         lastDate: DateTime(2030),
-        builder: (BuildContext context, Widget child) {
+        builder: (BuildContext context, Widget? child) {
           return Theme(
               data: ThemeData.light().copyWith(
                 colorScheme: ColorScheme.light()
                     .copyWith(primary: SECONDARY_COLOR, onPrimary: ICONCOLOR),
               ),
-              child: child);
+              child: child!);
         });
 
     if (_dateChoisie != null && _dateChoisie != _date) {
@@ -164,16 +164,16 @@ class _DateHourPageState extends State<DateHourPage> {
   }
 
   Future<Null> _selectionHeureArrivee() async {
-    TimeOfDay _heureChoisieArrivee = await showTimePicker(
+    TimeOfDay? _heureChoisieArrivee = await showTimePicker(
         context: context,
         initialTime: TimeOfDay.now(),
-        builder: (BuildContext context, Widget child) {
+        builder: (BuildContext context, Widget? child) {
           return Theme(
               data: ThemeData.light().copyWith(
                 colorScheme: ColorScheme.light()
                     .copyWith(primary: SECONDARY_COLOR, onPrimary: ICONCOLOR),
               ),
-              child: child);
+              child: child!);
         });
 
     if (_heureChoisieArrivee != null && _heureChoisieArrivee != _heuredebut) {
@@ -184,16 +184,16 @@ class _DateHourPageState extends State<DateHourPage> {
   }
 
   Future<Null> _selectionHeureDepart() async {
-    TimeOfDay _heureChoisieDepart = await showTimePicker(
+    TimeOfDay? _heureChoisieDepart = await showTimePicker(
         context: context,
         initialTime: TimeOfDay.now(),
-        builder: (BuildContext context, Widget child) {
+        builder: (BuildContext context, Widget? child) {
           return Theme(
               data: ThemeData.light().copyWith(
                 colorScheme: ColorScheme.light()
                     .copyWith(primary: SECONDARY_COLOR, onPrimary: ICONCOLOR),
               ),
-              child: child);
+              child: child!);
         });
 
     if (_heureChoisieDepart != null && _heureChoisieDepart != _heurefin) {

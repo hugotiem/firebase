@@ -36,8 +36,8 @@ class UserCubit extends AppBaseCubit<UserState> {
     }).catchError(onHandleError);
   }
 
-  Future<void> updateUserInfo({String name, String surname}) async {
-    emit(state.setRequestInProgress());
+  Future<void> updateUserInfo({String? name, String? surname}) async {
+    emit(state.setRequestInProgress() as UserState);
     var id = await service.getToken();
     Map<String, dynamic> data = <String, dynamic>{
       "name": name,
@@ -50,7 +50,7 @@ class UserCubit extends AppBaseCubit<UserState> {
   Future<void> addId(File file, String ref) async {
     final filename = basename(file.path);
     final destination = '$ref/$filename';
-    emit(state.setRequestInProgress());
+    emit(state.setRequestInProgress() as UserState);
     var task = StorageService(destination).uploadFile(file);
     if (task == null) return;
     task.then((value) async {

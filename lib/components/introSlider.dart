@@ -3,7 +3,7 @@ import 'package:intro_slider/intro_slider.dart';
 import 'package:intro_slider/slide_object.dart';
 
 class IntroScreen extends StatefulWidget {
-  IntroScreen({Key key}) : super(key: key);
+  IntroScreen({Key? key}) : super(key: key);
 
   @override
   IntroScreenState createState() => new IntroScreenState();
@@ -11,7 +11,7 @@ class IntroScreen extends StatefulWidget {
 
 class IntroScreenState extends State<IntroScreen> {
   // ignore: deprecated_member_use
-  List<Slide> slides = new List();
+  List<Slide> slides = [];
 
   @override
   void initState() {

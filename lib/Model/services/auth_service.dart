@@ -11,19 +11,19 @@ class AuthService extends ChangeNotifier {
 
   FirebaseAuth get instance => _auth;
 
-  User get currentUser => _auth.currentUser;
+  User? get currentUser => _auth.currentUser;
 
-  Future<void> setToken(String token) async {
+  Future<void> setToken(String? token) async {
     await storage.write(key: "token", value: token);
   }
 
-  Future<String> getToken() async {
+  Future<String?> getToken() async {
     var token = await storage.read(key: "token");
     return token;
   }
 
-  Future<User> register(String _email, String _password,
-      {Map<String, dynamic> data}) async {
+  Future<User?> register(String _email, String _password,
+      {Map<String, dynamic>? data}) async {
     try {
       UserCredential userCredential =
           await _auth.createUserWithEmailAndPassword(
@@ -44,7 +44,7 @@ class AuthService extends ChangeNotifier {
     }
   }
 
-  Future<User> signIn(String _email, String _password) async {
+  Future<User?> signIn(String _email, String _password) async {
     try {
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
         email: _email,
@@ -64,33 +64,33 @@ class AuthService extends ChangeNotifier {
   }
 
   Future<UserCredential> signInWithGoogle() async {
-    final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
-    final GoogleSignInAuthentication googleAuth =
-        await googleUser.authentication;
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser?.authentication;
 
     final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
     );
     return _auth.signInWithCredential(credential);
   }
 
-  Future<void> reauthentification({String email, String password}) async {
+  Future<void> reauthentification({required String email, required String password}) async {
     EmailAuthCredential credential =
-        EmailAuthProvider.credential(email: email, password: password);
+        EmailAuthProvider.credential(email: email, password: password) as EmailAuthCredential;
 
-    await _auth.currentUser.reauthenticateWithCredential(credential);
+    await _auth.currentUser!.reauthenticateWithCredential(credential);
   }
 
   Future<void> updateDisplayName(String name) async {
-    await _auth.currentUser.updateDisplayName(name);
+    await _auth.currentUser!.updateDisplayName(name);
     notifyListeners();
   }
 
   Future<String> updateEmail(String newEmail) async {
     try {
-      await _auth.currentUser.updateEmail(newEmail);
+      await _auth.currentUser!.updateEmail(newEmail);
     } on FirebaseAuthException catch (e) {
       if (e.code == "invalid-email") {
         return "Email invalide";

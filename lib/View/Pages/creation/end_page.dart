@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
 
 class EndPage extends StatelessWidget {
-  const EndPage({ Key key }) : super(key: key);
+  const EndPage({ Key? key }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -6,11 +6,11 @@ class User {
   final AuthService authService = AuthService();
   final FireStoreServices fireStoreServices = FireStoreServices("user");
 
-  String id;
-  String name;
-  String surname;
-  String gender;
-  int age;
+  String? id;
+  String? name;
+  String? surname;
+  String? gender;
+  int? age;
 
   User({this.id, this.name, this.surname});
 
@@ -22,7 +22,7 @@ class User {
 
   factory User.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> snapshot) {
     var id = snapshot.id;
-    var data = snapshot.data();
+    var data = snapshot.data()!;
     var name = data['name'];
     var surname = data['surname'];
 

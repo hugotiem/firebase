@@ -66,9 +66,9 @@ class _GridViewCityState extends State<GridViewCity> {
 
 class CityBox extends StatelessWidget {
   final String text;
-  final String image;
+  final String? image;
 
-  const CityBox(this.text, {this.image, Key key}) : super(key: key);
+  const CityBox(this.text, {this.image, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +91,7 @@ class CityBox extends StatelessWidget {
                   width: 75,
                   decoration: BoxDecoration(
                     image: image != null
-                        ? DecorationImage(image: AssetImage(image), fit: BoxFit.cover)
+                        ? DecorationImage(image: AssetImage(image!), fit: BoxFit.cover)
                         : null,
                     borderRadius: BorderRadius.circular(15),
                   ),
@@ -134,9 +134,9 @@ class CityBox extends StatelessWidget {
                   if (state.parties == null)
                     return Center(child: const CircularProgressIndicator());
                   return ListView.builder(
-                    itemCount: state.parties.length,
+                    itemCount: state.parties!.length,
                     itemBuilder: (BuildContext context, int index) =>
-                        buildPartyCard(context, state.parties[index]),
+                        buildPartyCard(context, state.parties![index]),
                   );
                 },
               ),

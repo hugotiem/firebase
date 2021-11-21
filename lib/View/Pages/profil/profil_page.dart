@@ -232,13 +232,13 @@ class _ProfilState extends State<Profil> {
 }
 
 class CickableContainerProfil extends StatelessWidget {
-  final Widget to;
+  final Widget? to;
   final bool bottomBorder;
-  final String text;
-  final IconData icon;
+  final String? text;
+  final IconData? icon;
 
   const CickableContainerProfil(
-      {this.to, this.bottomBorder = true, this.text, this.icon, Key key})
+      {this.to, this.bottomBorder = true, this.text, this.icon, Key? key})
       : super(key: key);
 
   @override
@@ -258,7 +258,7 @@ class CickableContainerProfil extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              this.text,
+              this.text!,
               style: TextStyle(fontSize: 20),
             ),
             Icon(this.icon)
@@ -270,9 +270,9 @@ class CickableContainerProfil extends StatelessWidget {
 }
 
 class TitleTextProfil extends StatelessWidget {
-  final String text;
+  final String? text;
 
-  const TitleTextProfil({this.text, Key key}) : super(key: key);
+  const TitleTextProfil({this.text, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

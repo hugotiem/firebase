@@ -8,7 +8,7 @@ import 'package:pts/components/party_card.dart';
 import 'package:pts/constant.dart';
 
 class GridListThemes extends StatefulWidget {
-  const GridListThemes({Key key}) : super(key: key);
+  const GridListThemes({Key? key}) : super(key: key);
 
   @override
   _GridListThemesState createState() => _GridListThemesState();
@@ -59,7 +59,7 @@ class _GridListThemesState extends State<GridListThemes> {
 class ThemeBox extends StatelessWidget {
   final List<Color> colors;
   final String text;
-  const ThemeBox(this.text, {@required this.colors, Key key}) : super(key: key);
+  const ThemeBox(this.text, {required this.colors, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -113,9 +113,9 @@ class ThemeBox extends StatelessWidget {
                     if (state.parties == null)
                       return Center(child: const CircularProgressIndicator());
                     return ListView.builder(
-                        itemCount: state.parties.length,
+                        itemCount: state.parties!.length,
                         itemBuilder: (BuildContext context, int index) =>
-                            buildPartyCard(context, state.parties[index]));
+                            buildPartyCard(context, state.parties![index]));
                   },
                 )),
           );

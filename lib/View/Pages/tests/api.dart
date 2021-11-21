@@ -40,7 +40,7 @@ class _APIState extends State<API> {
                   itemBuilder: (context, index) {
                     return ListTile(
                       title: Text(
-                        applicationBloc.searchResults[index].description,
+                        applicationBloc.searchResults[index].description!,
                         style: TextStyle(color: Colors.black),
                       ),
                     );

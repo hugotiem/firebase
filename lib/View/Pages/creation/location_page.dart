@@ -12,10 +12,10 @@ import 'package:pts/components/components_creation/headertext_two.dart';
 import 'package:pts/components/components_creation/tff_text.dart';
 
 class LocationPage extends StatefulWidget {
-  final void Function() onNext;
-  final void Function() onPrevious;
+  final void Function()? onNext;
+  final void Function()? onPrevious;
 
-  const LocationPage({Key key, this.onNext, this.onPrevious}) : super(key: key);
+  const LocationPage({Key? key, this.onNext, this.onPrevious}) : super(key: key);
   @override
   _LocationPageState createState() => _LocationPageState();
 }
@@ -34,13 +34,13 @@ class _LocationPageState extends State<LocationPage> {
         preferredSize: Size.fromHeight(50),
         child: BackAppBar(
           onPressed: () {
-            widget.onPrevious();
+            widget.onPrevious!();
           },
         ),
       ),
       floatingActionButton: FABForm(
         onPressed: () {
-          if (!_formKey.currentState.validate()) {
+          if (!_formKey.currentState!.validate()) {
             return;
           }
 
@@ -51,7 +51,7 @@ class _LocationPageState extends State<LocationPage> {
                 "city", _cityController.text.trimRight().trimLeft().inCaps)
             ..addItem("postal code", _postCodeController.text);
 
-          widget.onNext();
+          widget.onNext!();
         },
       ),
       body: SingleChildScrollView(
@@ -69,7 +69,7 @@ class _LocationPageState extends State<LocationPage> {
               TypeAheadTFFText(
                 controller: _addressController,
                 validator: (value) {
-                  if (value.isEmpty) {
+                  if (value == null || value.isEmpty) {
                     return "Vous devez remplir l'adresse";
                   } else {
                     return null;
@@ -81,11 +81,11 @@ class _LocationPageState extends State<LocationPage> {
                     return BlocProvider.of<BuildPartiesCubit>(context)
                         .searchAddress(value);
                   }
-                  return null;
+                  return Future(() => {});
                 },
                 itemBuilder: (BuildContext context, items) {
                   return ListTile(
-                    title: Text((items as Address).label),
+                    title: Text((items as Address).label!),
                   );
                 },
                 transitionBuilder: (context, widget, controller) {
@@ -95,9 +95,9 @@ class _LocationPageState extends State<LocationPage> {
                   Address address = suggestion as Address;
                   setState(() {
                     _addressController.text =
-                        address.streetNumber + " " + address.streetName;
-                    _cityController.text = address.city;
-                    _postCodeController.text = address.postalCode;
+                        address.streetNumber! + " " + address.streetName!;
+                    _cityController.text = address.city!;
+                    _postCodeController.text = address.postalCode!;
                   });
                 },
               ),
@@ -106,7 +106,7 @@ class _LocationPageState extends State<LocationPage> {
               TFFText(
                 controller: _cityController,
                 validator: (value) {
-                  if (value.isEmpty) {
+                  if (value == null || value.isEmpty) {
                     return "Vous devez remplir la ville";
                   } else {
                     return null;
@@ -121,7 +121,7 @@ class _LocationPageState extends State<LocationPage> {
                   controller: _postCodeController,
                   hintText: 'ex: 75008',
                   validator: (value) {
-                    if (value.isEmpty) {
+                    if (value == null || value.isEmpty) {
                       return "Vous devez remplir le code postal";
                     } else if (value.length < 5) {
                       return "Ce code n'existe pas";

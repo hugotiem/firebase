@@ -12,10 +12,10 @@ import 'package:pts/components/components_creation/tff_number.dart';
 enum RadioChoix { Gratuit, Cinq, Dix, Quinze, Vingt }
 
 class GuestNumber extends StatefulWidget {
-  final void Function() onNext;
-  final void Function() onPrevious;
+  final void Function()? onNext;
+  final void Function()? onPrevious;
 
-  const GuestNumber({Key key, this.onNext, this.onPrevious}) : super(key: key);
+  const GuestNumber({Key? key, this.onNext, this.onPrevious}) : super(key: key);
   @override
   _GuestNumberState createState() => _GuestNumberState();
 }
@@ -24,7 +24,7 @@ class _GuestNumberState extends State<GuestNumber> {
   String _nombre = '20';
   String _prix = '10';
   RadioChoix _choixRadio = RadioChoix.Dix;
-  double _revenu;
+  double? _revenu;
 
   changText() {
     double _nombre1 = double.parse(_nombre);
@@ -47,7 +47,7 @@ class _GuestNumberState extends State<GuestNumber> {
         preferredSize: Size.fromHeight(50),
         child: BackAppBar(
           onPressed: () {
-            widget.onPrevious();
+            widget.onPrevious!();
           },
         ),
       ),
@@ -57,7 +57,7 @@ class _GuestNumberState extends State<GuestNumber> {
             ..addItem("number", _nombre)
             ..addItem("price", _prix);
 
-          widget.onNext();
+          widget.onNext!();
 
           //   Soiree.setDataNumberPricePage(
           //     _nombre,
@@ -192,7 +192,7 @@ class _GuestNumberState extends State<GuestNumber> {
                     child: Text(  
                       _revenu == null
                       ? ''
-                      : '${_revenu.toStringAsFixed(2)}',
+                      : '${_revenu!.toStringAsFixed(2)}',
                       style: TextStyle(  
                         wordSpacing: 1.5,
                         fontSize: 22,
@@ -226,11 +226,11 @@ class RadioAndText extends StatelessWidget {
   final String text;
 
   const RadioAndText(
-      {@required this.value,
-      @required this.groupValue,
-      @required this.onChanged,
-      @required this.text,
-      Key key})
+      {required this.value,
+      required this.groupValue,
+      required this.onChanged,
+      required this.text,
+      Key? key})
       : super(key: key);
 
   @override

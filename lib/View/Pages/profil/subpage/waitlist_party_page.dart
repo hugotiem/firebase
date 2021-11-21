@@ -7,7 +7,7 @@ import 'package:pts/components/party_card.dart';
 import 'package:pts/components/title_appbar.dart';
 
 class PartyWaitList extends StatelessWidget {
-  const PartyWaitList({Key key}) : super(key: key);
+  const PartyWaitList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +28,9 @@ class PartyWaitList extends StatelessWidget {
             if (state.parties == null)
               return Center(child: const CircularProgressIndicator());
             return ListView.builder(
-              itemCount: state.parties.length,
+              itemCount: state.parties!.length,
               itemBuilder: (BuildContext context, int index) =>
-                  buildPartyCard(context, state.parties[index]),
+                  buildPartyCard(context, state.parties![index]),
             );
           }),
         ));

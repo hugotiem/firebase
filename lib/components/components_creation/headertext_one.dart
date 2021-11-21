@@ -5,8 +5,8 @@ import '../../../../Constant.dart';
 class HeaderText1 extends StatelessWidget {
   final String text;
   const HeaderText1({ 
-    @required this.text,
-    Key key 
+    required this.text,
+    Key? key 
     }) 
     : super(key: key);
 

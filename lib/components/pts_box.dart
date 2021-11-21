@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 class PTSBox extends StatelessWidget {
-  final Widget child;
-  final EdgeInsetsGeometry margin;
+  final Widget? child;
+  final EdgeInsetsGeometry? margin;
   final EdgeInsetsGeometry padding;
   final Color color;
 
   const PTSBox({
-    Key key,
+    Key? key,
     this.child,
     this.margin,
     this.padding = const EdgeInsets.all(20),

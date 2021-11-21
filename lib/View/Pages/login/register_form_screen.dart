@@ -7,17 +7,17 @@ import 'package:pts/blocs/user/user_cubit.dart';
 import 'package:pts/components/components_creation/tff_text.dart';
 
 class RegisterFormScreen extends StatefulWidget {
-  const RegisterFormScreen({Key key}) : super(key: key);
+  const RegisterFormScreen({Key? key}) : super(key: key);
   @override
   _RegisterFormScreenState createState() => _RegisterFormScreenState();
 }
 
 class _RegisterFormScreenState extends State<RegisterFormScreen> {
-  String _name;
-  String _surname;
+  String? _name;
+  String? _surname;
 
-  TextEditingController _nameController;
-  TextEditingController _surnameController;
+  TextEditingController? _nameController;
+  TextEditingController? _surnameController;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -25,11 +25,11 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
   void initState() {
     _nameController = TextEditingController()
       ..addListener(() {
-        _name = _nameController.text;
+        _name = _nameController!.text;
       });
     _surnameController = TextEditingController()
       ..addListener(() {
-        _surname = _surnameController.text;
+        _surname = _surnameController!.text;
       });
     super.initState();
   }
@@ -50,8 +50,8 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
           builder: (context, state) {
             var data = state.user;
             if (data != null) {
-              _nameController.text = data.name;
-              _surnameController.text = data.surname;
+              _nameController!.text = data.name!;
+              _surnameController!.text = data.surname!;
             }
             return Scaffold(
               body: SafeArea(
@@ -76,7 +76,7 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                                 controller: _surnameController,
                                 keyboardAppearance: Brightness.light,
                                 validator: (value) {
-                                  if (value.isEmpty) {
+                                  if (value == null || value.isEmpty) {
                                     return "Le champs ne dois pas être vide";
                                   }
                                   return null;
@@ -92,7 +92,7 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                                 controller: _nameController,
                                 keyboardAppearance: Brightness.light,
                                 validator: (value) {
-                                  if (value.isEmpty) {
+                                  if (value == null || value.isEmpty) {
                                     return "le champs ne dois pas être vide";
                                   }
                                   return null;
@@ -150,7 +150,7 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                             ),
                           ),
                           onTap: () async {
-                            if (!_formKey.currentState.validate()) {
+                            if (!_formKey.currentState!.validate()) {
                               return;
                             }
                             print(_name);

@@ -7,9 +7,9 @@ class TFFNumber extends StatelessWidget {
   final String hintText;
 
   const TFFNumber({ 
-    @required this.onChanged,
-    @required this.hintText,
-    Key key 
+    required this.onChanged,
+    required this.hintText,
+    Key? key 
     }) 
     : super(key: key);
 

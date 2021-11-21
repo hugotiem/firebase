@@ -21,7 +21,7 @@ import 'piechart_informartion.dart';
 import 'piechart_legend.dart';
 
 Widget buildPartyCard(BuildContext context, Party party) {
-  List nameList = party.validateGuestList;
+  List nameList = party.validateGuestList!;
 
   List list = nameList.map((doc) {
     return Padding(
@@ -134,7 +134,7 @@ Widget buildPartyCard(BuildContext context, Party party) {
     listPhoto1 = listPhoto1.sublist(0, 3);
   }
 
-  List<Color> colors;
+  List<Color>? colors;
 
   if (party.theme == 'Classique') {
     colors = [
@@ -161,8 +161,8 @@ Widget buildPartyCard(BuildContext context, Party party) {
   void contacter() async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     var chatCollection = firestore.collection('chat');
-    var currentUserID = AuthService().currentUser.uid;
-    var currentUserName = AuthService().currentUser.displayName;
+    var currentUserID = AuthService().currentUser!.uid;
+    var currentUserName = AuthService().currentUser!.displayName;
     var otherUserUID = party.uid;
     List currentUIDList = [];
     List otherUIDList = [];
@@ -255,7 +255,7 @@ Widget buildPartyCard(BuildContext context, Party party) {
                           gradient: LinearGradient(  
                             begin: Alignment.bottomCenter,
                             end: Alignment.topCenter,
-                            colors: colors
+                            colors: colors!
                           )
                         ),
                         child: Stack(  
@@ -304,14 +304,14 @@ Widget buildPartyCard(BuildContext context, Party party) {
                                       Padding(
                                         padding: const EdgeInsets.only(bottom: 4),
                                         child: CText(
-                                          "${DateFormat.MMM('fr').format(party.startTime).split(".")[0]}",
+                                          "${DateFormat.MMM('fr').format(party.startTime!).split(".")[0]}",
                                           fontWeight: FontWeight.w700,
                                           color: PRIMARY_COLOR,
                                           fontSize: 19
                                         ),
                                       ),
                                       CText(
-                                        "${DateFormat.d('fr').format(party.startTime)}",
+                                        "${DateFormat.d('fr').format(party.startTime!)}",
                                           fontWeight: FontWeight.w800,
                                           color: PRIMARY_COLOR,
                                           fontSize: 25
@@ -341,11 +341,11 @@ Widget buildPartyCard(BuildContext context, Party party) {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               if (listPhoto.length <= 3) (
-                                Row(children: listPhoto)
+                                Row(children: listPhoto as List<Widget>)
                               ) else if (listPhoto.length > 3) (
                                 Row(
                                   children: [
-                                    Row(children: listPhoto1),
+                                    Row(children: listPhoto1 as List<Widget>),
                                     Padding(
                                       padding: const EdgeInsets.only(left: 16),
                                       child: Container( 
@@ -396,12 +396,12 @@ Widget buildPartyCard(BuildContext context, Party party) {
                   create: (context) => UserCubit()..loadData(),
                   child: BlocBuilder<UserCubit, UserState>(
                       builder: (context, state) {
-                    User user = state.user;
+                    User? user = state.user;
 
                     return CustomSliverCard(
                       color: colors,
                       name: party.name,
-                      date: '${DateFormat.E('fr').format(party.startTime).inCaps} ${DateFormat.d('fr').format(party.startTime)} ${DateFormat.MMMM('fr').format(party.startTime)}',
+                      date: '${DateFormat.E('fr').format(party.startTime!).inCaps} ${DateFormat.d('fr').format(party.startTime!)} ${DateFormat.MMMM('fr').format(party.startTime!)}',
                       location: party.city,
                       body: SizedBox.expand(
                         child: SingleChildScrollView(
@@ -422,8 +422,8 @@ Widget buildPartyCard(BuildContext context, Party party) {
                       ),
                       bottomNavigationBar: CardBNB(
                         prix: party.price,
-                        heureDebut: "${DateFormat.Hm('fr').format(party.startTime).split(":")[0]}h${DateFormat.Hm('fr').format(party.startTime).split(":")[1]}",
-                        heureFin: "${DateFormat.Hm('fr').format(party.endTime).split(':')[0]}h${DateFormat.Hm('fr').format(party.endTime).split(':')[1]}",  
+                        heureDebut: "${DateFormat.Hm('fr').format(party.startTime!).split(":")[0]}h${DateFormat.Hm('fr').format(party.startTime!).split(":")[1]}",
+                        heureFin: "${DateFormat.Hm('fr').format(party.endTime!).split(':')[0]}h${DateFormat.Hm('fr').format(party.endTime!).split(':')[1]}",  
                         onTap: user == null
                         ? () {
                           final snackBar = SnackBar(  
@@ -473,9 +473,9 @@ Widget buildPartyCard(BuildContext context, Party party) {
  
 
 class CustomSliverCard extends StatefulWidget {
-  final List<Color> color;
-  final Widget body, titleText, bottomNavigationBar;
-  final String name, date, location;
+  final List<Color>? color;
+  final Widget? body, titleText, bottomNavigationBar;
+  final String? name, date, location;
   
   const CustomSliverCard({
     this.color, 
@@ -485,7 +485,7 @@ class CustomSliverCard extends StatefulWidget {
     this.date,
     this.location,
     this.bottomNavigationBar,
-    Key key 
+    Key? key 
     }) 
     : super(key: key);
 
@@ -494,10 +494,10 @@ class CustomSliverCard extends StatefulWidget {
 }
 
 class _CustomSliverCardState extends State<CustomSliverCard> {
-  double _size, _barSizeWidth, _barSizeHeight, _borderRadius, _opacity;
-  Brightness _brightness;
-  Color _toolbarColor;
-  bool _headerName, _headerLocation, _headerDate;
+  double? _size, _barSizeWidth, _barSizeHeight, _borderRadius, _opacity;
+  late Brightness _brightness;
+  late Color _toolbarColor;
+  bool? _headerName, _headerLocation, _headerDate;
 
   @override
   void initState() {
@@ -523,7 +523,7 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
       brightness: _brightness,
       toolbarColor: _toolbarColor,
       appBar: Opacity(
-        opacity: _opacity,
+        opacity: _opacity!,
         child: Container(  
           height: _size,
           width: MediaQuery.of(context).size.width,
@@ -531,7 +531,7 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
             gradient: LinearGradient(  
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: widget.color
+              colors: widget.color!
             ),
             borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(60),
@@ -540,7 +540,7 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
           ),
         ),
       ),
-      body:  widget.body, 
+      body:  widget.body!, 
       searchBar: Stack(
         children: [
           Align(
@@ -563,7 +563,7 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
           ),
           Column(
           children: [
-            SizedBox(height: (_size - 80) > 50 ? _size - 80 : 50),
+            SizedBox(height: (_size! - 80) > 50 ? _size! - 80 : 50),
             Center(
               child: Container(
                 width: _barSizeWidth,
@@ -571,8 +571,8 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
                 decoration: BoxDecoration(  
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(_borderRadius),
-                    bottomRight: Radius.circular(_borderRadius),
+                    topLeft: Radius.circular(_borderRadius!),
+                    bottomRight: Radius.circular(_borderRadius!),
                     topRight: Radius.circular(30),
                     bottomLeft: Radius.circular(30)
                   )
@@ -687,8 +687,8 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
               }
 
               if (_pixels > 150 ) {
-                _opacity = (_size - 100) / 50;
-              } else if ( _opacity <= 150 ) {
+                _opacity = (_size! - 100) / 50;
+              } else if ( _opacity! <= 150 ) {
                 _opacity = 1;
               }
 
@@ -703,17 +703,17 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
 
         return true;
       },
-      bottomNavigationBar: widget.bottomNavigationBar,
+      bottomNavigationBar: widget.bottomNavigationBar!,
     );
   }
 }
 
 class CardBody extends StatelessWidget {
-  final String desc, nomOrganisateur, avis, animal, smoke, nombre;
-  final List nameList, list;
-  final void Function() contacter;
+  final String? desc, nomOrganisateur, avis, animal, smoke, nombre;
+  final List? nameList, list;
+  final void Function()? contacter;
 
-  const CardBody({ Key key, 
+  const CardBody({ Key? key, 
   this.desc, 
   this.nomOrganisateur, 
   this.avis, 
@@ -798,7 +798,7 @@ class CardBody extends StatelessWidget {
             child: TextButton(
               child: CText(
                 this.nomOrganisateur != null
-                ?"contacter ${this.nomOrganisateur.split(" ")[0]}"
+                ?"contacter ${this.nomOrganisateur!.split(" ")[0]}"
                 :'Contacter',
                   color: Colors.blue,
                   fontSize: 16
@@ -913,13 +913,13 @@ class CardBody extends StatelessWidget {
               borderRadius: BorderRadius.circular(15)
             ),
             child: CText(
-              "Personnes acceptées : ${list.length}/$nombre",
+              "Personnes acceptées : ${list!.length}/$nombre",
                 color: PRIMARY_COLOR,
                 fontSize: 16
             )
           ),
         ),
-        this.nameList.isNotEmpty
+        this.nameList!.isNotEmpty
         ? Column(
             children: [
               // graphique pourcentage homme/femme/autre
@@ -933,7 +933,7 @@ class CardBody extends StatelessWidget {
               ),
               PieChartLegend(),
               // faire la liste des personnes acceptées à la soirée
-              Column(children: this.list)
+              Column(children: this.list as List<Widget>)
             ],
           )
         : Opacity(
@@ -944,21 +944,21 @@ class CardBody extends StatelessWidget {
               color: SECONDARY_COLOR
           ),
         ),
-        SizedBox(height: this.list.isNotEmpty ? 34 : 50)
+        SizedBox(height: this.list!.isNotEmpty ? 34 : 50)
       ],
     );
   }
 }
 
 class CardBNB extends StatelessWidget {
-  final String prix, heureDebut, heureFin;
-  final void Function() onTap;
+  final String? prix, heureDebut, heureFin;
+  final void Function()? onTap;
 
   const CardBNB({ this.prix, 
   this.onTap, 
   this.heureDebut, 
   this.heureFin, 
-  Key key 
+  Key? key 
   }) 
   : super(key: key);
 

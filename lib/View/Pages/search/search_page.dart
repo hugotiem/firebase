@@ -11,20 +11,20 @@ import 'subpage/themes_page.dart';
 import 'sliver/custom_sliver.dart';
 
 class Search extends StatefulWidget {
-  Search({Key key}) : super(key: key);
+  Search({Key? key}) : super(key: key);
 
   @override
   _SearchState createState() => _SearchState();
 }
 
 class _SearchState extends State<Search> {
-  double _size;
-  double current;
-  double _opacity;
-  double _barSizeWidth;
-  double _barSizeHeight;
-  Brightness _brightness;
-  Color _toolbarColor;
+  double? _size;
+  double? current;
+  late double _opacity;
+  double? _barSizeWidth;
+  double? _barSizeHeight;
+  Brightness? _brightness;
+  Color? _toolbarColor;
 
   @override
   void initState() {
@@ -67,7 +67,7 @@ class _SearchState extends State<Search> {
             child: Stack(
               children: [
                 Positioned(
-                  top: (_size - 100) / 2,
+                  top: (_size! - 100) / 2,
                   right: 75,
                   width: MediaQuery.of(context).size.width,
                   child: Opacity(
@@ -83,7 +83,7 @@ class _SearchState extends State<Search> {
                   ),
                 ),
                 Positioned(
-                  top: (_size - 100) / 2,
+                  top: (_size! - 100) / 2,
                   left: 90,
                   bottom: 29,
                   width: MediaQuery.of(context).size.width,
@@ -146,7 +146,7 @@ class _SearchState extends State<Search> {
               _toolbarColor = Colors.transparent;
 
               if (_pixels >= 250) {
-                _opacity = (_size - 100) / 50;
+                _opacity = (_size! - 100) / 50;
               } else if (_pixels <= 250) {
                 _opacity = 1;
               }
@@ -166,7 +166,7 @@ class _SearchState extends State<Search> {
       searchBar: Column(
         children: [
           SizedBox(
-            height: (_size - 80) > 50 ? _size - 80 : 50,
+            height: (_size! - 80) > 50 ? _size! - 80 : 50,
           ),
           Center(
             child: OpenContainer(
@@ -223,7 +223,7 @@ class _SearchState extends State<Search> {
 }
 
 class ContainerAddParty extends StatefulWidget {
-  const ContainerAddParty({Key key}) : super(key: key);
+  const ContainerAddParty({Key? key}) : super(key: key);
 
   @override
   _ContainerAddPartyState createState() => _ContainerAddPartyState();
@@ -284,9 +284,9 @@ class _ContainerAddPartyState extends State<ContainerAddParty> {
 }
 
 class TitleText extends StatelessWidget {
-  final EdgeInsetsGeometry margin;
+  final EdgeInsetsGeometry? margin;
   final String text;
-  const TitleText({this.margin, @required this.text, Key key})
+  const TitleText({this.margin, required this.text, Key? key})
       : super(key: key);
 
   @override

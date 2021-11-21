@@ -3,10 +3,10 @@ part of 'login_cubit.dart';
 enum LoginStatus { initial, logging, signedUp, logged }
 
 class LoginState extends AppBaseState<LoginStatus> {
-  const LoginState(LoginStatus status,
+  const LoginState(LoginStatus? status,
       {bool requestInProgress = false,
-      String requestFailureCode,
-      String requestFailureMessage})
+      String? requestFailureCode,
+      String? requestFailureMessage})
       : super(
             status: status,
             requestInProgress: requestInProgress,
@@ -20,8 +20,8 @@ class LoginState extends AppBaseState<LoginStatus> {
   @override
   AppBaseState<LoginStatus> copyWith(
           {bool requestInProgress = false,
-          String requestFailureCode,
-          String requestFailureMessage}) =>
+          String? requestFailureCode,
+          String? requestFailureMessage}) =>
       LoginState(status,
           requestInProgress: requestInProgress,
           requestFailureCode: requestFailureCode,

@@ -14,7 +14,7 @@ class CalendarCubit extends AppBaseCubit<CalendarState> {
   FireStoreServices services = FireStoreServices("parties");
 
   Future<void> loadData() async {
-    emit(state.setRequestInProgress());
+    emit(state.setRequestInProgress() as CalendarState);
     var user = await User().currentUser;
 
     var organisedPartiesData =

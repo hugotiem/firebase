@@ -38,11 +38,11 @@ class SearchHeader extends SliverPersistentHeaderDelegate {
   final double minTopBarHeight = 100;
   final double maxTopBarHeight = 250;
   final String title;
-  final IconData icon;
-  final Widget search;
+  final IconData? icon;
+  final Widget? search;
 
   SearchHeader({
-    @required this.title,
+    required this.title,
     this.icon,
     this.search,
   });
@@ -67,7 +67,7 @@ class SearchHeader extends SliverPersistentHeaderDelegate {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(title,
-                style: Theme.of(context).textTheme.headline4.copyWith(
+                style: Theme.of(context).textTheme.headline4!.copyWith(
                     color: Colors.white, fontWeight: FontWeight.bold)),
           ],
         ),
@@ -127,14 +127,14 @@ class SearchHeader extends SliverPersistentHeaderDelegate {
 }
 
 class _Search extends StatefulWidget {
-  _Search({Key key}) : super(key: key);
+  _Search({Key? key}) : super(key: key);
 
   @override
   __SearchState createState() => __SearchState();
 }
 
 class __SearchState extends State<_Search> {
-  TextEditingController _editingController;
+  TextEditingController? _editingController;
 
   @override
   void initState() {
@@ -164,7 +164,7 @@ class __SearchState extends State<_Search> {
               ),
             ),
           ),
-          _editingController.text.trim().isEmpty
+          _editingController!.text.trim().isEmpty
               ? IconButton(
                   icon: Icon(
                     Icons.search,
@@ -176,7 +176,7 @@ class __SearchState extends State<_Search> {
                   splashColor: Colors.transparent,
                   icon: Icon(Icons.clear, color: Colors.black.withOpacity(0.5)),
                   onPressed: () => setState(() {
-                    _editingController.clear();
+                    _editingController!.clear();
                   }),
                 )
         ],

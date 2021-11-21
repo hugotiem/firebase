@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
 
 class BoldText extends StatelessWidget {
-  final String text;
+  final String? text;
   final double fontSize;
   const BoldText({
-    @required this.text,
+    required this.text,
     this.fontSize = 20,
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Text(
-      this.text,
+      this.text!,
       style: TextStyle(
         fontWeight: FontWeight.w900,
         fontSize: this.fontSize,

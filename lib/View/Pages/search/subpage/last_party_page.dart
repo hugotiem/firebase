@@ -4,7 +4,7 @@ import 'package:pts/blocs/parties/parties_cubit.dart';
 import 'package:pts/components/party_card.dart';
 
 class CardParty extends StatefulWidget {
-  const CardParty({Key key}) : super(key: key);
+  const CardParty({Key? key}) : super(key: key);
 
   @override
   _CardPartyState createState() => _CardPartyState();
@@ -22,12 +22,12 @@ class _CardPartyState extends State<CardParty> {
         if (state.parties == null) return Center(child: const CircularProgressIndicator());
         return PageView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: state.parties.length,
+            itemCount: state.parties!.length,
             controller: PageController(viewportFraction: 0.85),
             onPageChanged: (int index) => setState(() => _index = index),
             itemBuilder: (BuildContext context, int index) => Padding(
                   padding: const EdgeInsets.only(right: 15),
-                  child: buildPartyCard(context, state.parties[index]),
+                  child: buildPartyCard(context, state.parties![index]),
                 ));
       }),
     );

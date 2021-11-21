@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pts/Constant.dart';
 
-class BackAppBar extends PreferredSize {
-  final Widget title, leading;
-  final List<Widget> actions;
+class BackAppBar extends StatelessWidget {
+  final Widget? title, leading;
+  final List<Widget>? actions;
   //final Brightness brightness;
-  final PreferredSizeWidget bottom;
-  final void Function() onPressed;
-  final Color backgroundColor;
+  final PreferredSizeWidget? bottom;
+  final void Function()? onPressed;
+  final Color? backgroundColor;
 
   BackAppBar({
     this.title,

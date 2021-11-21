@@ -179,7 +179,7 @@ class _choiceChipWidgetState extends State<choiceChipWidget> {
 
   _buildChoiceList() {
     // ignore: deprecated_member_use
-    List<Widget> choices = List();
+    List<Widget> choices = [];
     widget.reportList.forEach((item) {
       choices.add(Container(
         padding: const EdgeInsets.all(2.0),
@@ -381,7 +381,7 @@ class Heure extends StatefulWidget {
 
 class _HeureState extends State<Heure> {
   final minDate = DateTime.now();
-  DateTime _dateTime;
+  DateTime? _dateTime;
 
   @override
   Widget build(BuildContext context) {

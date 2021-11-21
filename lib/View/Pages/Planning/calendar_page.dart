@@ -58,14 +58,14 @@ class CalendarWidget extends StatefulWidget {
 }
 
 class _CalendarWidgetState extends State<CalendarWidget> {
-  MeetingDataSource events;
+  MeetingDataSource? events;
   final databaseReference = FirebaseFirestore.instance;
   List<Meeting> _appointmentDetails = <Meeting>[];
 
   @override
   void initState() {
     getDataFromFireStore().then((results) {
-      SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      SchedulerBinding.instance!.addPostFrameCallback((timeStamp) {
         setState(() {});
       });
     });
@@ -89,7 +89,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
           if (state.status != CalendarStatus.dataLoaded) {
             return Center(child: CalendarProgressIndicator());
           }
-          events = MeetingDataSource(state.organisedParties + state.invitedParties);
+          events = MeetingDataSource(state.organisedParties! + state.invitedParties!);
           return SafeArea(
             child: Column(
               children: [
@@ -123,11 +123,11 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                                   child: Column(children: [
                                     OpacityText(
                                         data:
-                                            '${DateFormat.E('fr_FR').format(_appointmentDetails[index].from)}',
+                                            '${DateFormat.E('fr_FR').format(_appointmentDetails[index].from!)}',
                                         color: SECONDARY_COLOR),
                                     FontText(
                                       data:
-                                          '${DateFormat.d('fr_FR').format(_appointmentDetails[index].from)}',
+                                          '${DateFormat.d('fr_FR').format(_appointmentDetails[index].from!)}',
                                       fontSize: 20,
                                       color: SECONDARY_COLOR,
                                     )
@@ -159,7 +159,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                                           SizedBox(height: 2),
                                           OpacityText(
                                             data:
-                                                'De ${DateFormat.Hm('fr_FR').format(_appointmentDetails[index].from)} à ${DateFormat.Hm('fr_FR').format(_appointmentDetails[index].to)}',
+                                                'De ${DateFormat.Hm('fr_FR').format(_appointmentDetails[index].from!)} à ${DateFormat.Hm('fr_FR').format(_appointmentDetails[index].to!)}',
                                             color: ICONCOLOR,
                                           ),
                                         ]),
@@ -188,24 +188,24 @@ class _CalendarWidgetState extends State<CalendarWidget> {
   void calendarTapped(CalendarTapDetails calendarTapDetails) {
     if (calendarTapDetails.targetElement == CalendarElement.calendarCell) {
       setState(() {
-        _appointmentDetails = calendarTapDetails.appointments.cast<Meeting>();
+        _appointmentDetails = calendarTapDetails.appointments!.cast<Meeting>();
       });
     } 
   }
 }
 
 class FontText extends StatelessWidget {
-  final String data;
-  final double fontSize;
-  final Color color;
+  final String? data;
+  final double? fontSize;
+  final Color? color;
 
-  const FontText({this.data, this.color, this.fontSize, Key key})
+  const FontText({this.data, this.color, this.fontSize, Key? key})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Text(
-      this.data,
+      this.data!,
       style: TextStyle(
           fontWeight: FontWeight.w500,
           fontSize: this.fontSize,
@@ -215,17 +215,17 @@ class FontText extends StatelessWidget {
 }
 
 class OpacityText extends StatelessWidget {
-  final String data;
-  final Color color;
+  final String? data;
+  final Color? color;
 
-  const OpacityText({this.data, this.color, Key key}) : super(key: key);
+  const OpacityText({this.data, this.color, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Opacity(
       opacity: 0.7,
       child: Text(
-        this.data,
+        this.data!,
         style: TextStyle(color: this.color),
       ),
     );
@@ -233,7 +233,7 @@ class OpacityText extends StatelessWidget {
 }
 
 class CalendarProgressIndicator extends StatelessWidget {
-  const CalendarProgressIndicator({ Key key }) : super(key: key);
+  const CalendarProgressIndicator({ Key? key }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -49,7 +49,7 @@ class GetPartyData extends StatelessWidget {
 }
 
 class PartyJoin extends StatelessWidget {
-  const PartyJoin({Key key}) : super(key: key);
+  const PartyJoin({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -60,9 +60,9 @@ class PartyJoin extends StatelessWidget {
         if (state.parties == null)
           return Center(child: const CircularProgressIndicator());
         return ListView.builder(
-          itemCount: state.parties.length,
+          itemCount: state.parties!.length,
           itemBuilder: (BuildContext context, int index) =>
-              buildPartyCard(context, state.parties[index]),
+              buildPartyCard(context, state.parties![index]),
         );
       }),
     );
@@ -82,7 +82,7 @@ class PartyJoin extends StatelessWidget {
 }
 
 class PartyCreate extends StatelessWidget {
-  const PartyCreate({Key key}) : super(key: key);
+  const PartyCreate({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -93,9 +93,9 @@ class PartyCreate extends StatelessWidget {
         if (state.parties == null)
           return Center(child: const CircularProgressIndicator());
         return ListView.builder(
-          itemCount: state.parties.length,
+          itemCount: state.parties!.length,
           itemBuilder: (BuildContext context, int index) =>
-              buildPartyCard(context, state.parties[index]),
+              buildPartyCard(context, state.parties![index]),
         );
       }),
     );
@@ -111,8 +111,8 @@ class PartyCreate extends StatelessWidget {
 }
 
 class TabText extends StatelessWidget {
-  final String text;
-  const TabText({this.text, Key key}) : super(key: key);
+  final String? text;
+  const TabText({this.text, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -120,7 +120,7 @@ class TabText extends StatelessWidget {
       height: 50,
       child: Center(
         child: Text(
-          this.text,
+          this.text!,
           style: TextStyle(color: SECONDARY_COLOR, fontWeight: FontWeight.w500),
         ),
       ),

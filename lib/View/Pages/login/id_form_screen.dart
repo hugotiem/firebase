@@ -10,18 +10,18 @@ import 'package:pts/Constant.dart';
 import 'package:pts/blocs/user/user_cubit.dart';
 
 class IdFormScreen extends StatefulWidget {
-  final String name;
-  final String surname;
-  const IdFormScreen({Key key, this.name, this.surname}) : super(key: key);
+  final String? name;
+  final String? surname;
+  const IdFormScreen({Key? key, this.name, this.surname}) : super(key: key);
 
   @override
   _IdFormScreenState createState() => _IdFormScreenState();
 }
 
 class _IdFormScreenState extends State<IdFormScreen> {
-  XFile _idFrontImage;
-  XFile _idBackImage;
-  XFile _faceImage;
+  XFile? _idFrontImage;
+  XFile? _idBackImage;
+  XFile? _faceImage;
 
   @override
   Widget build(BuildContext context) {
@@ -204,13 +204,13 @@ class _IdFormScreenState extends State<IdFormScreen> {
                             return;
                           }
                           await BlocProvider.of<UserCubit>(context)
-                              .addId(File(_idFrontImage.path), "idFront")
+                              .addId(File(_idFrontImage!.path), "idFront")
                               .whenComplete(
                                 () => BlocProvider.of<UserCubit>(context)
-                                    .addId(File(_idBackImage.path), "idBack")
+                                    .addId(File(_idBackImage!.path), "idBack")
                                     .whenComplete(() =>
                                         BlocProvider.of<UserCubit>(context)
-                                            .addId(File(_faceImage.path),
+                                            .addId(File(_faceImage!.path),
                                                 "selfie")),
                               );
                         },
@@ -226,7 +226,7 @@ class _IdFormScreenState extends State<IdFormScreen> {
     );
   }
 
-  Future<XFile> _getImage(ImageSource imageSource) async {
+  Future<XFile?> _getImage(ImageSource imageSource) async {
     var imagePicker = new ImagePicker();
 
     return await imagePicker.pickImage(source: imageSource);
@@ -287,7 +287,7 @@ class _IdFormScreenState extends State<IdFormScreen> {
   }
 
   Future<dynamic> _showBottomModalSheet(
-      {XFile image, void Function() onPressed, String type}) {
+      {XFile? image, void Function()? onPressed, String? type}) {
     return showModalBottomSheet(
       enableDrag: true,
       isScrollControlled: true,
@@ -310,7 +310,7 @@ class _IdFormScreenState extends State<IdFormScreen> {
         ),
         body: Center(
           child: Image.file(
-            File(image.path),
+            File(image!.path),
             fit: BoxFit.cover,
           ),
         ),

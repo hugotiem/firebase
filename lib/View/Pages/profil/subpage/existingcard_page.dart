@@ -5,7 +5,7 @@ import 'package:pts/components/title_appbar.dart';
 import 'new_credid_card_page.dart';
 
 class ExistingCard extends StatefulWidget {
-  const ExistingCard({ Key key }) : super(key: key);
+  const ExistingCard({ Key? key }) : super(key: key);
 
   @override
   _ExistingCardState createState() => _ExistingCardState();

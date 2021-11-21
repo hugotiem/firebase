@@ -4,9 +4,9 @@ class CupertinoFullscreenModalInherited extends InheritedWidget {
   final CupertinoFullscreenModalState data;
 
   CupertinoFullscreenModalInherited({
-    Key key,
-    @required Widget child,
-    @required this.data,
+    Key? key,
+    required Widget child,
+    required this.data,
   }) : super(key: key, child: child);
 
   @override
@@ -16,15 +16,15 @@ class CupertinoFullscreenModalInherited extends InheritedWidget {
 }
 
 class CupertinoFullscreenModal extends StatefulWidget {
-  final Widget child;
+  final Widget? child;
   const CupertinoFullscreenModal({
-    Key key,
+    Key? key,
     this.child,
   }) : super(key: key);
 
   static CupertinoFullscreenModalState of(BuildContext context) {
     return context
-        .dependOnInheritedWidgetOfExactType<CupertinoFullscreenModalInherited>()
+        .dependOnInheritedWidgetOfExactType<CupertinoFullscreenModalInherited>()!
         .data;
   }
 
@@ -40,7 +40,7 @@ class CupertinoFullscreenModalState extends State<CupertinoFullscreenModal> {
     super.initState();
   }
 
-  showModal(Widget child, {Function(dynamic popValue) onClose}) {
+  showModal(Widget child, {Function(dynamic popValue)? onClose}) {
     setState(() {
       opened = true;
     });

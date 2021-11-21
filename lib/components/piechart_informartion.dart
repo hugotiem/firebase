@@ -2,12 +2,12 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class PieChartInformation extends StatelessWidget {
-  final double valueHomme;
-  final double valueFemme;
-  final double valueAutre;
-  final String titleHomme;
-  final String titleFemme;
-  final String titleAutre;
+  final double? valueHomme;
+  final double? valueFemme;
+  final double? valueAutre;
+  final String? titleHomme;
+  final String? titleFemme;
+  final String? titleAutre;
 
   const PieChartInformation({
     this.titleAutre,
@@ -16,7 +16,7 @@ class PieChartInformation extends StatelessWidget {
     this.valueAutre,
     this.valueFemme,
     this.valueHomme,
-    Key key 
+    Key? key 
     }) 
     : super(key: key);
 

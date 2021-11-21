@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../Constant.dart';
 
 class JoinWaitList extends StatelessWidget {
-  const JoinWaitList({ Key key }) : super(key: key);
+  const JoinWaitList({ Key? key }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

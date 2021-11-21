@@ -10,7 +10,7 @@ import '../Profil_page.dart';
 
 class GuestWaitList extends StatelessWidget {
   const GuestWaitList({ 
-    Key key 
+    Key? key 
     }) 
     : super(key: key);
 
@@ -27,14 +27,14 @@ class GuestWaitList extends StatelessWidget {
         ),
       ),
       body: Container(
-        child: StreamBuilder(  
+        child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(  
           stream: getGuestWaitList(context),
           builder: (context, snapshot) {
             if (!snapshot.hasData) return Center(child: const CircularProgressIndicator());
             return ListView.builder(
-              itemCount: snapshot.data.docs.length,
+              itemCount: snapshot.data!.docs.length,
               itemBuilder: (BuildContext context, int index) => 
-                buildValidationCard(context, snapshot.data.docs[index]),
+                buildValidationCard(context, snapshot.data!.docs[index]),
             );
           },
         ),
@@ -42,7 +42,7 @@ class GuestWaitList extends StatelessWidget {
     );
   }
 
-  Stream<QuerySnapshot> getGuestWaitList(BuildContext context) async* {
+  Stream<QuerySnapshot<Map<String, dynamic>>> getGuestWaitList(BuildContext context) async* {
     yield* FirebaseFirestore.instance
         .collection('parties')
         .where('uid', isEqualTo: "AuthService.currentUser.uid") // NEED TO BE CHANGED
@@ -144,7 +144,7 @@ Widget buildValidationCard(BuildContext context, DocumentSnapshot party) {
               ),
               nameList.isNotEmpty
               ? Column(
-                children: list,
+                children: list as List<Widget>,
               )
               : Center(
                 child: Text(

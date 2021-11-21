@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:pts/constant.dart';
 
 class DescriptionTextWidget extends StatefulWidget {
-  final String text;
+  final String? text;
 
-  DescriptionTextWidget({@required this.text});
+  DescriptionTextWidget({required this.text});
 
   @override
   _DescriptionTextWidgetState createState() => _DescriptionTextWidgetState();
 }
 
 class _DescriptionTextWidgetState extends State<DescriptionTextWidget> {
-  String firstHalf;
-  String secondHalf;
+  String? firstHalf;
+  late String secondHalf;
 
   bool flag = true;
 
@@ -20,9 +20,9 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget> {
   void initState() {
     super.initState();
 
-    if (widget.text.length > 75) {
-      firstHalf = widget.text.substring(0, 75);
-      secondHalf = widget.text.substring(75, widget.text.length);
+    if (widget.text!.length > 75) {
+      firstHalf = widget.text!.substring(0, 75);
+      secondHalf = widget.text!.substring(75, widget.text!.length);
     } else {
       firstHalf = widget.text;
       secondHalf = "";
@@ -33,14 +33,14 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget> {
   Widget build(BuildContext context) {
     return Container(
       child: secondHalf.isEmpty
-      ? Text(firstHalf)
+      ? Text(firstHalf!)
       : Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Opacity(
             opacity: 0.7,
             child: Text(
-              flag ? (firstHalf + "...") : (firstHalf + secondHalf), 
+              flag ? (firstHalf! + "...") : (firstHalf! + secondHalf), 
               style: TextStyle(
                 fontSize: 16,
                 color: SECONDARY_COLOR

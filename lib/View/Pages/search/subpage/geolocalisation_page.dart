@@ -9,7 +9,7 @@ import 'package:pts/Model/party.dart';
 import 'package:pts/view/pages/search/search_page.dart';
 
 class GeolocationWidget extends StatefulWidget {
-  const GeolocationWidget({Key key}) : super(key: key);
+  const GeolocationWidget({Key? key}) : super(key: key);
 
   @override
   _GeolocationWidgetState createState() => _GeolocationWidgetState();
@@ -17,8 +17,8 @@ class GeolocationWidget extends StatefulWidget {
 
 class _GeolocationWidgetState extends State<GeolocationWidget> {
   Geolocator geolocator = Geolocator();
-  Position userLocation;
-  String _currentCity;
+  Position? userLocation;
+  String? _currentCity;
   // ignore: unused_field
   int _index = 0;
 
@@ -56,22 +56,22 @@ class _GeolocationWidgetState extends State<GeolocationWidget> {
                     child: const CircularProgressIndicator(),
                   );
                 else {
-                  state.parties.forEach((element) async {
+                  state.parties!.forEach((element) async {
                     int distance = await _getCoordinates(element);
                     element.distance = distance;
                   });
                   // trier les soirées dans l'ordre croissant
-                  state.parties
+                  state.parties!
                       .sort((a, b)  {
                         if (a.distance == null || b.distance == null) {
                           return 1;
                         }
-                        return a.distance.compareTo(b.distance);
+                        return a.distance!.compareTo(b.distance!);
                       });
                 }
                 return PageView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: state.parties.length,
+                  itemCount: state.parties!.length,
                   controller: PageController(viewportFraction: 0.85),
                   onPageChanged: (int index) => setState(() => _index = index),
                   itemBuilder: (
@@ -80,7 +80,7 @@ class _GeolocationWidgetState extends State<GeolocationWidget> {
                   ) =>
                       Padding(
                     padding: const EdgeInsets.only(right: 15),
-                    child: buildPartyCard(context, state.parties[index]),
+                    child: buildPartyCard(context, state.parties![index]),
                   ),
                 );
               }),
@@ -91,7 +91,7 @@ class _GeolocationWidgetState extends State<GeolocationWidget> {
     }
   }
 
-  Future<Position> _getLocation() async {
+  Future<Position?> _getLocation() async {
     var currentLocation;
     if (await Permission.locationWhenInUse.serviceStatus.isEnabled) {
       try {
@@ -109,7 +109,7 @@ class _GeolocationWidgetState extends State<GeolocationWidget> {
   Future<void> _getcity() async {
     try {
       List<Placemark> placemarks = await placemarkFromCoordinates(
-          userLocation.latitude, userLocation.longitude);
+          userLocation!.latitude, userLocation!.longitude);
 
       Placemark place = placemarks[0];
 
@@ -132,7 +132,7 @@ class _GeolocationWidgetState extends State<GeolocationWidget> {
 
     // calculer la distance entre notre position et celle de la soirée
     double distanceBetweenCoordinates = Geolocator.distanceBetween(
-        userLocation.latitude, userLocation.longitude, latitude, longitude);
+        userLocation!.latitude, userLocation!.longitude, latitude, longitude);
 
     double distanceInKm = distanceBetweenCoordinates / 1000;
     int distanceInKmRound = distanceInKm.round();

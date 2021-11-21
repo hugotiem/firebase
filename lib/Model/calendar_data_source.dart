@@ -9,40 +9,40 @@ class MeetingDataSource extends CalendarDataSource {
     appointments = source;
   }
 
-  Meeting getEvent(int index) => appointments[index] as Meeting;
+  Meeting? getEvent(int index) => appointments![index] as Meeting?;
 
   @override
   DateTime getStartTime(int index) {
-    return appointments[index].from;
+    return appointments![index].from;
   }
 
   @override
   DateTime getEndTime(int index) {
-    return appointments[index].to;
+    return appointments![index].to;
   }
 
   @override
   bool isAllDay(int index) {
-    return appointments[index].isAllDay;
+    return appointments![index].isAllDay;
   }
 
   @override
   String getSubject(int index) {
-    return appointments[index].eventName;
+    return appointments![index].eventName;
   }
 
   @override
   Color getColor(int index) {
-    return appointments[index].background;
+    return appointments![index].background;
   }
 }
 
 class Meeting {
-  String eventName;
-  DateTime from;
-  DateTime to;
-  Color background;
-  bool isAllDay;
+  String? eventName;
+  DateTime? from;
+  DateTime? to;
+  Color? background;
+  bool? isAllDay;
 
   Meeting({this.eventName, this.from, this.to, this.background, this.isAllDay});
 
