@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:pts/Model/services/auth_service.dart';
 import 'package:pts/Model/services/firestore_service.dart';
 import 'package:pts/Model/services/storage_service.dart';
@@ -20,7 +21,6 @@ class UserCubit extends AppBaseCubit<UserState> {
     await service
         .getToken()
         .then((value) => emit(UserState.tokenLoaded(value)));
-    print("token : " + state.token.toString());
     service.instance.authStateChanges().listen((user) async {
       print("Current user : " + user.toString());
       if (user != null) {
@@ -47,11 +47,12 @@ class UserCubit extends AppBaseCubit<UserState> {
     emit(UserState.dataLoaded(user: state.user, token: state.token));
   }
 
-  Future<void> addId(File file, String ref) async {
+  Future<void> addId(File? file, String ref) async {
+    if (file == null) return;
     final filename = basename(file.path);
     final destination = '$ref/$filename';
     emit(state.setRequestInProgress() as UserState);
-    var task = StorageService(destination).uploadFile(file);
+    UploadTask? task = StorageService(destination).uploadFile(file);
     if (task == null) return;
     task.then((value) async {
       var id = await service.getToken();

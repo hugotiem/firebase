@@ -22,6 +22,11 @@ class AuthService extends ChangeNotifier {
     return token;
   }
 
+  Future<void> deleteToken() async {
+    await storage.delete(key: "token");
+    return;
+  }
+
   Future<User?> register(String _email, String _password,
       {Map<String, dynamic>? data}) async {
     try {
@@ -76,9 +81,11 @@ class AuthService extends ChangeNotifier {
     return _auth.signInWithCredential(credential);
   }
 
-  Future<void> reauthentification({required String email, required String password}) async {
+  Future<void> reauthentification(
+      {required String email, required String password}) async {
     EmailAuthCredential credential =
-        EmailAuthProvider.credential(email: email, password: password) as EmailAuthCredential;
+        EmailAuthProvider.credential(email: email, password: password)
+            as EmailAuthCredential;
 
     await _auth.currentUser!.reauthenticateWithCredential(credential);
   }

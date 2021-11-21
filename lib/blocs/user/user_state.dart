@@ -1,6 +1,13 @@
 part of 'user_cubit.dart';
 
-enum UserStatus { initial, loading, loggedOut, dataLoaded, tokenLoaded }
+enum UserStatus {
+  initial,
+  loading,
+  loggedOut,
+  dataLoaded,
+  tokenLoaded,
+  idUploaded
+}
 
 class UserState extends AppBaseState<UserStatus> {
   final String? token;
@@ -23,6 +30,8 @@ class UserState extends AppBaseState<UserStatus> {
       : this(UserStatus.tokenLoaded, token: token);
   const UserState.dataLoaded({User? user, String? token})
       : this(UserStatus.dataLoaded, token: token, user: user);
+  const UserState.idUploaded({User? user, String? token})
+      : this(UserStatus.idUploaded, token: token, user: user);
 
   @override
   AppBaseState<UserStatus> copyWith(

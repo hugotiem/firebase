@@ -45,7 +45,11 @@ class _LoginPageState extends State<LoginPage>
             Navigator.of(context).pop();
           }
           if (state.status == LoginStatus.signedUp) {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => RegisterFormScreen(),),);
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => RegisterFormScreen(),
+              ),
+            );
           }
         },
         child: BlocBuilder<LoginCubit, LoginState>(
