@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pts/Constant.dart';
+import 'package:pts/View/Pages/login/id_form_screen.dart';
 import 'package:pts/View/Pages/login/login.dart';
 import 'package:pts/blocs/user/user_cubit.dart';
 import 'package:pts/components/ProfilPhoto.dart';
@@ -173,7 +174,7 @@ class _ProfilState extends State<Profil> {
                               text: 'Paramètres du compte',
                             ),
                             CickableContainerProfil(
-                              to: InfoScreen(),
+                              to: IdFormScreen(),
                               text: "Informations personnelles",
                               icon: Icons.perm_identity_outlined,
                             ),

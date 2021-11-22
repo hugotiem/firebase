@@ -25,6 +25,8 @@ class _IdFormScreenState extends State<IdFormScreen> {
   File? _idBackImage;
   File? _faceImage;
 
+  GlobalKey<NavigatorState>? loaderKey = GlobalKey<NavigatorState>();
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -36,6 +38,11 @@ class _IdFormScreenState extends State<IdFormScreen> {
             listener: (context, state) {
               if (state.status == UserStatus.idUploaded) {
                 Navigator.of(context).popUntil((route) => route.isFirst);
+              }
+
+              if (state.requestInProgress == false && loaderKey != null) {
+                Navigator.of(loaderKey!.currentContext!).pop();
+                loaderKey = null;
               }
             },
             child: BlocBuilder<UserCubit, UserState>(
@@ -199,6 +206,10 @@ class _IdFormScreenState extends State<IdFormScreen> {
                             if (_faceImage == null) {
                               return;
                             }
+                            if (loaderKey == null) {
+                              loaderKey = GlobalKey<NavigatorState>();
+                            }
+                            _showLoadingPopup();
                             await BlocProvider.of<UserCubit>(context)
                                 .addId(_idFrontImage, "idFront")
                                 .whenComplete(
@@ -352,6 +363,26 @@ class _IdFormScreenState extends State<IdFormScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Future<dynamic> _showLoadingPopup() async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => WillPopScope(
+        onWillPop: () async => false,
+        child: SimpleDialog(
+          key: loaderKey,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          children: [
+            Center(
+              child: CircularProgressIndicator(),
+            )
+          ],
+        ),
       ),
     );
   }
