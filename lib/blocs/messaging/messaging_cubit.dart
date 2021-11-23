@@ -10,11 +10,11 @@ class MessagingCubit extends AppBaseCubit<MessagingState> {
 
   FireStoreServices chatServices = FireStoreServices("chat");
 
-  Stream fetchMessage({currentUserID, otherUserID}) async* {
+  Stream fetchMessage({required currentUserID, required otherUserID}) async* {
     var messagesSnapshot = 
         chatServices.getMessageStreamSnapshot(currentUserID, otherUserID);
     List<Message> messages = 
-        messagesSnapshot.map((event) => Message.fromSnapShots(event)).toList() as List<Message>;
+        await messagesSnapshot.map((event) => Message.fromSnapShots(event)).toList();
     emit(MessagingState.loaded(messages));
   }
 }

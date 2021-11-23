@@ -2,23 +2,23 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Party {
   String id;
-  String name;
-  String theme;
-  String number;
+  String? name;
+  String? theme;
+  String? number;
   var date;
-  DateTime startTime;
-  DateTime endTime;
+  DateTime? startTime;
+  DateTime? endTime;
   var price;
-  String desc;
-  String address;
-  String city;
-  String postalCode;
-  String smoke;
-  String animals;
+  String? desc;
+  String? address;
+  String? city;
+  String? postalCode;
+  String? smoke;
+  String? animals;
   var owner;
   var uid;
-  List<dynamic> validateGuestList;
-  int distance;
+  List<dynamic>? validateGuestList;
+  int? distance;
 
   Party(
     this.id,

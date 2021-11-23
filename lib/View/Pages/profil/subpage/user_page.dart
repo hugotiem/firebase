@@ -5,7 +5,7 @@ import 'package:pts/components/back_appbar.dart';
 import 'package:pts/components/pts_box.dart';
 
 class ProfilDetails extends StatefulWidget {
-  ProfilDetails({Key key}) : super(key: key);
+  ProfilDetails({Key? key}) : super(key: key);
   @override
   _ProfilDetailsState createState() => _ProfilDetailsState();
 }

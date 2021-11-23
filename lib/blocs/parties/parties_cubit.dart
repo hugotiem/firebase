@@ -34,7 +34,7 @@ class PartiesCubit extends AppBaseCubit<PartiesState> {
     emit(PartiesState.loaded(parties));
   }
 
-  Future fetchPartiesWithWhereIsEqualTo(var key, String data) async {
+  Future fetchPartiesWithWhereIsEqualTo(var key, String? data) async {
     if (data == 'uid') {
       data = await auth.getToken();
     }

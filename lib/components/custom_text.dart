@@ -3,20 +3,20 @@ import 'package:pts/constant.dart';
 
 class CText extends StatelessWidget {
   @required
-  final String text;
-  final double fontSize;
-  final Color color;
-  final FontWeight fontWeight;
-  final TextAlign textAlign;
+  final String? text;
+  final double? fontSize;
+  final Color? color;
+  final FontWeight? fontWeight;
+  final TextAlign? textAlign;
 
   const CText(this.text,
-      {this.fontSize, this.color, this.fontWeight, this.textAlign, Key key})
+      {this.fontSize, this.color, this.fontWeight, this.textAlign, Key? key})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Text(
-      text,
+      text!,
       textAlign: textAlign == null ? TextAlign.left : textAlign,
       style: TextStyle(
         fontFamily: PRIMARY_FONT,

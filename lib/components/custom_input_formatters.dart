@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class MaskedTextInputFormatter extends TextInputFormatter {
@@ -6,8 +5,8 @@ class MaskedTextInputFormatter extends TextInputFormatter {
   final String separator;
 
   MaskedTextInputFormatter({
-    @required this.mask,
-    @required this.separator,
+    required this.mask,
+    required this.separator,
   }) { assert(mask != null); assert (separator != null); }
 
   @override

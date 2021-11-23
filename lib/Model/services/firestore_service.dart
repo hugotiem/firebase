@@ -8,11 +8,13 @@ class FireStoreServices {
 
   FirebaseFirestore get firestore => _firestore;
 
-  Future<void> add({Map<String, dynamic> data}) async {
+  Future<void> add({Map<String, dynamic>? data}) async {
+    if (data == null) return;
     await this._firestore.collection(collection).add(data);
   }
 
-  Future<void> setWithId(String id, {Map<String, dynamic> data}) async {
+  Future<void> setWithId(String? id,
+      {required Map<String, dynamic> data}) async {
     await this
         ._firestore
         .collection(collection)
@@ -28,12 +30,12 @@ class FireStoreServices {
     return this._firestore.collection(collection).get();
   }
 
-  Future<DocumentSnapshot<Map<String, dynamic>>> getDataById(String id) async {
+  Future<DocumentSnapshot<Map<String, dynamic>>> getDataById(String? id) async {
     return this._firestore.collection(collection).doc(id).get();
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>> getDataWithWhereIsEqualTo(
-      String key, String data) async {
+      String key, String? data) async {
     return this
         ._firestore
         .collection(collection)
@@ -42,7 +44,7 @@ class FireStoreServices {
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>> getDataWithWhereArrayContains(
-      String key, String name, String uid) async {
+      String key, String? name, String? uid) async {
     Map _map = {'name': name, 'uid': uid};
     return this
         ._firestore
@@ -60,8 +62,9 @@ class FireStoreServices {
   }
 
   Stream<QuerySnapshot> getMessageStreamSnapshot(
-    String currentUserID, String otherUserID) async* {
-    yield* this._firestore
+      String currentUserID, String otherUserID) async* {
+    yield* this
+        ._firestore
         .collection(collection)
         .doc(currentUserID)
         .collection(otherUserID)

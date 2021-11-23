@@ -3,7 +3,7 @@ import 'package:pts/Constant.dart';
 
 class HorzontalSeparator extends StatelessWidget {
   const HorzontalSeparator({ 
-    Key key 
+    Key? key 
     }) 
     : super(key: key);
 

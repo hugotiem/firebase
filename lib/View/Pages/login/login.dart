@@ -7,20 +7,20 @@ import 'package:pts/blocs/login/login_cubit.dart';
 import 'package:pts/components/components_creation/tff_text.dart';
 
 class LoginPage extends StatefulWidget {
-  LoginPage({Key key}) : super(key: key);
+  LoginPage({Key? key}) : super(key: key);
   @override
   State<StatefulWidget> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage>
     with SingleTickerProviderStateMixin {
-  String _signInEmail;
-  String _signInPassword;
+  late String _signInEmail;
+  late String _signInPassword;
 
-  String _registerEmail;
-  String _registerPassword;
+  late String _registerEmail;
+  late String _registerPassword;
 
-  TabController _controller;
+  TabController? _controller;
 
   int _currentIndex = 0;
 
@@ -29,7 +29,7 @@ class _LoginPageState extends State<LoginPage>
     _controller = TabController(length: 2, vsync: this)
       ..addListener(() {
         setState(() {
-          _currentIndex = _controller.index;
+          _currentIndex = _controller!.index;
         });
       });
     super.initState();
@@ -45,7 +45,11 @@ class _LoginPageState extends State<LoginPage>
             Navigator.of(context).pop();
           }
           if (state.status == LoginStatus.signedUp) {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => RegisterFormScreen(),),);
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => RegisterFormScreen(),
+              ),
+            );
           }
         },
         child: BlocBuilder<LoginCubit, LoginState>(
@@ -124,13 +128,13 @@ class _LoginPageState extends State<LoginPage>
   }
 
   Widget _buildFormContent(BuildContext context,
-      {String textBtn,
-      void Function(String) onEmailChanged,
-      void Function(String) onPasswordChanged,
-      void Function() onTapBtn,
-      String textGoogleBtn,
-      void Function() onTapGoogleBtn,
-      RichText bottomText}) {
+      {required String textBtn,
+      void Function(String)? onEmailChanged,
+      void Function(String)? onPasswordChanged,
+      void Function()? onTapBtn,
+      required String textGoogleBtn,
+      void Function()? onTapGoogleBtn,
+      required RichText bottomText}) {
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -284,7 +288,7 @@ class _LoginPageState extends State<LoginPage>
                 fontWeight: FontWeight.bold,
               ),
               recognizer: TapGestureRecognizer()
-                ..onTap = () => _controller.animateTo(1),
+                ..onTap = () => _controller!.animateTo(1),
             ),
           ],
         ),
@@ -322,7 +326,7 @@ class _LoginPageState extends State<LoginPage>
                   fontWeight: FontWeight.bold,
                 ),
                 recognizer: TapGestureRecognizer()
-                  ..onTap = () => _controller.animateTo(0),
+                  ..onTap = () => _controller!.animateTo(0),
               ),
             ]),
       ),

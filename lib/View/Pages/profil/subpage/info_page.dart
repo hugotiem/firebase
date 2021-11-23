@@ -16,20 +16,20 @@ class _InfoScreenState extends State<InfoScreen> {
   AuthService _service = AuthService();
 
   // Text Editing Controllers
-  TextEditingController _surnameController;
-  TextEditingController _nameController;
-  TextEditingController _emailController;
+  TextEditingController? _surnameController;
+  TextEditingController? _nameController;
+  TextEditingController? _emailController;
 
   // ignore: unused_field
-  TextEditingController _passwordController;
+  TextEditingController? _passwordController;
 
   // variables
-  String _surname;
-  String _name;
-  String _email;
+  String? _surname;
+  String? _name;
+  String? _email;
 
   // has to be compared to know if password is required when save
-  String _newEmail;
+  String? _newEmail;
 
   @override
   void initState() {
@@ -50,9 +50,9 @@ class _InfoScreenState extends State<InfoScreen> {
 
   @override
   void dispose() {
-    _surnameController.dispose();
-    _nameController.dispose();
-    _emailController.dispose();
+    _surnameController!.dispose();
+    _nameController!.dispose();
+    _emailController!.dispose();
     super.dispose();
   }
 
@@ -66,10 +66,10 @@ class _InfoScreenState extends State<InfoScreen> {
             CupertinoButton(
               color: Colors.transparent,
               onPressed: () async {
-                _service.updateDisplayName(_name + " " + _surname);
+                _service.updateDisplayName(_name! + " " + _surname!);
 
-                if (_email.compareTo(_newEmail) != 0) {
-                  var res = await _service.updateEmail(_newEmail);
+                if (_email!.compareTo(_newEmail!) != 0) {
+                  var res = await _service.updateEmail(_newEmail!);
                   print(res);
                   if (res != "success") {
                     if (res == "has to confirm") {

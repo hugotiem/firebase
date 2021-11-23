@@ -7,7 +7,7 @@ import 'package:pts/model/services/auth_service.dart';
 import 'package:pts/view/pages/messaging/subpage/chatpage.dart';
 
 class MessagePage extends StatelessWidget {
-  const MessagePage({Key key}) : super(key: key);
+  const MessagePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class MessagePage extends StatelessWidget {
 }
 
 class ListMessage extends StatefulWidget {
-  const ListMessage({Key key}) : super(key: key);
+  const ListMessage({Key? key}) : super(key: key);
 
   @override
   _ListMessageState createState() => _ListMessageState();
@@ -33,8 +33,8 @@ class ListMessage extends StatefulWidget {
 class _ListMessageState extends State<ListMessage> {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   dynamic _docs;
-  String currentUserId = AuthService().currentUser.uid;
-  String currentUserName = AuthService().currentUser.displayName;
+  String currentUserId = AuthService().currentUser!.uid;
+  String? currentUserName = AuthService().currentUser!.displayName;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +48,7 @@ class _ListMessageState extends State<ListMessage> {
           );
         _docs = snapshot.data;
         if (_docs.exists == false) return EmptyList();
-        List listUser = snapshot.data['userid'];
+        List listUser = snapshot.data!['userid'];
         return Container(
             margin: const EdgeInsets.only(bottom: 40),
             child: Column(
@@ -70,21 +70,21 @@ class _ListMessageState extends State<ListMessage> {
         .snapshots();
   }
 
-  void openChat(String userID, String userName) {
+  void openChat(String? userID, String? userName) {
     Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => ChatPage(
-                  userID,
+                  userID!,
                   otherUserName: userName,
                 )));
   }
 }
 
 class UserLineDesign extends StatelessWidget {
-  final String userID, userName;
+  final String? userID, userName;
 
-  const UserLineDesign({this.userID, this.userName, Key key}) : super(key: key);
+  const UserLineDesign({this.userID, this.userName, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +106,7 @@ class UserLineDesign extends StatelessWidget {
               this.userName != null
                   ? Container(
                       padding: EdgeInsets.only(bottom: 2),
-                      child: Text(this.userName,
+                      child: Text(this.userName!,
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.w600)),
                     )
@@ -121,7 +121,7 @@ class UserLineDesign extends StatelessWidget {
 }
 
 class EmptyList extends StatelessWidget {
-  const EmptyList({Key key}) : super(key: key);
+  const EmptyList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -141,24 +141,24 @@ class EmptyList extends StatelessWidget {
 }
 
 class GetLastMessage extends StatelessWidget {
-  final String otherUserID;
-  const GetLastMessage(this.otherUserID, {Key key}) : super(key: key);
+  final String? otherUserID;
+  const GetLastMessage(this.otherUserID, {Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     CollectionReference chatService =
         FirebaseFirestore.instance.collection('chat');
-    String currentUserID = AuthService().currentUser.uid;
+    String currentUserID = AuthService().currentUser!.uid;
     List<dynamic> _docs;
     return FutureBuilder<QuerySnapshot>(
       future: chatService
           .doc(currentUserID)
-          .collection(otherUserID)
+          .collection(otherUserID!)
           .orderBy('date')
           .limitToLast(1)
           .get(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) return Text('');
-        _docs = snapshot.data.docs;
+        _docs = snapshot.data!.docs;
         return Row(
             children: _docs.map((doc) {
           return Container(

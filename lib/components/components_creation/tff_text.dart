@@ -6,28 +6,28 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:pts/Constant.dart';
 
 class TFFText extends StatelessWidget {
-  final void Function(String) onChanged;
+  final void Function(String)? onChanged;
   final String hintText;
-  final int maxLength;
-  final String Function(String) validator;
-  final TextInputType keyboardType;
-  final List<TextInputFormatter> inputFormatters;
-  final double width;
-  final TextCapitalization textCapitalization;
-  final bool obscureText;
-  final TextEditingController controller;
-  final Brightness keyboardAppearance;
+  final int? maxLength;
+  final String? Function(String?) validator;
+  final TextInputType? keyboardType;
+  final List<TextInputFormatter>? inputFormatters;
+  final double? width;
+  final TextCapitalization? textCapitalization;
+  final bool? obscureText;
+  final TextEditingController? controller;
+  final Brightness? keyboardAppearance;
 
   const TFFText({
     this.onChanged,
-    @required this.hintText,
+    required this.hintText,
     this.maxLength,
-    @required this.validator,
+    required this.validator,
     this.keyboardType,
     this.inputFormatters,
     this.width,
     this.textCapitalization,
-    Key key,
+    Key? key,
     this.obscureText,
     this.controller,
     this.keyboardAppearance,
@@ -75,39 +75,39 @@ class TFFText extends StatelessWidget {
 }
 
 class TypeAheadTFFText extends StatelessWidget {
-  final void Function(String) onChanged;
+  final void Function(String)? onChanged;
   final String hintText;
-  final int maxLength;
-  final String Function(String) validator;
-  final TextInputType keyboardType;
-  final List<TextInputFormatter> inputFormatters;
-  final double width;
-  final TextCapitalization textCapitalization;
-  final bool obscureText;
-  final TextEditingController controller;
-  final Brightness keyboardAppearance;
+  final int? maxLength;
+  final String? Function(String?) validator;
+  final TextInputType? keyboardType;
+  final List<TextInputFormatter>? inputFormatters;
+  final double? width;
+  final TextCapitalization? textCapitalization;
+  final bool? obscureText;
+  final TextEditingController? controller;
+  final Brightness? keyboardAppearance;
   final Widget Function(BuildContext, dynamic) itemBuilder;
   final void Function(dynamic) onSuggestionSelected;
   final FutureOr<Iterable<dynamic>> Function(String) suggestionsCallback;
-  final Widget Function(BuildContext, Widget, AnimationController)
+  final Widget Function(BuildContext, Widget, AnimationController?)?
       transitionBuilder;
 
   const TypeAheadTFFText(
       {this.onChanged,
-      @required this.hintText,
+      required this.hintText,
       this.maxLength,
-      @required this.validator,
+      required this.validator,
       this.keyboardType,
       this.inputFormatters,
       this.width,
       this.textCapitalization,
-      Key key,
+      Key? key,
       this.obscureText,
       this.controller,
       this.keyboardAppearance,
-      @required this.itemBuilder,
-      @required this.onSuggestionSelected,
-      @required this.suggestionsCallback,
+      required this.itemBuilder,
+      required this.onSuggestionSelected,
+      required this.suggestionsCallback,
       this.transitionBuilder})
       : super(key: key);
 
@@ -146,7 +146,7 @@ class TypeAheadTFFText extends StatelessWidget {
                   errorStyle: TextStyle(height: 0),
                 ),
                 maxLength: this.maxLength,
-                keyboardType: this.keyboardType,
+                keyboardType: this.keyboardType!,
                 inputFormatters: this.inputFormatters,
               ),
               validator: this.validator,

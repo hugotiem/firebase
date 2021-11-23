@@ -7,7 +7,7 @@ class Message {
 
   Message(this.date, this.text, this.userid);
 
-  factory Message.fromSnapShots(QuerySnapshot<Object> snapshot) {
+  factory Message.fromSnapShots(QuerySnapshot<Object?> snapshot) {
     var data = snapshot.docs;
     var date = data.map((e) {
       return e['date'];

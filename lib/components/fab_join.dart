@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:pts/Constant.dart';
 
 class FABJoin extends StatelessWidget {
-  final String label;
-  final Function() onPressed;
+  final String? label;
+  final Function()? onPressed;
 
   const FABJoin({ 
     this.label,
     this.onPressed,
-    Key key 
+    Key? key 
     }) 
     : super(key: key);
 
@@ -16,7 +16,7 @@ class FABJoin extends StatelessWidget {
   Widget build(BuildContext context) {
     return FloatingActionButton.extended(
       label: Text(  
-        this.label,
+        this.label!,
         style: TextStyle(  
           fontSize: 15
         ),

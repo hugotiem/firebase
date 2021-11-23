@@ -8,16 +8,16 @@ import 'package:pts/components/components_creation/headertext_one.dart';
 import '../../../Constant.dart';
 
 class ThemePage extends StatefulWidget {
-  final void Function() onNext;
-  final void Function() onPrevious;
+  final void Function()? onNext;
+  final void Function()? onPrevious;
   
-  const ThemePage({Key key, this.onNext, this.onPrevious}) : super(key: key);
+  const ThemePage({Key? key, this.onNext, this.onPrevious}) : super(key: key);
   @override
   _ThemePageState createState() => _ThemePageState();
 }
 
 class _ThemePageState extends State<ThemePage> {
-  String _theme;
+  String? _theme;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
@@ -28,18 +28,18 @@ class _ThemePageState extends State<ThemePage> {
         preferredSize: Size.fromHeight(50),
         child: BackAppBar(
           onPressed: () {
-            widget.onPrevious();
+            widget.onPrevious!();
           },
         ), 
       ),
       floatingActionButton: FABForm(
         onPressed: () {
-          if (!_formKey.currentState.validate()) {
+          if (!_formKey.currentState!.validate()) {
             return;
           }
 
           BlocProvider.of<BuildPartiesCubit>(context).addItem("theme", _theme);
-          widget.onNext();
+          widget.onNext!();
 
           // Soiree.setDataThemePage(
           //   _theme
@@ -102,7 +102,7 @@ class _ThemePageState extends State<ThemePage> {
                             borderSide: BorderSide(color: Colors.transparent),
                           ),
                         ),
-                        onChanged: (String value) {
+                        onChanged: (String? value) {
                           setState(() {
                             _theme = value;
                           });

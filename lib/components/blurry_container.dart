@@ -23,9 +23,9 @@ const double kColorOpacity = 0.0;
 class BlurryContainer extends StatelessWidget {
   final Widget child;
   final double blur;
-  final double height, width;
+  final double? height, width;
   final EdgeInsetsGeometry padding;
-  final Color bgColor;
+  final Color? bgColor;
 
   final BorderRadius borderRadius;
 
@@ -54,7 +54,7 @@ class BlurryContainer extends StatelessWidget {
           padding: padding,
           color: bgColor == Colors.transparent
               ? bgColor
-              : bgColor.withOpacity(0.5),
+              : bgColor!.withOpacity(0.5),
           child: child,
         ),
       ),

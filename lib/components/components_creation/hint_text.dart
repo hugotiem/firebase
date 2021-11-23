@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 class HintText extends StatelessWidget {
   final String text;
   const HintText({ 
-    @required this.text,
-    Key key 
+    required this.text,
+    Key? key 
     }) 
     : super(key: key);
 

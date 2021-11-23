@@ -1,9 +1,11 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:pts/Constant.dart';
+import 'package:pts/Model/party.dart';
 import 'package:pts/Model/services/firestore_service.dart';
 import 'package:pts/View/Pages/search/sliver/searchbar.dart';
 import 'package:pts/components/party_card.dart';
@@ -12,7 +14,7 @@ import 'dart:math' as math;
 import 'package:pts/blocs/application_bloc.dart';
 
 class SearchBarScreen extends StatefulWidget {
-  SearchBarScreen({Key key}) : super(key: key);
+  SearchBarScreen({Key? key}) : super(key: key);
 
   @override
   _SearchBarScreenState createState() => _SearchBarScreenState();
@@ -23,11 +25,11 @@ class _SearchBarScreenState extends State<SearchBarScreen>
   final ApplicationBloc applicationBloc = new ApplicationBloc();
   PanelController _resultsPanelController = PanelController();
   PanelController _searchPanelController = PanelController();
-  AnimationController _animationController;
+  late AnimationController _animationController;
   Completer<GoogleMapController> mapController = Completer();
 
   String _search = "";
-  String _result;
+  String? _result;
   bool _hasResults = false;
   bool _isDissmissed = false;
 
@@ -36,11 +38,11 @@ class _SearchBarScreenState extends State<SearchBarScreen>
 
   Brightness _brightness = Brightness.light;
 
-  FireStoreServices _firestore;
+  late FireStoreServices _firestore;
 
   // to save panel position
   // ignore: unused_field
-  double _panelPosition;
+  double? _panelPosition;
 
   @override
   void initState() {
@@ -213,24 +215,29 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                                   ),
                                   color: PRIMARY_COLOR,
                                 ),
-                                child: FutureBuilder(
+                                child: FutureBuilder<
+                                        QuerySnapshot<Map<String, dynamic>>>(
                                     future:
                                         _firestore.getDataWithWhereIsEqualTo(
-                                            "city", _result.split(",")[0]),
+                                            "city", _result!.split(",")[0]),
                                     builder: (context, snapshot) {
                                       return ListView.builder(
                                         controller: sc,
                                         itemCount: snapshot.hasData
-                                            ? snapshot.data.docs.length
+                                            ? snapshot.data!.docs.length
                                             : 5,
                                         itemBuilder: (context, index) {
                                           if (snapshot.hasError) {
                                             return Center(child: Text("ERROR"));
                                           }
                                           if (snapshot.hasData) {
-                                            var data = snapshot.data.docs;
+                                            var data = snapshot.data!.docs;
+                                            var party = Party.fromSnapShots(
+                                                data[index]);
                                             return buildPartyCard(
-                                                context, data[index]);
+                                              context,
+                                              party,
+                                            );
                                           }
                                           return Container(
                                             margin: EdgeInsets.all(20),
@@ -259,7 +266,7 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                                         return ListTile(
                                           title: Text(
                                             applicationBloc.searchResults[index]
-                                                .description,
+                                                .description!,
                                             style:
                                                 TextStyle(color: Colors.black),
                                           ),
@@ -329,7 +336,7 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                                 return ListTile(
                                   title: Text(
                                     applicationBloc
-                                        .searchResults[index].description,
+                                        .searchResults[index].description!,
                                     style: TextStyle(color: Colors.black),
                                   ),
                                   onTap: () {
@@ -372,7 +379,7 @@ class _SearchBarScreenState extends State<SearchBarScreen>
 
   Future _getCoordinates() async {
     List<Location> coordinates =
-        await locationFromAddress(_result.split(',')[0]);
+        await locationFromAddress(_result!.split(',')[0]);
 
     Location place = coordinates[0];
     double longitude = place.longitude;

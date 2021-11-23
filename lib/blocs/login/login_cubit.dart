@@ -12,7 +12,7 @@ class LoginCubit extends AppBaseCubit<LoginState> {
   final FireStoreServices fireStoreServices = FireStoreServices("user");
 
   Future<void> register(String email, String password) async {
-    emit(state.setRequestInProgress());
+    emit(state.setRequestInProgress() as LoginState);
     await auth.register(email, password).then((value) async {
       await addUserAfterRegistration(value);
     }).onError(onHandleError);
@@ -20,14 +20,14 @@ class LoginCubit extends AppBaseCubit<LoginState> {
 
   Future<void> signIn(String email, String password) async {
     await auth.signIn(email, password).then((value) async {
-      await auth.setToken(value.uid);
+      await auth.setToken(value!.uid);
       emit(LoginState.logged());
     }).onError((onHandleError));
   }
 
   Future<void> signInWithGoogle() async {
     await auth.signInWithGoogle().then((value) async {
-      var user = value.user;
+      var user = value.user!;
       await auth.setToken(user.uid);
       var res = await fireStoreServices.getDataById(user.uid);
       if (res.exists) {

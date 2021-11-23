@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CreditCard {
-  String cardNumber;
-  String expiryDate;
-  String cardHolderName;
-  String cvvCode;
-  String showBackView;
+  String? cardNumber;
+  String? expiryDate;
+  String? cardHolderName;
+  String? cvvCode;
+  String? showBackView;
 
   CreditCard(  
     this.cardHolderName,

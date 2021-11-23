@@ -3,15 +3,15 @@ part of 'calendar_cubit.dart';
 enum CalendarStatus { initial, dataLoaded }
 
 class CalendarState extends AppBaseState<CalendarStatus> {
-  final List<Meeting> organisedParties;
-  final List<Meeting> invitedParties;
+  final List<Meeting>? organisedParties;
+  final List<Meeting>? invitedParties;
 
-  const CalendarState(CalendarStatus status,
+  const CalendarState(CalendarStatus? status,
       {this.organisedParties,
       this.invitedParties,
       requestInProgress = false,
-      String requestFailureCode,
-      String requestFailureMessage})
+      String? requestFailureCode,
+      String? requestFailureMessage})
       : super(
             status: status,
             requestInProgress: requestInProgress,
@@ -27,8 +27,8 @@ class CalendarState extends AppBaseState<CalendarStatus> {
   @override
   AppBaseState<CalendarStatus> copyWith(
           {bool requestInProgress = false,
-          String requestFailureCode,
-          String requestFailureMessage}) =>
+          String? requestFailureCode,
+          String? requestFailureMessage}) =>
       CalendarState(this.status,
           organisedParties: this.organisedParties,
           invitedParties: invitedParties,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pts/Constant.dart';
+import 'package:pts/View/Pages/login/id_form_screen.dart';
 import 'package:pts/View/Pages/login/login.dart';
 import 'package:pts/blocs/user/user_cubit.dart';
 import 'package:pts/components/ProfilPhoto.dart';
@@ -11,7 +12,6 @@ import 'package:pts/components/pts_components.dart';
 import 'package:pts/Model/services/auth_service.dart';
 import 'package:pts/view/pages/messaging/message_list.dart';
 import 'package:pts/view/pages/profil/subpage/existingcard_page.dart';
-import 'package:pts/view/pages/profil/subpage/info_page.dart';
 import 'package:pts/view/pages/profil/subpage/list_user_party_page.dart';
 import 'package:pts/view/pages/profil/subpage/user_page.dart';
 
@@ -173,7 +173,7 @@ class _ProfilState extends State<Profil> {
                               text: 'Paramètres du compte',
                             ),
                             CickableContainerProfil(
-                              to: InfoScreen(),
+                              to: IdFormScreen(),
                               text: "Informations personnelles",
                               icon: Icons.perm_identity_outlined,
                             ),
@@ -232,13 +232,13 @@ class _ProfilState extends State<Profil> {
 }
 
 class CickableContainerProfil extends StatelessWidget {
-  final Widget to;
+  final Widget? to;
   final bool bottomBorder;
-  final String text;
-  final IconData icon;
+  final String? text;
+  final IconData? icon;
 
   const CickableContainerProfil(
-      {this.to, this.bottomBorder = true, this.text, this.icon, Key key})
+      {this.to, this.bottomBorder = true, this.text, this.icon, Key? key})
       : super(key: key);
 
   @override
@@ -258,7 +258,7 @@ class CickableContainerProfil extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              this.text,
+              this.text!,
               style: TextStyle(fontSize: 20),
             ),
             Icon(this.icon)
@@ -270,9 +270,9 @@ class CickableContainerProfil extends StatelessWidget {
 }
 
 class TitleTextProfil extends StatelessWidget {
-  final String text;
+  final String? text;
 
-  const TitleTextProfil({this.text, Key key}) : super(key: key);
+  const TitleTextProfil({this.text, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

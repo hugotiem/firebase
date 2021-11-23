@@ -9,17 +9,17 @@ import 'package:pts/components/components_creation/headertext_one.dart';
 import 'package:pts/components/components_creation/headertext_two.dart';
 
 class DescriptionPage extends StatefulWidget {
-  final void Function() onNext;
-  final void Function() onPrevious;
+  final void Function()? onNext;
+  final void Function()? onPrevious;
 
-  const DescriptionPage({Key key, this.onNext, this.onPrevious});
+  const DescriptionPage({Key? key, this.onNext, this.onPrevious});
   @override
   _DescriptionPageState createState() => _DescriptionPageState();
 }
 
 class _DescriptionPageState extends State<DescriptionPage> {
-  String _smoke;
-  String _animals;
+  String? _smoke;
+  String? _animals;
   String _description = "";
   final db = FireStoreServices("party");
   final databaseReference = FirebaseFirestore.instance;
@@ -33,13 +33,13 @@ class _DescriptionPageState extends State<DescriptionPage> {
         preferredSize: Size.fromHeight(50),
         child: BackAppBar(
           onPressed: () {
-            widget.onPrevious();
+            widget.onPrevious!();
           },
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
           onPressed: () async {
-            if (!_formKey.currentState.validate()) {
+            if (!_formKey.currentState!.validate()) {
               return;
             }
             // Soiree.setDataDescriptionPage(
@@ -64,7 +64,7 @@ class _DescriptionPageState extends State<DescriptionPage> {
 
             await BlocProvider.of<BuildPartiesCubit>(context).addToFireStore();
 
-            widget.onNext();
+            widget.onNext!();
 
             // await db.add(
             //   data: {
@@ -132,7 +132,7 @@ class _DescriptionPageState extends State<DescriptionPage> {
                       style: TextStyle(fontSize: TEXTFIELDFONTSIZE),
                     ),
                     elevation: 0,
-                    onChanged: (String value) {
+                    onChanged: (String? value) {
                       setState(() {
                         _smoke = value;
                       });
@@ -192,7 +192,7 @@ class _DescriptionPageState extends State<DescriptionPage> {
                       style: TextStyle(fontSize: TEXTFIELDFONTSIZE),
                     ),
                     elevation: 0,
-                    onChanged: (String value) {
+                    onChanged: (String? value) {
                       setState(() {
                         _animals = value;
                       });

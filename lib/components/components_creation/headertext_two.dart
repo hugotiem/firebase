@@ -4,11 +4,11 @@ import '../../../../Constant.dart';
 
 class HeaderText2 extends StatelessWidget {
   final String text;
-  final EdgeInsetsGeometry padding;
+  final EdgeInsetsGeometry? padding;
   const HeaderText2({ 
-    @required this.text,
+    required this.text,
     this.padding,
-    Key key, 
+    Key? key, 
     }) 
     : super(key: key);
 

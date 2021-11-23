@@ -5,8 +5,8 @@ class FABForm extends StatelessWidget {
   final void Function() onPressed;
 
   const FABForm({ 
-    @required this.onPressed,
-    Key key 
+    required this.onPressed,
+    Key? key 
     }) 
     : super(key: key);
 
