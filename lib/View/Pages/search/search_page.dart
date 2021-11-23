@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:animations/animations.dart';
+import 'package:flutter/services.dart';
 import 'package:pts/View/Pages/search/sliver/searchbar_screen.dart';
 import 'package:pts/components/custom_text.dart';
 import 'package:pts/constant.dart';
@@ -44,7 +45,7 @@ class _SearchState extends State<Search> {
   Widget build(BuildContext context) {
     return CustomSliver(
       backgroundColor: PRIMARY_COLOR,
-      brightness: _brightness,
+      systemOverlayStyle: SystemUiOverlayStyle.dark,
       toolbarColor: _toolbarColor,
       appBar: Opacity(
         opacity: _opacity,

@@ -14,9 +14,10 @@ class User {
 
   User({this.id, this.name, this.surname});
 
-  Future<User> get currentUser async {
+  Future<User?> get currentUser async {
     var token = await authService.getToken();
     var data = await fireStoreServices.getDataById(token);
+    if (!data.exists) return null;
     return User.fromSnapshot(data);
   }
 

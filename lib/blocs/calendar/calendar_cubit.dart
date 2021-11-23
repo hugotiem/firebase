@@ -16,7 +16,7 @@ class CalendarCubit extends AppBaseCubit<CalendarState> {
   Future<void> loadData() async {
     emit(state.setRequestInProgress() as CalendarState);
     var user = await User().currentUser;
-
+    if (user == null) return;
     var organisedPartiesData =
         await services.getDataWithWhereIsEqualTo('uid', user.id);
     var invitedPartiesData = await services.getDataWithWhereArrayContains(
