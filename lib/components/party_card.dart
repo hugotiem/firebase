@@ -834,7 +834,7 @@ class CardBody extends StatelessWidget {
                     ? Padding(
                       padding: const EdgeInsets.only(left: 4),
                       child: CText(
-                        "Les animaux sont autorisés",
+                        "Le propriétaire possède un ou des animaux",
                           fontSize: 17,
                           color: SECONDARY_COLOR
                       ),
@@ -842,7 +842,7 @@ class CardBody extends StatelessWidget {
                     : Padding(
                       padding: const EdgeInsets.only(left: 4),
                       child: CText(
-                        'Les animaux sont interdits',
+                        "Aucun animal n'est présent sur place",
                         fontSize: 17,
                         color: SECONDARY_COLOR
                       ),
