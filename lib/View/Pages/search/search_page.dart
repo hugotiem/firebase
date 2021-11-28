@@ -24,8 +24,8 @@ class _SearchState extends State<Search> {
   late double _opacity;
   double? _barSizeWidth;
   double? _barSizeHeight;
-  Brightness? _brightness;
   Color? _toolbarColor;
+  SystemUiOverlayStyle? _systemOverlayStyle;
 
   @override
   void initState() {
@@ -35,7 +35,7 @@ class _SearchState extends State<Search> {
       _opacity = 1;
       _barSizeWidth = 350;
       _barSizeHeight = 60;
-      _brightness = Brightness.dark;
+      _systemOverlayStyle = SystemUiOverlayStyle.light;
       _toolbarColor = Colors.transparent;
     });
     super.initState();
@@ -45,7 +45,7 @@ class _SearchState extends State<Search> {
   Widget build(BuildContext context) {
     return CustomSliver(
       backgroundColor: PRIMARY_COLOR,
-      systemOverlayStyle: SystemUiOverlayStyle.dark,
+      systemOverlayStyle: _systemOverlayStyle,
       toolbarColor: _toolbarColor,
       appBar: Opacity(
         opacity: _opacity,
@@ -143,7 +143,6 @@ class _SearchState extends State<Search> {
             double _pixels = notification.metrics.pixels;
             if (_pixels <= 400 && (400 - _pixels) >= 100) {
               _size = 400 - _pixels;
-              _brightness = Brightness.dark;
               _toolbarColor = Colors.transparent;
 
               if (_pixels >= 250) {
@@ -156,7 +155,6 @@ class _SearchState extends State<Search> {
             } else if (_pixels > 300) {
               _size = 100;
               _opacity = 0;
-              _brightness = Brightness.light;
               _toolbarColor = PRIMARY_COLOR;
             }
           }

@@ -11,8 +11,9 @@ class User {
   String? surname;
   String? gender;
   int? age;
+  bool? hasIdChecked;
 
-  User({this.id, this.name, this.surname});
+  User({this.id, this.name, this.surname, this.hasIdChecked});
 
   Future<User?> get currentUser async {
     var token = await authService.getToken();
@@ -26,7 +27,8 @@ class User {
     var data = snapshot.data()!;
     var name = data['name'];
     var surname = data['surname'];
+    var hasIdChecked = data['idFront'] != null;
 
-    return User(id: id, name: name, surname: surname);
+    return User(id: id, name: name, surname: surname, hasIdChecked: hasIdChecked);
   }
 }
