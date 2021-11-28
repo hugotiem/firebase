@@ -33,8 +33,11 @@ class _HomeState extends State<Home> {
       create: (context) => UserCubit()..loadData(),
       child: BlocListener<UserCubit, UserState>(
         listener: (context, state) {
-          if (state.user != null && !state.user!.hasIdChecked!) {
-            _showLoadingPopup();
+          if (state.user != null) {
+            if(!state.user!.hasIdChecked!) {
+              _showLoadingPopup();
+            }
+           
           }
         },
         child: BlocBuilder<UserCubit, UserState>(builder: (context, state) {
