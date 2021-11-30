@@ -93,6 +93,7 @@ flutter:
     - assets/bordeaux_nuit.jpg
     - assets/lille_nuit.jpg
     - assets/map.png
+    - assets/toureiffel2.png
 
   fonts: 
     - family: MerriweatherSans

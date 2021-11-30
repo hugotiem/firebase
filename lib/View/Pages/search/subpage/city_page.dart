@@ -7,6 +7,11 @@ import 'package:pts/components/custom_text.dart';
 import 'package:pts/components/party_card.dart';
 import 'package:pts/constant.dart';
 
+// https://i.pinimg.com/736x/99/20/a8/9920a804302a0a01a71e647787ffc76d--ui-design-buildings.jpg
+// https://www.vecteezy.com/vector-art/271165-eifel-tower-in-paris-at-night-full-of-star-illustration
+// https://www.gettyimages.fr/detail/illustration/france-symbols-illustration-libre-de-droits/505527708?adppopup=true
+
+
 class GridViewCity extends StatefulWidget {
   @override
   _GridViewCityState createState() => _GridViewCityState();

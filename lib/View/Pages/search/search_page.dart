@@ -7,7 +7,7 @@ import 'package:pts/constant.dart';
 import 'package:pts/view/pages/creation/creation_page.dart';
 import 'package:pts/view/pages/search/subpage/geolocalisation_page.dart';
 import 'subpage/city_page.dart';
-import 'subpage/last_party_page.dart';
+// import 'subpage/last_party_page.dart';
 import 'subpage/themes_page.dart';
 import 'sliver/custom_sliver.dart';
 
@@ -113,18 +113,23 @@ class _SearchState extends State<Search> {
               margin: EdgeInsets.only(left: 20),
             ),
             GridViewCity(),
+            TitleText(
+              text: 'New ville',
+              margin: EdgeInsets.only(left: 20, top: 30),
+            ),
+            NewCityGrid(),
             GeolocationWidget(),
             // liste des dernières soirées créées
-            Container(
-                child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TitleText(
-                    text: 'Dernières soirées créées',
-                    margin: EdgeInsets.only(top: 30, left: 20)),
-                SizedBox(height: 270, child: CardParty()),
-              ],
-            )),
+            // Container(
+            //     child: Column(
+            //   crossAxisAlignment: CrossAxisAlignment.start,
+            //   children: [
+            //     TitleText(
+            //         text: 'Dernières soirées créées',
+            //         margin: EdgeInsets.only(top: 30, left: 20)),
+            //     SizedBox(height: 270, child: CardParty()),
+            //   ],
+            // )),
             // listes des thèmes de soirées
             TitleText(
               text: 'Thèmes',
@@ -296,6 +301,64 @@ class TitleText extends StatelessWidget {
         this.text,
         fontWeight: FontWeight.w900,
         fontSize: 20,
+      ),
+    );
+  }
+}
+
+class NewCityGrid extends StatelessWidget {
+  const NewCityGrid({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Column(
+        children: [
+          SizedBox(
+            height: 15,
+          ),
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 32),
+                child: Container(
+                  height: 350,
+                  width: 220,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage("assets/toureiffel2.png")),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 32.0),
+                child: Container(
+                  height: 350,
+                  width: 220,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage("assets/toureiffel2.png")),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 32),
+                child: Container(
+                  height: 350,
+                  width: 220,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage("assets/toureiffel2.png")),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
