@@ -112,11 +112,7 @@ class _SearchState extends State<Search> {
               text: 'Villes',
               margin: EdgeInsets.only(left: 20),
             ),
-            GridViewCity(),
-            TitleText(
-              text: 'New ville',
-              margin: EdgeInsets.only(left: 20, top: 30),
-            ),
+            // GridViewCity(),
             NewCityGrid(),
             GeolocationWidget(),
             // liste des dernières soirées créées
@@ -339,7 +335,7 @@ class NewCityGrid extends StatelessWidget {
                   width: 220,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                        image: AssetImage("assets/toureiffel2.png")),
+                        image: AssetImage("assets/marseille.png")),
                     borderRadius: BorderRadius.circular(15),
                   ),
                 ),
