@@ -323,7 +323,7 @@ class NewCityGrid extends StatelessWidget {
                   width: 220,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                        image: AssetImage("assets/toureiffel2.png")),
+                        image: AssetImage("assets/toureiffel2.png"), fit: BoxFit.cover),
                     borderRadius: BorderRadius.circular(15),
                   ),
                 ),
@@ -335,7 +335,7 @@ class NewCityGrid extends StatelessWidget {
                   width: 220,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                        image: AssetImage("assets/marseille.png")),
+                        image: AssetImage("assets/marseille1.png"), fit: BoxFit.cover),
                     borderRadius: BorderRadius.circular(15),
                   ),
                 ),
@@ -347,7 +347,19 @@ class NewCityGrid extends StatelessWidget {
                   width: 220,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                        image: AssetImage("assets/toureiffel2.png")),
+                        image: AssetImage("assets/bordeaux1.png"), fit: BoxFit.cover),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 32, right: 32),
+                child: Container(
+                  height: 350,
+                  width: 220,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage("assets/bordeaux1.png")),
                     borderRadius: BorderRadius.circular(15),
                   ),
                 ),
