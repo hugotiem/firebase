@@ -39,7 +39,7 @@ class _GridListThemesState extends State<GridListThemes> {
                   Row(
                     children: [
                       ThemeBox(
-                        'Classique',
+                        'Festive',
                         image: "assets/festive.png",
                       ),
                       ThemeBox(
@@ -108,18 +108,20 @@ class ThemeBox extends StatelessWidget {
               ),
             ),
             body: BlocProvider(
-                create: (context) => PartiesCubit()
-                  ..fetchPartiesWithWhereIsEqualTo('theme', this.text),
-                child: BlocBuilder<PartiesCubit, PartiesState>(
-                  builder: (context, state) {
-                    if (state.parties == null)
-                      return Center(child: const CircularProgressIndicator());
-                    return ListView.builder(
-                        itemCount: state.parties!.length,
-                        itemBuilder: (BuildContext context, int index) =>
-                            buildPartyCard(context, state.parties![index]));
-                  },
-                )),
+              create: (context) => PartiesCubit()
+                ..fetchPartiesWithWhereIsEqualTo('theme', this.text),
+              child: BlocBuilder<PartiesCubit, PartiesState>(
+                builder: (context, state) {
+                  if (state.parties == null)
+                    return Center(child: const CircularProgressIndicator());
+                  return ListView.builder(
+                    itemCount: state.parties!.length,
+                    itemBuilder: (BuildContext context, int index) =>
+                        buildPartyCard(context, state.parties![index]),
+                  );
+                },
+              ),
+            ),
           );
         },
       ),

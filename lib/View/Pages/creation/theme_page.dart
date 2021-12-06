@@ -69,7 +69,7 @@ class _ThemePageState extends State<ThemePage> {
                       child: DropdownButtonFormField<String>(
                         value: _theme,
                         items: [
-                          'Classique',
+                          'Festive',
                           'Gaming',
                           'Jeu de société',
                           'Soirée à thème',
@@ -96,6 +96,7 @@ class _ThemePageState extends State<ThemePage> {
                             borderSide: BorderSide(color: Colors.transparent),
                           ),
                           border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
                             borderRadius: BorderRadius.circular(15),
                           ),
                           enabledBorder: UnderlineInputBorder(

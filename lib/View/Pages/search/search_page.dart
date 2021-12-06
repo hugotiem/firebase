@@ -128,7 +128,7 @@ class _SearchState extends State<Search> {
             // )),
             // listes des thèmes de soirées
             TitleText(
-              text: 'Thèmes',
+              text: 'Catégories',
               margin: EdgeInsets.only(left: 20, top: 30),
             ),
             GridListThemes(),
@@ -297,76 +297,6 @@ class TitleText extends StatelessWidget {
         this.text,
         fontWeight: FontWeight.w900,
         fontSize: 20,
-      ),
-    );
-  }
-}
-
-class NewCityGrid extends StatelessWidget {
-  const NewCityGrid({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Column(
-        children: [
-          SizedBox(
-            height: 15,
-          ),
-          Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 32),
-                child: Container(
-                  height: 350,
-                  width: 220,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage("assets/toureiffel2.png"), fit: BoxFit.cover),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 32.0),
-                child: Container(
-                  height: 350,
-                  width: 220,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage("assets/marseille1.png"), fit: BoxFit.cover),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 32),
-                child: Container(
-                  height: 350,
-                  width: 220,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage("assets/bordeaux1.png"), fit: BoxFit.cover),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 32, right: 32),
-                child: Container(
-                  height: 350,
-                  width: 220,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage("assets/bordeaux1.png")),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
       ),
     );
   }
