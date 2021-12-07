@@ -231,7 +231,7 @@ class GetTimeLastMessage extends StatelessWidget {
 
             if (h > 24) {
               temps = "${j.round()} j";
-            } else if (min > 60) {
+            } else if (h >= 01) {
               temps = "$h h";
             } else if (min < 60) {
               temps = "$min min";
