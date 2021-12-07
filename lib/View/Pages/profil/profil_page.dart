@@ -123,23 +123,19 @@ class _ProfilState extends State<Profil> {
                       PTSBox(
                         padding: EdgeInsets.only(top: 20, bottom: 20),
                         child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              TitleTextProfil(
-                                text: 'Activités',
-                              ),
-                              CickableContainerProfil(
-                                to: GetPartyData(),
-                                text: "Vos soirées",
-                                icon: Icons.calendar_today_outlined,
-                              ),
-                              CickableContainerProfil(
-                                to: MessagePage(),
-                                text: "Messages",
-                                icon: Icons.message_outlined,
-                                bottomBorder: false,
-                              ),
-                            ]),
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            TitleTextProfil(
+                              text: 'Activités',
+                            ),
+                            CickableContainerProfil(
+                              to: GetPartyData(),
+                              text: "Vos soirées",
+                              icon: Icons.calendar_today_outlined,
+                              bottomBorder: false,
+                            ),
+                          ],
+                        ),
                       ),
                       PTSBox(
                         padding: EdgeInsets.only(top: 20, bottom: 20),

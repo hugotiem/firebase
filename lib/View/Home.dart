@@ -8,6 +8,7 @@ import 'package:pts/Constant.dart';
 import 'package:pts/View/Pages/login/id_form_screen.dart';
 import 'package:pts/blocs/user/user_cubit.dart';
 import 'package:pts/components/custom_text.dart';
+import 'package:pts/view/pages/messaging/message_list.dart';
 import 'Pages/Planning/calendar_page.dart';
 import 'Pages/profil/profil_page.dart';
 import 'Pages/search/search_page.dart';
@@ -24,6 +25,7 @@ class _HomeState extends State<Home> {
   final List<Widget> _children = [
     Search(),
     CalendarPage(),
+    MessagePage(),
     Profil(),
   ];
 
@@ -42,12 +44,7 @@ class _HomeState extends State<Home> {
         },
         child: BlocBuilder<UserCubit, UserState>(builder: (context, state) {
           return Scaffold(
-            extendBodyBehindAppBar: true,
-            appBar: AppBar(
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              systemOverlayStyle: SystemUiOverlayStyle.dark,
-            ),
+            extendBodyBehindAppBar: true, 
             body: _children[_currentIndex],
             bottomNavigationBar: BottomNavigationBar(
               showSelectedLabels: true,
@@ -70,6 +67,13 @@ class _HomeState extends State<Home> {
                     size: 30,
                   ),
                   label: "Calendrier",
+                ),
+                BottomNavigationBarItem(
+                  icon: new Icon(
+                    Icons.message_outlined,
+                    size: 30,
+                  ),
+                  label: "Messages",
                 ),
                 BottomNavigationBarItem(
                   icon: new Icon(

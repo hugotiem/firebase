@@ -10,6 +10,7 @@ class BackAppBar extends StatelessWidget {
   final PreferredSizeWidget? bottom;
   final void Function()? onPressed;
   final Color? backgroundColor;
+  final double? elevation;
 
   BackAppBar({
     this.title,
@@ -19,13 +20,14 @@ class BackAppBar extends StatelessWidget {
     this.bottom,
     this.onPressed,
     this.backgroundColor,
+    this.elevation,
   });
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: backgroundColor == null ? Colors.transparent : backgroundColor,
-      elevation: 0.0,
+      elevation: elevation != null ? elevation : 0.0,
       //centerTitle: true,
       leading: leading != null
           ? leading
