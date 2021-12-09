@@ -183,7 +183,7 @@ class GetLastMessage extends StatelessWidget {
                 child: Opacity(
                   opacity: 0.64,
                   child: Text(
-                    doc['text'],
+                    detect(doc['text'])? 'Image' : doc['text'],
                     overflow: TextOverflow.ellipsis,
                   ),
                 ));

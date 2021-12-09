@@ -10,6 +10,9 @@ import 'package:pts/components/title_appbar.dart';
 import 'package:pts/constant.dart';
 import 'package:pts/model/Capitalize.dart';
 import 'package:pts/model/services/auth_service.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:path/path.Dart' as Path;
+import 'package:pts/model/services/storage_service.dart';
 
 class ChatPage extends StatelessWidget {
   final otherUserID;
@@ -60,7 +63,7 @@ class _MessageFieldState extends State<MessageField> {
     super.initState();
   }
 
-  void sendMessage() {
+  void sendMessage(String message) {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     var currentUserId = AuthService().currentUser!.uid;
     DateTime now = DateTime.now();
@@ -71,7 +74,7 @@ class _MessageFieldState extends State<MessageField> {
           .doc(currentUserId)
           .collection(widget.otherUserID)
           .add({
-        'text': textfield.text,
+        'text': message,
         'userid': currentUserId,
         'date': formattedDate
       }).then((value) {
@@ -80,7 +83,7 @@ class _MessageFieldState extends State<MessageField> {
             .doc(widget.otherUserID)
             .collection(currentUserId)
             .add({
-          'text': textfield.text,
+          'text': message,
           'userid': currentUserId,
           'date': formattedDate,
         }).then((value) {
@@ -91,6 +94,18 @@ class _MessageFieldState extends State<MessageField> {
     } catch (e) {
       print(e.toString());
     }
+  }
+
+  void sendPhoto() async {
+    String fileName = Path.basename(image!.path);
+    String destination = 'Messagerie/$fileName';
+    UploadTask? task = StorageService(destination).uploadFile(image!);
+
+    if (task == null) return;
+    task.then((element) async {
+      var url = await element.ref.getDownloadURL();
+      sendMessage(url);
+    });
   }
 
   Future<void> photoDialog() async {
@@ -137,8 +152,8 @@ class _MessageFieldState extends State<MessageField> {
   }
 
   Future photoSelected() async {
-    return showModalBottomSheet(  
-      isScrollControlled: true,
+    return showModalBottomSheet(
+        isScrollControlled: true,
         context: context,
         builder: (BuildContext context) {
           return Scaffold(
@@ -146,21 +161,21 @@ class _MessageFieldState extends State<MessageField> {
               preferredSize: Size.fromHeight(80),
               child: Padding(
                 padding: const EdgeInsets.only(top: 20.0),
-                child: BackAppBar(
-                    actions: [TextButton(
-                      onPressed: () => sendMessage(),
-                      child: Text(
-                        'Envoyer',
-                        style: TextStyle(color: SECONDARY_COLOR, fontSize: 16),
-                      ),
-                    ),]
-                  
-                ),
+                child: BackAppBar(actions: [
+                  TextButton(
+                    onPressed: () => sendPhoto(),
+                    child: Text(
+                      'Envoyer',
+                      style: TextStyle(color: SECONDARY_COLOR, fontSize: 16),
+                    ),
+                  ),
+                ]),
               ),
             ),
             body: Center(
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                 child: Container(
                   child: Image.file(image!),
                 ),
@@ -234,7 +249,7 @@ class _MessageFieldState extends State<MessageField> {
                               ),
                             ),
                             IconButton(
-                              onPressed: () => sendMessage(),
+                              onPressed: () => sendMessage(textfield.text),
                               icon: Opacity(
                                   opacity: selected == false ? 0.7 : 0.9,
                                   child: Icon(
@@ -326,25 +341,24 @@ class CurrentUserMessage extends StatelessWidget {
           ),
           Container(
             margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-            padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+            padding: detect(textMessage!) == false
+                ? const EdgeInsets.fromLTRB(10, 0, 10, 0)
+                : null,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
               color: SECONDARY_COLOR,
             ),
             child: Center(
               child: Container(
-                padding:
-                    EdgeInsets.only(top: 10, left: 5, bottom: 10, right: 5),
-                width: textMessage!.length >= 50
-                    ? MediaQuery.of(context).size.width * 0.6
-                    : null,
-                child: Text(
-                  textMessage!,
-                  style: const TextStyle(color: Colors.white, fontSize: 17),
-                ),
-              ),
+                  padding: detect(textMessage!) == false
+                      ? EdgeInsets.only(top: 10, left: 5, bottom: 10, right: 5)
+                      : null,
+                  width: textMessage!.length >= 50
+                      ? MediaQuery.of(context).size.width * 0.6
+                      : null,
+                  child: message(textMessage!)),
             ),
-          )
+          ),
         ],
       ),
     );
@@ -365,7 +379,7 @@ class OtherUserMessage extends StatelessWidget {
         children: [
           Container(
             margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-            padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+            padding: detect(textMessage!) == false ? const EdgeInsets.fromLTRB(10, 0, 10, 0) : null,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
               color: Colors.grey.shade300,
@@ -373,14 +387,11 @@ class OtherUserMessage extends StatelessWidget {
             child: Center(
               child: Container(
                 padding:
-                    EdgeInsets.only(top: 10, left: 5, bottom: 10, right: 5),
+                    detect(textMessage!) == false ? EdgeInsets.only(top: 10, left: 5, bottom: 10, right: 5) : null,
                 width: textMessage!.length >= 50
                     ? MediaQuery.of(context).size.width * 0.6
                     : null,
-                child: Text(
-                  textMessage!,
-                  style: const TextStyle(fontSize: 17),
-                ),
+                child: message(textMessage!, color: SECONDARY_COLOR)
               ),
             ),
           ),
@@ -392,6 +403,28 @@ class OtherUserMessage extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+bool detect(String str) {
+  if (str.toString().contains('firebasestorage')) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+Widget message(String str, {Color? color}) {
+  if (detect(str) == true) {
+    return Image.network(
+      str,
+      fit: BoxFit.cover,
+    );
+  } else {
+    return Text(
+      str,
+      style: TextStyle(color: color == null ? Colors.white : color, fontSize: 17),
     );
   }
 }
