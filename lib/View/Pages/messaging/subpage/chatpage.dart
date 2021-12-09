@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:pts/components/back_appbar.dart';
 import 'package:pts/components/title_appbar.dart';
@@ -11,33 +15,33 @@ class ChatPage extends StatelessWidget {
   final otherUserID;
   final otherUserName;
 
-  const ChatPage(String this.otherUserID,
-  { this.otherUserName, Key? key }) 
-  : super(key: key);
+  const ChatPage(String this.otherUserID, {this.otherUserName, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: PRIMARY_COLOR,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(55),
-        child: BackAppBar(
-          title: TitleAppBar(title: otherUserName == null ? '' : otherUserName)
+        backgroundColor: PRIMARY_COLOR,
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(60),
+          child: BackAppBar(
+              backgroundColor: PRIMARY_COLOR,
+              elevation: 0.5,
+              title: TitleAppBar(
+                  title: otherUserName == null ? '' : otherUserName)),
         ),
-      ),
-      bottomNavigationBar: MessageField(otherUserID),
-      body: Container(
-        padding: EdgeInsets.all(10),
-        color: PRIMARY_COLOR,
-        child: ListMessage(otherUserID),
-      )
-    );
+        bottomNavigationBar: MessageField(otherUserID),
+        body: Container(
+          padding: EdgeInsets.all(10),
+          color: PRIMARY_COLOR,
+          child: ListMessage(otherUserID),
+        ));
   }
 }
 
 class MessageField extends StatefulWidget {
   final String otherUserID;
-  const MessageField(this.otherUserID, { Key? key }) : super(key: key);
+  const MessageField(this.otherUserID, {Key? key}) : super(key: key);
 
   @override
   _MessageFieldState createState() => _MessageFieldState();
@@ -46,8 +50,9 @@ class MessageField extends StatefulWidget {
 class _MessageFieldState extends State<MessageField> {
   TextEditingController textfield = TextEditingController();
   bool? selected;
+  File? image;
 
-  @override 
+  @override
   void initState() {
     setState(() {
       selected = false;
@@ -61,12 +66,20 @@ class _MessageFieldState extends State<MessageField> {
     DateTime now = DateTime.now();
     String formattedDate = DateFormat('yyyy-MM-dd - kk:mm:ss').format(now);
     try {
-      firestore.collection("chat").doc(currentUserId).collection(widget.otherUserID).add({
+      firestore
+          .collection("chat")
+          .doc(currentUserId)
+          .collection(widget.otherUserID)
+          .add({
         'text': textfield.text,
         'userid': currentUserId,
         'date': formattedDate
       }).then((value) {
-        firestore.collection("chat").doc(widget.otherUserID).collection(currentUserId).add({
+        firestore
+            .collection("chat")
+            .doc(widget.otherUserID)
+            .collection(currentUserId)
+            .add({
           'text': textfield.text,
           'userid': currentUserId,
           'date': formattedDate,
@@ -82,26 +95,79 @@ class _MessageFieldState extends State<MessageField> {
 
   Future<void> photoDialog() async {
     return showDialog(
-      context: context, 
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Prendre une photo'),
-          content: Text(
-            'Prenez une nouvelle photo ou importez-en une depuis votre bibliothèque.'
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {}, 
-              child: Text('GALERIE', style: TextStyle(color: SECONDARY_COLOR))
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Prendre une photo'),
+            content: Text(
+                'Prenez une nouvelle photo ou importez-en une depuis votre bibliothèque.'),
+            actions: <Widget>[
+              TextButton(
+                  onPressed: () => pickImage(),
+                  child: Text('GALERIE',
+                      style: TextStyle(color: SECONDARY_COLOR))),
+              TextButton(
+                  onPressed: () => takePhoto(),
+                  child: Text(
+                    'APPAREIL',
+                    style: TextStyle(color: SECONDARY_COLOR),
+                  ))
+            ],
+          );
+        });
+  }
+
+  Future pickImage() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (image == null) return;
+
+      final imageTemporary = File(image.path);
+      setState(() => this.image = imageTemporary);
+
+      Navigator.pop(context);
+      photoSelected();
+    } on PlatformException catch (e) {
+      print('failed to pick image: $e');
+    }
+  }
+
+  Future takePhoto() async {
+    await ImagePicker().pickImage(source: ImageSource.camera);
+  }
+
+  Future photoSelected() async {
+    return showModalBottomSheet(  
+      isScrollControlled: true,
+        context: context,
+        builder: (BuildContext context) {
+          return Scaffold(
+            appBar: PreferredSize(
+              preferredSize: Size.fromHeight(80),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 20.0),
+                child: BackAppBar(
+                    actions: [TextButton(
+                      onPressed: () => sendMessage(),
+                      child: Text(
+                        'Envoyer',
+                        style: TextStyle(color: SECONDARY_COLOR, fontSize: 16),
+                      ),
+                    ),]
+                  
+                ),
+              ),
             ),
-            TextButton(
-              onPressed: () {}, 
-              child: Text('APPAREIL', style: TextStyle(color: SECONDARY_COLOR),)
-            )
-          ],
-        );
-      }
-    );
+            body: Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                child: Container(
+                  child: Image.file(image!),
+                ),
+              ),
+            ),
+          );
+        });
   }
 
   @override
@@ -110,73 +176,80 @@ class _MessageFieldState extends State<MessageField> {
       offset: Offset(0.0, -1 * MediaQuery.of(context).viewInsets.bottom),
       child: BottomAppBar(
         color: PRIMARY_COLOR,
-        child: Container(  
-          height: 70,
-          padding: const EdgeInsets.symmetric(vertical: 2),
-          child: Row(
-            children: [
-              IconButton(
-                onPressed: () => photoDialog(),
-                icon: Icon(Icons.crop_original_outlined, color: SECONDARY_COLOR)
-              ),
-              Expanded(  
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 16), 
-                  child: Opacity(
-                    opacity: selected == false ? 0.7 : 0.9,
-                    child: Container(
-                      height: 45,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: SECONDARY_COLOR, width: selected == false ? 1 : 1.6),
-                        borderRadius: BorderRadius.circular(30)
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,  
-                        children: [
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 10),
-                              child: FocusScope(
-                                child: Focus(
-                                  onFocusChange: (focus) {
-                                    if (focus == true) {
-                                      setState(() {
-                                        selected = true;
-                                      });
-                                    } else if (focus == false) {
-                                      setState(() {
-                                        selected = false;
-                                      });
-                                    }
-                                  },
-                                  child: TextField(
-                                    controller: textfield,
-                                    decoration: InputDecoration(  
-                                      border: InputBorder.none,
-                                      filled: true,
-                                      fillColor: Colors.transparent,
-                                      hintText: "écrivez un message".inCaps
+        child: Container(
+            height: 70,
+            padding: const EdgeInsets.symmetric(vertical: 2),
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: IconButton(
+                      onPressed: () => photoDialog(),
+                      icon: Icon(Icons.crop_original_outlined,
+                          color: SECONDARY_COLOR)),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 16),
+                    child: Opacity(
+                      opacity: selected == false ? 0.4 : 0.9,
+                      child: Container(
+                        height: 45,
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                color: SECONDARY_COLOR,
+                                width: selected == false ? 1 : 1.6),
+                            borderRadius: BorderRadius.circular(30)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 10, bottom: 5),
+                                child: FocusScope(
+                                  child: Focus(
+                                    onFocusChange: (focus) {
+                                      if (focus == true) {
+                                        setState(() {
+                                          selected = true;
+                                        });
+                                      } else if (focus == false) {
+                                        setState(() {
+                                          selected = false;
+                                        });
+                                      }
+                                    },
+                                    child: TextField(
+                                      controller: textfield,
+                                      decoration: InputDecoration(
+                                          border: InputBorder.none,
+                                          filled: true,
+                                          fillColor: Colors.transparent,
+                                          hintText:
+                                              "écrivez un message".inCaps),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                          IconButton(
-                            onPressed: () => sendMessage(),
-                            icon: Opacity(
-                              opacity: selected == false ? 0.7 : 0.9,
-                              child: Icon(Icons.arrow_forward_outlined, color: SECONDARY_COLOR,)),
-                          )
-                        ],
+                            IconButton(
+                              onPressed: () => sendMessage(),
+                              icon: Opacity(
+                                  opacity: selected == false ? 0.7 : 0.9,
+                                  child: Icon(
+                                    Icons.arrow_forward_outlined,
+                                    color: SECONDARY_COLOR,
+                                  )),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              )
-            ],
-          )
-        ),
+                )
+              ],
+            )),
       ),
     );
   }
@@ -184,7 +257,7 @@ class _MessageFieldState extends State<MessageField> {
 
 class ListMessage extends StatefulWidget {
   final String otherUserID;
-  const ListMessage(this.otherUserID, { Key? key }) : super(key: key);
+  const ListMessage(this.otherUserID, {Key? key}) : super(key: key);
 
   @override
   _ListMessageState createState() => _ListMessageState();
@@ -200,19 +273,23 @@ class _ListMessageState extends State<ListMessage> {
       child: StreamBuilder(
         stream: getmessageStreamSnapshot(context),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (!snapshot.hasData) return Center(child: CircularProgressIndicator(),);
+          if (!snapshot.hasData)
+            return Center(
+              child: CircularProgressIndicator(),
+            );
           _docs = snapshot.data!.docs;
           if (_docs.isEmpty) {
-            return const Center(child: Text("Envoyer votre premier message"),);
+            return const Center(
+              child: Text("Envoyer votre premier message"),
+            );
           }
-          return SingleChildScrollView(  
-            child: Column(  
-              children: _docs.map((document) {
-                return document['userid'] == currentUserId 
-                ? CurrentUserMessage(document['text'], document['date'])
-                : OtherUserMessage(document['text'], document['date']);
-              }).toList()
-            ),
+          return SingleChildScrollView(
+            child: Column(
+                children: _docs.map((document) {
+              return document['userid'] == currentUserId
+                  ? CurrentUserMessage(document['text'], document['date'])
+                  : OtherUserMessage(document['text'], document['date']);
+            }).toList()),
           );
         },
       ),
@@ -221,11 +298,11 @@ class _ListMessageState extends State<ListMessage> {
 
   Stream<QuerySnapshot> getmessageStreamSnapshot(BuildContext context) async* {
     yield* FirebaseFirestore.instance
-    .collection('chat')
-    .doc(currentUserId)
-    .collection(widget.otherUserID)
-    .orderBy("date")
-    .snapshots();
+        .collection('chat')
+        .doc(currentUserId)
+        .collection(widget.otherUserID)
+        .orderBy("date")
+        .snapshots();
   }
 }
 
@@ -256,10 +333,11 @@ class CurrentUserMessage extends StatelessWidget {
             ),
             child: Center(
               child: Container(
-                padding: EdgeInsets.only(top: 10, left: 5, bottom: 10, right: 5),
+                padding:
+                    EdgeInsets.only(top: 10, left: 5, bottom: 10, right: 5),
                 width: textMessage!.length >= 50
-                ? MediaQuery.of(context).size.width * 0.6
-                : null,
+                    ? MediaQuery.of(context).size.width * 0.6
+                    : null,
                 child: Text(
                   textMessage!,
                   style: const TextStyle(color: Colors.white, fontSize: 17),
@@ -294,10 +372,11 @@ class OtherUserMessage extends StatelessWidget {
             ),
             child: Center(
               child: Container(
-                padding: EdgeInsets.only(top: 10, left: 5, bottom: 10, right: 5),
+                padding:
+                    EdgeInsets.only(top: 10, left: 5, bottom: 10, right: 5),
                 width: textMessage!.length >= 50
-                ? MediaQuery.of(context).size.width * 0.6
-                : null,
+                    ? MediaQuery.of(context).size.width * 0.6
+                    : null,
                 child: Text(
                   textMessage!,
                   style: const TextStyle(fontSize: 17),

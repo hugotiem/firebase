@@ -14,10 +14,11 @@ class MessagePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: PRIMARY_COLOR,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(50),
+        preferredSize: Size.fromHeight(60),
         child: BackAppBar(
           title: TitleAppBar(title: "Messages"),
           backgroundColor: PRIMARY_COLOR,
+          elevation: 0.5,
         ),
       ),
       body: ListMessage(),
