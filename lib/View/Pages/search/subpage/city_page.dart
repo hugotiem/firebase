@@ -7,56 +7,29 @@ import 'package:pts/components/custom_text.dart';
 import 'package:pts/components/party_card.dart';
 import 'package:pts/constant.dart';
 
-class GridViewCity extends StatefulWidget {
-  @override
-  _GridViewCityState createState() => _GridViewCityState();
-}
+class NewCityGrid extends StatelessWidget {
+  const NewCityGrid({Key? key}) : super(key: key);
 
-class _GridViewCityState extends State<GridViewCity> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            height: 182,
-            child: Container(
-              child: Row(children: [
-                Column(
-                  children: [
-                    CityBox('Paris', image: "assets/paris_nuit.jpg"),
-                    CityBox('Marseille', image: "assets/marseille_nuit.jpg"),
-                  ],
-                ),
-                Column(
-                  children: [
-                    CityBox('Lyon', image: "assets/lyon_nuit.jpg"),
-                    CityBox('Toulouse', image: "assets/toulouse_nuit.jpg"),
-                  ],
-                ),
-                Column(
-                  children: [
-                    CityBox('Nice', image: "assets/nice_nuit.jpg"),
-                    CityBox('Nantes', image: "assets/nantes_nuit.jpg"),
-                  ],
-                ),
-                Column(
-                  children: [
-                    CityBox('Strasbourg', image: "assets/strasbourg_nuit.jpg",),
-                    CityBox('Montpellier', image: "assets/montpellier_nuit.jpg"),
-                  ],
-                ),
-                Column(
-                  children: [
-                    CityBox('Bordeaux', image: "assets/bordeaux_nuit.jpg"),
-                    CityBox('Lille', image: "assets/lille_nuit.jpg"),
-                  ],
-                ),
-                SizedBox(width: 32)
-              ]),
-            ),
+            height: 15,
+          ),
+          Row(
+            children: [
+              CityBox(
+                text: "Paris",
+                image: "assets/toureiffel2.png",
+              ),
+              CityBox(text: "Marseille", image: "assets/marseille1.png"),
+              CityBox(text: "Bordeaux", image: "assets/bordeaux1.png"),
+              CityBox(text: "Lyon", image: "assets/lyon.png"),
+              SizedBox(width: 32),
+            ],
           ),
         ],
       ),
@@ -68,46 +41,30 @@ class CityBox extends StatelessWidget {
   final String text;
   final String? image;
 
-  const CityBox(this.text, {this.image, Key? key}) : super(key: key);
+  const CityBox({required this.text, required this.image, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 16, left: 32),
-      child: OpenContainer(
+    return OpenContainer(
         transitionDuration: Duration(milliseconds: 300),
         closedColor: Colors.transparent,
         middleColor: PRIMARY_COLOR,
         openColor: PRIMARY_COLOR,
         closedElevation: 0,
         closedBuilder: (context, returnvalue) {
-          return Container(
-            height: 75,
-            width: MediaQuery.of(context).size.width * 0.55,
-            child: Row(
-              children: [
-                Container(  
-                  height: 75,
-                  width: 75,
-                  decoration: BoxDecoration(
-                    image: image != null
-                        ? DecorationImage(image: AssetImage(image!), fit: BoxFit.cover)
-                        : null,
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                ),
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 12.0),
-                    child: CText(
-                      this.text,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: SECONDARY_COLOR,
-                    ),
-                  ),
-                ),
-              ],
+          return Padding(
+            padding: const EdgeInsets.only(left: 32),
+            child: Container(
+              height: 350,
+              width: 220,
+              decoration: BoxDecoration(
+                image: image != null
+                    ? DecorationImage(
+                        image: AssetImage(image!), fit: BoxFit.cover)
+                    : null,
+                borderRadius: BorderRadius.circular(15),
+              ),
             ),
           );
         },
@@ -142,15 +99,6 @@ class CityBox extends StatelessWidget {
               ),
             ),
           );
-        },
-      ),
-    );
+        });
   }
-  // }
-  // Stream<QuerySnapshot> getPartyStreamSnapshot(BuildContext context) async* {
-  //   yield* FirebaseFirestore.instance
-  //   .collection('party')
-  //   .where('city', isEqualTo: this.text)
-  //   .snapshots();
-  // }
 }

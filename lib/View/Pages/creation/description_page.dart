@@ -145,6 +145,7 @@ class _DescriptionPageState extends State<DescriptionPage> {
                         errorBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.transparent)),
                         border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
                             borderRadius: BorderRadius.circular(15)),
                         enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.transparent))),
@@ -161,7 +162,7 @@ class _DescriptionPageState extends State<DescriptionPage> {
             ),
           ),
           HeaderText2(
-              text: "Y aura-t'il des animaux ?",
+              text: "Avez-vous des animaux ?",
               padding: EdgeInsets.only(bottom: 20, top: 40)),
           Center(
             child: Container(
@@ -205,6 +206,7 @@ class _DescriptionPageState extends State<DescriptionPage> {
                         errorBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.transparent)),
                         border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
                             borderRadius: BorderRadius.circular(15)),
                         enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.transparent))),

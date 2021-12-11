@@ -7,7 +7,7 @@ import 'package:pts/constant.dart';
 import 'package:pts/view/pages/creation/creation_page.dart';
 import 'package:pts/view/pages/search/subpage/geolocalisation_page.dart';
 import 'subpage/city_page.dart';
-import 'subpage/last_party_page.dart';
+// import 'subpage/last_party_page.dart';
 import 'subpage/themes_page.dart';
 import 'sliver/custom_sliver.dart';
 
@@ -112,22 +112,23 @@ class _SearchState extends State<Search> {
               text: 'Villes',
               margin: EdgeInsets.only(left: 20),
             ),
-            GridViewCity(),
+            // GridViewCity(),
+            NewCityGrid(),
             GeolocationWidget(),
             // liste des dernières soirées créées
-            Container(
-                child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TitleText(
-                    text: 'Dernières soirées créées',
-                    margin: EdgeInsets.only(top: 30, left: 20)),
-                SizedBox(height: 270, child: CardParty()),
-              ],
-            )),
+            // Container(
+            //     child: Column(
+            //   crossAxisAlignment: CrossAxisAlignment.start,
+            //   children: [
+            //     TitleText(
+            //         text: 'Dernières soirées créées',
+            //         margin: EdgeInsets.only(top: 30, left: 20)),
+            //     SizedBox(height: 270, child: CardParty()),
+            //   ],
+            // )),
             // listes des thèmes de soirées
             TitleText(
-              text: 'Thèmes',
+              text: 'Catégories de soirées',
               margin: EdgeInsets.only(left: 20, top: 30),
             ),
             GridListThemes(),

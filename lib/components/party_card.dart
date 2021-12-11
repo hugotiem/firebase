@@ -118,7 +118,7 @@ Widget buildPartyCard(BuildContext context, Party party) {
 
   List<Color> colors;
 
-  if (party.theme == 'Classique') {
+  if (party.theme == 'Festive') {
     colors = [Color(0xFFf12711), Color(0xFFf5af19)];
   } else if (party.theme == 'Gaming') {
     colors = [Color(0xFF1c92d2), Color(0xFFf2fcfe)];

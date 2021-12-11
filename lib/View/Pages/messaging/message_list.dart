@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pts/components/back_appbar.dart';
+import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:pts/components/title_appbar.dart';
 import 'package:pts/constant.dart';
 import 'package:pts/model/services/auth_service.dart';
 import 'package:pts/view/pages/messaging/subpage/chatpage.dart';
@@ -13,11 +12,17 @@ class MessagePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: PRIMARY_COLOR,
-      appBar: PreferredSize(
-          preferredSize: Size.fromHeight(50),
-          child: BackAppBar(
-            title: TitleAppBar(title: "Boîte de réception"),
-          )),
+      appBar: AppBar(
+          backgroundColor: PRIMARY_COLOR,
+          systemOverlayStyle: SystemUiOverlayStyle.dark,
+          elevation: 0.5,
+          title: Text(
+            'Messages',
+            style: TextStyle(
+              color: SECONDARY_COLOR,
+            ),
+          ),
+        ),
       body: ListMessage(),
     );
   }
@@ -50,14 +55,19 @@ class _ListMessageState extends State<ListMessage> {
         if (_docs.exists == false) return EmptyList();
         List listUser = snapshot.data!['userid'];
         return Container(
-            margin: const EdgeInsets.only(bottom: 40),
-            child: Column(
-                children: listUser.map((doc) {
-              return InkWell(
+          margin: const EdgeInsets.only(bottom: 40, top: 10),
+          child: Column(
+            children: listUser.map(
+              (doc) {
+                return InkWell(
                   onTap: () => openChat(doc['uid'], doc['name']),
-                  child: UserLineDesign(
-                      userID: doc['uid'], userName: doc['name']));
-            }).toList()));
+                  child:
+                      UserLineDesign(userID: doc['uid'], userName: doc['name']),
+                );
+              },
+            ).toList(),
+          ),
+        );
       },
     );
   }
@@ -72,48 +82,55 @@ class _ListMessageState extends State<ListMessage> {
 
   void openChat(String? userID, String? userName) {
     Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => ChatPage(
-                  userID!,
-                  otherUserName: userName,
-                )));
+      context,
+      MaterialPageRoute(
+        builder: (context) => ChatPage(
+          userID!,
+          otherUserName: userName,
+        ),
+      ),
+    );
   }
 }
 
 class UserLineDesign extends StatelessWidget {
   final String? userID, userName;
 
-  const UserLineDesign({this.userID, this.userName, Key? key}) : super(key: key);
+  const UserLineDesign({this.userID, this.userName, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(left: 24, top: 15, right: 24, bottom: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
       child: Row(
         children: [
-          Container(
-            height: 45,
-            width: 45,
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage("assets/roundBlankProfilPicture.png"))),
+          CircleAvatar(
+            radius: 24,
+            backgroundImage: AssetImage("assets/roundBlankProfilPicture.png"),
           ),
-          const SizedBox(width: 16),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              this.userName != null
-                  ? Container(
-                      padding: EdgeInsets.only(bottom: 2),
-                      child: Text(this.userName!,
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.w600)),
-                    )
-                  : Text(''),
-              GetLastMessage(this.userID)
-            ],
-          )
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  this.userName != null
+                      ? Container(
+                          padding: EdgeInsets.only(bottom: 2),
+                          child: Text(
+                            this.userName!,
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w500),
+                          ),
+                        )
+                      : Text(''),
+                  GetLastMessage(this.userID)
+                ],
+              ),
+            ),
+          ),
+          GetTimeLastMessage(this.userID)
         ],
       ),
     );
@@ -143,12 +160,14 @@ class EmptyList extends StatelessWidget {
 class GetLastMessage extends StatelessWidget {
   final String? otherUserID;
   const GetLastMessage(this.otherUserID, {Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     CollectionReference chatService =
         FirebaseFirestore.instance.collection('chat');
     String currentUserID = AuthService().currentUser!.uid;
     List<dynamic> _docs;
+
     return FutureBuilder<QuerySnapshot>(
       future: chatService
           .doc(currentUserID)
@@ -160,18 +179,93 @@ class GetLastMessage extends StatelessWidget {
         if (!snapshot.hasData) return Text('');
         _docs = snapshot.data!.docs;
         return Row(
-            children: _docs.map((doc) {
-          return Container(
-              width: MediaQuery.of(context).size.width * 0.65,
-              child: Opacity(
-                opacity: 0.6,
-                child: Text(
-                  doc['text'],
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ));
-        }).toList());
+          children: _docs.map((doc) {
+            return Container(
+                width: MediaQuery.of(context).size.width * 0.45,
+                child: Opacity(
+                  opacity: 0.64,
+                  child: Text(
+                    detect(doc['text']) ? 'Image' : doc['text'],
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ));
+          }).toList(),
+        );
       },
     );
+  }
+}
+
+class GetTimeLastMessage extends StatelessWidget {
+  final String? otherUserID;
+  const GetTimeLastMessage(this.otherUserID, {Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    CollectionReference chatService =
+        FirebaseFirestore.instance.collection('chat');
+    String currentUserID = AuthService().currentUser!.uid;
+    List<dynamic> _docs;
+
+    return FutureBuilder<QuerySnapshot>(
+      future: chatService
+          .doc(currentUserID)
+          .collection(otherUserID!)
+          .orderBy('date')
+          .limitToLast(1)
+          .get(),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (!snapshot.hasData) return Text('');
+        _docs = snapshot.data!.docs;
+        return Row(
+          children: _docs.map((doc) {
+            return Container(
+              child: Opacity(
+                opacity: 0.64,
+                child: Text(
+                  timeConverter(doc['date']),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            );
+          }).toList(),
+        );
+      },
+    );
+  }
+
+  String timeConverter(String time) {
+    Duration dif;
+    DateTime parsedDate;
+    dynamic times, min, h, temps;
+    double j, sem, mois, ans;
+
+    times = time.toString().split(" - ").join(" ");
+    parsedDate = DateTime.parse(times);
+
+    dif = DateTime.now().difference(parsedDate);
+
+    min = int.parse(dif.toString().split(":")[1]);
+    h = int.parse(dif.toString().split(':')[0]);
+    j = h / 24;
+    sem = j / 7;
+    mois = sem / 4;
+    ans = mois / 12;
+
+    if (mois >= 12) {
+      temps = "${ans.round()} ans";
+    } else if (sem >= 4) {
+      temps = "${mois.round()} mois";
+    } else if (j >= 7) {
+      temps = "${sem.round()} sem";
+    } else if (h > 24) {
+      temps = "${j.round()} j";
+    } else if (h >= 01) {
+      temps = "$h h";
+    } else if (min < 60) {
+      temps = "$min min";
+    } 
+
+    return temps;
   }
 }

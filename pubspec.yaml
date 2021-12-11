@@ -83,17 +83,15 @@ flutter:
   assets:
     - assets/roundBlankProfilPicture.png
     - assets/google-logo.png
-    - assets/marseille_nuit.jpg
-    - assets/paris_nuit.jpg
-    - assets/lyon_nuit.jpg
-    - assets/nice_nuit.jpg
-    - assets/toulouse_nuit.jpg
-    - assets/nantes_nuit.jpg
-    - assets/strasbourg_nuit.jpg
-    - assets/montpellier_nuit.jpg
-    - assets/bordeaux_nuit.jpg
-    - assets/lille_nuit.jpg
     - assets/map.png
+    - assets/toureiffel2.png
+    - assets/marseille1.png
+    - assets/bordeaux1.png
+    - assets/lyon.png
+    - assets/festive.png
+    - assets/gaming.png
+    - assets/jeux de société.png
+    - assets/thème.png
 
   fonts: 
     - family: MerriweatherSans

@@ -29,21 +29,23 @@ class _GridListThemesState extends State<GridListThemes> {
               child: Column(
                 children: [
                   Row(children: [
-                    ThemeBox('Classique',
-                        colors: [Color(0xFFf12711), Color(0xFFf5af19)]),
                     ThemeBox(
-                      'Gaming',
-                      colors: [Color(0xFF1c92d2), Color(0xFFf2fcfe)],
-                    )
+                      'Soirée à thème',
+                      image: "assets/thème.png",
+                    ),
+                    ThemeBox('Jeu de société',
+                        image: "assets/jeux de société.png"),
                   ]),
                   Row(
                     children: [
-                      ThemeBox('Jeu de société',
-                          colors: [Color(0xFFa8ff78), Color(0xFF78ffd6)]),
                       ThemeBox(
-                        'Soirée à thème',
-                        colors: [Color(0xFFb24592), Color(0xFFf15f79)],
+                        'Festive',
+                        image: "assets/festive.png",
                       ),
+                      ThemeBox(
+                        'Gaming',
+                        image: "assets/gaming.png",
+                      )
                     ],
                   ),
                 ],
@@ -57,9 +59,8 @@ class _GridListThemesState extends State<GridListThemes> {
 }
 
 class ThemeBox extends StatelessWidget {
-  final List<Color> colors;
-  final String text;
-  const ThemeBox(this.text, {required this.colors, Key? key}) : super(key: key);
+  final String text, image;
+  const ThemeBox(this.text, {required this.image, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -75,11 +76,12 @@ class ThemeBox extends StatelessWidget {
             height: 145,
             width: 145,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: this.colors)),
+              borderRadius: BorderRadius.circular(20),
+              image: DecorationImage(
+                image: AssetImage(image),
+                fit: BoxFit.cover,
+              ),
+            ),
             child: Center(
               child: CText(
                 this.text,
@@ -106,18 +108,20 @@ class ThemeBox extends StatelessWidget {
               ),
             ),
             body: BlocProvider(
-                create: (context) => PartiesCubit()
-                  ..fetchPartiesWithWhereIsEqualTo('theme', this.text),
-                child: BlocBuilder<PartiesCubit, PartiesState>(
-                  builder: (context, state) {
-                    if (state.parties == null)
-                      return Center(child: const CircularProgressIndicator());
-                    return ListView.builder(
-                        itemCount: state.parties!.length,
-                        itemBuilder: (BuildContext context, int index) =>
-                            buildPartyCard(context, state.parties![index]));
-                  },
-                )),
+              create: (context) => PartiesCubit()
+                ..fetchPartiesWithWhereIsEqualTo('theme', this.text),
+              child: BlocBuilder<PartiesCubit, PartiesState>(
+                builder: (context, state) {
+                  if (state.parties == null)
+                    return Center(child: const CircularProgressIndicator());
+                  return ListView.builder(
+                    itemCount: state.parties!.length,
+                    itemBuilder: (BuildContext context, int index) =>
+                        buildPartyCard(context, state.parties![index]),
+                  );
+                },
+              ),
+            ),
           );
         },
       ),
