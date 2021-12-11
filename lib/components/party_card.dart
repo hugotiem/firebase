@@ -116,7 +116,7 @@ Widget buildPartyCard(BuildContext context, Party party) {
     listPhoto1 = listPhoto1.sublist(0, 3);
   }
 
-  List<Color>? colors;
+  List<Color> colors;
 
   if (party.theme == 'Classique') {
     colors = [Color(0xFFf12711), Color(0xFFf5af19)];
@@ -126,6 +126,8 @@ Widget buildPartyCard(BuildContext context, Party party) {
     colors = [Color(0xFFa8ff78), Color(0xFF78ffd6)];
   } else if (party.theme == 'Soirée à thème') {
     colors = [Color(0xFFb24592), Color(0xFFf15f79)];
+  } else {
+    colors = [Color(0xFFFFFFFF), Color(0xFFFFFFFF)];
   }
 
   void contacter() async {
@@ -229,7 +231,7 @@ Widget buildPartyCard(BuildContext context, Party party) {
                             gradient: LinearGradient(
                                 begin: Alignment.bottomCenter,
                                 end: Alignment.topCenter,
-                                colors: colors!)),
+                                colors: colors)),
                         child: Stack(
                           children: [
                             Padding(
@@ -816,20 +818,14 @@ class CardBody extends StatelessWidget {
                   if (this.smoke == "A l'intérieur")
                     Padding(
                       padding: const EdgeInsets.only(left: 4),
-                      child: CText(
-                        "Le propriétaire possède un ou des animaux",
-                          fontSize: 17,
-                          color: SECONDARY_COLOR
-                      ),
+                      child: CText("Le propriétaire possède un ou des animaux",
+                          fontSize: 17, color: SECONDARY_COLOR),
                     )
                   else if (this.smoke == "Dans un fumoir")
                     Padding(
                       padding: const EdgeInsets.only(left: 4),
-                      child: CText(
-                        "Aucun animal n'est présent sur place",
-                        fontSize: 17,
-                        color: SECONDARY_COLOR
-                      ),
+                      child: CText("Aucun animal n'est présent sur place",
+                          fontSize: 17, color: SECONDARY_COLOR),
                     )
                   else if (this.smoke == "Dehors")
                     Padding(

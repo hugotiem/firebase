@@ -78,24 +78,26 @@ class _SearchBarScreenState extends State<SearchBarScreen>
       body: Stack(
         children: [
           FutureBuilder(
-              future: _getCoordinates(),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData)
-                  return Center(child: CircularProgressIndicator());
+            future: _getCoordinates(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData)
+                return Center(child: CircularProgressIndicator());
+              if (snapshot.hasError) return Container();
+              if (snapshot.data == null) return Container();
+              String longitude = snapshot.data.toString().split(' ')[0];
+              String latitude = snapshot.data.toString().split(' ')[1];
+              double long = double.parse(longitude);
+              double lat = double.parse(latitude);
 
-                String longitude = snapshot.data.toString().split(' ')[0];
-                String latitude = snapshot.data.toString().split(' ')[1];
-                double long = double.parse(longitude);
-                double lat = double.parse(latitude);
-
-                return GoogleMap(
-                  onMapCreated: (controller) =>
-                      mapController.complete(controller),
-                  initialCameraPosition:
-                      CameraPosition(target: LatLng(lat, long), zoom: 14),
-                  mapType: MapType.normal,
-                );
-              }),
+              return GoogleMap(
+                onMapCreated: (controller) =>
+                    mapController.complete(controller),
+                initialCameraPosition:
+                    CameraPosition(target: LatLng(lat, long), zoom: 14),
+                mapType: MapType.normal,
+              );
+            },
+          ),
           // afficher la carte soit paris si loc désactivé sinon location actuelle
           Column(
             children: <Widget>[
@@ -122,13 +124,11 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                             else {
                               FocusScope.of(context).unfocus();
 
-                              _searchPanelController.close().whenComplete(
-                                    () => setState(
-                                      () {
+                              _searchPanelController
+                                  .close()
+                                  .whenComplete(() => setState(() {
                                         _hasResults = true;
-                                      },
-                                    ),
-                                  );
+                                      }));
                               setState(() {
                                 if (!_resultsPanelController.isPanelOpen) {
                                   _factor = 0;
@@ -377,7 +377,8 @@ class _SearchBarScreenState extends State<SearchBarScreen>
     );
   }
 
-  Future _getCoordinates() async {
+  Future? _getCoordinates() async {
+    if (_result == null) return;
     List<Location> coordinates =
         await locationFromAddress(_result!.split(',')[0]);
 

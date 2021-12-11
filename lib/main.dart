@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,15 +11,24 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter/services.dart';
 import 'package:pts/.env.example.dart';
 
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  Stripe.publishableKey = stripePublisableKey;
-  Stripe.merchantIdentifier = 'pts';
-  Stripe.urlScheme = 'flutterstripe';
-  // await Stripe.instance.applySettings();
-  Bloc.observer = AppBlocDelegate();
-  await Firebase.initializeApp();
-  runApp(MyApp());
+  runZonedGuarded(() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    Stripe.publishableKey = stripePublisableKey;
+    Stripe.merchantIdentifier = 'pts';
+    Stripe.urlScheme = 'flutterstripe';
+    // await Stripe.instance.applySettings();
+    Bloc.observer = AppBlocDelegate();
+    await Firebase.initializeApp();
+
+    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+
+    runApp(MyApp());
+  },
+      (error, stacktrace) =>
+          FirebaseCrashlytics.instance.recordError(error, stacktrace));
 }
 
 class MyApp extends StatelessWidget {
