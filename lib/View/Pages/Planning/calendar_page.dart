@@ -18,7 +18,7 @@ class CalendarPage extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Colors.white,
           systemOverlayStyle: SystemUiOverlayStyle.dark,
-          elevation: 0,
+          elevation: 0.5,
           title: Text(
             'Calendrier',
             style: TextStyle(

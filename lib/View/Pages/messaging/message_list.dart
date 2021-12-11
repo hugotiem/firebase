@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pts/components/back_appbar.dart';
+import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:pts/components/title_appbar.dart';
 import 'package:pts/constant.dart';
 import 'package:pts/model/services/auth_service.dart';
 import 'package:pts/view/pages/messaging/subpage/chatpage.dart';
@@ -13,14 +12,17 @@ class MessagePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: PRIMARY_COLOR,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(60),
-        child: BackAppBar(
-          title: TitleAppBar(title: "Messages"),
+      appBar: AppBar(
           backgroundColor: PRIMARY_COLOR,
+          systemOverlayStyle: SystemUiOverlayStyle.dark,
           elevation: 0.5,
+          title: Text(
+            'Messages',
+            style: TextStyle(
+              color: SECONDARY_COLOR,
+            ),
+          ),
         ),
-      ),
       body: ListMessage(),
     );
   }
@@ -183,7 +185,7 @@ class GetLastMessage extends StatelessWidget {
                 child: Opacity(
                   opacity: 0.64,
                   child: Text(
-                    detect(doc['text'])? 'Image' : doc['text'],
+                    detect(doc['text']) ? 'Image' : doc['text'],
                     overflow: TextOverflow.ellipsis,
                   ),
                 ));
@@ -204,10 +206,6 @@ class GetTimeLastMessage extends StatelessWidget {
         FirebaseFirestore.instance.collection('chat');
     String currentUserID = AuthService().currentUser!.uid;
     List<dynamic> _docs;
-    Duration dif;
-    DateTime parsedDate;
-    dynamic time, min, h, temps;
-    double j;
 
     return FutureBuilder<QuerySnapshot>(
       future: chatService
@@ -221,28 +219,11 @@ class GetTimeLastMessage extends StatelessWidget {
         _docs = snapshot.data!.docs;
         return Row(
           children: _docs.map((doc) {
-            time = doc['date'].toString().split(" - ").join(" ");
-            parsedDate = DateTime.parse(time);
-
-            dif = DateTime.now().difference(parsedDate);
-
-            min = int.parse(dif.toString().split(":")[1]);
-            h = int.parse(dif.toString().split(':')[0]);
-            j = h / 24;
-
-            if (h > 24) {
-              temps = "${j.round()} j";
-            } else if (h >= 01) {
-              temps = "$h h";
-            } else if (min < 60) {
-              temps = "$min min";
-            }
-
             return Container(
               child: Opacity(
                 opacity: 0.64,
                 child: Text(
-                  "$temps",
+                  timeConverter(doc['date']),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
@@ -251,5 +232,40 @@ class GetTimeLastMessage extends StatelessWidget {
         );
       },
     );
+  }
+
+  String timeConverter(String time) {
+    Duration dif;
+    DateTime parsedDate;
+    dynamic times, min, h, temps;
+    double j, sem, mois, ans;
+
+    times = time.toString().split(" - ").join(" ");
+    parsedDate = DateTime.parse(times);
+
+    dif = DateTime.now().difference(parsedDate);
+
+    min = int.parse(dif.toString().split(":")[1]);
+    h = int.parse(dif.toString().split(':')[0]);
+    j = h / 24;
+    sem = j / 7;
+    mois = sem / 4;
+    ans = mois / 12;
+
+    if (mois >= 12) {
+      temps = "${ans.round()} ans";
+    } else if (sem >= 4) {
+      temps = "${mois.round()} mois";
+    } else if (j >= 7) {
+      temps = "${sem.round()} sem";
+    } else if (h > 24) {
+      temps = "${j.round()} j";
+    } else if (h >= 01) {
+      temps = "$h h";
+    } else if (min < 60) {
+      temps = "$min min";
+    } 
+
+    return temps;
   }
 }

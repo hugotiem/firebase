@@ -128,7 +128,7 @@ class _SearchState extends State<Search> {
             // )),
             // listes des thèmes de soirées
             TitleText(
-              text: 'Catégories',
+              text: 'Catégories de soirées',
               margin: EdgeInsets.only(left: 20, top: 30),
             ),
             GridListThemes(),

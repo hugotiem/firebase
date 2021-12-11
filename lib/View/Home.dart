@@ -19,8 +19,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
-
   int _currentIndex = 0;
   final List<Widget> _children = [
     Search(),

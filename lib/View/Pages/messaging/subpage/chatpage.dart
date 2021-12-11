@@ -106,6 +106,8 @@ class _MessageFieldState extends State<MessageField> {
       var url = await element.ref.getDownloadURL();
       sendMessage(url);
     });
+
+    Navigator.pop(context);
   }
 
   Future<void> photoDialog() async {
@@ -148,7 +150,18 @@ class _MessageFieldState extends State<MessageField> {
   }
 
   Future takePhoto() async {
-    await ImagePicker().pickImage(source: ImageSource.camera);
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.camera);
+      if (image == null) return;
+
+      final imageTemporary = File(image.path);
+      setState(() => this.image = imageTemporary);
+
+      Navigator.pop(context);
+      photoSelected();
+    } on PlatformException catch (e) {
+      print('failed to pick image: $e');
+    }
   }
 
   Future photoSelected() async {
