@@ -146,7 +146,6 @@ class TypeAheadTFFText extends StatelessWidget {
                   errorStyle: TextStyle(height: 0),
                 ),
                 maxLength: this.maxLength,
-                keyboardType: this.keyboardType!,
                 inputFormatters: this.inputFormatters,
               ),
               validator: this.validator,
