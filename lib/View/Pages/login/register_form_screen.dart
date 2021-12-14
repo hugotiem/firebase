@@ -50,8 +50,8 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
           builder: (context, state) {
             var data = state.user;
             if (data != null) {
-              _nameController!.text = data.name!;
-              _surnameController!.text = data.surname!;
+              _nameController?.text = data.name ?? '';
+              _surnameController?.text = data.surname ?? '';
             }
             return Scaffold(
               body: SafeArea(

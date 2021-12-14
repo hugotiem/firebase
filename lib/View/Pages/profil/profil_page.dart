@@ -91,6 +91,7 @@ class _ProfilState extends State<Profil> {
             if (user == null) {
               return Center(child: CircularProgressIndicator());
             }
+            print(user.name);
 
             return SingleChildScrollView(
               child: Container(
