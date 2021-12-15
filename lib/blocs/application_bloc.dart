@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pts/Model/place_search.dart';
-import 'package:pts/Model/services/places_service.dart';
+import 'package:pts/models/place_search.dart';
+import 'package:pts/models/services/places_service.dart';
 
 class ApplicationBloc with ChangeNotifier {
   final PlacesService placesService = new PlacesService();

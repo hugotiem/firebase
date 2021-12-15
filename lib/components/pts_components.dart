@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../Constant.dart';
+import 'package:pts/const.dart';
 import 'pts_box.dart';
 
 // containers with blue shadow

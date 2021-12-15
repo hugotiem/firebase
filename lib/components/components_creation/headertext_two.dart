@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../Constant.dart';
+import 'package:pts/const.dart';
 
 class HeaderText2 extends StatelessWidget {
   final String text;
