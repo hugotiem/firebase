@@ -71,8 +71,8 @@ class _ThemePageState extends State<ThemePage> {
                         items: [
                           'Festive',
                           'Gaming',
-                          'Jeu de société',
-                          'Soirée à thème',
+                          'Jeux de société',
+                          'Thème',
                         ].map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
                             value: value,

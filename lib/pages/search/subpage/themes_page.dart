@@ -30,10 +30,10 @@ class _GridListThemesState extends State<GridListThemes> {
                 children: [
                   Row(children: [
                     ThemeBox(
-                      'Soirée à thème',
+                      'Thème',
                       image: "assets/thème.png",
                     ),
-                    ThemeBox('Jeu de société',
+                    ThemeBox('Jeux de société',
                         image: "assets/jeux de société.png"),
                   ]),
                   Row(

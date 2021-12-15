@@ -2,34 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:pts/const.dart';
 import 'package:pts/components/back_appbar.dart';
-import 'package:pts/components/pts_box.dart';
+import 'package:pts/components/horizontal_separator.dart';
 
-class ProfilDetails extends StatefulWidget {
-  ProfilDetails({Key? key}) : super(key: key);
-  @override
-  _ProfilDetailsState createState() => _ProfilDetailsState();
-}
+class ProfilDetails extends StatelessWidget {
+  const ProfilDetails({Key? key}) : super(key: key);
 
-class _ProfilDetailsState extends State<ProfilDetails> {
   @override
   Widget build(BuildContext context) {
-    // var _creationDate = AuthService.auth.currentUser.metadata.creationTime;
-
-    List _month = [
-      "Janv.",
-      "Févr.",
-      "Mars",
-      "Avr.",
-      "Mai",
-      "Juin",
-      "Juill.",
-      "Août",
-      "Sept.",
-      "Oct.",
-      "Nov.",
-      "Déc."
-    ];
-
     return Scaffold(
       backgroundColor: PRIMARY_COLOR,
       appBar: PreferredSize(
@@ -37,7 +16,7 @@ class _ProfilDetailsState extends State<ProfilDetails> {
         child: BackAppBar(
           actions: <Widget>[
             CupertinoButton(
-              onPressed: () {},
+              onPressed: () => modify(context),
               child: Text(
                 "Modifier",
                 style: TextStyle(
@@ -47,116 +26,249 @@ class _ProfilDetailsState extends State<ProfilDetails> {
               ),
             ),
           ],
-          //brightness: Brightness.dark,
         ),
       ),
-      body: Center(
-        child: Container(
-          child: Column(
-            children: <Widget>[
-              PTSBox(
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Container(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  "AuthService.auth.currentUser.displayName",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 22,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                Opacity(
-                                  opacity: 0.5,
-                                  child: Text(
-                                    "A rejoint en ",//${_month[_creationDate.month - 1]} ${_creationDate.year}",
-                                    style: TextStyle(fontSize: 18),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            height: 80,
-                            width: 80,
-                            clipBehavior: Clip.antiAlias,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.blue.withOpacity(0.5),
-                            ),
-                            child: GestureDetector(
-                              onTap: () {},
-                              child: Image.network(
-                                'https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png',
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: 30),
-                      child: Column(
-                        children: <Widget>[
-                          Container(
-                            child: Row(
-                              children: <Widget>[
-                                Icon(
-                                  Icons.star_rate_rounded,
-                                  color: Colors.orange,
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Opacity(
-                                  opacity: 0.7,
-                                  child: Text(
-                                    "3 avis",
-                                    style: TextStyle(fontSize: 20),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Container(
-                            child: Row(
-                              children: <Widget>[
-                                Icon(
-                                  Icons.check_rounded,
-                                  color: Colors.green,
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Opacity(
-                                  opacity: 0.7,
-                                  child: Text(
-                                    "Identité verifiée",
-                                    style: TextStyle(fontSize: 20),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            HeadProfil(
+              fullName: 'Jean Sauvage',
+              age: '21',
+              photo: "assets/roundBlankProfilPicture.png",
+              identiteVerif: 'Identité vérifiée',
+              avis: '0',
+            ),
+            HorzontalSeparator(),
+            Histoty(
+              soireeOrganisee: "0",
+              soireeParticipee: "0",
+            ),
+            HorzontalSeparator(),
+            Comment()
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future modify(BuildContext context) async {
+    return showModalBottomSheet(
+        isScrollControlled: true,
+        context: context,
+        builder: (BuildContext context) => Modify());
+  }
+}
+
+class HeadProfil extends StatelessWidget {
+  final String? fullName;
+  final String? age;
+  final String? photo;
+  final String? identiteVerif;
+  final String? avis;
+
+  const HeadProfil(
+      {this.fullName,
+      this.age,
+      this.photo,
+      this.avis,
+      this.identiteVerif,
+      Key? key})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 40),
+            child: CircleAvatar(
+              radius: 60,
+              backgroundImage: AssetImage(photo!),
+            ),
+          ),
+        ),
+        Text(
+          fullName!,
+          style: TextStyle(
+              fontWeight: FontWeight.w500,
+              color: SECONDARY_COLOR,
+              fontSize: 22),
+        ),
+        Opacity(
+          opacity: 0.65,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 12),
+            child: Text(
+              '$age ans',
+              style: TextStyle(color: SECONDARY_COLOR, fontSize: 16),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 40, bottom: 15),
+          child: Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 22),
+                child: Icon(Icons.star, color: ICONCOLOR),
+              ),
+              Text(
+                '$avis avis',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: SECONDARY_COLOR,
+                  fontWeight: FontWeight.w100,
+                ),
+              )
+            ],
+          ),
+        ),
+        Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 22),
+              child: Icon(Icons.verified_user_sharp, color: ICONCOLOR),
+            ),
+            Text(
+              identiteVerif!,
+              style: TextStyle(
+                fontSize: 16,
+                color: SECONDARY_COLOR,
+                fontWeight: FontWeight.w100,
+              ),
+            )
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class Histoty extends StatelessWidget {
+  final String? soireeOrganisee;
+  final String? soireeParticipee;
+
+  const Histoty({this.soireeOrganisee, this.soireeParticipee, Key? key})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Align(
+            alignment: Alignment.centerLeft,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 22),
+              child: Text(
+                'Historique',
+                style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 22,
+                    color: SECONDARY_COLOR),
+              ),
+            )),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 15, top: 40),
+          child: Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 22),
+                child: Icon(Icons.house_sharp, color: ICONCOLOR),
+              ),
+              Text(
+                '$soireeOrganisee soirée organisé',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: SECONDARY_COLOR,
+                  fontWeight: FontWeight.w100,
+                ),
+              )
+            ],
+          ),
+        ),
+        Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 22),
+              child: Icon(Icons.people, color: ICONCOLOR),
+            ),
+            Text(
+              '$soireeParticipee soirée participé',
+              style: TextStyle(
+                fontSize: 16,
+                color: SECONDARY_COLOR,
+                fontWeight: FontWeight.w100,
+              ),
+            )
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class Comment extends StatelessWidget {
+  const Comment({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 22),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Commentaire',
+              style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 22,
+                  color: SECONDARY_COLOR),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 40),
+              child: Opacity(
+                  opacity: 0.65,
+                  child: Text(
+                    "Vous n'avez pas encore de commentaires",
+                    style: TextStyle(color: SECONDARY_COLOR, fontSize: 16),
+                  )),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class Modify extends StatelessWidget {
+  const Modify({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(80),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 20.0),
+          child: BackAppBar(
+            leading: InkWell(
+                onTap: () => Navigator.pop(context),
+                child: Icon(
+                  Icons.close,
+                  color: ICONCOLOR,
+                )),
+            actions: [
+              TextButton(
+                onPressed: () {},
+                child: Text(
+                  'Enregistrer',
+                  style: TextStyle(color: SECONDARY_COLOR, fontSize: 16),
                 ),
               ),
-              PTSBox(),
             ],
           ),
         ),

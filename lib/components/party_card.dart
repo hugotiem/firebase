@@ -122,9 +122,9 @@ Widget buildPartyCard(BuildContext context, Party party) {
     colors = [Color(0xFFf12711), Color(0xFFf5af19)];
   } else if (party.theme == 'Gaming') {
     colors = [Color(0xFF1c92d2), Color(0xFFf2fcfe)];
-  } else if (party.theme == 'Jeu de société') {
+  } else if (party.theme == 'Jeux de société') {
     colors = [Color(0xFFa8ff78), Color(0xFF78ffd6)];
-  } else if (party.theme == 'Soirée à thème') {
+  } else if (party.theme == 'Thème') {
     colors = [Color(0xFFb24592), Color(0xFFf15f79)];
   } else {
     colors = [Color(0xFFFFFFFF), Color(0xFFFFFFFF)];

@@ -10,6 +10,7 @@ import 'package:pts/components/pts_box.dart';
 import 'package:pts/components/text_materials.dart';
 import 'package:pts/components/pts_components.dart';
 import 'package:pts/models/services/auth_service.dart';
+import 'package:pts/models/services/notification_service.dart';
 import 'package:pts/pages/profil/subpage/existingcard_page.dart';
 import 'package:pts/pages/profil/subpage/list_user_party_page.dart';
 import 'package:pts/pages/profil/subpage/user_page.dart';
@@ -90,6 +91,7 @@ class _ProfilState extends State<Profil> {
             if (user == null) {
               return Center(child: CircularProgressIndicator());
             }
+            print(user.name);
 
             return SingleChildScrollView(
               child: Container(
@@ -178,6 +180,7 @@ class _ProfilState extends State<Profil> {
                               icon: Icons.payment_outlined,
                             ),
                             CickableContainerProfil(
+                              to: NotificationPage(),
                               text: "Notifications",
                               icon: Icons.notifications_outlined,
                               bottomBorder: false,
@@ -277,6 +280,23 @@ class TitleTextProfil extends StatelessWidget {
         text: this.text,
         fontSize: 15,
       ),
+    );
+  }
+}
+
+class NotificationPage extends StatelessWidget {
+  const NotificationPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: (Center(
+        child: TextButton(
+          onPressed: () => NotificationService.showNotification(
+              body: 'Vous avez été accepté à la soirée du roi.', title: 'PTS', payload: 'test'),
+          child: Text('Notification'),
+        ),
+      )),
     );
   }
 }
