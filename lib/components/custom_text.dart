@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pts/constant.dart';
+import 'package:pts/const.dart';
 
 class CText extends StatelessWidget {
   @required

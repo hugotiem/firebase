@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pts/Constant.dart';
+import 'package:pts/const.dart';
 
 class FABJoin extends StatelessWidget {
   final String? label;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:pts/Constant.dart';
+import 'package:pts/const.dart';
 
 class TFFNumber extends StatelessWidget {
   final void Function(String) onChanged;
