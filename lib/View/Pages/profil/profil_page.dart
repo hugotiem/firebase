@@ -294,7 +294,7 @@ class NotificationPage extends StatelessWidget {
       body: (Center(
         child: TextButton(
           onPressed: () => NotificationService.showNotification(
-              body: 'bonjour', title: 'PTS', payload: 'Sarh.abs'),
+              body: 'Vous avez été accepté à la soirée du roi.', title: 'PTS', payload: 'test'),
           child: Text('Notification'),
         ),
       )),
