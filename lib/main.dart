@@ -3,13 +3,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
+//import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:pts/blocs/app_bloc_delegate.dart';
-import 'View/Home.dart';
+import 'home.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter/services.dart';
-import 'package:pts/.env.example.dart';
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
@@ -34,9 +33,9 @@ Future<void> main() async {
         debugPrint('notification payload: ' + payload);
       }    
     });
-    Stripe.publishableKey = stripePublisableKey;
-    Stripe.merchantIdentifier = 'pts';
-    Stripe.urlScheme = 'flutterstripe';
+    // Stripe.publishableKey = stripePublisableKey;
+    // Stripe.merchantIdentifier = 'pts';
+    // Stripe.urlScheme = 'flutterstripe';
     // await Stripe.instance.applySettings();
     Bloc.observer = AppBlocDelegate();
     await Firebase.initializeApp();

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:pts/Constant.dart';
+import 'package:pts/const.dart';
 
 class TFFText extends StatelessWidget {
   final void Function(String)? onChanged;

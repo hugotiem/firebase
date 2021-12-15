@@ -46,7 +46,6 @@ dependencies:
   mailer: ^5.0.1
   flutter_bloc: ^7.1.0
   flutter_secure_storage: ^4.2.1
-  flutter_stripe: ^1.2.0
   geolocator: ^7.7.0
   geocoding: ^2.0.1
   # blurrycontainer: ^0.0.1

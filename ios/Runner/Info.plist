@@ -6,6 +6,8 @@
 	<string>Utilisation de la position</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Utilisation de la position</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Utilisation de la position</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
