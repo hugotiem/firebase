@@ -1,7 +1,7 @@
-import 'package:pts/Model/party.dart';
-import 'package:pts/Model/services/auth_service.dart';
-import 'package:pts/Model/services/firestore_service.dart';
-import 'package:pts/Model/user.dart';
+import 'package:pts/models/party.dart';
+import 'package:pts/models/services/auth_service.dart';
+import 'package:pts/models/services/firestore_service.dart';
+import 'package:pts/models/user.dart';
 import 'package:pts/blocs/base/app_base_cubit.dart';
 import 'package:pts/blocs/base/app_base_state.dart';
 
