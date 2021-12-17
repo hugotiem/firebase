@@ -44,6 +44,7 @@ class _HomeState extends State<Home> {
             extendBodyBehindAppBar: true, 
             body: _children[_currentIndex],
             bottomNavigationBar: BottomNavigationBar(
+              type: BottomNavigationBarType.fixed,
               showSelectedLabels: true,
               showUnselectedLabels: true,
               selectedItemColor: ICONCOLOR,
