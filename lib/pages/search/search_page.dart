@@ -35,7 +35,7 @@ class _SearchState extends State<Search> {
       _opacity = 1;
       _barSizeWidth = 350;
       _barSizeHeight = 60;
-      _systemOverlayStyle = SystemUiOverlayStyle.light;
+      _systemOverlayStyle = SystemUiOverlayStyle.dark;
       _toolbarColor = Colors.transparent;
     });
     super.initState();

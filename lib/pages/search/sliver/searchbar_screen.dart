@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:pts/const.dart';
@@ -36,7 +37,7 @@ class _SearchBarScreenState extends State<SearchBarScreen>
   double _factor = 0;
   double _rotation = 0;
 
-  Brightness _brightness = Brightness.light;
+  SystemUiOverlayStyle _systemUiOverlayStyle = SystemUiOverlayStyle.dark;
 
   late FireStoreServices _firestore;
 
@@ -53,18 +54,164 @@ class _SearchBarScreenState extends State<SearchBarScreen>
   
   [
     {
-      "featureType": "all",
+      "elementType": "geometry",
       "stylers": [
-        { "color": "#C0C0C0" }
+        {
+          "color": "#242f3e"
+        }
       ]
     },
     {
-      "featureType": "road.arterial",
-      "elementType": "geometry",
+      "elementType": "labels.text.fill",
       "stylers": [
-        { "color": "#CCFFFF" }
+        {
+          "color": "#746855"
+        }
       ]
     },
+    {
+      "elementType": "labels.text.stroke",
+      "stylers": [
+        {
+          "color": "#242f3e"
+        }
+      ]
+    },
+    {
+      "featureType": "administrative.locality",
+      "elementType": "labels.text.fill",
+      "stylers": [
+        {
+          "color": "#d59563"
+        }
+      ]
+    },
+    {
+      "featureType": "poi",
+      "elementType": "labels.text.fill",
+      "stylers": [
+        {
+          "color": "#d59563"
+        }
+      ]
+    },
+    {
+      "featureType": "poi.park",
+      "elementType": "geometry",
+      "stylers": [
+        {
+          "color": "#263c3f"
+        }
+      ]
+    },
+    {
+      "featureType": "poi.park",
+      "elementType": "labels.text.fill",
+      "stylers": [
+        {
+          "color": "#6b9a76"
+        }
+      ]
+    },
+    {
+      "featureType": "road",
+      "elementType": "geometry",
+      "stylers": [
+        {
+          "color": "#38414e"
+        }
+      ]
+    },
+    {
+      "featureType": "road",
+      "elementType": "geometry.stroke",
+      "stylers": [
+        {
+          "color": "#212a37"
+        }
+      ]
+    },
+    {
+      "featureType": "road",
+      "elementType": "labels.text.fill",
+      "stylers": [
+        {
+          "color": "#9ca5b3"
+        }
+      ]
+    },
+    {
+      "featureType": "road.highway",
+      "elementType": "geometry",
+      "stylers": [
+        {
+          "color": "#746855"
+        }
+      ]
+    },
+    {
+      "featureType": "road.highway",
+      "elementType": "geometry.stroke",
+      "stylers": [
+        {
+          "color": "#1f2835"
+        }
+      ]
+    },
+    {
+      "featureType": "road.highway",
+      "elementType": "labels.text.fill",
+      "stylers": [
+        {
+          "color": "#f3d19c"
+        }
+      ]
+    },
+    {
+      "featureType": "transit",
+      "elementType": "geometry",
+      "stylers": [
+        {
+          "color": "#2f3948"
+        }
+      ]
+    },
+    {
+      "featureType": "transit.station",
+      "elementType": "labels.text.fill",
+      "stylers": [
+        {
+          "color": "#d59563"
+        }
+      ]
+    },
+    {
+      "featureType": "water",
+      "elementType": "geometry",
+      "stylers": [
+        {
+          "color": "#17263c"
+        }
+      ]
+    },
+    {
+      "featureType": "water",
+      "elementType": "labels.text.fill",
+      "stylers": [
+        {
+          "color": "#515c6d"
+        }
+      ]
+    },
+    {
+      "featureType": "water",
+      "elementType": "labels.text.stroke",
+      "stylers": [
+        {
+          "color": "#17263c"
+        }
+      ]
+    }
   ]
   
   ''';
@@ -96,7 +243,7 @@ class _SearchBarScreenState extends State<SearchBarScreen>
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         // ignore: deprecated_member_use
-        brightness: _brightness,
+        systemOverlayStyle: _systemUiOverlayStyle ,
         toolbarHeight: 0,
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -110,7 +257,7 @@ class _SearchBarScreenState extends State<SearchBarScreen>
 
               return GoogleMap(
                 onMapCreated: (controller) =>
-                    mapController.complete(controller),
+                    mapController.complete(controller..setMapStyle(mapStyle)),
                 initialCameraPosition: CameraPosition(
                     target: LatLng(latitude!, longitude!), zoom: 14),
                 mapType: MapType.normal,
@@ -151,7 +298,7 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                               setState(() {
                                 if (!_resultsPanelController.isPanelOpen) {
                                   _factor = 0;
-                                  _brightness = Brightness.dark;
+                                  _systemUiOverlayStyle = SystemUiOverlayStyle.light;
                                 }
                               });
 
@@ -179,7 +326,7 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                           onTap: () {
                             setState(() {
                               _hasResults = false;
-                              _brightness = Brightness.light;
+                              _systemUiOverlayStyle = SystemUiOverlayStyle.dark;
                             });
 
                             _searchPanelController.open();
@@ -327,10 +474,10 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                         setState(() {
                           if (position >= 0.8) {
                             _factor = 1 - ((position * 5) - 4);
-                            _brightness = Brightness.light;
+                            _systemUiOverlayStyle = SystemUiOverlayStyle.dark;
                           } else if (position < 0.8) {
                             _factor = 1;
-                            _brightness = Brightness.dark;
+                            _systemUiOverlayStyle = SystemUiOverlayStyle.light;
                           }
                         });
                       },
