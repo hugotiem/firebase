@@ -19,29 +19,28 @@ class Party {
   var uid;
   List<dynamic>? validateGuestList;
   int? distance;
+  List<double> coordinates;
 
   Party(
-    this.id,
-    this.name,
-    this.theme,
-    this.number,
-    this.date,
-    this.startTime,
-    this.endTime,
-    this.price,
-    this.desc,
-    this.address,
-    this.city,
-    this.postalCode,
-    this.smoke,
-    this.animals,
-    this.owner,
-    this.uid,
-    this.validateGuestList,
-    {
-      this.distance
-    }
-  );
+      this.id,
+      this.name,
+      this.theme,
+      this.number,
+      this.date,
+      this.startTime,
+      this.endTime,
+      this.price,
+      this.desc,
+      this.address,
+      this.city,
+      this.postalCode,
+      this.smoke,
+      this.animals,
+      this.owner,
+      this.uid,
+      this.validateGuestList,
+      this.coordinates,
+      {this.distance});
 
   factory Party.fromSnapShots(
       QueryDocumentSnapshot<Map<String, dynamic>> snapshots) {
@@ -63,24 +62,24 @@ class Party {
     var owner = data['owner'];
     var uid = data['uid'];
     var validateGuestList = data['validate guest list'];
+    var coordinates = ((data['coordinates'] ?? []) as List<dynamic>).cast<double>();
     return Party(
-      id,
-      name,
-      theme,
-      number,
-      date,
-      startTime,
-      endTime,
-      price,
-      desc,
-      address,
-      city,
-      postalCode,
-      smoke,
-      animals,
-      owner,
-      uid,
-      validateGuestList,
-    );
+        id,
+        name,
+        theme,
+        number,
+        date,
+        startTime,
+        endTime,
+        price,
+        desc,
+        address,
+        city,
+        postalCode,
+        smoke,
+        animals,
+        owner,
+        uid,
+        validateGuestList, coordinates);
   }
 }

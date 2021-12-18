@@ -44,13 +44,39 @@ class _SearchBarScreenState extends State<SearchBarScreen>
   // ignore: unused_field
   double? _panelPosition;
 
+  // coordinates
+  double? longitude;
+  double? latitude;
+
+  // Google maps style
+  String? mapStyle = '''
+  
+  [
+    {
+      "featureType": "all",
+      "stylers": [
+        { "color": "#C0C0C0" }
+      ]
+    },
+    {
+      "featureType": "road.arterial",
+      "elementType": "geometry",
+      "stylers": [
+        { "color": "#CCFFFF" }
+      ]
+    },
+  ]
+  
+  ''';
+
   @override
   void initState() {
     _animationController = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 300),
     );
-    _firestore = FireStoreServices("party");
+    _firestore = FireStoreServices("parties");
+
     super.initState();
   }
 
@@ -77,23 +103,16 @@ class _SearchBarScreenState extends State<SearchBarScreen>
       ),
       body: Stack(
         children: [
-          FutureBuilder(
-            future: _getCoordinates(),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData)
+          Builder(
+            builder: (context) {
+              if (longitude == null || latitude == null)
                 return Center(child: CircularProgressIndicator());
-              if (snapshot.hasError) return Container();
-              if (snapshot.data == null) return Container();
-              String longitude = snapshot.data.toString().split(' ')[0];
-              String latitude = snapshot.data.toString().split(' ')[1];
-              double long = double.parse(longitude);
-              double lat = double.parse(latitude);
 
               return GoogleMap(
                 onMapCreated: (controller) =>
                     mapController.complete(controller),
-                initialCameraPosition:
-                    CameraPosition(target: LatLng(lat, long), zoom: 14),
+                initialCameraPosition: CameraPosition(
+                    target: LatLng(latitude!, longitude!), zoom: 14),
                 mapType: MapType.normal,
               );
             },
@@ -277,7 +296,7 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                                               _result = applicationBloc
                                                   .searchResults[index]
                                                   .description;
-
+                                              _getCoordinates();
                                               _resultsPanelController
                                                   .animatePanelToSnapPoint(
                                                 duration:
@@ -377,15 +396,18 @@ class _SearchBarScreenState extends State<SearchBarScreen>
     );
   }
 
-  Future? _getCoordinates() async {
-    if (_result == null) return;
-    List<Location> coordinates =
-        await locationFromAddress(_result!.split(',')[0]);
+  Future<void> _getCoordinates({String? result}) async {
+    String? res = result ?? _result;
+    if (res == null) return;
+    List<Location> coordinates = await locationFromAddress(res.split(',')[0]);
 
     Location place = coordinates[0];
     double longitude = place.longitude;
     double latitude = place.latitude;
 
-    return '$longitude $latitude';
+    setState(() {
+      this.longitude = longitude;
+      this.latitude = latitude;
+    });
   }
 }

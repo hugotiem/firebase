@@ -29,7 +29,7 @@ class BuildPartiesCubit extends AppBaseCubit<BuildPartiesState> {
     List infos = json['features'];
 
     List<Address> addresses = (infos).map((e) {
-      return Address.fromJson(e['properties'] as Map<String, dynamic>);
+      return Address.fromJson(e as Map<String, dynamic>);
     }).toList();
 
     return addresses;

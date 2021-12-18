@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:pts/models/services/auth_service.dart';
 import 'package:pts/models/services/firestore_service.dart';
@@ -18,9 +19,9 @@ class UserCubit extends AppBaseCubit<UserState> {
   final FireStoreServices firestore = FireStoreServices("user");
 
   Future<void> init() async {
-    await service
-        .getToken()
-        .then((value) => emit(UserState.tokenLoaded(value)));
+    await service.getToken().then((value) {
+      if (value != null) emit(UserState.tokenLoaded(value));
+    });
     service.instance.authStateChanges().listen((user) async {
       print("Current user : " + user.toString());
       if (user != null) {
@@ -29,7 +30,7 @@ class UserCubit extends AppBaseCubit<UserState> {
     });
   }
 
-  Future<void> loadData({var user}) async {
+  Future<void> loadData({auth.User? user}) async {
     var token = user?.uid ?? await service.getToken();
     firestore.getDataById(token).then((value) {
       emit(UserState.dataLoaded(user: User.fromSnapshot(value), token: token));

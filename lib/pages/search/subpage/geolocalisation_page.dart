@@ -51,13 +51,14 @@ class _GeolocationWidgetState extends State<GeolocationWidget> {
               create: (context) => PartiesCubit()..fetchParties(),
               child: BlocBuilder<PartiesCubit, PartiesState>(
                   builder: (context, state) {
-                if (state.parties == null)
+                var parties = state.parties;
+                if (parties == null)
                   return Center(
                     child: const CircularProgressIndicator(),
                   );
                 else {
-                  state.parties!.forEach((element) async {
-                    int distance = await _getCoordinates(element);
+                  parties.forEach((element) async {
+                    int distance = await _getDistances(element);
                     element.distance = distance;
                   });
                   // trier les soirées dans l'ordre croissant
@@ -120,14 +121,9 @@ class _GeolocationWidgetState extends State<GeolocationWidget> {
     }
   }
 
-  Future<int> _getCoordinates(Party party) async {
-    // à l'aide des adresses retrouver longitudes et latitude
-    List<Location> coordinates =
-        await locationFromAddress('${party.address}, ${party.city}');
-
-    Location place = coordinates[0];
-    double longitude = place.longitude;
-    double latitude = place.latitude;
+  Future<int> _getDistances(Party party) async {
+    double longitude = party.coordinates[0];
+    double latitude = party.coordinates[1];
 
     // calculer la distance entre notre position et celle de la soirée
     double distanceBetweenCoordinates = Geolocator.distanceBetween(

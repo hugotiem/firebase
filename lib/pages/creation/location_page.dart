@@ -15,7 +15,8 @@ class LocationPage extends StatefulWidget {
   final void Function()? onNext;
   final void Function()? onPrevious;
 
-  const LocationPage({Key? key, this.onNext, this.onPrevious}) : super(key: key);
+  const LocationPage({Key? key, this.onNext, this.onPrevious})
+      : super(key: key);
   @override
   _LocationPageState createState() => _LocationPageState();
 }
@@ -25,6 +26,8 @@ class _LocationPageState extends State<LocationPage> {
   TextEditingController _cityController = TextEditingController();
   TextEditingController _postCodeController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  Address? address;
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +52,8 @@ class _LocationPageState extends State<LocationPage> {
                 _addressController.text.trimRight().trimLeft().inCaps)
             ..addItem(
                 "city", _cityController.text.trimRight().trimLeft().inCaps)
-            ..addItem("postal code", _postCodeController.text);
+            ..addItem("postal code", _postCodeController.text)
+            ..addItem("coordinates", [address?.longitude, address?.latitude]);
 
           widget.onNext!();
         },
@@ -92,12 +96,12 @@ class _LocationPageState extends State<LocationPage> {
                   return widget;
                 },
                 onSuggestionSelected: (suggestion) {
-                  Address address = suggestion as Address;
+                  address = suggestion as Address;
                   setState(() {
                     _addressController.text =
-                        address.streetNumber! + " " + address.streetName!;
-                    _cityController.text = address.city!;
-                    _postCodeController.text = address.postalCode!;
+                        address!.streetNumber! + " " + address!.streetName!;
+                    _cityController.text = address!.city!;
+                    _postCodeController.text = address!.postalCode!;
                   });
                 },
               ),
@@ -111,7 +115,7 @@ class _LocationPageState extends State<LocationPage> {
                   } else {
                     return null;
                   }
-                },  
+                },
                 hintText: 'ex: Paris',
               ),
               HeaderText2(

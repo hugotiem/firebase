@@ -5,24 +5,35 @@ class Address {
   final String? city;
   final String? postalCode;
   final String? region;
+  final double? longitude;
+  final double? latitude;
 
-  const Address(
-      {this.label,
-      this.streetName,
-      this.streetNumber,
-      this.city,
-      this.postalCode,
-      this.region});
+  const Address({
+    this.label,
+    this.streetName,
+    this.streetNumber,
+    this.city,
+    this.postalCode,
+    this.region,
+    this.longitude,
+    this.latitude,
+  });
 
   factory Address.fromJson(Map<String, dynamic> data) {
-    List<String> context = (data['context'] as String).split(", ");
+    var properties = data['properties'];
+    var coordinates = data['geometry']['coordinates'];
+    print(properties);
+    print(coordinates);
+    List<String> context = (properties['context'] as String).split(", ");
     return Address(
-      label: data['label'],
-      streetName: data['street'],
-      streetNumber: data['housenumber'],
-      city: data['city'],
-      postalCode: data['postcode'],
+      label: properties['label'],
+      streetName: properties['street'],
+      streetNumber: properties['housenumber'],
+      city: properties['city'],
+      postalCode: properties['postcode'],
       region: context[2],
+      longitude: coordinates[0],
+      latitude: coordinates[1],
     );
   }
 }
