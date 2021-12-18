@@ -784,12 +784,12 @@ class CardBody extends StatelessWidget {
                   this.animal == 'Oui'
                       ? Padding(
                           padding: const EdgeInsets.only(left: 4),
-                          child: CText("Les animaux sont autorisés",
+                          child: CText("Le propriétaire possède un ou des animaux",
                               fontSize: 17, color: SECONDARY_COLOR),
                         )
                       : Padding(
                           padding: const EdgeInsets.only(left: 4),
-                          child: CText('Les animaux sont interdits',
+                          child: CText("Aucun animal n'est présent sur place",
                               fontSize: 17, color: SECONDARY_COLOR),
                         )
                 ]),
@@ -818,13 +818,13 @@ class CardBody extends StatelessWidget {
                   if (this.smoke == "A l'intérieur")
                     Padding(
                       padding: const EdgeInsets.only(left: 4),
-                      child: CText("Le propriétaire possède un ou des animaux",
+                      child: CText("Vous pouvez fumer à l'intérieur",
                           fontSize: 17, color: SECONDARY_COLOR),
                     )
                   else if (this.smoke == "Dans un fumoir")
                     Padding(
                       padding: const EdgeInsets.only(left: 4),
-                      child: CText("Aucun animal n'est présent sur place",
+                      child: CText("Vous pouvez fumer dans un fumoir",
                           fontSize: 17, color: SECONDARY_COLOR),
                     )
                   else if (this.smoke == "Dehors")
