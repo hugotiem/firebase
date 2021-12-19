@@ -64,40 +64,40 @@ class _SearchState extends State<Search> {
               bottomRight: Radius.circular(36),
             ),
           ),
-          child: Container(
-            child: Stack(
-              children: [
-                Positioned(
-                  top: (_size! - 100) / 2,
-                  right: 75,
-                  width: MediaQuery.of(context).size.width,
-                  child: Opacity(
-                    opacity: _opacity,
-                    child: Center(
-                      child: Icon(
-                        // BackGroundtitle(),
-                        Icons.location_on_outlined,
-                        size: 50,
-                        color: ICONCOLOR,
-                      ),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  top: (_size! - 100) / 2,
-                  left: 90,
-                  bottom: 29,
-                  width: MediaQuery.of(context).size.width,
-                  child: Opacity(
-                    opacity: _opacity,
-                    child: Center(
-                        child: Icon(Icons.location_on_outlined,
-                            size: 50, color: ICONCOLOR)),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          // child: Container(
+          //   child: Stack(
+          //     children: [
+          //       Positioned(
+          //         top: (_size! - 100) / 2,
+          //         right: 75,
+          //         width: MediaQuery.of(context).size.width,
+          //         child: Opacity(
+          //           opacity: _opacity,
+          //           child: Center(
+          //             child: Icon(
+          //               // BackGroundtitle(),
+          //               Icons.location_on_outlined,
+          //               size: 50,
+          //               color: ICONCOLOR,
+          //             ),
+          //           ),
+          //         ),
+          //       ),
+          //       Positioned(
+          //         top: (_size! - 100) / 2,
+          //         left: 90,
+          //         bottom: 29,
+          //         width: MediaQuery.of(context).size.width,
+          //         child: Opacity(
+          //           opacity: _opacity,
+          //           child: Center(
+          //               child: Icon(Icons.location_on_outlined,
+          //                   size: 50, color: ICONCOLOR)),
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
         ),
       ),
       body: SizedBox.expand(
