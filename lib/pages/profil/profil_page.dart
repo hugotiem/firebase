@@ -31,7 +31,7 @@ class _ProfilState extends State<Profil> {
     return Scaffold(
       // appbar pour eviter certains bug d'affichage avec le haut de l'écran
       // a mettre seulement durant le scroll
-      appBar: new AppBar(
+      appBar: AppBar(
         toolbarHeight: 0,
         elevation: 0,
         backgroundColor: PRIMARY_COLOR,
@@ -293,7 +293,9 @@ class NotificationPage extends StatelessWidget {
       body: (Center(
         child: TextButton(
           onPressed: () => NotificationService.showNotification(
-              body: 'Vous avez été accepté à la soirée du roi.', title: 'PTS', payload: 'test'),
+              body: 'Vous avez été accepté à la soirée du roi.',
+              title: 'PTS',
+              payload: 'test'),
           child: Text('Notification'),
         ),
       )),

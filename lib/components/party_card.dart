@@ -237,23 +237,42 @@ Widget buildPartyCard(BuildContext context, Party party) {
                             Padding(
                               padding:
                                   const EdgeInsets.only(bottom: 12, left: 16),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.end,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  CText(party.name,
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.w500,
-                                      color: PRIMARY_COLOR),
-                                  Row(
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
-                                      Icon(
-                                        Icons.location_on_outlined,
-                                        color: PRIMARY_COLOR,
-                                      ),
-                                      CText(
-                                        party.city,
-                                        color: PRIMARY_COLOR,
+                                      CText(party.name,
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.w500,
+                                          color: PRIMARY_COLOR),
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.location_on_outlined,
+                                            color: PRIMARY_COLOR,
+                                          ),
+                                          CText(
+                                            party.city,
+                                            color: PRIMARY_COLOR,
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.only(right: 40),
+                                        child: Text(
+                                          "${party.distance} km",
+                                          style: TextStyle(color: Colors.white),
+                                        ),
                                       ),
                                     ],
                                   )

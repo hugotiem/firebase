@@ -28,24 +28,26 @@ class ProfilDetails extends StatelessWidget {
           ],
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            HeadProfil(
-              fullName: 'Jean Sauvage',
-              age: '21',
-              photo: "assets/roundBlankProfilPicture.png",
-              identiteVerif: 'Identité vérifiée',
-              avis: '0',
-            ),
-            HorzontalSeparator(),
-            Histoty(
-              soireeOrganisee: "0",
-              soireeParticipee: "0",
-            ),
-            HorzontalSeparator(),
-            Comment()
-          ],
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              HeadProfil(
+                fullName: 'Jean Sauvage',
+                age: '21',
+                photo: "assets/roundBlankProfilPicture.png",
+                identiteVerif: 'Identité vérifiée',
+                avis: '0',
+              ),
+              HorzontalSeparator(),
+              Histoty(
+                soireeOrganisee: "0",
+                soireeParticipee: "0",
+              ),
+              HorzontalSeparator(),
+              Comment(),
+            ],
+          ),
         ),
       ),
     );
@@ -216,7 +218,7 @@ class Comment extends StatelessWidget {
     return Align(
       alignment: Alignment.centerLeft,
       child: Padding(
-        padding: const EdgeInsets.only(left: 22),
+        padding: const EdgeInsets.symmetric(horizontal: 22),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
