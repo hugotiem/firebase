@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:pts/const.dart';
 import 'package:pts/blocs/parties/build_parties_cubit.dart';
 import 'package:pts/components/back_appbar.dart';
@@ -30,7 +31,7 @@ class _NamePageState extends State<NamePage> {
         child: BackAppBar(
           leading: CupertinoButton(
             child: Icon(
-              Icons.close,
+              Ionicons.close_outline,
               color: ICONCOLOR,
             ),
             onPressed: () {

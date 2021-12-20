@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intro_slider/intro_slider.dart';
 import 'package:intro_slider/slide_object.dart';
+import 'package:ionicons/ionicons.dart';
 
 class IntroScreen extends StatefulWidget {
   IntroScreen({Key? key}) : super(key: key);
@@ -58,7 +59,7 @@ class IntroScreenState extends State<IntroScreen> {
 
   Widget renderNextBtn() {
     return Icon(
-      Icons.navigate_next,
+      Ionicons.arrow_forward_outline,
       color : Color(0xffffcc5c),
       size: 35.0,
     );
@@ -66,14 +67,14 @@ class IntroScreenState extends State<IntroScreen> {
 
   Widget renderDoneBtn() {
     return Icon(
-      Icons.done,
+      Ionicons.checkmark_outline,
       color: Color(0xffffcc5c),
     );
   }
 
   Widget renderSkipBtn() {
     return Icon(
-      Icons.skip_next,
+      Ionicons.play_skip_forward_outline,
       color: Color(0xffffcc5c),
     );
   }

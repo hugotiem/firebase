@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:animations/animations.dart';
 import 'package:flutter/services.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:pts/pages/search/sliver/searchbar_screen.dart';
 import 'package:pts/components/custom_text.dart';
 import 'package:pts/const.dart';
@@ -191,7 +192,7 @@ class _SearchState extends State<Search> {
                         Padding(
                           padding: const EdgeInsets.only(left: 20),
                           child: Icon(
-                            Icons.search_rounded,
+                            Ionicons.search_outline,
                             size: 20,
                             color: ICONCOLOR,
                           ),

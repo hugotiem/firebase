@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:pts/const.dart';
 import 'package:pts/components/back_appbar.dart';
 import 'package:pts/models/services/auth_service.dart';
@@ -84,7 +85,7 @@ class _InfoScreenState extends State<InfoScreen> {
                                     decoration: InputDecoration(
                                       labelText: "Mot de passe :",
                                       border: InputBorder.none,
-                                      icon: Icon(Icons.lock),
+                                      icon: Icon(Ionicons.lock_closed_outline),
                                     ),
                                     onChanged: (value) {
                                       setState(() {

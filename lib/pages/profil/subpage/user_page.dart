@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:pts/const.dart';
 import 'package:pts/components/back_appbar.dart';
 import 'package:pts/components/horizontal_separator.dart';
@@ -113,7 +114,7 @@ class HeadProfil extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 22),
-                child: Icon(Icons.star, color: ICONCOLOR),
+                child: Icon(Ionicons.star, color: ICONCOLOR),
               ),
               Text(
                 '$avis avis',
@@ -176,7 +177,7 @@ class Histoty extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 22),
-                child: Icon(Icons.house_sharp, color: ICONCOLOR),
+                child: Icon(Ionicons.home, color: ICONCOLOR),
               ),
               Text(
                 '$soireeOrganisee soirée organisé',
@@ -193,7 +194,7 @@ class Histoty extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 22),
-              child: Icon(Icons.people, color: ICONCOLOR),
+              child: Icon(Ionicons.people, color: ICONCOLOR),
             ),
             Text(
               '$soireeParticipee soirée participé',

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:pts/const.dart';
 import 'package:pts/pages/login/id_form_screen.dart';
 import 'package:pts/pages/login/login.dart';
@@ -132,7 +133,7 @@ class _ProfilState extends State<Profil> {
                             CickableContainerProfil(
                               to: GetPartyData(),
                               text: "Vos soirées",
-                              icon: Icons.calendar_today_outlined,
+                              icon: Ionicons.calendar_clear_outline,
                               bottomBorder: false,
                             ),
                           ],
@@ -149,12 +150,12 @@ class _ProfilState extends State<Profil> {
                             CickableContainerProfil(
                               to: PartyWaitList(),
                               text: "Soirées",
-                              icon: Icons.calendar_today_outlined,
+                              icon: Ionicons.calendar_clear_outline,
                             ),
                             CickableContainerProfil(
                               to: GuestWaitList(),
                               text: 'Invités',
-                              icon: Icons.perm_identity_outlined,
+                              icon: Ionicons.person_outline,
                               bottomBorder: false,
                             )
                           ],
@@ -172,17 +173,17 @@ class _ProfilState extends State<Profil> {
                             CickableContainerProfil(
                               to: IdFormScreen(),
                               text: "Informations personnelles",
-                              icon: Icons.perm_identity_outlined,
+                              icon: Ionicons.person_outline,
                             ),
                             CickableContainerProfil(
                               to: ExistingCard(),
                               text: "Paiements",
-                              icon: Icons.payment_outlined,
+                              icon: Ionicons.card_outline,
                             ),
                             CickableContainerProfil(
                               to: NotificationPage(),
                               text: "Notifications",
-                              icon: Icons.notifications_outlined,
+                              icon: Ionicons.notifications_outline,
                               bottomBorder: false,
                             ),
                           ],
@@ -210,7 +211,7 @@ class _ProfilState extends State<Profil> {
                                 ),
                               ),
                               Icon(
-                                Icons.logout,
+                                Ionicons.exit_outline,
                                 color: Colors.red,
                               ),
                             ],

@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:pts/models/capitalize.dart';
 import 'package:pts/models/party.dart';
 import 'package:pts/models/user.dart';
@@ -43,7 +44,7 @@ Widget buildPartyCard(BuildContext context, Party party) {
                     opacity: 0.7,
                     child: Row(
                       children: [
-                        Icon(Icons.star_border_rounded, color: ICONCOLOR),
+                        Icon(Ionicons.star, color: ICONCOLOR),
                         CText(
                           '4.9 / 5 - 0 avis',
                           fontSize: 16,
@@ -253,7 +254,7 @@ Widget buildPartyCard(BuildContext context, Party party) {
                                       Row(
                                         children: [
                                           Icon(
-                                            Icons.location_on_outlined,
+                                            Ionicons.location_outline,
                                             color: PRIMARY_COLOR,
                                           ),
                                           CText(
@@ -544,7 +545,7 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
                   shape: BoxShape.circle,
                 ),
                 child: IconButton(
-                  icon: Icon(Icons.arrow_back_sharp),
+                  icon: Icon(Ionicons.arrow_back_outline),
                   onPressed: () {
                     Navigator.pop(context);
                   },
@@ -593,8 +594,7 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
                                                         const EdgeInsets.only(
                                                             right: 8.0),
                                                     child: Icon(
-                                                      Icons
-                                                          .calendar_today_outlined,
+                                                      Ionicons.calendar_clear_outline,
                                                       color: SECONDARY_COLOR,
                                                     ),
                                                   ),
@@ -610,7 +610,7 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
                                                 padding: const EdgeInsets.only(
                                                     right: 8.0),
                                                 child: Icon(
-                                                  Icons.place_outlined,
+                                                  Ionicons.location_outline,
                                                   color: SECONDARY_COLOR,
                                                 ),
                                               ),
@@ -632,7 +632,7 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
                                         onPressed: () {
                                           Navigator.pop(context);
                                         },
-                                        icon: Icon(Icons.arrow_back_sharp,
+                                        icon: Icon(Ionicons.arrow_back_outline,
                                             color: ICONCOLOR)),
                                   ),
                                   Center(
@@ -735,7 +735,7 @@ class CardBody extends StatelessWidget {
                 Opacity(
                   opacity: 0.7,
                   child: Row(children: [
-                    Icon(Icons.star_border_outlined, color: ICONCOLOR),
+                    Icon(Ionicons.star, color: ICONCOLOR),
                     CText(this.avis, fontSize: 16, color: SECONDARY_COLOR),
                   ]),
                 )
@@ -786,9 +786,9 @@ class CardBody extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 8.0),
                 child: Row(children: [
                   this.animal == 'Oui'
-                      ? Icon(Icons.pets_outlined)
+                      ? Icon(Ionicons.paw)
                       : Stack(children: [
-                          Icon(Icons.pets_outlined),
+                          Icon(Ionicons.paw),
                           Positioned(
                             left: -5,
                             child: Transform.rotate(

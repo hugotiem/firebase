@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:pts/components/ProfilPhoto.dart';
 import 'package:pts/components/back_appbar.dart';
 import 'package:pts/components/pts_box.dart';
@@ -101,7 +102,7 @@ Widget buildValidationCard(BuildContext context, DocumentSnapshot party) {
                       });
                 }, 
                 icon: Icon( 
-                  Icons.check_outlined,
+                  Ionicons.checkmark_outline,
                   color: Colors.green,
                 )
               ),
@@ -119,7 +120,7 @@ Widget buildValidationCard(BuildContext context, DocumentSnapshot party) {
                       });
                 },
                 icon: Icon(
-                  Icons.close_outlined,
+                  Ionicons.close_outline,
                   color: Colors.red,
                 ),
               )

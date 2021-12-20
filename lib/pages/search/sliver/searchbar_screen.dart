@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:pts/blocs/parties/parties_cubit.dart';
 import 'package:pts/blocs/search/search_cubit.dart';
 import 'package:pts/const.dart';
@@ -301,7 +302,7 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                                 : 0,
                             child: IconButton(
                               icon: Icon(
-                                Icons.arrow_back,
+                                Ionicons.arrow_back_outline,
                                 color:
                                     _factor == 1 ? ICONCOLOR : SECONDARY_COLOR,
                               ),

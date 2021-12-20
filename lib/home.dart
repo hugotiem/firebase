@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:pts/const.dart';
 import 'package:pts/pages/login/id_form_screen.dart';
 import 'package:pts/blocs/user/user_cubit.dart';
@@ -54,28 +55,28 @@ class _HomeState extends State<Home> {
               items: [
                 BottomNavigationBarItem(
                   icon: new Icon(
-                    Icons.search,
+                    Ionicons.search_outline,
                     size: 30,
                   ),
                   label: "Rechercher",
                 ),
                 BottomNavigationBarItem(
                   icon: new Icon(
-                    Icons.calendar_today_outlined,
+                    Ionicons.calendar_clear_outline,
                     size: 30,
                   ),
                   label: "Calendrier",
                 ),
                 BottomNavigationBarItem(
                   icon: new Icon(
-                    Icons.message_outlined,
+                    Ionicons.chatbox_outline,
                     size: 30,
                   ),
                   label: "Messages",
                 ),
                 BottomNavigationBarItem(
                   icon: new Icon(
-                    Icons.account_circle_outlined,
+                    Ionicons.person_outline,
                     size: 30,
                   ),
                   label: "Profil",
