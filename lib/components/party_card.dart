@@ -489,7 +489,6 @@ class CustomSliverCard extends StatefulWidget {
 
 class _CustomSliverCardState extends State<CustomSliverCard> {
   double? _size, _barSizeWidth, _barSizeHeight, _borderRadius, _opacity;
-  late Brightness _brightness;
   late Color _toolbarColor;
   bool? _headerName, _headerLocation, _headerDate;
 
@@ -498,7 +497,6 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
     setState(() {
       _size = 300;
       _toolbarColor = Colors.transparent;
-      _brightness = Brightness.dark;
       _barSizeWidth = 350;
       _barSizeHeight = 150;
       _headerName = true;
@@ -655,7 +653,6 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
             double _pixels = notification.metrics.pixels;
             if (_pixels <= 300 && (300 - _pixels) >= 100) {
               _size = 300 - _pixels;
-              _brightness = Brightness.dark;
               _toolbarColor = Colors.transparent;
               _headerName = true;
               _headerDate = true;
@@ -681,7 +678,6 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
               }
             } else if (_pixels > 200) {
               _size = 100;
-              _brightness = Brightness.light;
               _toolbarColor = PRIMARY_COLOR;
               _headerName = false;
             }

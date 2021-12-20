@@ -61,7 +61,6 @@ class _LoginPageState extends State<LoginPage>
               appBar: AppBar(
                 elevation: 0,
                 backgroundColor: Colors.transparent,
-                textTheme: Theme.of(context).textTheme,
                 iconTheme:
                     Theme.of(context).iconTheme.copyWith(color: ICONCOLOR),
                 title: _currentIndex == 0

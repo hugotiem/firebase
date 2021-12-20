@@ -31,8 +31,6 @@ class _SearchBarScreenState extends State<SearchBarScreen>
   Completer<GoogleMapController> mapControllerCompleter =
       Completer<GoogleMapController>();
 
-  String _search = "";
-  String? _result;
   bool _hasResults = false;
   bool _isDissmissed = false;
 
