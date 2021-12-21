@@ -63,6 +63,7 @@ class UserCubit extends AppBaseCubit<UserState> {
     final destination = '$ref/$filename';
     emit(state.setRequestInProgress() as UserState);
     UploadTask? task = StorageService(destination).uploadFile(file);
+    // ignore: unnecessary_null_comparison
     if (task == null) return;
     task.then((value) async {
       var id = await service.getToken();

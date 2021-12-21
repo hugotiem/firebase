@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pts/blocs/user/user_cubit.dart';
+import 'package:pts/components/connect.dart';
 import 'package:pts/const.dart';
 import 'package:pts/models/services/auth_service.dart';
 import 'package:pts/pages/messaging/subpage/chatpage.dart';
@@ -10,20 +13,31 @@ class MessagePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: PRIMARY_COLOR,
-      appBar: AppBar(
-          backgroundColor: PRIMARY_COLOR,
-          systemOverlayStyle: SystemUiOverlayStyle.dark,
-          elevation: 0.5,
-          title: Text(
-            'Messages',
-            style: TextStyle(
-              color: SECONDARY_COLOR,
-            ),
-          ),
-        ),
-      body: ListMessage(),
+    return BlocProvider(
+      create: (context) => UserCubit()..init(),
+      child: BlocBuilder<UserCubit, UserState>(
+        builder: (context, state) {
+          bool isLogged = state.token != null;
+
+          return Scaffold(
+            backgroundColor: PRIMARY_COLOR,
+            appBar: !isLogged
+                ? null
+                : AppBar(
+                    backgroundColor: PRIMARY_COLOR,
+                    systemOverlayStyle: SystemUiOverlayStyle.dark,
+                    elevation: 0.5,
+                    title: Text(
+                      'Messages',
+                      style: TextStyle(
+                        color: SECONDARY_COLOR,
+                      ),
+                    ),
+                  ),
+            body: ListMessage(),
+          );
+        },
+      ),
     );
   }
 }
@@ -38,37 +52,56 @@ class ListMessage extends StatefulWidget {
 class _ListMessageState extends State<ListMessage> {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   dynamic _docs;
-  String currentUserId = AuthService().currentUser!.uid;
-  String? currentUserName = AuthService().currentUser!.displayName;
+  late String? currentUserId;
+  late String? currentUserName;
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: getmessageStreamSnapshot(context),
-      builder:
-          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-        if (!snapshot.hasData)
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        _docs = snapshot.data;
-        if (_docs.exists == false) return EmptyList();
-        List listUser = snapshot.data!['userid'];
-        return Container(
-          margin: const EdgeInsets.only(bottom: 40, top: 10),
-          child: Column(
-            children: listUser.map(
-              (doc) {
-                return InkWell(
-                  onTap: () => openChat(doc['uid'], doc['name']),
-                  child:
-                      UserLineDesign(userID: doc['uid'], userName: doc['name']),
-                );
-              },
-            ).toList(),
-          ),
+    return BlocProvider(
+      create: (context) => UserCubit()..init(),
+      child: BlocBuilder<UserCubit, UserState>(builder: (context, state) {
+        var isLogged = state.token != null;
+        if (!isLogged) {
+          return Connect(context);
+        }
+
+        var user = state.user;
+
+        if (user == null) {
+          return Center(child: CircularProgressIndicator());
+        }
+
+        currentUserId = AuthService().currentUser!.uid;
+        currentUserName = AuthService().currentUser!.displayName;
+
+        return StreamBuilder(
+          stream: getmessageStreamSnapshot(context),
+          builder:
+              (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+            if (!snapshot.hasData)
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            _docs = snapshot.data;
+            if (_docs.exists == false) return EmptyList();
+            List listUser = snapshot.data!['userid'];
+            return Container(
+              margin: const EdgeInsets.only(bottom: 40, top: 10),
+              child: Column(
+                children: listUser.map(
+                  (doc) {
+                    return InkWell(
+                      onTap: () => openChat(doc['uid'], doc['name']),
+                      child: UserLineDesign(
+                          userID: doc['uid'], userName: doc['name']),
+                    );
+                  },
+                ).toList(),
+              ),
+            );
+          },
         );
-      },
+      }),
     );
   }
 
@@ -264,7 +297,7 @@ class GetTimeLastMessage extends StatelessWidget {
       temps = "$h h";
     } else if (min < 60) {
       temps = "$min min";
-    } 
+    }
 
     return temps;
   }
