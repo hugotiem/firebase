@@ -46,18 +46,23 @@ class UserCubit extends AppBaseCubit<UserState> {
     }
   }
 
-  Future<void> updateUserInfo({String? name, String? surname}) async {
+  Future<void> updateUserInfo(String? token,
+      {String? name,
+      String? surname,
+      String? phonenumber,
+      String? gender}) async {
     emit(state.setRequestInProgress() as UserState);
-    var id = await service.getToken();
     Map<String, dynamic> data = <String, dynamic>{
       "name": name,
-      // "surname": surname,
+      "surname": surname,
+      "phone number": phonenumber,
+      "gender": gender,
     };
-    await firestore.setWithId(id, data: data);
+    await firestore.setWithId(token, data: data);
     emit(UserState.dataLoaded(user: state.user, token: state.token));
   }
 
-  Future<void> addId(File? file, String ref) async {
+  Future<void> addId(File? file, String ref, var token) async {
     if (file == null) return;
     final filename = basename(file.path);
     final destination = '$ref/$filename';
@@ -66,12 +71,11 @@ class UserCubit extends AppBaseCubit<UserState> {
     // ignore: unnecessary_null_comparison
     if (task == null) return;
     task.then((value) async {
-      var id = await service.getToken();
       var url = await value.ref.getDownloadURL();
       Map<String, dynamic> data = <String, dynamic>{
         "$ref": url,
       };
-      await firestore.setWithId(id, data: data);
+      await firestore.setWithId(token, data: data);
       emit(UserState.dataLoaded(user: state.user, token: state.token));
     });
   }

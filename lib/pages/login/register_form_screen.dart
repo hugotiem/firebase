@@ -15,9 +15,12 @@ class RegisterFormScreen extends StatefulWidget {
 class _RegisterFormScreenState extends State<RegisterFormScreen> {
   String? _name;
   String? _surname;
+  String? _phonenumber;
+  String? _gender;
 
   TextEditingController? _nameController;
   TextEditingController? _surnameController;
+  TextEditingController? _phonenumbercontroller;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -30,6 +33,10 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
     _surnameController = TextEditingController()
       ..addListener(() {
         _surname = _surnameController!.text;
+      });
+    _phonenumbercontroller = TextEditingController()
+      ..addListener(() {
+        _phonenumber = _phonenumbercontroller!.text;
       });
     super.initState();
   }
@@ -49,6 +56,7 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
         child: BlocBuilder<UserCubit, UserState>(
           builder: (context, state) {
             var data = state.user;
+            var id = state.token;
             if (data != null) {
               _nameController?.text = data.name ?? '';
               _surnameController?.text = data.surname ?? '';
@@ -104,13 +112,84 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                               height: 50,
                             ),
                             Center(
+                              child: Container(
+                                height: HEIGHTCONTAINER,
+                                width: MediaQuery.of(context).size.width * 0.9,
+                                decoration: BoxDecoration(
+                                    color: PRIMARY_COLOR,
+                                    borderRadius: BorderRadius.circular(15)),
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.only(left: 16, right: 8),
+                                  child: Center(
+                                    child: DropdownButtonFormField<String>(
+                                      value: _gender,
+                                      items: [
+                                        'Homme',
+                                        'Femme',
+                                        'Autre',
+                                      ].map<DropdownMenuItem<String>>(
+                                          (String value) {
+                                        return DropdownMenuItem<String>(
+                                          value: value,
+                                          child: Text(
+                                            value,
+                                            style: TextStyle(
+                                                fontSize: TEXTFIELDFONTSIZE),
+                                          ),
+                                        );
+                                      }).toList(),
+                                      hint: Text(
+                                        "Genre",
+                                        style: TextStyle(
+                                            fontSize: TEXTFIELDFONTSIZE),
+                                      ),
+                                      elevation: 0,
+                                      decoration: InputDecoration(
+                                        errorStyle: TextStyle(
+                                          height: 0,
+                                          background: Paint()
+                                            ..color = Colors.transparent,
+                                        ),
+                                        errorBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Colors.transparent),
+                                        ),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide.none,
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                        ),
+                                        enabledBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Colors.transparent),
+                                        ),
+                                      ),
+                                      onChanged: (String? value) {
+                                        setState(() {
+                                          _gender = value;
+                                        });
+                                      },
+                                      validator: (value) {
+                                        if (value == null) {
+                                          return 'Vous devez sélectionner un genre';
+                                        } else {
+                                          return null;
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 50,
+                            ),
+                            Center(
                               child: TFFText(
-                                // controller: _editingController,
+                                controller: _phonenumbercontroller,
                                 keyboardAppearance: Brightness.light,
                                 keyboardType: TextInputType.phone,
-                                onChanged: (value) {
-                                  // _number = value;
-                                },
                                 hintText: 'Téléphone (facultatif) :',
                                 validator: (value) {
                                   return null;
@@ -156,11 +235,17 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                             print(_name);
                             print(_surname);
                             await BlocProvider.of<UserCubit>(context)
-                                .updateUserInfo(name: _name, surname: _surname)
+                                .updateUserInfo(id,
+                                    name: _name,
+                                    surname: _surname,
+                                    phonenumber: _phonenumber,
+                                    gender: _gender,
+                                    )
                                 .then(
                                   (_) => Navigator.of(context).push(
                                     MaterialPageRoute(
-                                      builder: (context) => IdFormScreen(),
+                                      builder: (context) =>
+                                          IdFormScreen(token: id),
                                     ),
                                   ),
                                 );
