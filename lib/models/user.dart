@@ -10,10 +10,20 @@ class User {
   String? name;
   String? surname;
   String? gender;
-  int? age;
+  var age;
   bool? hasIdChecked;
+  String? phone;
+  String? email;
 
-  User({this.id, this.name, this.surname, this.hasIdChecked});
+  User(
+      {this.id,
+      this.name,
+      this.surname,
+      this.age,
+      this.gender,
+      this.hasIdChecked,
+      this.email,
+      this.phone});
 
   Future<User?> get currentUser async {
     var token = await authService.getToken();
@@ -27,8 +37,22 @@ class User {
     var data = snapshot.data()!;
     var name = data['name'];
     var surname = data['surname'];
+    var birthday = data['birthday'].toDate();
+    var now = DateTime.now();
+    var age = (now.difference(birthday).inDays / 365).floor();
+    var gender = data['gender'];
+    var phone = data['phone number'];
+    var email = data['email'];
     var hasIdChecked = data['idFront'] != null;
 
-    return User(id: id, name: name, surname: surname, hasIdChecked: hasIdChecked);
+    return User(
+        id: id,
+        name: name,
+        surname: surname,
+        hasIdChecked: hasIdChecked,
+        age: age,
+        gender: gender,
+        email: email,
+        phone: phone);
   }
 }

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:pts/blocs/user/user_cubit.dart';
 import 'package:pts/const.dart';
 import 'package:pts/components/back_appbar.dart';
 import 'package:pts/components/horizontal_separator.dart';
+import 'package:pts/models/Capitalize.dart';
 
 class ProfilDetails extends StatelessWidget {
   const ProfilDetails({Key? key}) : super(key: key);
@@ -14,51 +16,41 @@ class ProfilDetails extends StatelessWidget {
       backgroundColor: PRIMARY_COLOR,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50),
-        child: BackAppBar(
-          actions: <Widget>[
-            CupertinoButton(
-              onPressed: () => modify(context),
-              child: Text(
-                "Modifier",
-                style: TextStyle(
-                  decoration: TextDecoration.underline,
-                  color: SECONDARY_COLOR,
-                ),
+        child: BackAppBar(),
+      ),
+      body: BlocProvider(
+        create: (context) => UserCubit()..init(),
+        child: BlocBuilder<UserCubit, UserState>(
+          builder: (context, state) {
+          var user = state.user;
+
+          if (user == null) return Center(child: CircularProgressIndicator(),);
+
+          return SafeArea(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  HeadProfil(
+                    fullName: '${user.name} ${user.surname.toString().inCaps}',
+                    age: user.age.toString(),
+                    photo: "assets/roundBlankProfilPicture.png",
+                    identiteVerif: 'Identité vérifiée',
+                    avis: '0',
+                  ),
+                  HorzontalSeparator(),
+                  Histoty(
+                    soireeOrganisee: "0",
+                    soireeParticipee: "0",
+                  ),
+                  HorzontalSeparator(),
+                  Comment(),
+                ],
               ),
             ),
-          ],
-        ),
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              HeadProfil(
-                fullName: 'Jean Sauvage',
-                age: '21',
-                photo: "assets/roundBlankProfilPicture.png",
-                identiteVerif: 'Identité vérifiée',
-                avis: '0',
-              ),
-              HorzontalSeparator(),
-              Histoty(
-                soireeOrganisee: "0",
-                soireeParticipee: "0",
-              ),
-              HorzontalSeparator(),
-              Comment(),
-            ],
-          ),
-        ),
+          );
+        }),
       ),
     );
-  }
-
-  Future modify(BuildContext context) async {
-    return showModalBottomSheet(
-        isScrollControlled: true,
-        context: context,
-        builder: (BuildContext context) => Modify());
   }
 }
 
@@ -241,39 +233,6 @@ class Comment extends StatelessWidget {
                   )),
             )
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class Modify extends StatelessWidget {
-  const Modify({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(80),
-        child: Padding(
-          padding: const EdgeInsets.only(top: 20.0),
-          child: BackAppBar(
-            leading: InkWell(
-                onTap: () => Navigator.pop(context),
-                child: Icon(
-                  Icons.close,
-                  color: ICONCOLOR,
-                )),
-            actions: [
-              TextButton(
-                onPressed: () {},
-                child: Text(
-                  'Enregistrer',
-                  style: TextStyle(color: SECONDARY_COLOR, fontSize: 16),
-                ),
-              ),
-            ],
-          ),
         ),
       ),
     );

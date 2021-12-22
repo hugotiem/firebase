@@ -44,16 +44,16 @@ class _ProfilState extends State<Profil> {
         child: BlocBuilder<UserCubit, UserState>(
           builder: (context, state) {
             var isLogged = state.token != null;
+
             if (!isLogged) {
               return Connect(context);
             }
 
             var user = state.user;
-
             if (user == null) {
               return Center(child: CircularProgressIndicator());
             }
-            print(user.name);
+
 
             return SingleChildScrollView(
               child: Container(

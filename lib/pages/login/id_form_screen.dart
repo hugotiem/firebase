@@ -210,7 +210,6 @@ class _IdFormScreenState extends State<IdFormScreen> {
                             if (loaderKey == null) {
                               loaderKey = GlobalKey<NavigatorState>();
                             }
-                            var id;
                              _showLoadingPopup();
                             await BlocProvider.of<UserCubit>(context)
                                 .addId(_idFrontImage, "idFront", widget.token)

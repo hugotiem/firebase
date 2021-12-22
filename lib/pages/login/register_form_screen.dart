@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
+import 'package:pts/components/components_creation/date_hour_picker.dart';
 import 'package:pts/const.dart';
 import 'package:pts/pages/login/id_form_screen.dart';
 import 'package:pts/blocs/user/user_cubit.dart';
@@ -17,10 +19,12 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
   String? _surname;
   String? _phonenumber;
   String? _gender;
+  var _date;
 
   TextEditingController? _nameController;
   TextEditingController? _surnameController;
   TextEditingController? _phonenumbercontroller;
+  TextEditingController dateCtl = TextEditingController();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -107,6 +111,27 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                                 },
                                 hintText: 'Prénom :',
                               ),
+                            ),
+                            SizedBox(
+                              height: 50,
+                            ),
+                            DateHourPicker(
+                              onTap: () async {
+                                FocusScope.of(context)
+                                    .requestFocus(new FocusNode());
+                                await _selectionDate();
+                                dateCtl.text =
+                                    DateFormat.MMMMEEEEd('fr').format(_date);
+                              },
+                              hintText: "Date de naissance",
+                              controller: dateCtl,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "Vous devez choisir une date";
+                                } else {
+                                  return null;
+                                }
+                              },
                             ),
                             SizedBox(
                               height: 50,
@@ -235,12 +260,14 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                             print(_name);
                             print(_surname);
                             await BlocProvider.of<UserCubit>(context)
-                                .updateUserInfo(id,
-                                    name: _name,
-                                    surname: _surname,
-                                    phonenumber: _phonenumber,
-                                    gender: _gender,
-                                    )
+                                .updateUserInfo(
+                                  id,
+                                  name: _name,
+                                  surname: _surname,
+                                  phonenumber: _phonenumber,
+                                  gender: _gender,
+                                  birthday: _date
+                                )
                                 .then(
                                   (_) => Navigator.of(context).push(
                                     MaterialPageRoute(
@@ -261,5 +288,27 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
         ),
       ),
     );
+  }
+
+  Future<Null> _selectionDate() async {
+    DateTime? _dateChoisie = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(1921),
+        lastDate: DateTime.now(),
+        builder: (BuildContext context, Widget? child) {
+          return Theme(
+              data: ThemeData.light().copyWith(
+                colorScheme: ColorScheme.light()
+                    .copyWith(primary: SECONDARY_COLOR, onPrimary: ICONCOLOR),
+              ),
+              child: child!);
+        });
+
+    if (_dateChoisie != null && _dateChoisie != _date) {
+      setState(() {
+        _date = _dateChoisie;
+      });
+    }
   }
 }
