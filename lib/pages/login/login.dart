@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:pts/const.dart';
 import 'package:pts/pages/login/register_form_screen.dart';
 import 'package:pts/blocs/login/login_cubit.dart';
@@ -60,7 +61,6 @@ class _LoginPageState extends State<LoginPage>
               appBar: AppBar(
                 elevation: 0,
                 backgroundColor: Colors.transparent,
-                textTheme: Theme.of(context).textTheme,
                 iconTheme:
                     Theme.of(context).iconTheme.copyWith(color: ICONCOLOR),
                 title: _currentIndex == 0
@@ -72,7 +72,7 @@ class _LoginPageState extends State<LoginPage>
                   children: [
                     Container(
                       child: Icon(
-                        Icons.house_rounded,
+                        Ionicons.home,
                         color: SECONDARY_COLOR,
                         size: 100,
                       ),

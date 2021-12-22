@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:pts/const.dart';
 import 'package:pts/blocs/parties/parties_cubit.dart';
 import 'package:pts/components/back_appbar.dart';
@@ -19,7 +20,7 @@ class GetPartyData extends StatelessWidget {
             child: new BackAppBar(
               leading: CupertinoButton(
                 child: Icon(
-                  Icons.arrow_back_sharp,
+                  Ionicons.arrow_back_outline,
                   color: ICONCOLOR,
                 ),
                 onPressed: () {

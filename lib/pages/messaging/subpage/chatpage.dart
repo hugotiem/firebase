@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:pts/components/back_appbar.dart';
 import 'package:pts/components/title_appbar.dart';
 import 'package:pts/const.dart';
@@ -213,7 +214,7 @@ class _MessageFieldState extends State<MessageField> {
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: IconButton(
                       onPressed: () => photoDialog(),
-                      icon: Icon(Icons.crop_original_outlined,
+                      icon: Icon(Ionicons.image_outline,
                           color: SECONDARY_COLOR)),
                 ),
                 Expanded(
@@ -266,7 +267,7 @@ class _MessageFieldState extends State<MessageField> {
                               icon: Opacity(
                                   opacity: selected == false ? 0.7 : 0.9,
                                   child: Icon(
-                                    Icons.arrow_forward_outlined,
+                                    Ionicons.arrow_forward_outline,
                                     color: SECONDARY_COLOR,
                                   )),
                             )

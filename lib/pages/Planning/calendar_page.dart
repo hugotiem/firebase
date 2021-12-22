@@ -4,6 +4,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:pts/const.dart';
 import 'package:pts/models/calendar_data_source.dart';
 import 'package:pts/pages/creation/creation_page.dart';
@@ -34,7 +35,7 @@ class CalendarPage extends StatelessWidget {
                       MaterialPageRoute(builder: (context) => CreationPage()));
                 },
                 child: Icon(
-                  Icons.add,
+                  Ionicons.add_outline,
                   color: ICONCOLOR,
                   size: 30,
                 ),

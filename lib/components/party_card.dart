@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:pts/models/capitalize.dart';
 import 'package:pts/models/party.dart';
 import 'package:pts/models/user.dart';
@@ -43,7 +44,7 @@ Widget buildPartyCard(BuildContext context, Party party) {
                     opacity: 0.7,
                     child: Row(
                       children: [
-                        Icon(Icons.star_border_rounded, color: ICONCOLOR),
+                        Icon(Ionicons.star, color: ICONCOLOR),
                         CText(
                           '4.9 / 5 - 0 avis',
                           fontSize: 16,
@@ -253,7 +254,7 @@ Widget buildPartyCard(BuildContext context, Party party) {
                                       Row(
                                         children: [
                                           Icon(
-                                            Icons.location_on_outlined,
+                                            Ionicons.location_outline,
                                             color: PRIMARY_COLOR,
                                           ),
                                           CText(
@@ -488,7 +489,6 @@ class CustomSliverCard extends StatefulWidget {
 
 class _CustomSliverCardState extends State<CustomSliverCard> {
   double? _size, _barSizeWidth, _barSizeHeight, _borderRadius, _opacity;
-  late Brightness _brightness;
   late Color _toolbarColor;
   bool? _headerName, _headerLocation, _headerDate;
 
@@ -497,7 +497,6 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
     setState(() {
       _size = 300;
       _toolbarColor = Colors.transparent;
-      _brightness = Brightness.dark;
       _barSizeWidth = 350;
       _barSizeHeight = 150;
       _headerName = true;
@@ -544,7 +543,7 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
                   shape: BoxShape.circle,
                 ),
                 child: IconButton(
-                  icon: Icon(Icons.arrow_back_sharp),
+                  icon: Icon(Ionicons.arrow_back_outline),
                   onPressed: () {
                     Navigator.pop(context);
                   },
@@ -593,8 +592,8 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
                                                         const EdgeInsets.only(
                                                             right: 8.0),
                                                     child: Icon(
-                                                      Icons
-                                                          .calendar_today_outlined,
+                                                      Ionicons
+                                                          .calendar_clear_outline,
                                                       color: SECONDARY_COLOR,
                                                     ),
                                                   ),
@@ -610,7 +609,7 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
                                                 padding: const EdgeInsets.only(
                                                     right: 8.0),
                                                 child: Icon(
-                                                  Icons.place_outlined,
+                                                  Ionicons.location_outline,
                                                   color: SECONDARY_COLOR,
                                                 ),
                                               ),
@@ -632,7 +631,7 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
                                         onPressed: () {
                                           Navigator.pop(context);
                                         },
-                                        icon: Icon(Icons.arrow_back_sharp,
+                                        icon: Icon(Ionicons.arrow_back_outline,
                                             color: ICONCOLOR)),
                                   ),
                                   Center(
@@ -654,7 +653,6 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
             double _pixels = notification.metrics.pixels;
             if (_pixels <= 300 && (300 - _pixels) >= 100) {
               _size = 300 - _pixels;
-              _brightness = Brightness.dark;
               _toolbarColor = Colors.transparent;
               _headerName = true;
               _headerDate = true;
@@ -680,7 +678,6 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
               }
             } else if (_pixels > 200) {
               _size = 100;
-              _brightness = Brightness.light;
               _toolbarColor = PRIMARY_COLOR;
               _headerName = false;
             }
@@ -720,41 +717,50 @@ class CardBody extends StatelessWidget {
           height: 420,
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 16, right: 16, bottom: 25),
-          child:
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                this.nomOrganisateur != null
-                    ? CText(this.nomOrganisateur,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w500,
-                        color: SECONDARY_COLOR)
-                    : CText(''),
-                Opacity(
-                  opacity: 0.7,
-                  child: Row(children: [
-                    Icon(Icons.star_border_outlined, color: ICONCOLOR),
-                    CText(this.avis, fontSize: 16, color: SECONDARY_COLOR),
-                  ]),
-                )
-              ],
-            ),
-            Container(
-              height: 55,
-              width: 55,
-              decoration: BoxDecoration(
+          padding: const EdgeInsets.only(left: 22, right: 22, bottom: 25),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  this.nomOrganisateur != null
+                      ? CText(this.nomOrganisateur,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
+                          color: SECONDARY_COLOR)
+                      : CText(''),
+                  Opacity(
+                    opacity: 0.7,
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 16),
+                          child: Icon(Ionicons.star, color: ICONCOLOR),
+                        ),
+                        CText(this.avis, fontSize: 16, color: SECONDARY_COLOR),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+              Container(
+                height: 55,
+                width: 55,
+                decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   image: DecorationImage(
-                      image: AssetImage("assets/roundBlankProfilPicture.png"))),
-            )
-          ]),
+                    image: AssetImage("assets/roundBlankProfilPicture.png"),
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
         this.desc != ""
             ? Center(
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 16, right: 16),
+                  padding: const EdgeInsets.only(left: 22, right: 22),
                   child: DescriptionTextWidget(text: this.desc),
                 ),
               )
@@ -763,95 +769,109 @@ class CardBody extends StatelessWidget {
               ),
         Padding(
           padding: this.desc == ""
-              ? const EdgeInsets.only(left: 8)
-              : const EdgeInsets.only(left: 8, top: 16),
+              ? const EdgeInsets.only(left: 22)
+              : const EdgeInsets.only(left: 22, top: 16),
           child: Align(
-              alignment: Alignment.centerLeft,
-              child: TextButton(
-                child: CText(
-                    this.nomOrganisateur != null
-                        ? "contacter ${this.nomOrganisateur!.split(" ")[0]}"
-                        : 'Contacter',
-                    color: Colors.blue,
-                    fontSize: 16),
-                onPressed: this.contacter,
-              )),
+            alignment: Alignment.centerLeft,
+            child: TextButton(
+              child: CText(
+                this.nomOrganisateur != null
+                    ? "contacter ${this.nomOrganisateur!.split(" ")[0]}"
+                    : 'Contacter',
+                color: Colors.blue,
+                fontSize: 16,
+              ),
+              onPressed: this.contacter,
+            ),
+          ),
         ),
         HorzontalSeparator(),
         Padding(
-          padding: const EdgeInsets.only(left: 16, right: 16),
+          padding: const EdgeInsets.only(left: 22, right: 22),
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
-                child: Row(children: [
-                  this.animal == 'Oui'
-                      ? Icon(Icons.pets_outlined)
-                      : Stack(children: [
-                          Icon(Icons.pets_outlined),
-                          Positioned(
-                            left: -5,
-                            child: Transform.rotate(
-                                angle: 45,
-                                child: Icon(
-                                  Icons.horizontal_rule_outlined,
-                                  size: 35,
-                                  color: Colors.red,
-                                )),
+                padding: const EdgeInsets.only(bottom: 15),
+                child: Row(
+                  children: [
+                    this.animal == 'Oui'
+                        ? Padding(
+                            padding: const EdgeInsets.only(right: 22),
+                            child: Icon(Ionicons.paw),
                           )
-                        ]),
-                  this.animal == 'Oui'
-                      ? Padding(
-                          padding: const EdgeInsets.only(left: 4),
-                          child: CText("Les animaux sont autorisés",
-                              fontSize: 17, color: SECONDARY_COLOR),
-                        )
-                      : Padding(
-                          padding: const EdgeInsets.only(left: 4),
-                          child: CText('Les animaux sont interdits',
-                              fontSize: 17, color: SECONDARY_COLOR),
-                        )
-                ]),
+                        : Padding(
+                            padding: const EdgeInsets.only(right: 22),
+                            child: Stack(
+                              children: [
+                                Icon(Ionicons.paw),
+                                Positioned(
+                                  left: -5,
+                                  child: Transform.rotate(
+                                      angle: 45,
+                                      child: Icon(
+                                        Icons.horizontal_rule_outlined,
+                                        size: 35,
+                                        color: Colors.red,
+                                      )),
+                                )
+                              ],
+                            ),
+                          ),
+                    this.animal == 'Oui'
+                        ? CText(
+                            "Le propriétaire possède un ou des animaux",
+                            fontSize: 17,
+                            color: SECONDARY_COLOR,
+                          )
+                        : CText(
+                            "Aucun animal n'est présent sur place",
+                            fontSize: 17,
+                            color: SECONDARY_COLOR,
+                          )
+                  ],
+                ),
               ),
               Row(
                 children: [
                   if (this.smoke == "A l'intérieur")
-                    (Icon(Icons.smoking_rooms_outlined))
+                    Padding(
+                      padding: const EdgeInsets.only(right: 22),
+                      child: (Icon(Icons.smoking_rooms_outlined)),
+                    )
                   else if (this.smoke == "Dans un fumoir")
-                    (Icon(Icons.smoking_rooms_outlined))
+                    Padding(
+                      padding: const EdgeInsets.only(right: 22),
+                      child: (Icon(Icons.smoking_rooms_outlined)),
+                    )
                   else if (this.smoke == 'Dehors')
-                    (Stack(children: [
-                      Icon(Icons.smoking_rooms_outlined),
-                      Positioned(
-                        left: -5,
-                        child: Transform.rotate(
-                          angle: 45,
-                          child: Icon(
-                            Icons.horizontal_rule_outlined,
-                            size: 35,
-                            color: Colors.red,
-                          ),
+                    (Stack(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 22),
+                          child: Icon(Icons.smoking_rooms_outlined),
                         ),
-                      )
-                    ])),
+                        Positioned(
+                          left: -5,
+                          child: Transform.rotate(
+                            angle: 45,
+                            child: Icon(
+                              Icons.horizontal_rule_outlined,
+                              size: 35,
+                              color: Colors.red,
+                            ),
+                          ),
+                        )
+                      ],
+                    )),
                   if (this.smoke == "A l'intérieur")
-                    Padding(
-                      padding: const EdgeInsets.only(left: 4),
-                      child: CText("Le propriétaire possède un ou des animaux",
-                          fontSize: 17, color: SECONDARY_COLOR),
-                    )
+                    CText("Vous pouvez fumer à l'intérieur",
+                        fontSize: 17, color: SECONDARY_COLOR)
                   else if (this.smoke == "Dans un fumoir")
-                    Padding(
-                      padding: const EdgeInsets.only(left: 4),
-                      child: CText("Aucun animal n'est présent sur place",
-                          fontSize: 17, color: SECONDARY_COLOR),
-                    )
+                    CText("Vous pouvez fumer dans un fumoir",
+                        fontSize: 17, color: SECONDARY_COLOR)
                   else if (this.smoke == "Dehors")
-                    Padding(
-                      padding: const EdgeInsets.only(left: 4),
-                      child: (CText("Vous devez fumer dehors",
-                          fontSize: 17, color: SECONDARY_COLOR)),
-                    )
+                    (CText("Vous devez fumer dehors",
+                        fontSize: 17, color: SECONDARY_COLOR))
                 ],
               ),
             ],

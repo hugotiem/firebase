@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:animations/animations.dart';
 import 'package:flutter/services.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:pts/pages/search/sliver/searchbar_screen.dart';
 import 'package:pts/components/custom_text.dart';
 import 'package:pts/const.dart';
@@ -64,40 +65,40 @@ class _SearchState extends State<Search> {
               bottomRight: Radius.circular(36),
             ),
           ),
-          child: Container(
-            child: Stack(
-              children: [
-                Positioned(
-                  top: (_size! - 100) / 2,
-                  right: 75,
-                  width: MediaQuery.of(context).size.width,
-                  child: Opacity(
-                    opacity: _opacity,
-                    child: Center(
-                      child: Icon(
-                        // BackGroundtitle(),
-                        Icons.location_on_outlined,
-                        size: 50,
-                        color: ICONCOLOR,
-                      ),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  top: (_size! - 100) / 2,
-                  left: 90,
-                  bottom: 29,
-                  width: MediaQuery.of(context).size.width,
-                  child: Opacity(
-                    opacity: _opacity,
-                    child: Center(
-                        child: Icon(Icons.location_on_outlined,
-                            size: 50, color: ICONCOLOR)),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          // child: Container(
+          //   child: Stack(
+          //     children: [
+          //       Positioned(
+          //         top: (_size! - 100) / 2,
+          //         right: 75,
+          //         width: MediaQuery.of(context).size.width,
+          //         child: Opacity(
+          //           opacity: _opacity,
+          //           child: Center(
+          //             child: Icon(
+          //               // BackGroundtitle(),
+          //               Icons.location_on_outlined,
+          //               size: 50,
+          //               color: ICONCOLOR,
+          //             ),
+          //           ),
+          //         ),
+          //       ),
+          //       Positioned(
+          //         top: (_size! - 100) / 2,
+          //         left: 90,
+          //         bottom: 29,
+          //         width: MediaQuery.of(context).size.width,
+          //         child: Opacity(
+          //           opacity: _opacity,
+          //           child: Center(
+          //               child: Icon(Icons.location_on_outlined,
+          //                   size: 50, color: ICONCOLOR)),
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
         ),
       ),
       body: SizedBox.expand(
@@ -191,7 +192,7 @@ class _SearchState extends State<Search> {
                         Padding(
                           padding: const EdgeInsets.only(left: 20),
                           child: Icon(
-                            Icons.search_rounded,
+                            Ionicons.search_outline,
                             size: 20,
                             color: ICONCOLOR,
                           ),

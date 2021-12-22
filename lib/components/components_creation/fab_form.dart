@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:pts/const.dart';
 
 class FABForm extends StatelessWidget {
@@ -17,7 +18,7 @@ class FABForm extends StatelessWidget {
       elevation: 1,
       onPressed: this.onPressed,
       child: Icon(
-        Icons.arrow_forward_outlined,
+        Ionicons.arrow_forward_outline,
         color: SECONDARY_COLOR,
       ),
     );

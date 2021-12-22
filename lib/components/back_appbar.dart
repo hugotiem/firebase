@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:pts/const.dart';
 
 class BackAppBar extends StatelessWidget {
@@ -33,7 +34,7 @@ class BackAppBar extends StatelessWidget {
           ? leading
           : CupertinoButton(
               child: Icon(
-                Icons.arrow_back_sharp,
+                Ionicons.arrow_back_outline,
                 color: ICONCOLOR,
               ),
               onPressed: onPressed == null 

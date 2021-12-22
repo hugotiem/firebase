@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:pts/const.dart';
 
 class SearchBar extends StatelessWidget {
@@ -25,7 +26,7 @@ class SearchBar extends StatelessWidget {
             fontSize: 18,
           ),
           icon: Icon(
-            Icons.search_rounded,
+            Ionicons.search_outline,
             size: 20,
             color: SECONDARY_COLOR,
           ),

@@ -14,7 +14,8 @@ enum VerificationType { idFront, idBack, selfie }
 class IdFormScreen extends StatefulWidget {
   final String? name;
   final String? surname;
-  const IdFormScreen({Key? key, this.name, this.surname}) : super(key: key);
+  final String? token;
+  const IdFormScreen({Key? key, this.name, this.surname, this.token}) : super(key: key);
 
   @override
   _IdFormScreenState createState() => _IdFormScreenState();
@@ -211,14 +212,14 @@ class _IdFormScreenState extends State<IdFormScreen> {
                             }
                              _showLoadingPopup();
                             await BlocProvider.of<UserCubit>(context)
-                                .addId(_idFrontImage, "idFront")
+                                .addId(_idFrontImage, "idFront", widget.token)
                                 .whenComplete(
                                   () => BlocProvider.of<UserCubit>(context)
-                                      .addId(_idBackImage, "idBack")
+                                      .addId(_idBackImage, "idBack", widget.token)
                                       .whenComplete(
                                         () =>
                                             BlocProvider.of<UserCubit>(context)
-                                                .addId(_faceImage, "selfie"),
+                                                .addId(_faceImage, "selfie", widget.token),
                                       )
                                       .whenComplete(
                                         () =>

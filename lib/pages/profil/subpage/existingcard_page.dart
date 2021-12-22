@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:pts/components/back_appbar.dart';
 import 'package:pts/components/title_appbar.dart';
 
@@ -35,7 +36,7 @@ class _ExistingCardState extends State<ExistingCard> {
               },
               child: ListTile(
                 title: Text('Ajouter une carte'),
-                leading: Icon(Icons.add_circle_outline)
+                leading: Icon(Ionicons.add_circle_outline)
               ),
             ),
           ),
