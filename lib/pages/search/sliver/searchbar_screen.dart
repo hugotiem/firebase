@@ -9,6 +9,7 @@ import 'package:pts/blocs/parties/parties_cubit.dart';
 import 'package:pts/blocs/search/search_cubit.dart';
 import 'package:pts/const.dart';
 import 'package:pts/models/party.dart';
+import 'package:pts/pages/search/sliver/items.dart';
 import 'package:pts/pages/search/sliver/searchbar.dart';
 import 'package:pts/components/party_card.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -30,10 +31,10 @@ class _SearchBarScreenState extends State<SearchBarScreen>
   Completer<GoogleMapController> mapControllerCompleter =
       Completer<GoogleMapController>();
 
-  String _search = "";
-  String? _result;
   bool _hasResults = false;
   bool _isDissmissed = false;
+  int _index = 0;
+  String result = "";
 
   double _factor = 0;
   double _rotation = 0;
@@ -48,172 +49,8 @@ class _SearchBarScreenState extends State<SearchBarScreen>
   double? longitude;
   double? latitude;
 
+  Set<Marker> markers = Set<Marker>();
   // Google maps style
-  String? mapStyle = '''
-  
-  [
-    {
-      "elementType": "geometry",
-      "stylers": [
-        {
-          "color": "#242f3e"
-        }
-      ]
-    },
-    {
-      "elementType": "labels.text.fill",
-      "stylers": [
-        {
-          "color": "#746855"
-        }
-      ]
-    },
-    {
-      "elementType": "labels.text.stroke",
-      "stylers": [
-        {
-          "color": "#242f3e"
-        }
-      ]
-    },
-    {
-      "featureType": "administrative.locality",
-      "elementType": "labels.text.fill",
-      "stylers": [
-        {
-          "color": "#d59563"
-        }
-      ]
-    },
-    {
-      "featureType": "poi",
-      "elementType": "labels.text.fill",
-      "stylers": [
-        {
-          "color": "#d59563"
-        }
-      ]
-    },
-    {
-      "featureType": "poi.park",
-      "elementType": "geometry",
-      "stylers": [
-        {
-          "color": "#263c3f"
-        }
-      ]
-    },
-    {
-      "featureType": "poi.park",
-      "elementType": "labels.text.fill",
-      "stylers": [
-        {
-          "color": "#6b9a76"
-        }
-      ]
-    },
-    {
-      "featureType": "road",
-      "elementType": "geometry",
-      "stylers": [
-        {
-          "color": "#38414e"
-        }
-      ]
-    },
-    {
-      "featureType": "road",
-      "elementType": "geometry.stroke",
-      "stylers": [
-        {
-          "color": "#212a37"
-        }
-      ]
-    },
-    {
-      "featureType": "road",
-      "elementType": "labels.text.fill",
-      "stylers": [
-        {
-          "color": "#9ca5b3"
-        }
-      ]
-    },
-    {
-      "featureType": "road.highway",
-      "elementType": "geometry",
-      "stylers": [
-        {
-          "color": "#746855"
-        }
-      ]
-    },
-    {
-      "featureType": "road.highway",
-      "elementType": "geometry.stroke",
-      "stylers": [
-        {
-          "color": "#1f2835"
-        }
-      ]
-    },
-    {
-      "featureType": "road.highway",
-      "elementType": "labels.text.fill",
-      "stylers": [
-        {
-          "color": "#f3d19c"
-        }
-      ]
-    },
-    {
-      "featureType": "transit",
-      "elementType": "geometry",
-      "stylers": [
-        {
-          "color": "#2f3948"
-        }
-      ]
-    },
-    {
-      "featureType": "transit.station",
-      "elementType": "labels.text.fill",
-      "stylers": [
-        {
-          "color": "#d59563"
-        }
-      ]
-    },
-    {
-      "featureType": "water",
-      "elementType": "geometry",
-      "stylers": [
-        {
-          "color": "#17263c"
-        }
-      ]
-    },
-    {
-      "featureType": "water",
-      "elementType": "labels.text.fill",
-      "stylers": [
-        {
-          "color": "#515c6d"
-        }
-      ]
-    },
-    {
-      "featureType": "water",
-      "elementType": "labels.text.stroke",
-      "stylers": [
-        {
-          "color": "#17263c"
-        }
-      ]
-    }
-  ]
-  
-  ''';
 
   @override
   void initState() {
@@ -231,13 +68,20 @@ class _SearchBarScreenState extends State<SearchBarScreen>
     super.dispose();
   }
 
+  double random() {
+    // generate number between -0.0001 and 0.0001
+    double rand = (math.Random().nextDouble() - 0.1) * 0.002;
+    return rand;
+  }
+
   Set<Marker> _buildMarkers(List<Party>? parties) {
     return Set.from(
       parties?.map(
             (e) => Marker(
               markerId: MarkerId(e.id),
               infoWindow: InfoWindow(title: e.name, snippet: e.desc),
-              position: LatLng(e.coordinates[1], e.coordinates[0]),
+              position: LatLng(
+                  e.coordinates[1] + random(), e.coordinates[0] + random()),
             ),
           ) ??
           [],
@@ -291,101 +135,231 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                     width: _size.width,
                     color: PRIMARY_COLOR.withOpacity(1 - _factor),
                     padding: EdgeInsets.only(top: 50, bottom: 40),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: Transform.rotate(
-                            angle: _isDissmissed
-                                ? (-90 * _rotation) * math.pi / 180
-                                : 0,
-                            child: IconButton(
-                              icon: Icon(
-                                Icons.arrow_back,
-                                color:
-                                    _factor == 1 ? ICONCOLOR : SECONDARY_COLOR,
-                              ),
-                              onPressed: () async {
-                                if (!_isDissmissed || _hasResults)
-                                  Navigator.of(context).pop();
-                                else {
-                                  FocusScope.of(context).unfocus();
+                    child: BlocBuilder<SearchCubit, SearchState>(
+                        builder: (context, state) {
+                      return Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Transform.rotate(
+                              angle: _isDissmissed
+                                  ? (-90 * _rotation) * math.pi / 180
+                                  : 0,
+                              child: IconButton(
+                                icon: Icon(
+                                  Icons.arrow_back,
+                                  color: _factor == 1
+                                      ? ICONCOLOR
+                                      : SECONDARY_COLOR,
+                                ),
+                                onPressed: () async {
+                                  if (!_isDissmissed || _hasResults)
+                                    Navigator.of(context).pop();
+                                  else {
+                                    FocusScope.of(context).unfocus();
 
-                                  _searchPanelController
-                                      .close()
-                                      .whenComplete(() => setState(() {
-                                            _hasResults = true;
-                                          }));
-                                  setState(() {
-                                    if (!_resultsPanelController.isPanelOpen) {
-                                      _factor = 0;
-                                      _systemUiOverlayStyle =
-                                          SystemUiOverlayStyle.light;
-                                    }
-                                  });
-
-                                  _animationController.animateTo(0,
-                                      curve: Curves.ease);
-                                  _animationController.addListener(() {
+                                    _searchPanelController
+                                        .close()
+                                        .whenComplete(() => setState(() {
+                                              _hasResults = true;
+                                            }));
                                     setState(() {
-                                      _rotation = _animationController.value;
+                                      if (!_resultsPanelController
+                                          .isPanelOpen) {
+                                        _factor = 0;
+                                        _systemUiOverlayStyle =
+                                            SystemUiOverlayStyle.light;
+                                        _index = 1;
+                                      }
                                     });
-                                  });
-                                }
-                              },
+
+                                    _animationController.animateTo(0,
+                                        curve: Curves.ease);
+                                    _animationController.addListener(() {
+                                      setState(() {
+                                        _rotation = _animationController.value;
+                                      });
+                                    });
+                                  }
+                                },
+                              ),
                             ),
                           ),
-                        ),
-                        BlocBuilder<SearchCubit, SearchState>(
-                            builder: (context, state) {
-                          return Expanded(
+                          Expanded(
                             flex: 8,
-                            child: Container(
-                              child: SearchBar(
-                                onChanged: (value) {
-                                  BlocProvider.of<SearchCubit>(context)
-                                      .fetchResults(value);
-                                },
-                                onTap: () {
-                                  setState(() {
-                                    _hasResults = false;
-                                    _systemUiOverlayStyle =
-                                        SystemUiOverlayStyle.dark;
-                                  });
+                            child: IndexedStack(
+                              index: _index,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SearchBar(
+                                      onChanged: (value) {
+                                        BlocProvider.of<SearchCubit>(context)
+                                            .fetchResults(value);
+                                      },
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(top: 20),
+                                      child: Text(
+                                        "Résultats :",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Container(
+                                  margin: EdgeInsets.symmetric(horizontal: 20),
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 10, horizontal: 10),
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Column(
+                                    children: [
+                                      GestureDetector(
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 10, vertical: 10),
+                                          width: double.infinity,
+                                          child: Text(result),
+                                          decoration: BoxDecoration(
+                                            border: Border(
+                                              bottom: BorderSide(
+                                                color: Colors.grey
+                                                    .withOpacity(0.2),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        onTap: () => setState(() {
+                                          _index = 0;
+                                          _hasResults = false;
+                                          _systemUiOverlayStyle =
+                                              SystemUiOverlayStyle.dark;
 
-                                  _searchPanelController.open();
-                                  _panelPosition =
-                                      _resultsPanelController.panelPosition;
-                                  _animationController.animateTo(1,
-                                      curve: Curves.ease);
+                                          _searchPanelController.open();
+                                          _panelPosition =
+                                              _resultsPanelController
+                                                  .panelPosition;
+                                          _animationController.animateTo(1,
+                                              curve: Curves.ease);
 
-                                  _animationController.addListener(() {
-                                    setState(() {
-                                      if (!_resultsPanelController.isPanelOpen)
-                                        _factor =
-                                            1 - _animationController.value;
-                                      _rotation = _animationController.value;
-                                    });
-                                  });
-                                },
-                              ),
+                                          _animationController.addListener(() {
+                                            setState(() {
+                                              if (!_resultsPanelController
+                                                  .isPanelOpen)
+                                                _factor = 1 -
+                                                    _animationController.value;
+                                              _rotation =
+                                                  _animationController.value;
+                                            });
+                                          });
+                                        }),
+                                      ),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: GestureDetector(
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  border: Border(
+                                                    right: BorderSide(
+                                                      color: Colors.grey
+                                                          .withOpacity(0.2),
+                                                    ),
+                                                  ),
+                                                ),
+                                                child: Padding(
+                                                  padding:
+                                                      EdgeInsets.only(top: 10),
+                                                  child: Column(
+                                                    children: [
+                                                      Text("date"),
+                                                      Text(
+                                                        "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}",
+                                                        overflow:
+                                                            TextOverflow.fade,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                              onTap: () => showModalBottomSheet(
+                                                context: context,
+                                                builder: (context) => Scaffold(
+                                                  appBar: AppBar(
+                                                    elevation: 0,
+                                                    backgroundColor:
+                                                        Colors.transparent,
+                                                    systemOverlayStyle:
+                                                        SystemUiOverlayStyle
+                                                            .dark,
+                                                  ),
+                                                ),
+                                                isScrollControlled: true,
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: GestureDetector(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Text("Filtre"),
+                                                  Padding(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 10),
+                                                    child: Icon(
+                                                        Icons.sort_rounded),
+                                                  ),
+                                                ],
+                                              ),
+                                              onTap: () => showModalBottomSheet(
+                                                context: context,
+                                                builder: (context) => Scaffold(
+                                                  appBar: AppBar(
+                                                    elevation: 0,
+                                                    backgroundColor:
+                                                        Colors.transparent,
+                                                    systemOverlayStyle:
+                                                        SystemUiOverlayStyle
+                                                            .dark,
+                                                  ),
+                                                ),
+                                                isScrollControlled: true,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
-                          );
-                        }),
-                      ],
-                    ),
+                          ),
+                        ],
+                      );
+                    }),
                   ),
                   Stack(
                     children: <Widget>[
                       Container(
-                        height: _size.height - 150,
+                        height: _size.height - 195,
                         child: SlidingUpPanel(
                           isDraggable: _isDissmissed,
                           defaultPanelState: PanelState.OPEN,
                           controller: _resultsPanelController,
                           snapPoint: 0.5,
                           minHeight: 100,
-                          maxHeight: _size.height - 150,
+                          maxHeight: _size.height - 195,
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(36 * _factor),
                             topRight: Radius.circular(36 * _factor),
@@ -468,6 +442,9 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                                                         desc?.split(",")[0]);
                                                 setState(() {
                                                   _hasResults = true;
+                                                  _index = 1;
+                                                  result = results[index]
+                                                      .description!;
                                                   _resultsPanelController
                                                       .animatePanelToSnapPoint(
                                                     duration: Duration(
@@ -478,6 +455,7 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                                                   _animationController
                                                       .animateTo(0,
                                                           curve: Curves.ease);
+
                                                   _animationController
                                                       .addListener(() {
                                                     setState(() {
@@ -511,10 +489,11 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                         ),
                       ),
                       Container(
-                        height: _hasResults ? 0 : _size.height - 150,
+                        height: _hasResults ? 0 : _size.height - 195,
                         child: SlidingUpPanel(
+                          isDraggable: false,
                           minHeight: 0,
-                          maxHeight: _size.height - 150,
+                          maxHeight: _size.height - 195,
                           controller: _searchPanelController,
                           boxShadow: [],
                           panelBuilder: (sc) =>
@@ -539,6 +518,8 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                                         setState(() {
                                           _hasResults = true;
                                           _isDissmissed = true;
+                                          _index = 1;
+                                          result = results[index].description!;
                                         });
                                         String? desc =
                                             results[index].description;

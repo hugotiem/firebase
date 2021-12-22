@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -292,10 +294,13 @@ class NotificationPage extends StatelessWidget {
     return Scaffold(
       body: (Center(
         child: TextButton(
-          onPressed: () => NotificationService.showNotification(
-              body: 'Vous avez été accepté à la soirée du roi.',
-              title: 'PTS',
-              payload: 'test'),
+          onPressed: () => Timer(
+            const Duration(seconds: 15),
+            () => NotificationService.showNotification(
+                body: 'Vous avez été accepté à la soirée du roi.',
+                title: 'PTS',
+                payload: 'test'),
+          ),
           child: Text('Notification'),
         ),
       )),
