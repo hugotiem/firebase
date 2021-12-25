@@ -51,12 +51,14 @@ class UserCubit extends AppBaseCubit<UserState> {
       String? gender,
       var birthday}) async {
     emit(state.setRequestInProgress() as UserState);
+    bool verified = false;
     Map<String, dynamic> data = <String, dynamic>{
       "name": name,
       "surname": surname,
       "phone number": phonenumber,
       "gender": gender,
       "birthday": birthday,
+      "verified": verified,
     };
     await firestore.setWithId(token, data: data);
     emit(UserState.dataLoaded(user: state.user, token: state.token));
