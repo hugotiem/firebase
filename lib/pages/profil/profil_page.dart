@@ -56,7 +56,6 @@ class _ProfilState extends State<Profil> {
               return Center(child: CircularProgressIndicator());
             }
 
-
             return SingleChildScrollView(
               child: Container(
                 color: PRIMARY_COLOR,
@@ -257,7 +256,7 @@ class NotificationPage extends StatelessWidget {
       body: (Center(
         child: TextButton(
           onPressed: () => Timer(
-            const Duration(seconds: 15),
+            const Duration(seconds: 10),
             () => NotificationService.showNotification(
                 body: 'Vous avez été accepté à la soirée du roi.',
                 title: 'PTS',

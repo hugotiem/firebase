@@ -37,7 +37,7 @@ class User {
     var data = snapshot.data()!;
     var name = data['name'];
     var surname = data['surname'];
-    var birthday = data['birthday'].toDate();
+    var birthday = data['birthday']?.toDate() ?? DateTime(2017);
     var now = DateTime.now();
     var age = (now.difference(birthday).inDays / 365).floor();
     var gender = data['gender'];

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:math' as math;
 
 class Party {
   String id;
@@ -20,6 +21,7 @@ class Party {
   List<dynamic>? validateGuestList;
   int? distance;
   List<double> coordinates;
+  List<double> approximativeCoordinates;
 
   Party(
       this.id,
@@ -40,7 +42,14 @@ class Party {
       this.uid,
       this.validateGuestList,
       this.coordinates,
+      this.approximativeCoordinates,
       {this.distance});
+
+  static double random() {
+    // generate number between -0.0001 and 0.0001
+    double rand = (math.Random().nextDouble() - 0.1) * 0.002;
+    return rand;
+  }
 
   factory Party.fromSnapShots(
       QueryDocumentSnapshot<Map<String, dynamic>> snapshots) {
@@ -62,7 +71,10 @@ class Party {
     var owner = data['owner'];
     var uid = data['uid'];
     var validateGuestList = data['validate guest list'];
-    var coordinates = ((data['coordinates'] ?? []) as List<dynamic>).cast<double>();
+    var coordinates =
+        ((data['coordinates'] ?? []) as List<dynamic>).cast<double>();
+    var approximativeCoordinates =
+        coordinates.map((e) => e + random()).toList();
     return Party(
         id,
         name,
@@ -80,6 +92,8 @@ class Party {
         animals,
         owner,
         uid,
-        validateGuestList, coordinates);
+        validateGuestList,
+        coordinates,
+        approximativeCoordinates);
   }
 }

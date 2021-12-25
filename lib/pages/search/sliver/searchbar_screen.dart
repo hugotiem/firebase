@@ -69,12 +69,6 @@ class _SearchBarScreenState extends State<SearchBarScreen>
     super.dispose();
   }
 
-  double random() {
-    // generate number between -0.0001 and 0.0001
-    double rand = (math.Random().nextDouble() - 0.1) * 0.002;
-    return rand;
-  }
-
   Set<Marker> _buildMarkers(List<Party>? parties) {
     return Set.from(
       parties?.map(
@@ -82,7 +76,7 @@ class _SearchBarScreenState extends State<SearchBarScreen>
               markerId: MarkerId(e.id),
               infoWindow: InfoWindow(title: e.name, snippet: e.desc),
               position: LatLng(
-                  e.coordinates[1] + random(), e.coordinates[0] + random()),
+                  e.approximativeCoordinates[1], e.approximativeCoordinates[0]),
             ),
           ) ??
           [],
@@ -171,8 +165,8 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                                         _factor = 0;
                                         _systemUiOverlayStyle =
                                             SystemUiOverlayStyle.light;
-                                        _index = 1;
                                       }
+                                      _index = 1;
                                     });
 
                                     _animationController.animateTo(0,
@@ -436,11 +430,14 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                                                 String? desc =
                                                     results[index].description;
                                                 _getCoordinates(desc);
-                                                BlocProvider.of<PartiesCubit>(
-                                                        context)
-                                                    .fetchPartiesWithWhereIsEqualTo(
-                                                        "city",
-                                                        desc?.split(",")[0]);
+                                                if (desc != result) {
+                                                  BlocProvider.of<PartiesCubit>(
+                                                          context)
+                                                      .fetchPartiesWithWhereIsEqualTo(
+                                                          "city",
+                                                          desc?.split(",")[0]);
+                                                }
+
                                                 setState(() {
                                                   _hasResults = true;
                                                   _index = 1;
@@ -525,9 +522,12 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                                         String? desc =
                                             results[index].description;
                                         _getCoordinates(desc);
-                                        BlocProvider.of<PartiesCubit>(context)
-                                            .fetchPartiesWithWhereIsEqualTo(
-                                                "city", desc?.split(",")[0]);
+                                        if (desc != result) {
+                                          BlocProvider.of<PartiesCubit>(context)
+                                              .fetchPartiesWithWhereIsEqualTo(
+                                                  "city", desc?.split(",")[0]);
+                                        }
+
                                         _resultsPanelController
                                             .animatePanelToSnapPoint(
                                           duration: Duration(milliseconds: 300),

@@ -36,7 +36,7 @@ class _SearchState extends State<Search> {
       _opacity = 1;
       _barSizeWidth = 350;
       _barSizeHeight = 60;
-      _systemOverlayStyle = SystemUiOverlayStyle.dark;
+      _systemOverlayStyle = SystemUiOverlayStyle.light;
       _toolbarColor = Colors.transparent;
     });
     super.initState();
@@ -146,7 +146,7 @@ class _SearchState extends State<Search> {
             if (_pixels <= 400 && (400 - _pixels) >= 100) {
               _size = 400 - _pixels;
               _toolbarColor = Colors.transparent;
-
+              _systemOverlayStyle = SystemUiOverlayStyle.light;
               if (_pixels >= 250) {
                 _opacity = (_size! - 100) / 50;
               } else if (_pixels <= 250) {
@@ -158,6 +158,7 @@ class _SearchState extends State<Search> {
               _size = 100;
               _opacity = 0;
               _toolbarColor = PRIMARY_COLOR;
+              _systemOverlayStyle = SystemUiOverlayStyle.dark;
             }
           }
         });
