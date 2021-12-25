@@ -14,6 +14,7 @@ class User {
   bool? hasIdChecked;
   String? phone;
   String? email;
+  bool? verified;
 
   User(
       {this.id,
@@ -23,7 +24,8 @@ class User {
       this.gender,
       this.hasIdChecked,
       this.email,
-      this.phone});
+      this.phone,
+      this.verified});
 
   Future<User?> get currentUser async {
     var token = await authService.getToken();
@@ -44,6 +46,7 @@ class User {
     var phone = data['phone number'];
     var email = data['email'];
     var hasIdChecked = data['idFront'] != null;
+    var verified = data['verified'];
 
     return User(
         id: id,
@@ -53,6 +56,7 @@ class User {
         age: age,
         gender: gender,
         email: email,
-        phone: phone);
+        phone: phone,
+        verified: verified);
   }
 }
