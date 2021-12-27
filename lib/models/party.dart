@@ -6,7 +6,7 @@ class Party {
   String? name;
   String? theme;
   String? number;
-  var date;
+  DateTime date;
   DateTime? startTime;
   DateTime? endTime;
   var price;
@@ -46,8 +46,8 @@ class Party {
       {this.distance});
 
   static double random() {
-    // generate number between -0.0001 and 0.0001
-    double rand = (math.Random().nextDouble() - 0.1) * 0.002;
+    // generate number between -0.001 and 0.001
+    double rand = ((math.Random().nextDouble() * 2) - 1) * 0.001;
     return rand;
   }
 

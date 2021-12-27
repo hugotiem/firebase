@@ -10,6 +10,7 @@ import 'package:pts/blocs/parties/parties_cubit.dart';
 import 'package:pts/blocs/search/search_cubit.dart';
 import 'package:pts/const.dart';
 import 'package:pts/models/party.dart';
+import 'package:pts/pages/search/sliver/calendar_screen.dart';
 import 'package:pts/pages/search/sliver/items.dart';
 import 'package:pts/pages/search/sliver/searchbar.dart';
 import 'package:pts/components/party_card.dart';
@@ -25,20 +26,25 @@ class SearchBarScreen extends StatefulWidget {
 
 class _SearchBarScreenState extends State<SearchBarScreen>
     with TickerProviderStateMixin {
-  PanelController _resultsPanelController = PanelController();
-  PanelController _searchPanelController = PanelController();
+  // controllers
+  final PanelController _resultsPanelController = PanelController();
+  final PanelController _searchPanelController = PanelController();
   late AnimationController _animationController;
   GoogleMapController? mapController;
   Completer<GoogleMapController> mapControllerCompleter =
       Completer<GoogleMapController>();
 
+  final FocusNode focusNode = FocusNode();
+
+  // privates variables
   bool _hasResults = false;
   bool _isDissmissed = false;
   int _index = 0;
   String result = "";
-
   double _factor = 0;
   double _rotation = 0;
+
+  DateTime _selectedDate = DateTime.now();
 
   SystemUiOverlayStyle _systemUiOverlayStyle = SystemUiOverlayStyle.dark;
 
@@ -186,22 +192,27 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                             child: IndexedStack(
                               index: _index,
                               children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                Stack(
+                                  clipBehavior: Clip.none,
                                   children: [
                                     SearchBar(
                                       onChanged: (value) {
                                         BlocProvider.of<SearchCubit>(context)
                                             .fetchResults(value);
                                       },
+                                      focusNode: focusNode,
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 20),
-                                      child: Text(
-                                        "Résultats :",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18,
+                                    Positioned(
+                                      bottom: -60,
+                                      left: -30,
+                                      child: Padding(
+                                        padding: EdgeInsets.only(top: 20),
+                                        child: Text(
+                                          "Résultats :",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18,
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -232,6 +243,7 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                                           ),
                                         ),
                                         onTap: () => setState(() {
+                                          focusNode.requestFocus();
                                           _index = 0;
                                           _hasResults = false;
                                           _systemUiOverlayStyle =
@@ -276,7 +288,7 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                                                     children: [
                                                       Text("date"),
                                                       Text(
-                                                        "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}",
+                                                        "${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}",
                                                         overflow:
                                                             TextOverflow.fade,
                                                       ),
@@ -284,20 +296,30 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                                                   ),
                                                 ),
                                               ),
-                                              onTap: () => showModalBottomSheet(
-                                                context: context,
-                                                builder: (context) => Scaffold(
-                                                  appBar: AppBar(
-                                                    elevation: 0,
-                                                    backgroundColor:
-                                                        Colors.transparent,
-                                                    systemOverlayStyle:
-                                                        SystemUiOverlayStyle
-                                                            .dark,
+                                              onTap: () {
+                                                BuildContext mainContext =
+                                                    context;
+                                                Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        CalendarScreen(
+                                                      currentDay: _selectedDate,
+                                                      focusedDay: _selectedDate,
+                                                      onClose: (date) {
+                                                        setState(() {
+                                                          _selectedDate = date;
+                                                        });
+                                                        BlocProvider.of<
+                                                                    PartiesCubit>(
+                                                                mainContext)
+                                                            .fetchCurrentPartiesWithDateEqualTo(
+                                                                date);
+                                                      },
+                                                    ),
+                                                    fullscreenDialog: true,
                                                   ),
-                                                ),
-                                                isScrollControlled: true,
-                                              ),
+                                                );
+                                              },
                                             ),
                                           ),
                                           Expanded(
@@ -433,9 +455,11 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                                                 if (desc != result) {
                                                   BlocProvider.of<PartiesCubit>(
                                                           context)
-                                                      .fetchPartiesWithWhereIsEqualTo(
-                                                          "city",
-                                                          desc?.split(",")[0]);
+                                                      .fetchPartiesByDateWithWhereIsEqualTo(
+                                                    "city",
+                                                    desc?.split(",")[0],
+                                                    DateTime.now(),
+                                                  );
                                                 }
 
                                                 setState(() {
@@ -518,14 +542,19 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                                           _isDissmissed = true;
                                           _index = 1;
                                           result = results[index].description!;
+                                          _systemUiOverlayStyle =
+                                              SystemUiOverlayStyle.light;
                                         });
                                         String? desc =
                                             results[index].description;
                                         _getCoordinates(desc);
                                         if (desc != result) {
                                           BlocProvider.of<PartiesCubit>(context)
-                                              .fetchPartiesWithWhereIsEqualTo(
-                                                  "city", desc?.split(",")[0]);
+                                              .fetchPartiesByDateWithWhereIsEqualTo(
+                                            "city",
+                                            desc?.split(",")[0],
+                                            DateTime.now(),
+                                          );
                                         }
 
                                         _resultsPanelController
@@ -570,8 +599,6 @@ class _SearchBarScreenState extends State<SearchBarScreen>
     Location place = coordinates[0];
     double longitude = place.longitude;
     double latitude = place.latitude;
-
-    print("update coordinates : $longitude and $latitude");
 
     setState(() {
       this.longitude = longitude;
