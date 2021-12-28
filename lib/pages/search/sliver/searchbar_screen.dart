@@ -11,6 +11,7 @@ import 'package:pts/blocs/search/search_cubit.dart';
 import 'package:pts/const.dart';
 import 'package:pts/models/party.dart';
 import 'package:pts/pages/search/sliver/calendar_screen.dart';
+import 'package:pts/pages/search/sliver/filter_screen.dart';
 import 'package:pts/pages/search/sliver/items.dart';
 import 'package:pts/pages/search/sliver/searchbar.dart';
 import 'package:pts/components/party_card.dart';
@@ -29,6 +30,7 @@ class _SearchBarScreenState extends State<SearchBarScreen>
   // controllers
   final PanelController _resultsPanelController = PanelController();
   final PanelController _searchPanelController = PanelController();
+  final PanelController _filterPanelController = PanelController();
   late AnimationController _animationController;
   GoogleMapController? mapController;
   Completer<GoogleMapController> mapControllerCompleter =
@@ -50,7 +52,7 @@ class _SearchBarScreenState extends State<SearchBarScreen>
 
   // to save panel position
   // ignore: unused_field
-  double? _panelPosition;
+  double _panelPosition = 0;
 
   // coordinates
   double? longitude;
@@ -115,6 +117,7 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                   if (longitude == null || latitude == null)
                     return Center(child: CircularProgressIndicator());
                   return GoogleMap(
+                    compassEnabled: false,
                     onMapCreated: (controller) {
                       mapController = controller;
                       mapControllerCompleter
@@ -250,9 +253,9 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                                               SystemUiOverlayStyle.dark;
 
                                           _searchPanelController.open();
-                                          _panelPosition =
-                                              _resultsPanelController
-                                                  .panelPosition;
+                                          // _panelPosition =
+                                          //     _resultsPanelController
+                                          //         .panelPosition;
                                           _animationController.animateTo(1,
                                               curve: Curves.ease);
 
@@ -282,42 +285,51 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                                                   ),
                                                 ),
                                                 child: Padding(
-                                                  padding:
-                                                      EdgeInsets.only(top: 10),
-                                                  child: Column(
-                                                    children: [
-                                                      Text("date"),
-                                                      Text(
-                                                        "${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}",
-                                                        overflow:
-                                                            TextOverflow.fade,
-                                                      ),
-                                                    ],
+                                                  padding: EdgeInsets.only(
+                                                      top: 14, bottom: 14),
+                                                  child: Text(
+                                                    "${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}",
+                                                    overflow: TextOverflow.fade,
+                                                    textAlign: TextAlign.center,
                                                   ),
                                                 ),
                                               ),
                                               onTap: () {
                                                 BuildContext mainContext =
                                                     context;
-                                                Navigator.of(context).push(
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        CalendarScreen(
-                                                      currentDay: _selectedDate,
-                                                      focusedDay: _selectedDate,
-                                                      onClose: (date) {
-                                                        setState(() {
-                                                          _selectedDate = date;
-                                                        });
-                                                        BlocProvider.of<
-                                                                    PartiesCubit>(
-                                                                mainContext)
-                                                            .fetchCurrentPartiesWithDateEqualTo(
-                                                                date);
-                                                      },
-                                                    ),
-                                                    fullscreenDialog: true,
+                                                showModalBottomSheet(
+                                                  context: context,
+                                                  constraints: BoxConstraints(
+                                                      maxHeight: 600),
+                                                  builder: (context) =>
+                                                      CalendarScreen(
+                                                    currentDay: _selectedDate,
+                                                    focusedDay: _selectedDate,
+                                                    onClose: (date) {
+                                                      setState(() {
+                                                        _selectedDate = date;
+                                                      });
+                                                      BlocProvider.of<
+                                                                  PartiesCubit>(
+                                                              mainContext)
+                                                          .fetchPartiesByDateWithWhereIsEqualTo(
+                                                              'city',
+                                                              result.split(
+                                                                  ", ")[0],
+                                                              date);
+                                                    },
                                                   ),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.only(
+                                                      topLeft:
+                                                          Radius.circular(10),
+                                                      topRight:
+                                                          Radius.circular(10),
+                                                    ),
+                                                  ),
+                                                  clipBehavior: Clip.antiAlias,
+                                                  isScrollControlled: true,
                                                 );
                                               },
                                             ),
@@ -338,20 +350,14 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                                                   ),
                                                 ],
                                               ),
-                                              onTap: () => showModalBottomSheet(
-                                                context: context,
-                                                builder: (context) => Scaffold(
-                                                  appBar: AppBar(
-                                                    elevation: 0,
-                                                    backgroundColor:
-                                                        Colors.transparent,
-                                                    systemOverlayStyle:
-                                                        SystemUiOverlayStyle
-                                                            .dark,
-                                                  ),
-                                                ),
-                                                isScrollControlled: true,
-                                              ),
+                                              onTap: () =>
+                                                  _filterPanelController
+                                                      .animatePanelToSnapPoint(
+                                                          duration:
+                                                              const Duration(
+                                                                  milliseconds:
+                                                                      200),
+                                                          curve: Curves.ease),
                                             ),
                                           ),
                                         ],
@@ -407,6 +413,19 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                                         return Center(
                                           child: CircularProgressIndicator(),
                                         );
+
+                                      if (parties.isEmpty) {
+                                        return Container(
+                                          margin: EdgeInsets.symmetric(
+                                              horizontal: 20,
+                                              vertical:
+                                                  30 + _panelPosition * 120),
+                                          child: Text(
+                                            "Aucun résultat ne correspond à ta recherche... \nRegarde pour une autre date !",
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        );
+                                      }
 
                                       return ListView.builder(
                                         controller: sc,
@@ -497,6 +516,7 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                           },
                           onPanelSlide: (position) {
                             setState(() {
+                              _panelPosition = position;
                               if (position >= 0.8) {
                                 _factor = 1 - ((position * 5) - 4);
                                 _systemUiOverlayStyle =
@@ -582,6 +602,21 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                     ],
                   ),
                 ],
+              ),
+              SlidingUpPanel(
+                minHeight: 0,
+                maxHeight: MediaQuery.of(context).size.height - 50,
+                panelBuilder: (ScrollController sc) {
+                  return FilterScreen(sc: sc);
+                },
+                controller: _filterPanelController,
+                backdropEnabled: true,
+                snapPoint: 0.5,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(10),
+                  topRight: Radius.circular(10),
+                ),
+                color: Colors.transparent,
               ),
             ],
           ),

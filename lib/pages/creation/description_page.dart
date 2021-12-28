@@ -64,6 +64,8 @@ class _DescriptionPageState extends State<DescriptionPage> {
 
             await BlocProvider.of<BuildPartiesCubit>(context).addToFireStore();
 
+            FocusScope.of(context).unfocus();
+
             // await db.add(
             //   data: {
             //     'Name': Soiree.nom.trimRight().trimLeft().inCaps,

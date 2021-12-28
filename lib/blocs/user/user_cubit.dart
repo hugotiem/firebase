@@ -24,6 +24,7 @@ class UserCubit extends AppBaseCubit<UserState> {
     });
     service.instance.authStateChanges().listen((user) async {
       if (user != null) {
+        emit(state.setRequestInProgress() as UserState);
         await this.loadData(user: user);
       } else {
         await service.setToken(null);

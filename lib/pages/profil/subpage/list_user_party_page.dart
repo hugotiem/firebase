@@ -11,8 +11,8 @@ import 'package:pts/components/title_appbar.dart';
 class GetPartyData extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        home: DefaultTabController(
+    return Scaffold(
+        body: DefaultTabController(
       length: 2,
       child: Scaffold(
           appBar: PreferredSize(

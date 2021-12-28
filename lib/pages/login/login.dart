@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:pts/const.dart';
@@ -61,6 +62,7 @@ class _LoginPageState extends State<LoginPage>
               appBar: AppBar(
                 elevation: 0,
                 backgroundColor: Colors.transparent,
+                systemOverlayStyle: SystemUiOverlayStyle.dark,
                 iconTheme:
                     Theme.of(context).iconTheme.copyWith(color: ICONCOLOR),
                 title: _currentIndex == 0

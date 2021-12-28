@@ -79,6 +79,7 @@ class PartiesCubit extends AppBaseCubit<PartiesState> {
     List<Party> partiesWithDates = [];
     await fetchPartiesWithWhereIsEqualTo(key, data, isWithDate: true)
         .then((parties) {
+      print("parties size ${parties?.length}");
       (parties as List<Party>).forEach((element) {
         if (isSameDay(element.date, date)) {
           partiesWithDates.add(element);

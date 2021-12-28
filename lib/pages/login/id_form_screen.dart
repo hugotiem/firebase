@@ -50,8 +50,10 @@ class _IdFormScreenState extends State<IdFormScreen> {
               builder: (context, state) {
                 return Scaffold(
                   appBar: AppBar(
+                    
                     automaticallyImplyLeading: false,
                     backgroundColor: Colors.transparent,
+                    systemOverlayStyle: SystemUiOverlayStyle.dark,
                     elevation: 0,
                     leading: Builder(
                       builder: (context) => IconButton(

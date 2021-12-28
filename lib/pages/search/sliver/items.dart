@@ -159,7 +159,24 @@ String mapStyle = '''
           "color": "#17263c"
         }
       ]
-    }
+    },
+    {
+      "featureType": "poi",
+      "stylers": [
+        {
+          "visibility": "off"
+        }
+      ]
+    },
+    {
+      "featureType": "all",
+      "elementType": "labels.icon",
+      "stylers": [
+        {
+          "visibility": "off"
+        }
+      ]
+    },
   ]
   
   ''';
