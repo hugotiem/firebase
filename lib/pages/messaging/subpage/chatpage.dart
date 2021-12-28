@@ -422,7 +422,7 @@ class OtherUserMessage extends StatelessWidget {
 }
 
 bool detect(String str) {
-  if (str.toString().contains('firebasestorage')) {
+  if (str.toString().contains('https://firebasestorage.googleapis.com/v0/b/pts-beta-yog.appspot.com/o/Messagerie%')) {
     return true;
   } else {
     return false;

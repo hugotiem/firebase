@@ -52,14 +52,13 @@ class UserCubit extends AppBaseCubit<UserState> {
       String? gender,
       var birthday}) async {
     emit(state.setRequestInProgress() as UserState);
-    bool verified = false;
     Map<String, dynamic> data = <String, dynamic>{
       "name": name,
       "surname": surname,
       "phone number": phonenumber,
       "gender": gender,
       "birthday": birthday,
-      "verified": verified,
+      'id': token,
     };
     await firestore.setWithId(token, data: data);
     emit(UserState.dataLoaded(user: state.user, token: state.token));
@@ -75,8 +74,10 @@ class UserCubit extends AppBaseCubit<UserState> {
     if (task == null) return;
     task.then((value) async {
       var url = await value.ref.getDownloadURL();
+      bool verified = false;
       Map<String, dynamic> data = <String, dynamic>{
         "$ref": url,
+        "verified": verified,
       };
       await firestore.setWithId(token, data: data);
       emit(UserState.dataLoaded(user: state.user, token: state.token));

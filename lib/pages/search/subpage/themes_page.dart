@@ -30,21 +30,21 @@ class _GridListThemesState extends State<GridListThemes> {
                 children: [
                   Row(children: [
                     ThemeBox(
-                      'Thème',
-                      image: "assets/thème.png",
+                      'Festive',
+                      image: "assets/festive.jpg",
                     ),
                     ThemeBox('Jeux de société',
-                        image: "assets/jeux de société.png"),
+                        image: "assets/jeuxdesociete.jpg"),
                   ]),
                   Row(
                     children: [
                       ThemeBox(
-                        'Festive',
-                        image: "assets/festive.png",
+                        'Thème',
+                        image: "assets/theme.jpg",
                       ),
                       ThemeBox(
                         'Gaming',
-                        image: "assets/gaming.png",
+                        image: "assets/gaming.jpg",
                       )
                     ],
                   ),
@@ -80,14 +80,6 @@ class ThemeBox extends StatelessWidget {
               image: DecorationImage(
                 image: AssetImage(image),
                 fit: BoxFit.cover,
-              ),
-            ),
-            child: Center(
-              child: CText(
-                this.text,
-                fontSize: 20,
-                fontWeight: FontWeight.w900,
-                color: Colors.white,
               ),
             ),
           );
