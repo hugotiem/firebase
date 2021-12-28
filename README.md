@@ -74,6 +74,8 @@ Backlogs list comming soon.
 ## Future ideas
 
 assurance risque
+reductions taxis
+stack pour réduire (voir supprimer) les frais
 
 ## Conventions
 

@@ -34,6 +34,16 @@ class FireStoreServices {
     return this._firestore.collection(collection).doc(id).get();
   }
 
+  Future<QuerySnapshot<Map<String, dynamic>>> getDataWithWhereIsEqualTo2(
+      String key1, dynamic data1, String key2, dynamic data2) async {
+    return this
+        ._firestore
+        .collection(collection)
+        .where(key1, isEqualTo: data1)
+        .where(key2, isEqualTo: data2)
+        .get();
+  }
+
   Future<QuerySnapshot<Map<String, dynamic>>> getDataWithWhereIsEqualTo(
       String key, String? data) async {
     return this

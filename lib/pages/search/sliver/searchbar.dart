@@ -5,8 +5,10 @@ import 'package:pts/const.dart';
 class SearchBar extends StatelessWidget {
   final void Function(String)? onChanged;
   final void Function()? onTap;
+  final FocusNode? focusNode;
 
-  const SearchBar({Key? key, this.onChanged, this.onTap}) : super(key: key);
+  const SearchBar({Key? key, this.onChanged, this.onTap, this.focusNode})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +20,7 @@ class SearchBar extends StatelessWidget {
         borderRadius: BorderRadius.circular(29.5),
       ),
       child: TextField(
+        focusNode: focusNode,
         autofocus: true,
         keyboardAppearance: Brightness.light,
         decoration: InputDecoration(
