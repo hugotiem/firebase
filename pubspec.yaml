@@ -96,10 +96,10 @@ flutter:
     - assets/marseille1.png
     - assets/bordeaux1.png
     - assets/lyon.png
-    - assets/festive.png
-    - assets/gaming.png
-    - assets/jeux de société.png
-    - assets/thème.png
+    - assets/festive.jpg
+    - assets/gaming.jpg
+    - assets/jeuxdesociete.jpg
+    - assets/theme.jpg
 
   fonts: 
     - family: MerriweatherSans
