@@ -10,7 +10,7 @@ import 'package:pts/const.dart';
 class ThemePage extends StatefulWidget {
   final void Function()? onNext;
   final void Function()? onPrevious;
-  
+
   const ThemePage({Key? key, this.onNext, this.onPrevious}) : super(key: key);
   @override
   _ThemePageState createState() => _ThemePageState();
@@ -18,6 +18,7 @@ class ThemePage extends StatefulWidget {
 
 class _ThemePageState extends State<ThemePage> {
   String? _theme;
+  Color color = Colors.black;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
@@ -30,7 +31,7 @@ class _ThemePageState extends State<ThemePage> {
           onPressed: () {
             widget.onPrevious!();
           },
-        ), 
+        ),
       ),
       floatingActionButton: FABForm(
         onPressed: () {
@@ -55,7 +56,7 @@ class _ThemePageState extends State<ThemePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              HeaderText1(text: 'Choississez un thème'),
+              HeaderText1(text: 'Choissis un thème'),
               Center(
                 child: Container(
                   height: HEIGHTCONTAINER,
@@ -119,6 +120,60 @@ class _ThemePageState extends State<ThemePage> {
                     ),
                   ),
                 ),
+              ),
+              Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      GestureDetector(
+                        child: Container(
+                          height: 100,
+                          width: 100,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: color),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        onTap: () => setState(() {
+                          color = Colors.green;
+                        }),
+                      ),
+                      Container(
+                        height: 100,
+                        width: 100,
+                        decoration: BoxDecoration(
+                          border: Border.all(),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 40,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Container(
+                        height: 100,
+                        width: 100,
+                        decoration: BoxDecoration(
+                          border: Border.all(),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      Container(
+                        height: 100,
+                        width: 100,
+                        decoration: BoxDecoration(
+                          border: Border.all(),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      )
+                    ],
+                  )
+                ],
               ),
             ],
           ),

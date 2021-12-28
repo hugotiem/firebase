@@ -249,7 +249,7 @@ class _ContainerAddPartyState extends State<ContainerAddParty> {
             margin: EdgeInsets.all(20),
             child: CText(
               "Organise ta propre soirée !",
-              color: ICONCOLOR,
+              color: Colors.white,
               fontSize: 40,
               fontWeight: FontWeight.w900,
               textAlign: TextAlign.center,

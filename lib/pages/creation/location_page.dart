@@ -65,7 +65,7 @@ class _LocationPageState extends State<LocationPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               HeaderText1(
-                text: "Où se déroulera-t'elle ?",
+                text: "Ajoute l'adresse de ta soirée !",
               ),
               HeaderText2(
                 text: "Adresse",

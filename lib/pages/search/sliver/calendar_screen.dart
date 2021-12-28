@@ -55,6 +55,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
             firstDay: DateTime.utc(DateTime.now().year, DateTime.now().month),
             focusedDay: _focusedDay,
             currentDay: _currentDay,
+            locale: 'fr',
+            startingDayOfWeek: StartingDayOfWeek.monday,
             lastDay:
                 DateTime.utc(DateTime.now().year + 1, DateTime.now().month),
             availableCalendarFormats: {CalendarFormat.month: 'Month'},

@@ -45,7 +45,8 @@ class _NamePageState extends State<NamePage> {
           if (!_formKey.currentState!.validate()) {
             return;
           }
-          BlocProvider.of<BuildPartiesCubit>(context).addItem("name", _name.trimRight().trimLeft().inCaps);
+          BlocProvider.of<BuildPartiesCubit>(context)
+              .addItem("name", _name.trimRight().trimLeft().inCaps);
           widget.onNext!();
           // Navigator.push(
           //     context, MaterialPageRoute(builder: (context) => ThemePage()));
@@ -58,7 +59,7 @@ class _NamePageState extends State<NamePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               HeaderText1(
-                text: "Comment s'appelera-t'elle ?",
+                text: "Comment s'appelle ta soirée ?",
               ),
               TFFText(
                 onChanged: (value) {

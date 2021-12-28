@@ -28,15 +28,19 @@ class _GridListThemesState extends State<GridListThemes> {
               width: MediaQuery.of(context).size.width,
               child: Column(
                 children: [
-                  Row(children: [
-                    ThemeBox(
-                      'Festive',
-                      image: "assets/festive.jpg",
-                    ),
-                    ThemeBox('Jeux de société',
-                        image: "assets/jeuxdesociete.jpg"),
-                  ]),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      ThemeBox(
+                        'Festive',
+                        image: "assets/festive.jpg",
+                      ),
+                      ThemeBox('Jeux de société',
+                          image: "assets/jeuxdesociete.jpg"),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       ThemeBox(
                         'Thème',
@@ -65,7 +69,7 @@ class ThemeBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 40, bottom: 20),
+      padding: const EdgeInsets.only(bottom: 20),
       child: OpenContainer(
         transitionDuration: Duration(milliseconds: 400),
         closedColor: Colors.transparent,

@@ -73,7 +73,7 @@ class _GuestNumberState extends State<GuestNumber> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             HeaderText1(
-              text: "Combien de personnes souhaitez-vous inviter ?",
+              text: "Combien de personnes souhaite tu inviter ?",
             ),
             Row(
               children: [
@@ -89,7 +89,7 @@ class _GuestNumberState extends State<GuestNumber> {
               height: 30,
             ),
             HeaderText1(
-              text: "A combien fixez-vous le prix d'entré ?",
+              text: "Parlons argent, Choisis un prix d'entrée !",
             ),
             HeaderText2(text: 'Prédéfini'),
             Padding(
@@ -151,7 +151,8 @@ class _GuestNumberState extends State<GuestNumber> {
               ),
             ),
             HeaderText2(
-                text: 'Custom', padding: EdgeInsets.only(bottom: 20, top: 40)),
+                text: 'Personnalise le prix',
+                padding: EdgeInsets.only(bottom: 20, top: 40)),
             Row(
               children: [
                 TFFNumber(
@@ -165,51 +166,38 @@ class _GuestNumberState extends State<GuestNumber> {
                 )
               ],
             ),
-            SizedBox( 
+            SizedBox(
               height: 30,
             ),
-            HeaderText1(
-              text: 'Revenu estimé'
-            ),
+            HeaderText1(text: 'Revenu estimé'),
             Padding(
               padding: const EdgeInsets.only(left: 26),
-              child: Row( 
-                children: [
-                  OutlinedButton(
+              child: Row(children: [
+                OutlinedButton(
                     onPressed: () => changText(),
                     child: Text(
                       'Simuler',
-                      style: TextStyle(  
-                        color: SECONDARY_COLOR,
-                        wordSpacing: 1.5,
-                        fontSize: 17,
-                        fontWeight: FontWeight.w500
-                      ),
-                    )
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 6),
-                    child: Text(  
-                      _revenu == null
-                      ? ''
-                      : '${_revenu!.toStringAsFixed(2)}',
-                      style: TextStyle(  
+                      style: TextStyle(
+                          color: SECONDARY_COLOR,
+                          wordSpacing: 1.5,
+                          fontSize: 17,
+                          fontWeight: FontWeight.w500),
+                    )),
+                Padding(
+                  padding: const EdgeInsets.only(left: 6),
+                  child: Text(
+                    _revenu == null ? '' : '${_revenu!.toStringAsFixed(2)}',
+                    style: TextStyle(
                         wordSpacing: 1.5,
                         fontSize: 22,
                         color: SECONDARY_COLOR,
-                        fontWeight: FontWeight.w500
-                      ),
-                    ),
+                        fontWeight: FontWeight.w500),
                   ),
-                  HintText(  
-                    text: _revenu == null
-                    ? ''
-                    : '€'
-                  )
-                ]
-              ),
+                ),
+                HintText(text: _revenu == null ? '' : '€')
+              ]),
             ),
-            SizedBox( 
+            SizedBox(
               height: 50,
             ),
           ],

@@ -14,7 +14,8 @@ class DateHourPage extends StatefulWidget {
   final void Function()? onNext;
   final void Function()? onPrevious;
 
-  const DateHourPage({Key? key, this.onNext, this.onPrevious}) : super(key: key);
+  const DateHourPage({Key? key, this.onNext, this.onPrevious})
+      : super(key: key);
   @override
   _DateHourPageState createState() => _DateHourPageState();
 }
@@ -77,7 +78,7 @@ class _DateHourPageState extends State<DateHourPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              HeaderText1(text: "Quel jour ?"),
+              HeaderText1(text: "Quand est-ce que la soirée aura lieu ?"),
               DateHourPicker(
                 onTap: () async {
                   FocusScope.of(context).requestFocus(new FocusNode());

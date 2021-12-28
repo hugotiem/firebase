@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:pts/const.dart';
+import 'package:pts/pages/creation/creation_page.dart';
 import 'package:pts/pages/login/id_form_screen.dart';
 import 'package:pts/blocs/user/user_cubit.dart';
 import 'package:pts/components/custom_text.dart';
@@ -23,6 +24,7 @@ class _HomeState extends State<Home> {
   final List<Widget> _children = [
     Search(),
     CalendarPage(),
+    Container(),
     MessagePage(),
     Profil(),
   ];
@@ -34,56 +36,84 @@ class _HomeState extends State<Home> {
       child: BlocListener<UserCubit, UserState>(
         listener: (context, state) {
           if (state.user != null) {
-            if(!state.user!.hasIdChecked!) {
+            if (!state.user!.hasIdChecked!) {
               _showLoadingPopup();
             }
-           
           }
         },
         child: BlocBuilder<UserCubit, UserState>(builder: (context, state) {
-          return Scaffold(
-            extendBodyBehindAppBar: true, 
-            body: _children[_currentIndex],
-            bottomNavigationBar: BottomNavigationBar(
-              type: BottomNavigationBarType.fixed,
-              showSelectedLabels: true,
-              showUnselectedLabels: true,
-              selectedItemColor: ICONCOLOR,
-              unselectedItemColor: SECONDARY_COLOR,
-              onTap: onTabTapped,
-              currentIndex: _currentIndex,
-              items: [
-                BottomNavigationBarItem(
-                  icon: new Icon(
-                    Ionicons.search_outline,
-                    size: 30,
-                  ),
-                  label: "Rechercher",
+          return Stack(
+            children: [
+              Scaffold(
+                extendBodyBehindAppBar: true,
+                body: _children[_currentIndex],
+                bottomNavigationBar: BottomNavigationBar(
+                  type: BottomNavigationBarType.fixed,
+                  selectedFontSize: 10,
+                  unselectedFontSize: 10,
+                  showSelectedLabels: true,
+                  showUnselectedLabels: true,
+                  selectedItemColor: ICONCOLOR,
+                  unselectedItemColor: SECONDARY_COLOR,
+                  onTap: onTabTapped,
+                  currentIndex: _currentIndex,
+                  items: [
+                    BottomNavigationBarItem(
+                      icon: new Icon(
+                        Ionicons.search_outline,
+                        size: 25,
+                      ),
+                      label: "Rechercher",
+                    ),
+                    BottomNavigationBarItem(
+                      icon: new Icon(
+                        Ionicons.calendar_clear_outline,
+                        size: 25,
+                      ),
+                      label: "Soirées",
+                    ),
+                    BottomNavigationBarItem(
+                      icon: new Icon(
+                        Ionicons.add_circle_outline,
+                        color: Colors.transparent,
+                        size: 40,
+                      ),
+                      label: "",
+                    ),
+                    BottomNavigationBarItem(
+                      icon: new Icon(
+                        Ionicons.chatbox_outline,
+                        size: 25,
+                      ),
+                      label: "Messages",
+                    ),
+                    BottomNavigationBarItem(
+                      icon: new Icon(
+                        Ionicons.person_outline,
+                        size: 25,
+                      ),
+                      label: "Profil",
+                    ),
+                  ],
+                  backgroundColor: Colors.white,
                 ),
-                BottomNavigationBarItem(
-                  icon: new Icon(
-                    Ionicons.calendar_clear_outline,
-                    size: 30,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 40),
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: FloatingActionButton(
+                    onPressed: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => CreationPage(),
+                        fullscreenDialog: true,
+                      ),
+                    ),
+                    child: Icon(Icons.add_rounded),
                   ),
-                  label: "Calendrier",
                 ),
-                BottomNavigationBarItem(
-                  icon: new Icon(
-                    Ionicons.chatbox_outline,
-                    size: 30,
-                  ),
-                  label: "Messages",
-                ),
-                BottomNavigationBarItem(
-                  icon: new Icon(
-                    Ionicons.person_outline,
-                    size: 30,
-                  ),
-                  label: "Profil",
-                ),
-              ],
-              backgroundColor: Colors.white,
-            ),
+              ),
+            ],
           );
         }),
       ),
@@ -91,9 +121,17 @@ class _HomeState extends State<Home> {
   }
 
   void onTabTapped(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
+    if (index == 2) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => CreationPage(),
+          fullscreenDialog: true,
+        ),
+      );
+    } else
+      setState(() {
+        _currentIndex = index;
+      });
   }
 
   Future<dynamic> _showLoadingPopup() async {

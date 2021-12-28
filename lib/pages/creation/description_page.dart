@@ -103,7 +103,7 @@ class _DescriptionPageState extends State<DescriptionPage> {
         key: _formKey,
         child: SingleChildScrollView(
             child: Column(children: [
-          HeaderText1(text: 'Pour vos invités'),
+          HeaderText1(text: 'Pour tes invités'),
           HeaderText2(text: 'Où peut-on fumer ?'),
           Center(
             child: Container(
@@ -117,7 +117,7 @@ class _DescriptionPageState extends State<DescriptionPage> {
                 child: Center(
                   child: DropdownButtonFormField<String>(
                     value: _smoke,
-                    items: ["A l'intérieur", 'Dans un fumoir', 'Dehors']
+                    items: ["A l'intérieur", "A l'extérieur"]
                         .map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
@@ -128,7 +128,7 @@ class _DescriptionPageState extends State<DescriptionPage> {
                       );
                     }).toList(),
                     hint: Text(
-                      'Choisissez un lieu',
+                      'Choisis un lieu',
                       style: TextStyle(fontSize: TEXTFIELDFONTSIZE),
                     ),
                     elevation: 0,
@@ -162,7 +162,7 @@ class _DescriptionPageState extends State<DescriptionPage> {
             ),
           ),
           HeaderText2(
-              text: "Avez-vous des animaux ?",
+              text: "Indique s'il y a des animaux chez toi",
               padding: EdgeInsets.only(bottom: 20, top: 40)),
           Center(
             child: Container(
@@ -226,7 +226,7 @@ class _DescriptionPageState extends State<DescriptionPage> {
             height: 30,
           ),
           HeaderText1(
-            text: "Un mot à ajouter pour décrire votre soirée ?",
+            text: "Un dernier mot pour tes invités ? (Optionnel)",
           ),
           Center(
             child: Container(
