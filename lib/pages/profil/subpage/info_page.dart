@@ -1,163 +1,120 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ionicons/ionicons.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pts/blocs/user/user_cubit.dart';
+import 'package:pts/components/components_creation/headertext_one.dart';
+import 'package:pts/components/custom_text.dart';
 import 'package:pts/const.dart';
 import 'package:pts/components/back_appbar.dart';
-import 'package:pts/models/services/auth_service.dart';
+import 'package:pts/models/user.dart';
 
-class InfoScreen extends StatefulWidget {
+class InformationPage extends StatefulWidget {
+  final User user;
+  const InformationPage(this.user, {Key? key}) : super(key: key);
+
   @override
-  _InfoScreenState createState() => _InfoScreenState();
+  _InformationPageState createState() => _InformationPageState();
 }
 
-class _InfoScreenState extends State<InfoScreen> {
-  var user;
+class _InformationPageState extends State<InformationPage> {
+  String? _name = '';
+  String? _surname = "";
 
-  //AuthService instance
-  AuthService _service = AuthService();
-
-  // Text Editing Controllers
-  TextEditingController? _surnameController;
   TextEditingController? _nameController;
-  TextEditingController? _emailController;
-
-  // ignore: unused_field
-  TextEditingController? _passwordController;
-
-  // variables
-  String? _surname;
-  String? _name;
-  String? _email;
-
-  // has to be compared to know if password is required when save
-  String? _newEmail;
+  TextEditingController? _surnameController;
 
   @override
   void initState() {
-    this.user = _service.currentUser;
-
-    this._surname = user.displayName.split(" ")[1];
-    this._name = user.displayName.split(" ")[0];
-    this._email = user.email;
-
-    this._newEmail = _email;
-
-    _surnameController = new TextEditingController(text: this._surname);
-    _nameController = new TextEditingController(text: this._name);
-    _emailController = new TextEditingController(text: this._email);
-
+    _nameController = TextEditingController(text: widget.user.name)
+      ..addListener(() {
+        _name = _nameController!.text.trim();
+      });
+    _surnameController = TextEditingController(text: widget.user.surname)
+      ..addListener(() {
+        _surname = _surnameController!.text.trim();
+      });
     super.initState();
   }
 
   @override
-  void dispose() {
-    _surnameController!.dispose();
-    _nameController!.dispose();
-    _emailController!.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(50),
-        child: BackAppBar(
-          actions: <Widget>[
-            CupertinoButton(
-              color: Colors.transparent,
-              onPressed: () async {
-                _service.updateDisplayName(_name! + " " + _surname!);
+    return BlocProvider(
+      create: (context) => UserCubit()..init(),
+      child: BlocBuilder<UserCubit, UserState>(
+        builder: (context, state) {
+          User? user = state.user;
+          bool? verified = user?.verified;
 
-                if (_email!.compareTo(_newEmail!) != 0) {
-                  var res = await _service.updateEmail(_newEmail!);
-                  print(res);
-                  if (res != "success") {
-                    if (res == "has to confirm") {
-                      await showModalBottomSheet(
-                        context: context,
-                        builder: (BuildContext bc) {
-                          return Container(
-                            child: SingleChildScrollView(
-                              child: Column(
-                                children: <Widget>[
-                                  TextFormField(
-                                    decoration: InputDecoration(
-                                      labelText: "Mot de passe :",
-                                      border: InputBorder.none,
-                                      icon: Icon(Ionicons.lock_closed_outline),
-                                    ),
-                                    onChanged: (value) {
-                                      setState(() {
-                                        _name = value;
-                                      });
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    }
-                  }
-                }
+          if (user == null) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
 
-                Navigator.of(context).pop();
-              },
-              child: Text(
-                "Enregistrer",
-                style: TextStyle(
-                  decoration: TextDecoration.underline,
-                  color: SECONDARY_COLOR,
+          if (verified == true) {
+            return Text("verifié");
+          } else {
+            return Scaffold(
+              backgroundColor: PRIMARY_COLOR,
+              appBar: PreferredSize(
+                preferredSize: Size.fromHeight(50),
+                child: BackAppBar(
+                  actions: [
+                    TextButton(
+                      onPressed: () {},
+                      child: CText('sauvegarder'),
+                    )
+                  ],
                 ),
               ),
-            ),
-          ],
-        ),
-      ),
-      body: Container(
-        child: Column(
-          children: <Widget>[
-            Container(
-              child: Column(
-                children: <Widget>[
-                  Text("Nom"),
-                  CupertinoTextField.borderless(
-                    controller: _surnameController,
-                    onChanged: (value) => _surname = value,
+              body: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 22),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      HeaderText1(
+                          text: 'Modifie tes informations personnelles'),
+                      ttf("Prénom", _nameController),
+                      ttf('Nom', _surnameController),
+                      hintText1('genre'),
+                      hintText1('date de naissance'),
+                      hintText1('addresse mail'),
+                      hintText1('téléphone'),
+                      TextButton(
+                          onPressed: () => print("$_name $_surname"), child: Text('test'))
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
-            Container(
-              child: Column(
-                children: <Widget>[
-                  Text("Prénom"),
-                  CupertinoTextField.borderless(
-                    controller: _nameController,
-                    onChanged: (value) => _name = value,
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              child: Column(
-                children: <Widget>[
-                  Text("Email"),
-                  CupertinoTextField.borderless(
-                    controller: _emailController,
-                    // readOnly:
-                    //     AuthService.currentUser.providerData[0].providerId ==
-                    //         "google.com",
-                    onChanged: (value) => _email = value,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+            );
+          }
+        },
       ),
     );
+  }
+
+  Widget ttf(String text, TextEditingController? controller) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 22),
+      child: Stack(
+        children: [
+          Opacity(opacity: 0.65, child: CText(text)),
+          TextFormField(
+            textAlignVertical: TextAlignVertical.bottom,
+            cursorColor: SECONDARY_COLOR,
+            controller: controller,
+            decoration: InputDecoration(
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: SECONDARY_COLOR),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget hintText1(String text) {
+    return Opacity(opacity: 0.65, child: CText(text));
   }
 }
