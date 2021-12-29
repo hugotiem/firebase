@@ -152,7 +152,7 @@ class _DateHourPageState extends State<DateHourPage> {
           return Theme(
               data: ThemeData.light().copyWith(
                 colorScheme: ColorScheme.light()
-                    .copyWith(primary: SECONDARY_COLOR, onPrimary: ICONCOLOR),
+                    .copyWith(primary: SECONDARY_COLOR, onPrimary: PRIMARY_COLOR),
               ),
               child: child!);
         });
@@ -172,7 +172,7 @@ class _DateHourPageState extends State<DateHourPage> {
           return Theme(
               data: ThemeData.light().copyWith(
                 colorScheme: ColorScheme.light()
-                    .copyWith(primary: SECONDARY_COLOR, onPrimary: ICONCOLOR),
+                    .copyWith(primary: SECONDARY_COLOR, onPrimary: PRIMARY_COLOR),
               ),
               child: child!);
         });
@@ -192,7 +192,7 @@ class _DateHourPageState extends State<DateHourPage> {
           return Theme(
               data: ThemeData.light().copyWith(
                 colorScheme: ColorScheme.light()
-                    .copyWith(primary: SECONDARY_COLOR, onPrimary: ICONCOLOR),
+                    .copyWith(primary: SECONDARY_COLOR, onPrimary: PRIMARY_COLOR),
               ),
               child: child!);
         });
