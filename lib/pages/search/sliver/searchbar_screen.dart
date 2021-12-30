@@ -31,6 +31,7 @@ class _SearchBarScreenState extends State<SearchBarScreen>
   final PanelController _searchPanelController = PanelController();
   final PanelController _filterPanelController = PanelController();
   late AnimationController _animationController;
+  late AnimationController _mapAnimationController;
   GoogleMapController? mapController;
   Completer<GoogleMapController> mapControllerCompleter =
       Completer<GoogleMapController>();
@@ -44,6 +45,8 @@ class _SearchBarScreenState extends State<SearchBarScreen>
   String result = "";
   double _factor = 0;
   double _rotation = 0;
+
+  double _opacity = 0;
 
   DateTime _selectedDate = DateTime.now();
 
@@ -66,7 +69,14 @@ class _SearchBarScreenState extends State<SearchBarScreen>
       vsync: this,
       duration: Duration(milliseconds: 300),
     );
-
+    _mapAnimationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    )..addListener(() {
+        setState(() {
+          _opacity = _mapAnimationController.value;
+        });
+      });
     super.initState();
   }
 
@@ -115,19 +125,25 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                 builder: (context, state) {
                   if (longitude == null || latitude == null)
                     return Center(child: CircularProgressIndicator());
-                  return GoogleMap(
-                    compassEnabled: false,
-                    onMapCreated: (controller) {
-                      mapController = controller;
-                      mapControllerCompleter
-                          .complete(controller..setMapStyle(mapStyle));
-                    },
-                    initialCameraPosition: CameraPosition(
-                        target: LatLng(latitude!, longitude!), zoom: 14),
-                    mapType: MapType.normal,
-                    markers: state.parties == null
-                        ? const <Marker>{}
-                        : _buildMarkers(state.parties),
+                  return Container(
+                    child: Opacity(
+                      opacity: _opacity,
+                      child: GoogleMap(
+                        compassEnabled: false,
+                        onMapCreated: (controller) {
+                          mapController = controller;
+                          mapControllerCompleter
+                              .complete(controller..setMapStyle(mapStyle));
+                          _mapAnimationController.forward();
+                        },
+                        initialCameraPosition: CameraPosition(
+                            target: LatLng(latitude!, longitude!), zoom: 14),
+                        mapType: MapType.normal,
+                        markers: state.parties == null
+                            ? const <Marker>{}
+                            : _buildMarkers(state.parties),
+                      ),
+                    ),
                   );
                 },
               ),
@@ -606,11 +622,14 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                 minHeight: 0,
                 maxHeight: MediaQuery.of(context).size.height - 50,
                 panelBuilder: (ScrollController sc) {
-                  return FilterScreen(sc: sc);
+                  return FilterScreen(
+                    sc: sc,
+                    context: context,
+                  );
                 },
                 controller: _filterPanelController,
                 backdropEnabled: true,
-                snapPoint: 0.5,
+                snapPoint: 0.7,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(10),
                   topRight: Radius.circular(10),

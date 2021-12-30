@@ -19,20 +19,20 @@ class PartiesCubit extends AppBaseCubit<PartiesState> {
     var partiesSnapShots = await services.getData();
     List<Party> parties =
         partiesSnapShots.docs.map((e) => Party.fromSnapShots(e)).toList();
-    emit(PartiesState.loaded(parties));
+    emit(PartiesState.loaded(parties, state.filters));
   }
 
   Future fetchPartiesByOrder() async {
     var partiesSnapShots = await services.getDataByOrder();
     List<Party> parties =
         partiesSnapShots.docs.map((e) => Party.fromSnapShots(e)).toList();
-    emit(PartiesState.loaded(parties));
+    emit(PartiesState.loaded(parties, state.filters));
   }
 
   Future fetchPartiesByIdentifier(String id) async {
     var parties =
         await services.firestore.collection(services.collection).doc(id).get();
-    emit(PartiesState.loaded(parties));
+    emit(PartiesState.loaded(parties, state.filters));
   }
 
   Future fetchPartiesWithWhereIsEqualTo(var key, String? data,
@@ -48,7 +48,7 @@ class PartiesCubit extends AppBaseCubit<PartiesState> {
     List<Party> parties =
         partiesSnapShots.docs.map((e) => Party.fromSnapShots(e)).toList();
     if (!isWithDate) {
-      emit(PartiesState.loaded(parties));
+      emit(PartiesState.loaded(parties, state.filters));
     } else {
       return parties;
     }
@@ -71,7 +71,7 @@ class PartiesCubit extends AppBaseCubit<PartiesState> {
         await services.getDataWithWhereIsEqualTo2(key1, data1, key2, data2);
     List<Party> parties =
         partiesSnapShots.docs.map((e) => Party.fromSnapShots(e)).toList();
-    emit(PartiesState.loaded(parties));
+    emit(PartiesState.loaded(parties, state.filters));
   }
 
   Future fetchPartiesByDateWithWhereIsEqualTo(
@@ -79,14 +79,17 @@ class PartiesCubit extends AppBaseCubit<PartiesState> {
     List<Party> partiesWithDates = [];
     await fetchPartiesWithWhereIsEqualTo(key, data, isWithDate: true)
         .then((parties) {
-      print("parties size ${parties?.length}");
       (parties as List<Party>).forEach((element) {
         if (isSameDay(element.date, date)) {
           partiesWithDates.add(element);
         }
       });
     });
-    emit(PartiesState.loaded(partiesWithDates));
+    emit(PartiesState.loaded(partiesWithDates, state.filters));
+  }
+
+  Future addFilters(Map<String, dynamic> filters) async {
+    emit(PartiesState.loaded(state.parties, filters));
   }
 
   Future fetchCurrentPartiesWithDateEqualTo(DateTime date) async {
@@ -98,7 +101,7 @@ class PartiesCubit extends AppBaseCubit<PartiesState> {
         partiesWithDates.add(element);
       }
     });
-    emit(PartiesState.loaded(partiesWithDates));
+    emit(PartiesState.loaded(partiesWithDates, state.filters));
   }
 
   Future fetchPartiesWithWhereArrayContains(var key) async {
@@ -109,6 +112,6 @@ class PartiesCubit extends AppBaseCubit<PartiesState> {
         await services.getDataWithWhereArrayContains(key, user.name, user.id);
     List<Party> parties =
         partiesSnapShots.docs.map((e) => Party.fromSnapShots(e)).toList();
-    emit(PartiesState.loaded(parties));
+    emit(PartiesState.loaded(parties, state.filters));
   }
 }

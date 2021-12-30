@@ -4,9 +4,13 @@ enum PartiesStatus { initial, loading, loaded }
 
 class PartiesState extends AppBaseState<PartiesStatus> {
   final List<Party>? parties;
+  final DateTime? selectedDate;
+  final Map<String, dynamic>? filters;
 
   const PartiesState(PartiesStatus? status,
       {this.parties,
+      this.selectedDate,
+      this.filters,
       bool requestInProgress = false,
       String? requestFailureCode,
       String? requestFailureMessage})
@@ -19,8 +23,8 @@ class PartiesState extends AppBaseState<PartiesStatus> {
   const PartiesState.initial() : this(PartiesStatus.initial);
   const PartiesState.loading()
       : this(PartiesStatus.loading, requestInProgress: true);
-  const PartiesState.loaded(parties)
-      : this(PartiesStatus.loaded, parties: parties);
+  const PartiesState.loaded(parties, filters)
+      : this(PartiesStatus.loaded, parties: parties, filters: filters);
 
   @override
   AppBaseState<PartiesStatus> copyWith(
@@ -29,6 +33,7 @@ class PartiesState extends AppBaseState<PartiesStatus> {
           String? requestFailureMessage}) =>
       PartiesState(status,
           parties: this.parties,
+          filters: this.filters,
           requestInProgress: requestInProgress,
           requestFailureCode: requestFailureCode,
           requestFailureMessage: requestFailureMessage);

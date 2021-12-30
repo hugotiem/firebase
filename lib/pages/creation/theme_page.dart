@@ -18,8 +18,47 @@ class ThemePage extends StatefulWidget {
 
 class _ThemePageState extends State<ThemePage> {
   String? _theme;
-  Color color = Colors.black;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  List<Map<String, String>> themes = [
+    {
+      'title': 'Festive',
+      'img': 'assets/festive.jpg',
+    },
+    {
+      'title': 'Jeux de société',
+      'img': 'assets/jeuxdesociete.jpg',
+    },
+    {
+      'title': 'Thème',
+      'img': 'assets/theme.jpg',
+    },
+    {
+      'title': 'Gaming',
+      'img': 'assets/gaming.jpg',
+    },
+  ];
+
+  Widget _buildThemeCard(BuildContext context, String title, String img) {
+    return GestureDetector(
+      child: AspectRatio(
+        aspectRatio: 1.0,
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+          decoration: BoxDecoration(
+            border: Border.all(
+                color: _theme == title ? Colors.green : Colors.black,
+                width: _theme == title ? 5 : 1),
+            borderRadius: BorderRadius.circular(10),
+            image: DecorationImage(image: AssetImage(img)),
+          ),
+        ),
+      ),
+      onTap: () => setState(() {
+        _theme = title;
+      }),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,13 +80,6 @@ class _ThemePageState extends State<ThemePage> {
 
           BlocProvider.of<BuildPartiesCubit>(context).addItem("theme", _theme);
           widget.onNext!();
-
-          // Soiree.setDataThemePage(
-          //   _theme
-          // );
-          // Navigator.push(context,
-          //   MaterialPageRoute(builder: (context) => DateHourPage())
-          // );
         },
       ),
       body: Form(
@@ -57,122 +89,98 @@ class _ThemePageState extends State<ThemePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               HeaderText1(text: 'Choissis un thème'),
-              Center(
-                child: Container(
-                  height: HEIGHTCONTAINER,
-                  width: MediaQuery.of(context).size.width * 0.9,
-                  decoration: BoxDecoration(
-                      color: PRIMARY_COLOR,
-                      borderRadius: BorderRadius.circular(15)),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 16, right: 8),
-                    child: Center(
-                      child: DropdownButtonFormField<String>(
-                        value: _theme,
-                        items: [
-                          'Festive',
-                          'Gaming',
-                          'Jeux de société',
-                          'Thème',
-                        ].map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(
-                              value,
-                              style: TextStyle(fontSize: TEXTFIELDFONTSIZE),
-                            ),
-                          );
-                        }).toList(),
-                        hint: Text(
-                          "Choisir un thème",
-                          style: TextStyle(fontSize: TEXTFIELDFONTSIZE),
-                        ),
-                        elevation: 0,
-                        decoration: InputDecoration(
-                          errorStyle: TextStyle(
-                            height: 0,
-                            background: Paint()..color = Colors.transparent,
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.transparent),
-                          ),
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.transparent),
-                          ),
-                        ),
-                        onChanged: (String? value) {
-                          setState(() {
-                            _theme = value;
-                          });
-                        },
-                        validator: (value) {
-                          if (value == null) {
-                            return 'Vous devez choisir un thème';
-                          } else {
-                            return null;
-                          }
-                        },
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+              // Center(
+              //   child: Container(
+              //     height: HEIGHTCONTAINER,
+              //     width: MediaQuery.of(context).size.width * 0.9,
+              //     decoration: BoxDecoration(
+              //         color: PRIMARY_COLOR,
+              //         borderRadius: BorderRadius.circular(15)),
+              //     child: Padding(
+              //       padding: const EdgeInsets.only(left: 16, right: 8),
+              //       child: Center(
+              //         child: DropdownButtonFormField<String>(
+              //           value: _theme,
+              //           items: [
+              //             'Festive',
+              //             'Gaming',
+              //             'Jeux de société',
+              //             'Thème',
+              //           ].map<DropdownMenuItem<String>>((String value) {
+              //             return DropdownMenuItem<String>(
+              //               value: value,
+              //               child: Text(
+              //                 value,
+              //                 style: TextStyle(fontSize: TEXTFIELDFONTSIZE),
+              //               ),
+              //             );
+              //           }).toList(),
+              //           hint: Text(
+              //             "Choisir un thème",
+              //             style: TextStyle(fontSize: TEXTFIELDFONTSIZE),
+              //           ),
+              //           elevation: 0,
+              //           decoration: InputDecoration(
+              //             errorStyle: TextStyle(
+              //               height: 0,
+              //               background: Paint()..color = Colors.transparent,
+              //             ),
+              //             errorBorder: OutlineInputBorder(
+              //               borderSide: BorderSide(color: Colors.transparent),
+              //             ),
+              //             border: OutlineInputBorder(
+              //               borderSide: BorderSide.none,
+              //               borderRadius: BorderRadius.circular(15),
+              //             ),
+              //             enabledBorder: UnderlineInputBorder(
+              //               borderSide: BorderSide(color: Colors.transparent),
+              //             ),
+              //           ),
+              //           onChanged: (String? value) {
+              //             setState(() {
+              //               _theme = value;
+              //             });
+              //           },
+              //           validator: (value) {
+              //             if (value == null) {
+              //               return 'Vous devez choisir un thème';
+              //             } else {
+              //               return null;
+              //             }
+              //           },
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
               Column(
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      GestureDetector(
-                        child: Container(
-                          height: 100,
-                          width: 100,
-                          decoration: BoxDecoration(
-                            border: Border.all(color: color),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        onTap: () => setState(() {
-                          color = Colors.green;
-                        }),
+                      Expanded(
+                        child: _buildThemeCard(
+                            context, themes[0]['title']!, themes[0]['img']!),
                       ),
-                      Container(
-                        height: 100,
-                        width: 100,
-                        decoration: BoxDecoration(
-                          border: Border.all(),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      )
+                      Expanded(
+                        child: _buildThemeCard(
+                            context, themes[1]['title']!, themes[1]['img']!),
+                      ),
                     ],
-                  ),
-                  SizedBox(
-                    height: 40,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Container(
-                        height: 100,
-                        width: 100,
-                        decoration: BoxDecoration(
-                          border: Border.all(),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
+                      Expanded(
+                        child: _buildThemeCard(
+                            context, themes[2]['title']!, themes[2]['img']!),
                       ),
-                      Container(
-                        height: 100,
-                        width: 100,
-                        decoration: BoxDecoration(
-                          border: Border.all(),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      )
+                      Expanded(
+                        child: _buildThemeCard(
+                            context, themes[3]['title']!, themes[3]['img']!),
+                      ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ],

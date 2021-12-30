@@ -48,6 +48,7 @@ class _NamePageState extends State<NamePage> {
           BlocProvider.of<BuildPartiesCubit>(context)
               .addItem("name", _name.trimRight().trimLeft().inCaps);
           widget.onNext!();
+          FocusScope.of(context).unfocus();
           // Navigator.push(
           //     context, MaterialPageRoute(builder: (context) => ThemePage()));
         },
