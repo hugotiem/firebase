@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:pts/components/connect.dart';
 import 'package:pts/const.dart';
-import 'package:pts/pages/login/id_form_screen.dart';
+import 'package:pts/models/Capitalize.dart';
 import 'package:pts/blocs/user/user_cubit.dart';
 import 'package:pts/components/ProfilPhoto.dart';
 import 'package:pts/components/pts_box.dart';
@@ -15,11 +15,8 @@ import 'package:pts/components/pts_components.dart';
 import 'package:pts/models/services/auth_service.dart';
 import 'package:pts/models/services/notification_service.dart';
 import 'package:pts/pages/profil/subpage/existingcard_page.dart';
-import 'package:pts/pages/profil/subpage/list_user_party_page.dart';
+import 'package:pts/pages/profil/subpage/info_page.dart';
 import 'package:pts/pages/profil/subpage/user_page.dart';
-
-import 'package:pts/pages/profil/subpage/waitlist_guest_page.dart';
-import 'package:pts/pages/profil/subpage/waitlist_party_page.dart';
 
 class Profil extends StatefulWidget {
   @override
@@ -84,45 +81,45 @@ class _ProfilState extends State<Profil> {
                           ],
                         ),
                       ),
-                      PTSBox(
-                        padding: EdgeInsets.only(top: 20, bottom: 20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            TitleTextProfil(
-                              text: 'Activités',
-                            ),
-                            CickableContainerProfil(
-                              to: GetPartyData(),
-                              text: "Vos soirées",
-                              icon: Ionicons.calendar_clear_outline,
-                              bottomBorder: false,
-                            ),
-                          ],
-                        ),
-                      ),
-                      PTSBox(
-                        padding: EdgeInsets.only(top: 20, bottom: 20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            TitleTextProfil(
-                              text: "Listes d'attente",
-                            ),
-                            CickableContainerProfil(
-                              to: PartyWaitList(),
-                              text: "Soirées",
-                              icon: Ionicons.calendar_clear_outline,
-                            ),
-                            CickableContainerProfil(
-                              to: GuestWaitList(),
-                              text: 'Invités',
-                              icon: Ionicons.person_outline,
-                              bottomBorder: false,
-                            )
-                          ],
-                        ),
-                      ),
+                      // PTSBox(
+                      //   padding: EdgeInsets.only(top: 20, bottom: 20),
+                      //   child: Column(
+                      //     crossAxisAlignment: CrossAxisAlignment.start,
+                      //     children: <Widget>[
+                      //       TitleTextProfil(
+                      //         text: 'Activités',
+                      //       ),
+                      //       CickableContainerProfil(
+                      //         to: GetPartyData(),
+                      //         text: "Vos soirées",
+                      //         icon: Ionicons.calendar_clear_outline,
+                      //         bottomBorder: false,
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
+                      // PTSBox(
+                      //   padding: EdgeInsets.only(top: 20, bottom: 20),
+                      //   child: Column(
+                      //     crossAxisAlignment: CrossAxisAlignment.start,
+                      //     children: [
+                      //       TitleTextProfil(
+                      //         text: "Listes d'attente",
+                      //       ),
+                      //       CickableContainerProfil(
+                      //         to: PartyWaitList(),
+                      //         text: "Soirées",
+                      //         icon: Ionicons.calendar_clear_outline,
+                      //       ),
+                      //       CickableContainerProfil(
+                      //         to: GuestWaitList(),
+                      //         text: 'Invités',
+                      //         icon: Ionicons.person_outline,
+                      //         bottomBorder: false,
+                      //       )
+                      //     ],
+                      //   ),
+                      // ),
                       PTSBox(
                         padding: EdgeInsets.only(top: 20, bottom: 20),
                         // creer une list avec tous les elements
@@ -133,7 +130,7 @@ class _ProfilState extends State<Profil> {
                               text: 'Paramètres du compte',
                             ),
                             CickableContainerProfil(
-                              to: IdFormScreen(),
+                              to: InformationPage(user),
                               text: "Informations personnelles",
                               icon: Ionicons.person_outline,
                             ),
@@ -146,37 +143,55 @@ class _ProfilState extends State<Profil> {
                               to: NotificationPage(),
                               text: "Notifications",
                               icon: Ionicons.notifications_outline,
+                            ),
+                            CickableContainerProfil(
+                              to: null,
+                              text: "à propos".inCaps,
+                              icon: Ionicons.information_circle_outline,
+                            ),
+                            CickableContainerProfil(
+                              to: null,
+                              text: "Nous contacter",
+                              icon: Ionicons.mail_outline,
+                            ),
+                            CickableContainerProfil(
+                              to: null,
+                              text: "Localisation",
+                              icon: Ionicons.location_outline,
                               bottomBorder: false,
                             ),
                           ],
                         ),
                       ),
-                      GestureDetector(
-                        onTap: () async {
-                          await service.setToken(null);
-                          await service.instance.signOut();
-                        },
-                        child: Container(
-                          margin: EdgeInsets.all(10),
-                          padding: EdgeInsets.all(20),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(20)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text(
-                                "Se deconnecter",
-                                style: TextStyle(
-                                  color: Colors.red,
-                                  fontSize: 20,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 20),
+                        child: GestureDetector(
+                          onTap: () async {
+                            await service.setToken(null);
+                            await service.instance.signOut();
+                          },
+                          child: Container(
+                            margin: EdgeInsets.all(10),
+                            padding: EdgeInsets.all(20),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(20)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Text(
+                                  "Se deconnecter",
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                    fontSize: 20,
+                                  ),
                                 ),
-                              ),
-                              Icon(
-                                Ionicons.exit_outline,
-                                color: Colors.red,
-                              ),
-                            ],
+                                Icon(
+                                  Ionicons.exit_outline,
+                                  color: Colors.red,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -206,7 +221,7 @@ class CickableContainerProfil extends StatelessWidget {
   Widget build(BuildContext context) {
     return ClickableContainer(
       to: this.to,
-      margin: EdgeInsets.only(top: 10),
+      margin: EdgeInsets.only(top: 15),
       padding: EdgeInsets.only(left: 20, right: 20),
       child: Container(
         padding: EdgeInsets.only(top: 15, bottom: 15),
@@ -217,6 +232,7 @@ class CickableContainerProfil extends StatelessWidget {
             : null,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Text(
               this.text!,

@@ -11,6 +11,7 @@ class User {
   String? surname;
   String? gender;
   var age;
+  var birthday;
   bool? hasIdChecked;
   String? phone;
   String? email;
@@ -21,6 +22,7 @@ class User {
       this.name,
       this.surname,
       this.age,
+      this.birthday,
       this.gender,
       this.hasIdChecked,
       this.email,
@@ -57,6 +59,7 @@ class User {
         gender: gender,
         email: email,
         phone: phone,
-        verified: verified);
+        verified: verified,
+        birthday: birthday);
   }
 }
