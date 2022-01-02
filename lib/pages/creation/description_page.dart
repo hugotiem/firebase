@@ -38,6 +38,7 @@ class _DescriptionPageState extends State<DescriptionPage> {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
+          heroTag: 'description',
           onPressed: () async {
             if (!_formKey.currentState!.validate()) {
               return;

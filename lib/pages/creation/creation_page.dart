@@ -25,12 +25,12 @@ class _CreationPageState extends State<CreationPage> {
   void initState() {
     _controller = PageController();
     _children = [
-      NamePage(onNext: onNext),
-      ThemePage(onNext: onNext, onPrevious: onPrevious),
-      DateHourPage(onNext: onNext, onPrevious: onPrevious),
-      LocationPage(onNext: onNext, onPrevious: onPrevious),
-      GuestNumber(onNext: onNext, onPrevious: onPrevious),
-      DescriptionPage(onNext: onNext, onPrevious: onPrevious),
+      KeepPageAlive(child: NamePage(onNext: onNext)),
+      KeepPageAlive(child: ThemePage(onNext: onNext, onPrevious: onPrevious)),
+      KeepPageAlive(child: DateHourPage(onNext: onNext, onPrevious: onPrevious)),
+      KeepPageAlive(child: LocationPage(onNext: onNext, onPrevious: onPrevious)),
+      KeepPageAlive(child: GuestNumber(onNext: onNext, onPrevious: onPrevious)),
+      KeepPageAlive(child: DescriptionPage(onNext: onNext, onPrevious: onPrevious)),
       EndPage(),
     ];
     super.initState();
@@ -45,9 +45,7 @@ class _CreationPageState extends State<CreationPage> {
 
   void onPrevious() {
     _controller!.previousPage(
-      duration: const Duration(milliseconds:  200), 
-      curve: Curves.easeIn
-    );
+        duration: const Duration(milliseconds: 200), curve: Curves.easeIn);
   }
 
   @override
@@ -75,4 +73,24 @@ class _CreationPageState extends State<CreationPage> {
       ),
     );
   }
+}
+
+class KeepPageAlive extends StatefulWidget {
+  final Widget? child;
+  KeepPageAlive({Key? key, this.child}) : super(key: key);
+
+  @override
+  _KeepPageAliveState createState() => _KeepPageAliveState();
+}
+
+class _KeepPageAliveState extends State<KeepPageAlive>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    return widget.child ?? Container();
+  }
+
+  @override
+  bool get wantKeepAlive => true;
 }

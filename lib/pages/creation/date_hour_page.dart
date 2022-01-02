@@ -3,10 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:pts/blocs/parties/build_parties_cubit.dart';
 import 'package:pts/components/back_appbar.dart';
+import 'package:pts/components/components_creation/calendar_screen.dart';
 import 'package:pts/components/components_creation/date_hour_picker.dart';
 import 'package:pts/components/components_creation/fab_form.dart';
 import 'package:pts/components/components_creation/headertext_one.dart';
 import 'package:pts/components/components_creation/headertext_two.dart';
+import 'package:pts/components/components_creation/tff_text.dart';
 
 import 'package:pts/const.dart';
 
@@ -44,6 +46,7 @@ class _DateHourPageState extends State<DateHourPage> {
         ),
       ),
       floatingActionButton: FABForm(
+        tag: 'date',
         onPressed: () {
           if (!_formKey.currentState!.validate()) {
             return;
@@ -79,21 +82,42 @@ class _DateHourPageState extends State<DateHourPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               HeaderText1(text: "Quand est-ce que la soirée aura lieu ?"),
-              DateHourPicker(
-                onTap: () async {
-                  FocusScope.of(context).requestFocus(new FocusNode());
-                  await _selectionDate();
-                  dateCtl.text = DateFormat.MMMMEEEEd('fr').format(_date);
+              TFFText(
+                readOnly: true,
+                onTap: () {
+                  BuildContext mainContext = context;
+                  showModalBottomSheet(
+                    context: context,
+                    constraints: BoxConstraints(maxHeight: 600),
+                    builder: (context) => CalendarScreen(
+                      titleButton: "Valider",
+                      // currentDay: _selectedDate,
+                      // focusedDay: _selectedDate,
+                      onClose: (date) {
+                        setState(() {
+                          // _selectedDate = date;
+                        });
+                      },
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10),
+                      ),
+                    ),
+                    clipBehavior: Clip.antiAlias,
+                    isScrollControlled: true,
+                  );
                 },
-                hintText: 'Choisir une date',
-                controller: dateCtl,
+                hintText: 'ex : La fête du roi',
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return "Vous devez choisir une date";
+                    return 'Vous devez rentrer un nom';
                   } else {
                     return null;
                   }
                 },
+                maxLength: 20,
               ),
               HeaderText2(
                 text: "Heure d'arrivé",
@@ -151,8 +175,8 @@ class _DateHourPageState extends State<DateHourPage> {
         builder: (BuildContext context, Widget? child) {
           return Theme(
               data: ThemeData.light().copyWith(
-                colorScheme: ColorScheme.light()
-                    .copyWith(primary: SECONDARY_COLOR, onPrimary: PRIMARY_COLOR),
+                colorScheme: ColorScheme.light().copyWith(
+                    primary: SECONDARY_COLOR, onPrimary: PRIMARY_COLOR),
               ),
               child: child!);
         });
@@ -171,8 +195,8 @@ class _DateHourPageState extends State<DateHourPage> {
         builder: (BuildContext context, Widget? child) {
           return Theme(
               data: ThemeData.light().copyWith(
-                colorScheme: ColorScheme.light()
-                    .copyWith(primary: SECONDARY_COLOR, onPrimary: PRIMARY_COLOR),
+                colorScheme: ColorScheme.light().copyWith(
+                    primary: SECONDARY_COLOR, onPrimary: PRIMARY_COLOR),
               ),
               child: child!);
         });
@@ -191,8 +215,8 @@ class _DateHourPageState extends State<DateHourPage> {
         builder: (BuildContext context, Widget? child) {
           return Theme(
               data: ThemeData.light().copyWith(
-                colorScheme: ColorScheme.light()
-                    .copyWith(primary: SECONDARY_COLOR, onPrimary: PRIMARY_COLOR),
+                colorScheme: ColorScheme.light().copyWith(
+                    primary: SECONDARY_COLOR, onPrimary: PRIMARY_COLOR),
               ),
               child: child!);
         });

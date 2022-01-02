@@ -20,38 +20,68 @@ class _ThemePageState extends State<ThemePage> {
   String? _theme;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  List<Map<String, String>> themes = [
+  List<Map<String, dynamic>> themes = [
     {
       'title': 'Festive',
       'img': 'assets/festive.jpg',
+      'iconColor': SECONDARY_COLOR,
     },
     {
       'title': 'Jeux de société',
       'img': 'assets/jeuxdesociete.jpg',
+      'iconColor': PRIMARY_COLOR,
     },
     {
       'title': 'Thème',
       'img': 'assets/theme.jpg',
+      'iconColor': PRIMARY_COLOR,
     },
     {
       'title': 'Gaming',
       'img': 'assets/gaming.jpg',
+      'iconColor': SECONDARY_COLOR,
     },
   ];
 
-  Widget _buildThemeCard(BuildContext context, String title, String img) {
+  Widget _buildThemeCard(BuildContext context, Map<String, dynamic> data) {
+    String title = data['title'];
+    bool _selected = _theme == title;
     return GestureDetector(
       child: AspectRatio(
         aspectRatio: 1.0,
-        child: Container(
-          margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-          decoration: BoxDecoration(
-            border: Border.all(
-                color: _theme == title ? Colors.green : Colors.black,
-                width: _theme == title ? 5 : 1),
-            borderRadius: BorderRadius.circular(10),
-            image: DecorationImage(image: AssetImage(img)),
-          ),
+        child: Stack(
+          children: [
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 100),
+              margin: EdgeInsets.symmetric(
+                  horizontal: _selected ? 15 : 20,
+                  vertical: _selected ? 15 : 20),
+              decoration: BoxDecoration(
+                boxShadow: _selected
+                    ? [
+                        BoxShadow(
+                            color: SECONDARY_COLOR.withOpacity(0.2),
+                            offset: Offset(0, 0),
+                            blurRadius: 20,
+                            spreadRadius: 10),
+                      ]
+                    : null,
+                borderRadius: BorderRadius.circular(10),
+                image: DecorationImage(image: AssetImage(data['img'])),
+              ),
+            ),
+            if (_selected)
+              Positioned(
+                right: 0,
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Icon(
+                    Icons.check_circle_outline_rounded,
+                    color: data['iconColor'],
+                  ),
+                ),
+              ),
+          ],
         ),
       ),
       onTap: () => setState(() {
@@ -73,6 +103,7 @@ class _ThemePageState extends State<ThemePage> {
         ),
       ),
       floatingActionButton: FABForm(
+        tag: 'theme',
         onPressed: () {
           if (!_formKey.currentState!.validate()) {
             return;
@@ -159,12 +190,10 @@ class _ThemePageState extends State<ThemePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Expanded(
-                        child: _buildThemeCard(
-                            context, themes[0]['title']!, themes[0]['img']!),
+                        child: _buildThemeCard(context, themes[0]),
                       ),
                       Expanded(
-                        child: _buildThemeCard(
-                            context, themes[1]['title']!, themes[1]['img']!),
+                        child: _buildThemeCard(context, themes[1]),
                       ),
                     ],
                   ),
@@ -172,12 +201,10 @@ class _ThemePageState extends State<ThemePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Expanded(
-                        child: _buildThemeCard(
-                            context, themes[2]['title']!, themes[2]['img']!),
+                        child: _buildThemeCard(context, themes[2]),
                       ),
                       Expanded(
-                        child: _buildThemeCard(
-                            context, themes[3]['title']!, themes[3]['img']!),
+                        child: _buildThemeCard(context, themes[3]),
                       ),
                     ],
                   ),

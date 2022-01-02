@@ -17,6 +17,8 @@ class TFFText extends StatelessWidget {
   final bool? obscureText;
   final TextEditingController? controller;
   final Brightness? keyboardAppearance;
+  final bool? readOnly;
+  final void Function()? onTap;
 
   const TFFText({
     this.onChanged,
@@ -31,6 +33,7 @@ class TFFText extends StatelessWidget {
     this.obscureText,
     this.controller,
     this.keyboardAppearance,
+    this.readOnly, this.onTap,
   }) : super(key: key);
 
   @override
@@ -47,6 +50,8 @@ class TFFText extends StatelessWidget {
           padding: const EdgeInsets.only(left: 16),
           child: Center(
             child: TextFormField(
+              onTap: onTap,
+              readOnly: readOnly ?? false,
               keyboardAppearance: keyboardAppearance,
               controller: controller,
               obscureText: this.obscureText ?? false,

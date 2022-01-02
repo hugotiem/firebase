@@ -42,6 +42,7 @@ class _LocationPageState extends State<LocationPage> {
         ),
       ),
       floatingActionButton: FABForm(
+        tag: 'location',
         onPressed: () {
           if (!_formKey.currentState!.validate()) {
             return;

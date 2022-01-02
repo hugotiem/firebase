@@ -52,6 +52,7 @@ class _GuestNumberState extends State<GuestNumber> {
         ),
       ),
       floatingActionButton: FABForm(
+        tag: 'guest',
         onPressed: () {
           BlocProvider.of<BuildPartiesCubit>(context)
             ..addItem("number", _nombre)

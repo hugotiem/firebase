@@ -109,6 +109,7 @@ class _HomeState extends State<Home> {
                         fullscreenDialog: true,
                       ),
                     ),
+                    backgroundColor: SECONDARY_COLOR,
                     child: Icon(Icons.add_rounded),
                   ),
                 ),

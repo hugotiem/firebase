@@ -9,7 +9,7 @@ import 'package:pts/blocs/parties/parties_cubit.dart';
 import 'package:pts/blocs/search/search_cubit.dart';
 import 'package:pts/const.dart';
 import 'package:pts/models/party.dart';
-import 'package:pts/pages/search/sliver/calendar_screen.dart';
+import 'package:pts/components/components_creation/calendar_screen.dart';
 import 'package:pts/pages/search/sliver/filter_screen.dart';
 import 'package:pts/pages/search/sliver/items.dart';
 import 'package:pts/pages/search/sliver/searchbar.dart';

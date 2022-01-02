@@ -9,8 +9,9 @@ class CalendarScreen extends StatefulWidget {
   final DateTime? currentDay;
   final DateTime? focusedDay;
   final void Function(DateTime) onClose;
+  final String? titleButton;
   const CalendarScreen(
-      {Key? key, this.currentDay, this.focusedDay, required this.onClose})
+      {Key? key, this.currentDay, this.focusedDay, required this.onClose, this.titleButton})
       : super(key: key);
 
   @override
@@ -84,7 +85,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     Navigator.of(context).pop();
                   }
                 : null,
-            child: Text("Rechercher"),
+            child: Text(widget.titleButton ?? "Rechercher"),
           ),
         ],
       ),
