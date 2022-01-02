@@ -98,8 +98,7 @@ class _HomeState extends State<Home> {
                   backgroundColor: Colors.white,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 40),
+              SafeArea(
                 child: Align(
                   alignment: Alignment.bottomCenter,
                   child: FloatingActionButton(

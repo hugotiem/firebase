@@ -119,7 +119,7 @@ class _ThemePageState extends State<ThemePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              HeaderText1(text: 'Choissis un thème'),
+              HeaderText1(text: 'Choisis un thème'),
               // Center(
               //   child: Container(
               //     height: HEIGHTCONTAINER,
