@@ -1,3 +1,6 @@
+// ignore_for_file: unnecessary_statements
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -50,10 +53,11 @@ class _InformationPageState extends State<InformationPage> {
       ..addListener(() {
         _email = _emailController!.text;
       });
-    _phoneController = TextEditingController(text: widget.user.phone ?? 'Non fournie')
-      ..addListener(() {
-        _phone = _phoneController!.text;
-      });
+    _phoneController =
+        TextEditingController(text: widget.user.phone ?? 'Non fournie')
+          ..addListener(() {
+            _phone = _phoneController!.text;
+          });
     super.initState();
   }
 
@@ -65,7 +69,7 @@ class _InformationPageState extends State<InformationPage> {
         builder: (context, state) {
           User? user = state.user;
           bool? verified = user?.verified;
-          
+
           _name == null ? _name = user?.name : _name;
           _surname == null ? _surname = user?.surname : _surname;
           _gender == null ? _gender = user?.gender : _gender;
@@ -74,13 +78,52 @@ class _InformationPageState extends State<InformationPage> {
           _phone == null ? _phone = user?.phone : _phone;
 
           if (user == null) {
-            return Center(
-              child: CircularProgressIndicator(),
+            return Scaffold(
+              backgroundColor: PRIMARY_COLOR,
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
             );
           }
 
           if (verified == true) {
-            return Text("verifié");
+            return Scaffold(
+              backgroundColor: PRIMARY_COLOR,
+              appBar: PreferredSize(
+                preferredSize: Size.fromHeight(50),
+                child: BackAppBar(
+                  actions: [
+                    TextButton(
+                      onPressed: () async {
+                        saveVerifiedProfile(
+                          _email,
+                          _phone,
+                        );
+                      },
+                      child: CText('sauvegarder'),
+                    )
+                  ],
+                ),
+              ),
+              body: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 22),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      HeaderText1(
+                          text: 'Modifie tes informations personnelles'),
+                      ttf("Prénom", _nameController, readOnly: true),
+                      ttf('Nom', _surnameController, readOnly: true),
+                      ttf1('Genre', user.gender, readOnly: true),
+                      ttf('Date de naissance', _dateController, readOnly: true),
+                      ttf('Adresse mail', _emailController),
+                      ttf('Téléphone', _phoneController),
+                    ],
+                  ),
+                ),
+              ),
+            );
           } else {
             return Scaffold(
               backgroundColor: PRIMARY_COLOR,
@@ -89,7 +132,15 @@ class _InformationPageState extends State<InformationPage> {
                 child: BackAppBar(
                   actions: [
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        saveNonVerifiedProfile(
+                            _name,
+                            _surname,
+                            _dateNonFormat == null ? _date : _dateNonFormat,
+                            _gender,
+                            _email,
+                            _phone);
+                      },
                       child: CText('sauvegarder'),
                     )
                   ],
@@ -109,10 +160,6 @@ class _InformationPageState extends State<InformationPage> {
                       datePicker('Date de naissance', _dateController),
                       ttf('Adresse mail', _emailController),
                       ttf('Téléphone', _phoneController),
-                      TextButton(
-                          onPressed: () =>
-                              print("$_name $_surname $_gender ${_dateNonFormat == null ? _date : _dateNonFormat} $_email $_phone"),
-                          child: Text('test'))
                     ],
                   ),
                 ),
@@ -124,15 +171,37 @@ class _InformationPageState extends State<InformationPage> {
     );
   }
 
-  Widget ttf(String text, TextEditingController? controller) {
+  Widget ttf(String text, TextEditingController? controller, {bool? readOnly}) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 22),
       child: Stack(
         children: [
           Opacity(opacity: 0.65, child: CText(text)),
           TextFormField(
+            readOnly: readOnly == null ? false : readOnly,
             textAlignVertical: TextAlignVertical.bottom,
             controller: controller,
+            decoration: InputDecoration(
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: SECONDARY_COLOR),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget ttf1(String text, String? hint, {bool? readOnly}) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 22),
+      child: Stack(
+        children: [
+          Opacity(opacity: 0.65, child: CText(text)),
+          TextFormField(
+            initialValue: hint,
+            readOnly: readOnly == null ? false : readOnly,
+            textAlignVertical: TextAlignVertical.bottom,
             decoration: InputDecoration(
               focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: SECONDARY_COLOR),
@@ -201,7 +270,6 @@ class _InformationPageState extends State<InformationPage> {
               FocusScope.of(context).requestFocus(new FocusNode());
               await _selectionDate();
               _dateController!.text = DateFormat.MMMMEEEEd('fr').format(_date);
-              print(_dateNonFormat);
             },
             decoration: InputDecoration(
               focusedBorder: UnderlineInputBorder(
@@ -239,5 +307,24 @@ class _InformationPageState extends State<InformationPage> {
 
   Widget hintText1(String text) {
     return Opacity(opacity: 0.65, child: CText(text));
+  }
+
+  Future saveNonVerifiedProfile(String? name, String? surname, var birthday,
+      String? gender, String? email, String? phone) async {
+    FirebaseFirestore.instance.collection('user').doc(widget.user.id).update({
+      'name': name,
+      'surname': surname,
+      'birthday': birthday,
+      'gender': gender,
+      'email': email,
+      'phone number': phone,
+    });
+  }
+
+  Future saveVerifiedProfile(String? email, String? phone) async {
+    FirebaseFirestore.instance.collection('user').doc(widget.user.id).update({
+      'email': email,
+      'phone number': phone,
+    });
   }
 }
