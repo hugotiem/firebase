@@ -13,7 +13,8 @@ import 'package:pts/models/user.dart';
 
 class InformationPage extends StatefulWidget {
   final User user;
-  const InformationPage(this.user, {Key? key}) : super(key: key);
+  final birthday;
+  const InformationPage(this.user, this.birthday, {Key? key}) : super(key: key);
 
   @override
   _InformationPageState createState() => _InformationPageState();
@@ -45,7 +46,7 @@ class _InformationPageState extends State<InformationPage> {
         _surname = _surnameController!.text.trim();
       });
     _dateController = TextEditingController(
-        text: DateFormat.MMMMEEEEd('fr').format(widget.user.birthday))
+        text: DateFormat.yMd('fr').format(widget.birthday))
       ..addListener(() {
         _date = _dateController!.text;
       });
@@ -85,6 +86,7 @@ class _InformationPageState extends State<InformationPage> {
               ),
             );
           }
+          print(user.birthday);
 
           if (verified == true) {
             return Scaffold(
@@ -269,7 +271,7 @@ class _InformationPageState extends State<InformationPage> {
             onTap: () async {
               FocusScope.of(context).requestFocus(new FocusNode());
               await _selectionDate();
-              _dateController!.text = DateFormat.MMMMEEEEd('fr').format(_date);
+              _dateController!.text = DateFormat.yMd('fr').format(_date);
             },
             decoration: InputDecoration(
               focusedBorder: UnderlineInputBorder(
@@ -285,8 +287,8 @@ class _InformationPageState extends State<InformationPage> {
   Future<Null> _selectionDate() async {
     DateTime? _dateChoisie = await showDatePicker(
         context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(1921),
+        initialDate: widget.user.birthday,
+        firstDate: DateTime(1900),
         lastDate: DateTime.now(),
         builder: (BuildContext context, Widget? child) {
           return Theme(
