@@ -99,7 +99,7 @@ class _HomeState extends State<Home> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(bottom: 40),
+                padding: Platform.isIOS ? EdgeInsets.only(bottom: 40) : EdgeInsets.symmetric(vertical: 2.5),
                 child: Align(
                   alignment: Alignment.bottomCenter,
                   child: FloatingActionButton(
