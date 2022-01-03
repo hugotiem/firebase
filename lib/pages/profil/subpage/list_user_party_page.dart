@@ -27,9 +27,7 @@ class GetPartyData extends StatelessWidget {
                   Navigator.pop(context);
                 },
               ),
-              title: TitleAppBar(
-                title: 'Soirées',
-              ),
+              title: TitleAppBar('Soirées'),
               bottom: TabBar(
                 indicatorColor: SECONDARY_COLOR,
                 indicatorWeight: 1.2,

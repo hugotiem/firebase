@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pts/blocs/parties/parties_cubit.dart';
 import 'package:pts/components/back_appbar.dart';
-import 'package:pts/components/custom_text.dart';
 import 'package:pts/components/party_card.dart';
+import 'package:pts/components/title_appbar.dart';
 import 'package:pts/const.dart';
 
 class GridListThemes extends StatefulWidget {
@@ -93,14 +93,7 @@ class ThemeBox extends StatelessWidget {
             appBar: PreferredSize(
               preferredSize: Size.fromHeight(50),
               child: new BackAppBar(
-                title: Padding(
-                  padding: const EdgeInsets.only(top: 6.0),
-                  child: CText(
-                    this.text,
-                    color: SECONDARY_COLOR,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                title: TitleAppBar(this.text),
               ),
             ),
             body: BlocProvider(
