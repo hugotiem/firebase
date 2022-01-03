@@ -201,7 +201,7 @@ Widget buildPartyCard(BuildContext context, Party party) {
         padding: const EdgeInsets.only(top: 20),
         child: Center(
           child: Container(
-            height: 250,
+            // height: 250,
             width: MediaQuery.of(context).size.width * 0.85,
             decoration: BoxDecoration(
               color: PRIMARY_COLOR,
@@ -210,14 +210,64 @@ Widget buildPartyCard(BuildContext context, Party party) {
               closedElevation: 0,
               transitionDuration: Duration(milliseconds: 200),
               closedShape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(60),
-                      bottomRight: Radius.circular(60),
-                      topRight: Radius.circular(30),
-                      bottomLeft: Radius.circular(30))),
+                  borderRadius: BorderRadius.circular(10)),
               closedColor: Colors.white,
               openColor: Colors.white,
               closedBuilder: (context, returnValue) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Stack(
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          color: ICONCOLOR,
+                          height: 180,
+                          child: Image.asset("assets/festive.jpg"),
+                        ),
+                        Container(
+                          color: Colors.black38,
+                          margin: EdgeInsets.all(10),
+                          child: Padding(
+                            padding: EdgeInsets.all(10),
+                            child: Text(
+                              "date",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Titre de la soirée"),
+                          Row(
+                            children: [
+                              Text("Hugo Tiem"),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Icon(
+                                Icons.verified,
+                                size: 15,
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("Bénouville"),
+                              Text("10km"),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                );
                 return Column(
                   children: [
                     Expanded(
