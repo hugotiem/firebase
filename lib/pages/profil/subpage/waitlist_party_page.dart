@@ -15,10 +15,7 @@ class PartyWaitList extends StatelessWidget {
         backgroundColor: PRIMARY_COLOR,
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(50),
-          child: BackAppBar(
-              title: TitleAppBar(
-            title: 'Soirées en attentes',
-          )),
+          child: BackAppBar(title: TitleAppBar('Soirées en attentes')),
         ),
         body: BlocProvider(
           create: (context) => PartiesCubit()

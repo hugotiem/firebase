@@ -99,17 +99,20 @@ class _HomeState extends State<Home> {
                 ),
               ),
               SafeArea(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: FloatingActionButton(
-                    onPressed: () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => CreationPage(),
-                        fullscreenDialog: true,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 2.5),
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: FloatingActionButton(
+                      onPressed: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => CreationPage(),
+                          fullscreenDialog: true,
+                        ),
                       ),
+                      backgroundColor: SECONDARY_COLOR,
+                      child: Icon(Icons.add_rounded),
                     ),
-                    backgroundColor: SECONDARY_COLOR,
-                    child: Icon(Icons.add_rounded),
                   ),
                 ),
               ),

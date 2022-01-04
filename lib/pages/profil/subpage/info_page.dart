@@ -86,8 +86,7 @@ class _InformationPageState extends State<InformationPage> {
               ),
             );
           }
-          print(user.birthday);
-
+          
           if (verified == true) {
             return Scaffold(
               backgroundColor: PRIMARY_COLOR,

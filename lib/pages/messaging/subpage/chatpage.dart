@@ -32,7 +32,7 @@ class ChatPage extends StatelessWidget {
               backgroundColor: PRIMARY_COLOR,
               elevation: 0.5,
               title: TitleAppBar(
-                  title: otherUserName == null ? '' : otherUserName)),
+                  otherUserName == null ? '' : otherUserName)),
         ),
         bottomNavigationBar: MessageField(otherUserID),
         body: Container(

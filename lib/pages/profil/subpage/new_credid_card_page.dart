@@ -28,9 +28,7 @@ class _NewCreditCardState extends State<NewCreditCard> {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50),
         child: BackAppBar(
-          title: TitleAppBar(
-            title: 'Ajouter une carte',
-          ),
+          title: TitleAppBar('Ajouter une carte'),
         ),
       ),
       floatingActionButton: FABJoin(
@@ -146,14 +144,13 @@ class _NewCreditCardState extends State<NewCreditCard> {
                       mask: 'XXXX XXXX XXXX XXXX', separator: ' ')
                 ],
                 validator: (value) {
-                  if(value != null) {
+                  if (value != null) {
                     if (value.length < 19) {
-                    return 'Numéro de carte invalide';
-                  } else {
-                    return null;
+                      return 'Numéro de carte invalide';
+                    } else {
+                      return null;
+                    }
                   }
-                  }
-                  
                 },
               ),
             ],
