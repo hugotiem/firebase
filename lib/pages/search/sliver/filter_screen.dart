@@ -29,7 +29,7 @@ class _FilterScreenState extends State<FilterScreen> {
     {'title': 'moins de 50€', 'id': 50},
     {'title': 'séléctionner', 'id': 'custom'}
   ];
-  double _currentPrice = -1;
+  double _currentPrice = 0;
   bool isCustomPrice = false;
   bool isFree = false;
 

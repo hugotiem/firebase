@@ -27,10 +27,13 @@ class _CreationPageState extends State<CreationPage> {
     _children = [
       KeepPageAlive(child: NamePage(onNext: onNext)),
       KeepPageAlive(child: ThemePage(onNext: onNext, onPrevious: onPrevious)),
-      KeepPageAlive(child: DateHourPage(onNext: onNext, onPrevious: onPrevious)),
-      KeepPageAlive(child: LocationPage(onNext: onNext, onPrevious: onPrevious)),
+      KeepPageAlive(
+          child: DateHourPage(onNext: onNext, onPrevious: onPrevious)),
+      KeepPageAlive(
+          child: LocationPage(onNext: onNext, onPrevious: onPrevious)),
       KeepPageAlive(child: GuestNumber(onNext: onNext, onPrevious: onPrevious)),
-      KeepPageAlive(child: DescriptionPage(onNext: onNext, onPrevious: onPrevious)),
+      KeepPageAlive(
+          child: DescriptionPage(onNext: onNext, onPrevious: onPrevious)),
       EndPage(),
     ];
     super.initState();
@@ -41,11 +44,13 @@ class _CreationPageState extends State<CreationPage> {
       duration: const Duration(milliseconds: 200),
       curve: Curves.easeIn,
     );
+    FocusScope.of(context).unfocus();
   }
 
   void onPrevious() {
     _controller!.previousPage(
         duration: const Duration(milliseconds: 200), curve: Curves.easeIn);
+    FocusScope.of(context).unfocus();
   }
 
   @override

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pts/components/components_creation/selectable_items.dart';
 import 'package:pts/const.dart';
 import 'package:pts/blocs/parties/build_parties_cubit.dart';
 import 'package:pts/components/back_appbar.dart';
@@ -22,13 +23,13 @@ class GuestNumber extends StatefulWidget {
 
 class _GuestNumberState extends State<GuestNumber> {
   String _nombre = '20';
-  String _prix = '10';
+  double _prix = 5;
   RadioChoix _choixRadio = RadioChoix.Dix;
   double? _revenu;
 
   changText() {
     double _nombre1 = double.parse(_nombre);
-    double _prix1 = double.parse(_prix);
+    double _prix1 = _prix;
 
     setState(() {
       if (_prix1 == 0) {
@@ -38,6 +39,50 @@ class _GuestNumberState extends State<GuestNumber> {
       }
     });
   }
+
+  WidgetSpan _buildWidgetSpan(BuildContext context, String title,
+      bool isSelected, void Function() onSelect, void Function() onClose) {
+    return WidgetSpan(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: GestureDetector(
+          child: Container(
+            padding: EdgeInsets.only(
+              right: 15,
+              top: isSelected ? 0 : 15,
+              bottom: isSelected ? 0 : 15,
+              left: isSelected ? 0 : 15,
+            ),
+            decoration: BoxDecoration(
+              border: Border.all(),
+              borderRadius: BorderRadius.circular(10),
+              color: isSelected ? Colors.grey.withOpacity(0.2) : null,
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (isSelected)
+                  IconButton(onPressed: onClose, icon: Icon(Icons.close)),
+                Text(title),
+              ],
+            ),
+          ),
+          onTap: onSelect,
+        ),
+      ),
+    );
+  }
+
+  bool isCustomPrice = false;
+  bool isFree = false;
+
+  List<Map<String, dynamic>> prices = [
+    {'title': 'gratuit', 'id': false},
+    {'title': '5€', 'id': 5},
+    {'title': '10€', 'id': 10},
+    {'title': '20€', 'id': 20},
+    {'title': 'personaliser', 'id': 'custom'}
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -95,78 +140,32 @@ class _GuestNumberState extends State<GuestNumber> {
             HeaderText2(text: 'Prédéfini'),
             Padding(
               padding: const EdgeInsets.only(left: 16),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  RadioAndText(
-                      value: RadioChoix.Gratuit,
-                      groupValue: _choixRadio,
-                      onChanged: (value) {
-                        setState(() {
-                          _choixRadio = value;
-                          _prix = '0';
-                        });
-                      },
-                      text: 'Gratuit'),
-                  RadioAndText(
-                      value: RadioChoix.Cinq,
-                      groupValue: _choixRadio,
-                      onChanged: (value) {
-                        setState(() {
-                          _choixRadio = value;
-                          _prix = '5';
-                        });
-                      },
-                      text: '5 €'),
-                  RadioAndText(
-                      value: RadioChoix.Dix,
-                      groupValue: _choixRadio,
-                      onChanged: (value) {
-                        setState(() {
-                          _choixRadio = value;
-                          _prix = '10';
-                        });
-                      },
-                      text: '10 €'),
-                  RadioAndText(
-                      value: RadioChoix.Quinze,
-                      groupValue: _choixRadio,
-                      onChanged: (value) {
-                        setState(() {
-                          _choixRadio = value;
-                          _prix = '15';
-                        });
-                      },
-                      text: '15 €'),
-                  RadioAndText(
-                      value: RadioChoix.Vingt,
-                      groupValue: _choixRadio,
-                      onChanged: (value) {
-                        setState(() {
-                          _choixRadio = value;
-                          _prix = '20';
-                        });
-                      },
-                      text: '20 €'),
-                ],
+              child: PriceSelectableItemsWidget(
+                initialPrice: 5,
+                items: prices,
+                onSelected: (double value) => setState(() {
+                  _prix = value;
+                }),
               ),
             ),
-            HeaderText2(
-                text: 'Personnalise le prix',
-                padding: EdgeInsets.only(bottom: 20, top: 40)),
-            Row(
-              children: [
-                TFFNumber(
-                  onChanged: (value) {
-                    _prix = value;
-                  },
-                  hintText: '10',
-                ),
-                HintText(
-                  text: '€',
-                )
-              ],
-            ),
+            if (isCustomPrice)
+              HeaderText2(
+                  text: 'Personnalise le prix',
+                  padding: EdgeInsets.only(bottom: 20, top: 40)),
+            if (isCustomPrice)
+              Row(
+                children: [
+                  TFFNumber(
+                    onChanged: (value) {
+                      _prix = double.parse(value);
+                    },
+                    hintText: '10',
+                  ),
+                  HintText(
+                    text: '€',
+                  )
+                ],
+              ),
             SizedBox(
               height: 30,
             ),

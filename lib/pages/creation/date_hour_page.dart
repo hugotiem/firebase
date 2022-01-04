@@ -23,7 +23,7 @@ class DateHourPage extends StatefulWidget {
 }
 
 class _DateHourPageState extends State<DateHourPage> {
-  var _date;
+  late DateTime _date;
   var _heuredebut;
   var _heurefin;
   TextEditingController heurefinctl = TextEditingController();
@@ -84,8 +84,8 @@ class _DateHourPageState extends State<DateHourPage> {
               HeaderText1(text: "Quand est-ce que la soirée aura lieu ?"),
               TFFText(
                 readOnly: true,
+                controller: dateCtl,
                 onTap: () {
-                  BuildContext mainContext = context;
                   showModalBottomSheet(
                     context: context,
                     constraints: BoxConstraints(maxHeight: 600),
@@ -95,7 +95,9 @@ class _DateHourPageState extends State<DateHourPage> {
                       // focusedDay: _selectedDate,
                       onClose: (date) {
                         setState(() {
-                          // _selectedDate = date;
+                          dateCtl.text =
+                              DateFormat.MMMMEEEEd('fr').format(date);
+                          _date = date;
                         });
                       },
                     ),
@@ -109,10 +111,10 @@ class _DateHourPageState extends State<DateHourPage> {
                     isScrollControlled: true,
                   );
                 },
-                hintText: 'ex : La fête du roi',
+                hintText: 'Choisir une date',
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Vous devez rentrer un nom';
+                    return 'Tu dois rentrer une date';
                   } else {
                     return null;
                   }

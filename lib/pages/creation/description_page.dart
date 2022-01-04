@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pts/components/components_creation/selectable_items.dart';
 import 'package:pts/const.dart';
 import 'package:pts/models/services/firestore_service.dart';
 import 'package:pts/blocs/parties/build_parties_cubit.dart';
@@ -18,8 +19,8 @@ class DescriptionPage extends StatefulWidget {
 }
 
 class _DescriptionPageState extends State<DescriptionPage> {
-  String? _smoke;
-  String? _animals;
+  bool? _smoke;
+  bool? _animals;
   String _description = "";
   final db = FireStoreServices("party");
   final databaseReference = FirebaseFirestore.instance;
@@ -105,123 +106,29 @@ class _DescriptionPageState extends State<DescriptionPage> {
         child: SingleChildScrollView(
             child: Column(children: [
           HeaderText1(text: 'Pour tes invités'),
-          HeaderText2(text: 'Où peut-on fumer ?'),
-          Center(
-            child: Container(
-              height: HEIGHTCONTAINER,
-              width: MediaQuery.of(context).size.width * 0.9,
-              decoration: BoxDecoration(
-                  color: PRIMARY_COLOR,
-                  borderRadius: BorderRadius.circular(15)),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 16, right: 8),
-                child: Center(
-                  child: DropdownButtonFormField<String>(
-                    value: _smoke,
-                    items: ["A l'intérieur", "A l'extérieur"]
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(
-                          value,
-                          style: TextStyle(fontSize: TEXTFIELDFONTSIZE),
-                        ),
-                      );
-                    }).toList(),
-                    hint: Text(
-                      'Choisis un lieu',
-                      style: TextStyle(fontSize: TEXTFIELDFONTSIZE),
-                    ),
-                    elevation: 0,
-                    onChanged: (String? value) {
-                      setState(() {
-                        _smoke = value;
-                      });
-                    },
-                    decoration: InputDecoration(
-                        errorStyle: TextStyle(
-                          height: 0,
-                          background: Paint()..color = Colors.transparent,
-                        ),
-                        errorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.transparent)),
-                        border: OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.circular(15)),
-                        enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.transparent))),
-                    validator: (value) {
-                      if (value == null) {
-                        return 'Vous devez faire un choix';
-                      } else {
-                        return null;
-                      }
-                    },
-                  ),
-                ),
-              ),
-            ),
+          HeaderText2(text: 'Peut-on fumer ?'),
+          SingleSelectableItemsWidget<bool>(
+            onSelected: (bool? value) => setState(() {
+              _smoke = value;
+            }),
+            items: [
+              {"title": "oui", "selected": true},
+              {"title": "non", "selected": false},
+            ],
+            selected: _smoke,
           ),
           HeaderText2(
               text: "Indique s'il y a des animaux chez toi",
               padding: EdgeInsets.only(bottom: 20, top: 40)),
-          Center(
-            child: Container(
-              height: HEIGHTCONTAINER,
-              width: MediaQuery.of(context).size.width * 0.9,
-              decoration: BoxDecoration(
-                  color: PRIMARY_COLOR,
-                  borderRadius: BorderRadius.circular(15)),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 16, right: 8),
-                child: Center(
-                  child: DropdownButtonFormField<String>(
-                    value: _animals,
-                    items: [
-                      "Oui",
-                      'Non',
-                    ].map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(
-                          value,
-                          style: TextStyle(fontSize: TEXTFIELDFONTSIZE),
-                        ),
-                      );
-                    }).toList(),
-                    hint: Text(
-                      'Cliquer pour choisir',
-                      style: TextStyle(fontSize: TEXTFIELDFONTSIZE),
-                    ),
-                    elevation: 0,
-                    onChanged: (String? value) {
-                      setState(() {
-                        _animals = value;
-                      });
-                    },
-                    decoration: InputDecoration(
-                        errorStyle: TextStyle(
-                          height: 0,
-                          background: Paint()..color = Colors.transparent,
-                        ),
-                        errorBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.transparent)),
-                        border: OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.circular(15)),
-                        enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.transparent))),
-                    validator: (value) {
-                      if (value == null) {
-                        return 'Vous devez faire un choix';
-                      } else {
-                        return null;
-                      }
-                    },
-                  ),
-                ),
-              ),
-            ),
+          SingleSelectableItemsWidget<bool>(
+            onSelected: (bool? value) => setState(() {
+              _animals = value;
+            }),
+            items: [
+              {"title": "oui", "selected": true},
+              {"title": "non", "selected": false},
+            ],
+            selected: _animals,
           ),
           SizedBox(
             height: 30,
