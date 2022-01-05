@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:pts/components/connect.dart';
+import 'package:pts/components/introSlider.dart';
 import 'package:pts/const.dart';
 import 'package:pts/models/Capitalize.dart';
 import 'package:pts/blocs/user/user_cubit.dart';
@@ -11,6 +12,7 @@ import 'package:pts/components/pts_box.dart';
 import 'package:pts/components/text_materials.dart';
 import 'package:pts/components/pts_components.dart';
 import 'package:pts/models/services/auth_service.dart';
+import 'package:pts/pages/profil/subpage/about_page.dart';
 import 'package:pts/pages/profil/subpage/existingcard_page.dart';
 import 'package:pts/pages/profil/subpage/info_page.dart';
 import 'package:pts/pages/profil/subpage/notification_page.dart';
@@ -143,7 +145,7 @@ class _ProfilState extends State<Profil> {
                               icon: Ionicons.notifications_outline,
                             ),
                             CickableContainerProfil(
-                              to: null,
+                              to: AboutPage(),
                               text: "à propos".inCaps,
                               icon: Ionicons.information_circle_outline,
                             ),
@@ -155,6 +157,12 @@ class _ProfilState extends State<Profil> {
                             CickableContainerProfil(
                               to: null,
                               text: "Localisation",
+                              icon: Ionicons.location_outline,
+                              bottomBorder: false,
+                            ),
+                            CickableContainerProfil(
+                              to: IntroScreen(),
+                              text: "test intro slide",
                               icon: Ionicons.location_outline,
                               bottomBorder: false,
                             ),

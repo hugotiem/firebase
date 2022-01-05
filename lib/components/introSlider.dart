@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intro_slider/intro_slider.dart';
 import 'package:intro_slider/slide_object.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:pts/const.dart';
 
 class IntroScreen extends StatefulWidget {
   IntroScreen({Key? key}) : super(key: key);
@@ -20,47 +21,59 @@ class IntroScreenState extends State<IntroScreen> {
 
     slides.add(
       new Slide(
+        styleTitle: TextStyle(fontSize: 60,  color: PRIMARY_COLOR),
+        styleDescription: TextStyle(fontSize: 20,  color: PRIMARY_COLOR),
         title: "BIENVENUE",
-        description: "Merci d’avoir rejoint notre application Pour Ta Soirée, nous allons vous la présenter.",
+        description:
+            "Merci d’avoir rejoint notre application PTS, nous allons te la présenter.",
 //        pathImage: "images/photo_eraser.png",
-        backgroundColor: Color(0xff203152),
+        backgroundColor: SECONDARY_COLOR,
       ),
     );
     slides.add(
       new Slide(
+        styleTitle: TextStyle(fontSize: 60,  color: PRIMARY_COLOR),
+        styleDescription: TextStyle(fontSize: 20,  color: PRIMARY_COLOR),
         title: "REJOINS",
-        description: "Cette application va te permettre de rejoindre des soirées proches de chez toi. Ces soirées sont proposées suivant différents thèmes, elles peuvent être payantes ou gratuites suivant ce que l’organisateur souhaite.",
+        description:
+            "Cette application va te permettre de rejoindre des soirées proches de chez toi.\n\n Les soirées proposées sont suivant différents thèmes: (Festive, Gaming, À thème et Jeux de Société).\n\n D’autres informations sont présentes comme l’heure d’entrée, le nombre de personnes …",
 //        pathImage: "images/photo_pencil.png",
-        backgroundColor: Color(0xff203152),
+        backgroundColor: SECONDARY_COLOR,
       ),
     );
     slides.add(
       new Slide(
+        styleTitle: TextStyle(fontSize: 60,  color: PRIMARY_COLOR),
+        styleDescription: TextStyle(fontSize: 20,  color: PRIMARY_COLOR),
         title: "ORGANISE",
         description:
-        "C’est à toi de décider le thème de ta soirée le nombre de personnes qui seront présentes à ta soirée et dernière chose tu pourras choisir qui viendra à Ta Soirée.",
+            "C’est à toi de définir tous les critères d’entrées Pour Ta Soirée (le titre, gratuit ou payant…).\n\n Maintenant tu n’as plus qu’à décider qui viendra Pour Ta Soirée!",
 //        pathImage: "images/photo_ruler.png",
-        backgroundColor: Color(0xff203152),
+        backgroundColor: SECONDARY_COLOR,
       ),
     );
     slides.add(
       new Slide(
-        title: "BONNE SOIREE A VOUS TOUS !",
+        styleTitle: TextStyle(fontSize: 60,  color: PRIMARY_COLOR),
+        styleDescription: TextStyle(fontSize: 20,  color: PRIMARY_COLOR),
+        title: "BONNE SOIREE",
         description:
-        "PTS vous souhaite sincèrement de faire de superbes rencontres lors de vos soirées.",
+            "PTS te souhaite sincèrement de faire de superbes rencontres lors de tes soirées.",
 //        pathImage: "images/photo_ruler.png",
-        backgroundColor: Color(0xff203152),
+        backgroundColor: SECONDARY_COLOR,
       ),
     );
+    slides.add(new Slide(
+      backgroundColor: SECONDARY_COLOR,
+    ));
   }
 
-  void onDonePress() {
-  }
+  void onDonePress() {}
 
   Widget renderNextBtn() {
     return Icon(
       Ionicons.arrow_forward_outline,
-      color : Color(0xffffcc5c),
+      color: ICONCOLOR,
       size: 35.0,
     );
   }
@@ -68,14 +81,14 @@ class IntroScreenState extends State<IntroScreen> {
   Widget renderDoneBtn() {
     return Icon(
       Ionicons.checkmark_outline,
-      color: Color(0xffffcc5c),
+      color: ICONCOLOR,
     );
   }
 
   Widget renderSkipBtn() {
     return Icon(
       Ionicons.play_skip_forward_outline,
-      color: Color(0xffffcc5c),
+      color: ICONCOLOR,
     );
   }
 
@@ -94,6 +107,8 @@ class IntroScreenState extends State<IntroScreen> {
       // Done button
       renderDoneBtn: this.renderDoneBtn(),
       onDonePress: this.onDonePress,
+
+      colorDot: ICONCOLOR,
 
       hideStatusBar: true,
 
