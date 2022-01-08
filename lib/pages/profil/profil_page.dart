@@ -13,6 +13,7 @@ import 'package:pts/components/text_materials.dart';
 import 'package:pts/components/pts_components.dart';
 import 'package:pts/models/services/auth_service.dart';
 import 'package:pts/pages/profil/subpage/about_page.dart';
+import 'package:pts/pages/profil/subpage/contactus_page.dart';
 import 'package:pts/pages/profil/subpage/existingcard_page.dart';
 import 'package:pts/pages/profil/subpage/info_page.dart';
 import 'package:pts/pages/profil/subpage/notification_page.dart';
@@ -150,15 +151,9 @@ class _ProfilState extends State<Profil> {
                               icon: Ionicons.information_circle_outline,
                             ),
                             CickableContainerProfil(
-                              to: null,
+                              to: ContactUsPage(),
                               text: "Nous contacter",
                               icon: Ionicons.mail_outline,
-                            ),
-                            CickableContainerProfil(
-                              to: null,
-                              text: "Localisation",
-                              icon: Ionicons.location_outline,
-                              bottomBorder: false,
                             ),
                             CickableContainerProfil(
                               to: IntroScreen(),
