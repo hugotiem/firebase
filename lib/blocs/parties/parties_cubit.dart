@@ -54,25 +54,25 @@ class PartiesCubit extends AppBaseCubit<PartiesState> {
     }
   }
 
-  Future fetchPartiesWithWhereIsEqualTo2(
-      {var key1, dynamic data1, var key2, dynamic data2}) async {
-    print("DATA 2 : $data2");
-    if (data1 == null || data2 == null) {
-      return;
-    }
-    if (data1 == 'uid') {
-      data1 = await auth.getToken();
-    }
-    if (data2 == 'uid') {
-      data2 = await auth.getToken();
-    }
-    emit(state.setRequestInProgress() as PartiesState);
-    var partiesSnapShots =
-        await services.getDataWithWhereIsEqualTo2(key1, data1, key2, data2);
-    List<Party> parties =
-        partiesSnapShots.docs.map((e) => Party.fromSnapShots(e)).toList();
-    emit(PartiesState.loaded(parties, state.filters));
-  }
+  // Future fetchPartiesWithWhereIsEqualTo2(
+  //     {var key1, dynamic data1, var key2, dynamic data2}) async {
+  //   print("DATA 2 : $data2");
+  //   if (data1 == null || data2 == null) {
+  //     return;
+  //   }
+  //   if (data1 == 'uid') {
+  //     data1 = await auth.getToken();
+  //   }
+  //   if (data2 == 'uid') {
+  //     data2 = await auth.getToken();
+  //   }
+  //   emit(state.setRequestInProgress() as PartiesState);
+  //   var partiesSnapShots =
+  //       await services.getDataWithWhereIsEqualTo2(key1, data1, key2, data2);
+  //   List<Party> parties =
+  //       partiesSnapShots.docs.map((e) => Party.fromSnapShots(e)).toList();
+  //   emit(PartiesState.loaded(parties, state.filters));
+  // }
 
   Future fetchPartiesByDateWithWhereIsEqualTo(
       var key, String? data, DateTime date) async {
@@ -85,23 +85,26 @@ class PartiesCubit extends AppBaseCubit<PartiesState> {
         }
       });
     });
-    emit(PartiesState.loaded(partiesWithDates, state.filters));
+    if (state.filters != null) {
+      applyFilters(state.filters!);
+    } else {
+      emit(PartiesState.loaded(partiesWithDates, state.filters,
+          currentDate: date));
+    }
   }
 
-  Future addFilters(Map<String, dynamic> filters) async {
-    emit(PartiesState.loaded(state.parties, filters));
-  }
-
-  Future fetchCurrentPartiesWithDateEqualTo(DateTime date) async {
-    emit(state.setRequestInProgress() as PartiesState);
-    List<Party> partiesWithDates = [];
+  Future applyFilters(Map<String, dynamic> filters) async {
     var parties = state.parties;
-    parties?.forEach((element) {
-      if (isSameDay(element.date, date)) {
-        partiesWithDates.add(element);
-      }
-    });
-    emit(PartiesState.loaded(partiesWithDates, state.filters));
+    var filteredParties = List.from(parties?.where((e) {
+          if ((filters['themes'] as List).contains(e.theme)) {
+            return true;
+          }
+          return false;
+        }).toList() ??
+        []);
+
+    emit(PartiesState.loaded(filteredParties, filters,
+        currentDate: state.currentDate));
   }
 
   Future fetchPartiesWithWhereArrayContains(var key) async {

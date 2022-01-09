@@ -29,6 +29,7 @@ class _FilterScreenState extends State<FilterScreen> {
     {'title': 'moins de 50€', 'id': 50},
     {'title': 'séléctionner', 'id': 'custom'}
   ];
+
   double _currentPrice = 0;
   bool isCustomPrice = false;
   bool isFree = false;
@@ -148,12 +149,22 @@ class _FilterScreenState extends State<FilterScreen> {
                   children: [
                     TextButton(
                       onPressed: () {
+                        Map<String, dynamic> filters = {};
                         themes.forEach((element) {
                           if (element['selected']) {
-                            // BlocProvider.of<PartiesCubit>(widget.context)
-                            //     .emit(state);
+                            if (filters['themes'] == null) {
+                              filters['themes'] = [];
+                            }
+                            (filters['themes'] as List).add(element['title']);
                           }
                         });
+                        if (isFree || _currentPrice != 0)
+                          filters['price'] = _currentPrice;
+
+                        print(filters);
+
+                        BlocProvider.of<PartiesCubit>(context)
+                            .applyFilters(filters);
                       },
                       child: Text("Appliquer"),
                     ),

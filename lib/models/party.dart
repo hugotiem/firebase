@@ -14,8 +14,8 @@ class Party {
   String? address;
   String? city;
   String? postalCode;
-  String? smoke;
-  String? animals;
+  bool? smoke;
+  bool? animals;
   var owner;
   var uid;
   List<dynamic>? validateGuestList;
@@ -66,8 +66,8 @@ class Party {
     var address = data['address'];
     var city = data['city'];
     var postalCode = data['postal code'];
-    var smoke = data['smoke'];
-    var animals = data['animals'];
+    var smoke = data['smoke'] == "true" ? true : false;
+    var animals = data['animals'] == "true" ? true : false;
     var owner = data['owner'];
     var uid = data['uid'];
     var validateGuestList = data['validate guest list'];

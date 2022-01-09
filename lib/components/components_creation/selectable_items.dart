@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pts/const.dart';
 
 WidgetSpan _buildWidgetSpan(BuildContext context, String title, bool isSelected,
     void Function() onSelect, void Function() onClose,
@@ -15,16 +16,22 @@ WidgetSpan _buildWidgetSpan(BuildContext context, String title, bool isSelected,
             left: isSelected && showIcon ? 0 : 15,
           ),
           decoration: BoxDecoration(
-            border: Border.all(),
+            border: isSelected
+                ? null
+                : Border.all(color: Colors.grey.withOpacity(0.1)),
             borderRadius: BorderRadius.circular(10),
-            color: isSelected ? Colors.grey.withOpacity(0.2) : null,
+            color: isSelected ? SECONDARY_COLOR : null,
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               if (isSelected && showIcon)
                 IconButton(onPressed: onClose, icon: Icon(Icons.close)),
-              Text(title),
+              Text(
+                title,
+                style: TextStyle(
+                    color: isSelected ? Colors.white : SECONDARY_COLOR),
+              ),
             ],
           ),
         ),
@@ -69,7 +76,8 @@ class SingleSelectableItemsWidget<T> extends StatelessWidget {
 class PriceSelectableItemsWidget extends StatefulWidget {
   final double initialPrice;
   final List<Map<String, dynamic>> items;
-  final void Function(double) onSelected;
+  final void Function(double, bool) onSelected;
+
   const PriceSelectableItemsWidget(
       {Key? key,
       required this.initialPrice,
@@ -112,12 +120,13 @@ class _PriceSelectableItemsWidgetState
           } else if (_isFree) {
             _price = 0;
             isFree = true;
+            isCustomPrice = false;
           } else {
             isCustomPrice = false;
             _price = (e['id'] as int).toDouble();
             isFree = false;
           }
-          widget.onSelected(_price);
+          widget.onSelected(_price, isCustomPrice);
         }),
         () => setState(() {
           if (_isCustomPrice) {
@@ -126,8 +135,9 @@ class _PriceSelectableItemsWidgetState
           if (_isFree) {
             isFree = false;
           }
-          widget.onSelected(_price);
+          widget.onSelected(_price, isCustomPrice);
         }),
+        showIcon: false,
       );
     }).toList();
   }

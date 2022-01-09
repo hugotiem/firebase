@@ -143,8 +143,9 @@ class _GuestNumberState extends State<GuestNumber> {
               child: PriceSelectableItemsWidget(
                 initialPrice: 5,
                 items: prices,
-                onSelected: (double value) => setState(() {
+                onSelected: (double value, bool isCustom) => setState(() {
                   _prix = value;
+                  isCustomPrice = isCustom;
                 }),
               ),
             ),
