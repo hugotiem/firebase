@@ -1,5 +1,6 @@
 import 'dart:io';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -41,84 +42,96 @@ class _HomeState extends State<Home> {
             }
           }
         },
-        child: BlocBuilder<UserCubit, UserState>(builder: (context, state) {
-          return Stack(
-            children: [
-              Scaffold(
-                extendBodyBehindAppBar: true,
-                body: _children[_currentIndex],
-                bottomNavigationBar: BottomNavigationBar(
-                  type: BottomNavigationBarType.fixed,
-                  selectedFontSize: 10,
-                  unselectedFontSize: 10,
-                  showSelectedLabels: true,
-                  showUnselectedLabels: true,
-                  selectedItemColor: ICONCOLOR,
-                  unselectedItemColor: SECONDARY_COLOR,
-                  onTap: onTabTapped,
-                  currentIndex: _currentIndex,
-                  items: [
-                    BottomNavigationBarItem(
-                      icon: new Icon(
-                        Ionicons.search_outline,
-                        size: 25,
-                      ),
-                      label: "Rechercher",
-                    ),
-                    BottomNavigationBarItem(
-                      icon: new Icon(
-                        Ionicons.calendar_clear_outline,
-                        size: 25,
-                      ),
-                      label: "Soirées",
-                    ),
-                    BottomNavigationBarItem(
-                      icon: new Icon(
-                        Ionicons.add_circle_outline,
-                        color: Colors.transparent,
-                        size: 40,
-                      ),
-                      label: "",
-                    ),
-                    BottomNavigationBarItem(
-                      icon: new Icon(
-                        Ionicons.chatbox_outline,
-                        size: 25,
-                      ),
-                      label: "Messages",
-                    ),
-                    BottomNavigationBarItem(
-                      icon: new Icon(
-                        Ionicons.person_outline,
-                        size: 25,
-                      ),
-                      label: "Profil",
-                    ),
-                  ],
-                  backgroundColor: Colors.white,
-                ),
-              ),
-              SafeArea(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 2.5),
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: FloatingActionButton(
-                      onPressed: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => CreationPage(),
-                          fullscreenDialog: true,
+        child: BlocBuilder<UserCubit, UserState>(
+          builder: (context, state) {
+            return BlocProvider(
+              create: (context) => UserCubit()..init(),
+              child: BlocBuilder<UserCubit, UserState>(
+                builder: (context, state1) {
+                  if (state1.user?.banned == true) {
+                    return Banned(state1.user!.id);
+                  }
+                  return Stack(
+                    children: [
+                      Scaffold(
+                        extendBodyBehindAppBar: true,
+                        body: _children[_currentIndex],
+                        bottomNavigationBar: BottomNavigationBar(
+                          type: BottomNavigationBarType.fixed,
+                          selectedFontSize: 10,
+                          unselectedFontSize: 10,
+                          showSelectedLabels: true,
+                          showUnselectedLabels: true,
+                          selectedItemColor: ICONCOLOR,
+                          unselectedItemColor: SECONDARY_COLOR,
+                          onTap: onTabTapped,
+                          currentIndex: _currentIndex,
+                          items: [
+                            BottomNavigationBarItem(
+                              icon: new Icon(
+                                Ionicons.search_outline,
+                                size: 25,
+                              ),
+                              label: "Rechercher",
+                            ),
+                            BottomNavigationBarItem(
+                              icon: new Icon(
+                                Ionicons.calendar_clear_outline,
+                                size: 25,
+                              ),
+                              label: "Soirées",
+                            ),
+                            BottomNavigationBarItem(
+                              icon: new Icon(
+                                Ionicons.add_circle_outline,
+                                color: Colors.transparent,
+                                size: 40,
+                              ),
+                              label: "",
+                            ),
+                            BottomNavigationBarItem(
+                              icon: new Icon(
+                                Ionicons.chatbox_outline,
+                                size: 25,
+                              ),
+                              label: "Messages",
+                            ),
+                            BottomNavigationBarItem(
+                              icon: new Icon(
+                                Ionicons.person_outline,
+                                size: 25,
+                              ),
+                              label: "Profil",
+                            ),
+                          ],
+                          backgroundColor: Colors.white,
                         ),
                       ),
-                      backgroundColor: SECONDARY_COLOR,
-                      child: Icon(Icons.add_rounded),
-                    ),
-                  ),
-                ),
+                      SafeArea(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 2.5),
+                          child: Align(
+                            alignment: Alignment.bottomCenter,
+                            child: FloatingActionButton(
+                              onPressed: () => Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => CreationPage(),
+                                  fullscreenDialog: true,
+                                ),
+                              ),
+                              backgroundColor: SECONDARY_COLOR,
+                              child: Icon(Icons.add_rounded),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                },
               ),
-            ],
-          );
-        }),
+            );
+          },
+        ),
       ),
     );
   }
@@ -261,5 +274,167 @@ class CheckIdPopup extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class Banned extends StatelessWidget {
+  final String? token;
+  const Banned(this.token, {Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    print(token);
+    return Scaffold(
+      backgroundColor: PRIMARY_COLOR,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'Vous êtes bannis'.toUpperCase(),
+            style: TextStyle(
+              color: Colors.red,
+              fontSize: 30,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(height: 22),
+          Container(
+            width: MediaQuery.of(context).size.width * 0.75,
+            child: Opacity(
+              opacity: 0.75,
+              child: Text(
+                "Lors de la vérification de votre compte, nous avons constasté que les informations que vous nous avez fournies lors de votre inscription ne correspondent pas avec celle de votre carte d'identité.",
+                style: TextStyle(color: SECONDARY_COLOR, fontSize: 16),
+              ),
+            ),
+          ),
+          SizedBox(height: 22),
+          Center(
+            child: InkWell(
+              onTap: () => _delete(context),
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.75,
+                padding: EdgeInsets.symmetric(vertical: 22),
+                decoration: BoxDecoration(
+                  color: Colors.red,
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Center(
+                  child: Text(
+                    "Supprimer son compte",
+                    style: TextStyle(
+                        color: PRIMARY_COLOR,
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future _delete(BuildContext context) async {
+    try {
+      await FirebaseAuth.instance.currentUser!.delete();
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'requires-recent-login') {
+        print(
+            'The user must reauthenticate before this operation can be executed.');
+        _showLoadingPopup(context);
+      }
+    }
+    FirebaseFirestore.instance.collection('user').doc(token).delete();
+  }
+
+  Future<dynamic> _showLoadingPopup(BuildContext context) async {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => Reauthenticate(),
+    );
+  }
+}
+
+class Reauthenticate extends StatefulWidget {
+  const Reauthenticate({Key? key}) : super(key: key);
+
+  @override
+  _ReauthenticateState createState() => _ReauthenticateState();
+}
+
+class _ReauthenticateState extends State<Reauthenticate> {
+  String? _email;
+  String? _password;
+  TextEditingController? _emailController;
+  TextEditingController? _passwordController;
+
+  @override
+  void initState() {
+    _emailController = TextEditingController()
+      ..addListener(() {
+        _email = _emailController!.text.trim();
+      });
+    _passwordController = TextEditingController()
+      ..addListener(() {
+        _password = _passwordController!.text;
+      });
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 22),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ttf("Email", _emailController),
+          ttf('Mot de passe', _passwordController),
+          ElevatedButton(
+            onPressed: reauthentification,
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(SECONDARY_COLOR),
+            ),
+            child: Text('Validez'.toUpperCase()),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget ttf(String text, TextEditingController? controller) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 22),
+      child: Stack(
+        children: [
+          Opacity(opacity: 0.65, child: CText(text)),
+          TextFormField(
+            textAlignVertical: TextAlignVertical.bottom,
+            controller: controller,
+            decoration: InputDecoration(
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: SECONDARY_COLOR),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future reauthentification() async {
+    try {
+      AuthCredential credential = EmailAuthProvider.credential(
+      email: _email!,
+      password: _password!,
+    );
+
+    await FirebaseAuth.instance.currentUser?.reauthenticateWithCredential(credential);
+    } on FirebaseAuthException {
+      print('wrong password or email');
+    }
   }
 }

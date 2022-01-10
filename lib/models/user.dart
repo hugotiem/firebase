@@ -16,6 +16,7 @@ class User {
   String? phone;
   String? email;
   bool? verified;
+  bool? banned;
 
   User(
       {this.id,
@@ -27,7 +28,8 @@ class User {
       this.hasIdChecked,
       this.email,
       this.phone,
-      this.verified});
+      this.verified,
+      this.banned});
 
   Future<User?> get currentUser async {
     var token = await authService.getToken();
@@ -49,6 +51,7 @@ class User {
     var email = data['email'];
     var hasIdChecked = data['idFront'] != null;
     var verified = data['verified'];
+    var banned = data['banned'];
 
     return User(
         id: id,
@@ -60,6 +63,7 @@ class User {
         email: email,
         phone: phone,
         verified: verified,
+        banned: banned,
         birthday: birthday);
   }
 }
