@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pts/components/back_appbar.dart';
+import 'package:pts/components/appbar.dart';
 import 'package:pts/components/custom_text.dart';
-import 'package:pts/components/title_appbar.dart';
 import 'package:pts/const.dart';
 import 'package:pts/models/Capitalize.dart';
 

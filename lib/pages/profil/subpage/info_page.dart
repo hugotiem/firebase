@@ -8,7 +8,7 @@ import 'package:pts/blocs/user/user_cubit.dart';
 import 'package:pts/components/components_creation/headertext_one.dart';
 import 'package:pts/components/custom_text.dart';
 import 'package:pts/const.dart';
-import 'package:pts/components/back_appbar.dart';
+import 'package:pts/components/appbar.dart';
 import 'package:pts/models/user.dart';
 
 class InformationPage extends StatefulWidget {

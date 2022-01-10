@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:pts/const.dart';
 import 'package:pts/blocs/parties/build_parties_cubit.dart';
-import 'package:pts/components/back_appbar.dart';
+import 'package:pts/components/appbar.dart';
 import 'package:pts/components/components_creation/fab_form.dart';
 import 'package:pts/components/components_creation/headertext_one.dart';
 import 'package:pts/components/components_creation/tff_text.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pts/components/text_materials.dart';
+import 'package:pts/components/custom_text.dart';
 import 'package:pts/const.dart';
 import 'package:pts/pages/login/login.dart';
 

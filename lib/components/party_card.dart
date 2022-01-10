@@ -8,8 +8,6 @@ import 'package:pts/models/capitalize.dart';
 import 'package:pts/models/party.dart';
 import 'package:pts/models/user.dart';
 import 'package:pts/blocs/user/user_cubit.dart';
-import 'package:pts/components/blurry_container.dart';
-import 'package:pts/components/text_descpription_show_hide.dart';
 import 'package:pts/models/services/auth_service.dart';
 import 'package:pts/pages/messaging/subpage/chatpage.dart';
 import 'package:pts/pages/profil/subpage/existingcard_page.dart';
@@ -17,9 +15,7 @@ import 'package:pts/pages/search/sliver/custom_sliver.dart';
 import 'package:pts/const.dart';
 import 'custom_text.dart';
 import 'horizontal_separator.dart';
-import 'join_wait_list.dart';
-import 'piechart_informartion.dart';
-import 'piechart_legend.dart';
+import 'piechart.dart';
 
 Widget buildPartyCard(BuildContext context, Party party) {
   List nameList = party.validateGuestList!;
@@ -847,6 +843,50 @@ class CardBNB extends StatelessWidget {
             )
           ],
         ),
+      ),
+    );
+  }
+}
+
+
+class JoinWaitList extends StatelessWidget {
+  const JoinWaitList({ Key? key }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: SECONDARY_COLOR,
+      floatingActionButton: FloatingActionButton.extended(  
+        onPressed: () {
+          Navigator.of(context).popUntil((route) => route.isFirst);
+        },
+        backgroundColor: ICONCOLOR,
+        elevation: 0,
+        label: Text(
+          'OK',
+          style: TextStyle(  
+            fontSize: 15
+          ),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 16, right: 16),
+            child: Text(
+              "Vous venez de rejoindre la liste d'attente de la soirée !",
+              style: TextStyle(
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+                height: 1.4,
+                color: Colors.white
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ]
       ),
     );
   }

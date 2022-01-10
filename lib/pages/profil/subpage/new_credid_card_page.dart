@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:pts/components/back_appbar.dart';
+import 'package:pts/components/appbar.dart';
 import 'package:pts/components/components_creation/tff_text.dart';
-import 'package:pts/components/custom_input_formatters.dart';
 import 'package:pts/components/fab_join.dart';
-import 'package:pts/components/title_appbar.dart';
 
 import '../../../../const.dart';
 
@@ -183,5 +181,37 @@ class TextNewCreditCard extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+
+class MaskedTextInputFormatter extends TextInputFormatter {
+  final String mask;
+  final String separator;
+
+  MaskedTextInputFormatter({
+    required this.mask,
+    required this.separator,
+  });
+
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    if (newValue.text.length > 0) {
+      if (newValue.text.length > oldValue.text.length) {
+        if (newValue.text.length > mask.length) return oldValue;
+        if (newValue.text.length < mask.length &&
+            mask[newValue.text.length - 1] == separator) {
+          return TextEditingValue(
+            text:
+                '${oldValue.text}$separator${newValue.text.substring(newValue.text.length - 1)}',
+            selection: TextSelection.collapsed(
+              offset: newValue.selection.end + 1,
+            ),
+          );
+        }
+      }
+    }
+    return newValue;
   }
 }

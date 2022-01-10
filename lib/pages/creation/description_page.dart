@@ -5,7 +5,7 @@ import 'package:pts/components/components_creation/selectable_items.dart';
 import 'package:pts/const.dart';
 import 'package:pts/models/services/firestore_service.dart';
 import 'package:pts/blocs/parties/build_parties_cubit.dart';
-import 'package:pts/components/back_appbar.dart';
+import 'package:pts/components/appbar.dart';
 import 'package:pts/components/components_creation/headertext_one.dart';
 import 'package:pts/components/components_creation/headertext_two.dart';
 

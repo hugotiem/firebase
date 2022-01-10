@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:pts/const.dart';
 
+import 'custom_text.dart';
+
 class BackAppBar extends StatelessWidget {
   final Widget? title, leading;
   final List<Widget>? actions;
@@ -48,6 +50,25 @@ class BackAppBar extends StatelessWidget {
       systemOverlayStyle: SystemUiOverlayStyle.dark,
       //brightness: brightness != null ? brightness : Brightness.light,
       bottom: bottom,
+    );
+  }
+}
+
+class TitleAppBar extends StatelessWidget {
+  final String? title;
+
+  const TitleAppBar(this.title, {Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(top: 6),
+      child: CText(
+        title!,
+        color: SECONDARY_COLOR,
+        fontWeight: FontWeight.w500,
+        fontSize: 18,
+      ),
     );
   }
 }

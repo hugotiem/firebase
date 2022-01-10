@@ -1,10 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:pts/components/ProfilPhoto.dart';
-import 'package:pts/components/back_appbar.dart';
-import 'package:pts/components/pts_box.dart';
-import 'package:pts/components/title_appbar.dart';
+import 'package:pts/components/appbar.dart';
+import 'package:pts/components/custom_container.dart';
 
 import 'package:pts/const.dart';
 import '../Profil_page.dart';
@@ -62,7 +60,12 @@ Widget buildValidationCard(BuildContext context, DocumentSnapshot party) {
             children: [
               Padding(
                 padding: const EdgeInsets.only(left: 8.0, right: 8),
-                child: ProfilPhoto(),
+                child: CircleAvatar(
+                  radius: 20,
+                  backgroundImage: AssetImage(
+                    "assets/roundBlankProfilPicture.png",
+                  ),
+                ),
               ),
               Container(
                 height: 70,
