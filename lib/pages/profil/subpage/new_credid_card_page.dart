@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pts/components/appbar.dart';
-import 'package:pts/components/components_creation/tff_text.dart';
 import 'package:pts/components/fab_join.dart';
+import 'package:pts/components/form/custom_ttf_form.dart';
 
 import '../../../../const.dart';
 
