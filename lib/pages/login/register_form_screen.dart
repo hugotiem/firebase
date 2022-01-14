@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:pts/components/components_creation/date_hour_picker.dart';
+import 'package:pts/components/custom_text.dart';
+import 'package:pts/components/form/custom_text_form.dart';
+import 'package:pts/components/form/custom_ttf_form.dart';
+import 'package:pts/components/form/date_hour_picker.dart';
 import 'package:pts/const.dart';
 import 'package:pts/pages/login/id_form_screen.dart';
 import 'package:pts/blocs/user/user_cubit.dart';
-import 'package:pts/components/components_creation/tff_text.dart';
 
 class RegisterFormScreen extends StatefulWidget {
   const RegisterFormScreen({Key? key}) : super(key: key);
@@ -17,13 +19,14 @@ class RegisterFormScreen extends StatefulWidget {
 class _RegisterFormScreenState extends State<RegisterFormScreen> {
   String? _name;
   String? _surname;
-  String? _phonenumber;
-  String? _gender;
+  String? _gender = "Homme";
   var _date;
+  bool? _hSelect = true;
+  bool? _fSelect;
+  bool? _oSelect;
 
   TextEditingController? _nameController;
   TextEditingController? _surnameController;
-  TextEditingController? _phonenumbercontroller;
   TextEditingController dateCtl = TextEditingController();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -38,10 +41,6 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
       ..addListener(() {
         _surname = _surnameController!.text;
       });
-    _phonenumbercontroller = TextEditingController()
-      ..addListener(() {
-        _phonenumber = _phonenumbercontroller!.text;
-      });
     super.initState();
   }
 
@@ -51,7 +50,7 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
     return WillPopScope(
       onWillPop: () async {
         if (Navigator.of(context).userGestureInProgress) {
-          return false;
+          return true;
         }
         return true;
       },
@@ -68,52 +67,54 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
             return Scaffold(
               body: SafeArea(
                 child: Scaffold(
+                  backgroundColor: FORMBACKGROUNDCOLOR,
                   appBar: AppBar(
                     backgroundColor: Colors.transparent,
                     toolbarHeight: 0,
                     elevation: 0,
                     systemOverlayStyle: SystemUiOverlayStyle.dark,
                   ),
-                  body: Center(
-                    child: Form(
-                      key: _formKey,
-                      child: SingleChildScrollView(
+                  body: Form(
+                    key: _formKey,
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 22),
                         child: Column(
                           children: <Widget>[
-                            SizedBox(
-                              height: 50,
+                            HeaderText1(text: "Crée ton compte"),
+                            HeaderText2(text: "Comment t'appelles tu ?"),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                TFFText(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.4,
+                                  controller: _nameController,
+                                  hintText: "Prénom",
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return "Rentrez votre prénom";
+                                    }
+                                    return null;
+                                  },
+                                ),
+                                TFFText(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.4,
+                                  controller: _surnameController,
+                                  hintText: "Nom",
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return "Rentrez votre nom";
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ],
                             ),
-                            Center(
-                              child: TFFText(
-                                controller: _surnameController,
-                                keyboardAppearance: Brightness.light,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return "Le champs ne dois pas être vide";
-                                  }
-                                  return null;
-                                },
-                                hintText: 'Nom :',
-                              ),
-                            ),
-                            SizedBox(
-                              height: 50,
-                            ),
-                            Center(
-                              child: TFFText(
-                                controller: _nameController,
-                                keyboardAppearance: Brightness.light,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return "le champs ne dois pas être vide";
-                                  }
-                                  return null;
-                                },
-                                hintText: 'Prénom :',
-                              ),
-                            ),
-                            SizedBox(
-                              height: 50,
+                            HeaderText2(
+                              text: "Quelle est ta date de naissance ?",
+                              padding: EdgeInsets.only(bottom: 20, top: 40),
                             ),
                             DateHourPicker(
                               onTap: () async {
@@ -133,158 +134,132 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                                 }
                               },
                             ),
-                            SizedBox(
-                              height: 50,
+                            HeaderText2(
+                              text: "Sélectionne ton genre :",
+                              padding: EdgeInsets.only(bottom: 20, top: 40),
                             ),
-                            Center(
-                              child: Container(
-                                height: HEIGHTCONTAINER,
-                                width: MediaQuery.of(context).size.width * 0.9,
-                                decoration: BoxDecoration(
-                                    color: PRIMARY_COLOR,
-                                    borderRadius: BorderRadius.circular(15)),
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.only(left: 16, right: 8),
-                                  child: Center(
-                                    child: DropdownButtonFormField<String>(
-                                      value: _gender,
-                                      items: [
-                                        'Homme',
-                                        'Femme',
-                                        'Autre',
-                                      ].map<DropdownMenuItem<String>>(
-                                          (String value) {
-                                        return DropdownMenuItem<String>(
-                                          value: value,
-                                          child: Text(
-                                            value,
-                                            style: TextStyle(
-                                                fontSize: TEXTFIELDFONTSIZE),
-                                          ),
-                                        );
-                                      }).toList(),
-                                      hint: Text(
-                                        "Genre",
-                                        style: TextStyle(
-                                            fontSize: TEXTFIELDFONTSIZE),
-                                      ),
-                                      elevation: 0,
-                                      decoration: InputDecoration(
-                                        errorStyle: TextStyle(
-                                          height: 0,
-                                          background: Paint()
-                                            ..color = Colors.transparent,
-                                        ),
-                                        errorBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.transparent),
-                                        ),
-                                        border: OutlineInputBorder(
-                                          borderSide: BorderSide.none,
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                        ),
-                                        enabledBorder: UnderlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.transparent),
-                                        ),
-                                      ),
-                                      onChanged: (String? value) {
-                                        setState(() {
-                                          _gender = value;
-                                        });
-                                      },
-                                      validator: (value) {
-                                        if (value == null) {
-                                          return 'Vous devez sélectionner un genre';
-                                        } else {
-                                          return null;
-                                        }
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                selectedContainer("Homme", () {
+                                  setState(() {
+                                    _fSelect = false;
+                                    _hSelect = true;
+                                    _oSelect = false;
+                                    _gender = 'Homme';
+                                  });
+                                }, _hSelect),
+                                selectedContainer("Femme", () {
+                                  setState(() {
+                                    _fSelect = true;
+                                    _hSelect = false;
+                                    _oSelect = false;
+                                    _gender = 'Femme';
+                                  });
+                                }, _fSelect),
+                                selectedContainer("Autre", () {
+                                  setState(() {
+                                    _fSelect = false;
+                                    _hSelect = false;
+                                    _oSelect = true;
+                                    _gender = 'Autre';
+                                  });
+                                }, _oSelect),
+                              ],
                             ),
-                            SizedBox(
-                              height: 50,
-                            ),
-                            Center(
-                              child: TFFText(
-                                controller: _phonenumbercontroller,
-                                keyboardAppearance: Brightness.light,
-                                keyboardType: TextInputType.phone,
-                                hintText: 'Téléphone (facultatif) :',
-                                validator: (value) {
-                                  return null;
-                                },
-                              ),
-                            ),
-                            SizedBox(
-                              height: 100,
-                            )
+                            SizedBox(height: 125),
                           ],
                         ),
                       ),
                     ),
                   ),
-                  bottomSheet: Wrap(
-                    children: <Widget>[
-                      Center(
-                        child: GestureDetector(
-                          child: Container(
-                            margin: EdgeInsets.symmetric(vertical: 20),
-                            width: size.width - 100,
-                            padding: EdgeInsets.symmetric(vertical: 20),
-                            decoration: BoxDecoration(
-                              color: ICONCOLOR,
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(15),
-                              ),
-                            ),
-                            child: Text(
-                              "suivant".toUpperCase(),
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                          onTap: () async {
-                            if (!_formKey.currentState!.validate()) {
-                              return;
-                            }
-                            print(_name);
-                            print(_surname);
-                            await BlocProvider.of<UserCubit>(context)
-                                .updateUserInfo(
-                                  id,
-                                  name: _name,
-                                  surname: _surname,
-                                  phonenumber: _phonenumber,
-                                  gender: _gender,
-                                  birthday: _date
-                                )
-                                .then(
-                                  (_) => Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          IdFormScreen(token: id),
-                                    ),
-                                  ),
-                                );
-                          },
+                  bottomSheet: Container(
+                    decoration: BoxDecoration(
+                      color: FORMBACKGROUNDCOLOR,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 5,
+                          blurRadius: 7,
+                          offset: Offset(0, 10),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
+                    child: Wrap(
+                      children: <Widget>[
+                        Center(
+                          child: GestureDetector(
+                            child: Container(
+                              margin: EdgeInsets.symmetric(vertical: 20),
+                              width: size.width - 100,
+                              padding: EdgeInsets.symmetric(vertical: 20),
+                              decoration: BoxDecoration(
+                                color: ICONCOLOR,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(15),
+                                ),
+                              ),
+                              child: Text(
+                                "suivant".toUpperCase(),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            onTap: () async {
+                              if (!_formKey.currentState!.validate()) {
+                                return;
+                              }
+                              await BlocProvider.of<UserCubit>(context)
+                                  .updateUserInfo(
+                                    id,
+                                    name: _name,
+                                    surname: _surname,
+                                    gender: _gender,
+                                    birthday: _date,
+                                  )
+                                  .then(
+                                    (_) => Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            IdFormScreen(token: id),
+                                      ),
+                                    ),
+                                  );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
             );
           },
+        ),
+      ),
+    );
+  }
+
+  Widget selectedContainer(String text, void Function()? onTap, bool? select) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        height: HEIGHTCONTAINER,
+        width: MediaQuery.of(context).size.width * .25,
+        decoration: BoxDecoration(
+          color: select == true ? SECONDARY_COLOR : PRIMARY_COLOR,
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Center(
+          child: CText(
+            text,
+            fontSize: 18,
+            color: select == true ? PRIMARY_COLOR : SECONDARY_COLOR,
+          ),
         ),
       ),
     );
@@ -299,8 +274,8 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
         builder: (BuildContext context, Widget? child) {
           return Theme(
               data: ThemeData.light().copyWith(
-                colorScheme: ColorScheme.light()
-                    .copyWith(primary: SECONDARY_COLOR, onPrimary: PRIMARY_COLOR),
+                colorScheme: ColorScheme.light().copyWith(
+                    primary: SECONDARY_COLOR, onPrimary: PRIMARY_COLOR),
               ),
               child: child!);
         });

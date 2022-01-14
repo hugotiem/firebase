@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:pts/components/back_appbar.dart';
-import 'package:pts/components/title_appbar.dart';
+import 'package:pts/components/appbar.dart';
 
 import 'new_credid_card_page.dart';
 

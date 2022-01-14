@@ -2,16 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:pts/components/connect.dart';
-import 'package:pts/components/introSlider.dart';
+import 'package:pts/components/custom_text.dart';
+import 'package:pts/models/services/auth_service.dart';
+import 'package:pts/onboarding_page.dart';
 import 'package:pts/const.dart';
 import 'package:pts/models/Capitalize.dart';
 import 'package:pts/blocs/user/user_cubit.dart';
-import 'package:pts/components/ProfilPhoto.dart';
-import 'package:pts/components/pts_box.dart';
-import 'package:pts/components/text_materials.dart';
-import 'package:pts/components/pts_components.dart';
-import 'package:pts/models/services/auth_service.dart';
+import 'package:pts/components/custom_container.dart';
+import 'package:pts/pages/login/connect.dart';
+import '../../components/custom_container.dart';
 import 'package:pts/pages/profil/subpage/about_page.dart';
 import 'package:pts/pages/profil/subpage/contactus_page.dart';
 import 'package:pts/pages/profil/subpage/existingcard_page.dart';
@@ -65,7 +64,12 @@ class _ProfilState extends State<Profil> {
                         containerShadow: true,
                         child: Row(
                           children: <Widget>[
-                            ProfilPhoto(),
+                            CircleAvatar(
+                              radius: 30,
+                              backgroundImage: AssetImage(
+                                "assets/roundBlankProfilPicture.png",
+                              ),
+                            ),
                             Container(
                               margin: EdgeInsets.only(left: 20),
                               child: new Column(

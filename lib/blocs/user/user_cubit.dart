@@ -74,10 +74,10 @@ class UserCubit extends AppBaseCubit<UserState> {
     if (task == null) return;
     task.then((value) async {
       var url = await value.ref.getDownloadURL();
-      bool verified = false;
       Map<String, dynamic> data = <String, dynamic>{
         "$ref": url,
-        "verified": verified,
+        "verified": false,
+        "banned": false,
       };
       await firestore.setWithId(token, data: data);
       emit(UserState.dataLoaded(user: state.user, token: state.token));

@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pts/components/custom_text.dart';
+import 'package:pts/components/form/custom_text_form.dart';
 
 import 'package:pts/const.dart';
 import 'package:pts/blocs/user/user_cubit.dart';
@@ -15,7 +17,8 @@ class IdFormScreen extends StatefulWidget {
   final String? name;
   final String? surname;
   final String? token;
-  const IdFormScreen({Key? key, this.name, this.surname, this.token}) : super(key: key);
+  const IdFormScreen({Key? key, this.name, this.surname, this.token})
+      : super(key: key);
 
   @override
   _IdFormScreenState createState() => _IdFormScreenState();
@@ -49,8 +52,8 @@ class _IdFormScreenState extends State<IdFormScreen> {
             child: BlocBuilder<UserCubit, UserState>(
               builder: (context, state) {
                 return Scaffold(
+                  backgroundColor: FORMBACKGROUNDCOLOR,
                   appBar: AppBar(
-                    
                     automaticallyImplyLeading: false,
                     backgroundColor: Colors.transparent,
                     systemOverlayStyle: SystemUiOverlayStyle.dark,
@@ -82,80 +85,72 @@ class _IdFormScreenState extends State<IdFormScreen> {
                       ),
                     ],
                   ),
-                  body: Center(
+                  body: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 22),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text("Photo carte d'identité (Recto) :"),
-                        Center(
-                          child: Container(
-                            margin: EdgeInsets.symmetric(vertical: 20),
-                            clipBehavior: Clip.antiAlias,
-                            width: MediaQuery.of(context).size.width * 0.9,
-                            height: 50,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: TextButton(
-                              style: ButtonStyle(),
-                              onPressed: () => _idFrontImage != null
-                                  ? _showBottomModalSheet(
-                                      image: _idFrontImage,
-                                      type: VerificationType.idFront,
-                                    )
-                                  : _showCupertinoModalPopup(
-                                      VerificationType.idFront),
-                              child: _idFrontImage == null
-                                  ? Text("Sélectionner une image")
-                                  : Text("Voir l'image"),
-                            ),
+                        HeaderText1(text: "Certifie ton compte"),
+                        HeaderText2(text: "Photo carte d'identité (Recto) :"),
+                        Container(
+                          clipBehavior: Clip.antiAlias,
+                          width: MediaQuery.of(context).size.width * 0.9,
+                          height: 58,
+                          decoration: BoxDecoration(
+                            color: PRIMARY_COLOR,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: TextButton(
+                            style: ButtonStyle(
+                                textStyle: MaterialStateProperty.all(
+                                    TextStyle(color: SECONDARY_COLOR))),
+                            onPressed: () => _idFrontImage != null
+                                ? _showBottomModalSheet(
+                                    image: _idFrontImage,
+                                    type: VerificationType.idFront,
+                                  )
+                                : _showCupertinoModalPopup(
+                                    VerificationType.idFront),
+                            child: _idFrontImage == null
+                                ? selectionText()
+                                : seeImageText(),
                           ),
                         ),
-                        SizedBox(
-                          height: 10,
+                        HeaderText2(
+                          text: "Photo carte d'identité (Verso) :",
+                          padding: EdgeInsets.only(bottom: 20, top: 40),
                         ),
-                        Text("Photo carte d'identité (Verso) :"),
-                        Center(
-                          child: Container(
-                            margin: EdgeInsets.symmetric(vertical: 20),
-                            clipBehavior: Clip.antiAlias,
-                            width: MediaQuery.of(context).size.width * 0.9,
-                            height: 50,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: TextButton(
-                              onPressed: () => _idBackImage != null
-                                  ? _showBottomModalSheet(
-                                      image: _idBackImage,
-                                      type: VerificationType.idBack,
-                                    )
-                                  : _showCupertinoModalPopup(
-                                      VerificationType.idBack),
-                              child: _idBackImage == null
-                                  ? Text("Sélectionner une image")
-                                  : Text("Voir l'image"),
-                            ),
+                        Container(
+                          clipBehavior: Clip.antiAlias,
+                          width: MediaQuery.of(context).size.width * 0.9,
+                          height: 58,
+                          decoration: BoxDecoration(
+                            color: PRIMARY_COLOR,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: TextButton(
+                            onPressed: () => _idBackImage != null
+                                ? _showBottomModalSheet(
+                                    image: _idBackImage,
+                                    type: VerificationType.idBack,
+                                  )
+                                : _showCupertinoModalPopup(
+                                    VerificationType.idBack),
+                            child: _idBackImage == null
+                                ? selectionText()
+                                : seeImageText(),
                           ),
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text("Selfie : "),
+                        HeaderText2(text: "Selfie : ", padding: EdgeInsets.only(bottom: 20, top: 40),),
                         Center(
                           child: Container(
-                            margin: EdgeInsets.symmetric(vertical: 20),
                             clipBehavior: Clip.antiAlias,
                             width: MediaQuery.of(context).size.width * 0.9,
-                            height: 50,
+                            height: 58,
                             decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
+                              color: PRIMARY_COLOR,
+                              borderRadius: BorderRadius.circular(15),
                             ),
                             child: TextButton(
                               onPressed: () => _faceImage == null
@@ -166,77 +161,92 @@ class _IdFormScreenState extends State<IdFormScreen> {
                                       type: VerificationType.selfie,
                                     ),
                               child: _faceImage == null
-                                  ? Text("Prendre une photo")
-                                  : Text("Voir l'image"),
+                                  ? selectionText()
+                                  : seeImageText(),
                             ),
                           ),
                         ),
                       ],
                     ),
                   ),
-                  bottomSheet: Wrap(
-                    children: <Widget>[
-                      Center(
-                        child: GestureDetector(
-                          child: Container(
-                            margin: EdgeInsets.symmetric(vertical: 20),
-                            width: size.width - 100,
-                            padding: EdgeInsets.symmetric(vertical: 20),
-                            decoration: BoxDecoration(
-                              color: ICONCOLOR,
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                            ),
-                            child: Text(
-                              "enregistrer".toUpperCase(),
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                          onTap: () async {
-                            if (_idFrontImage == null) {
-                              //var message = "Veuillez saisir une image";
-                              return;
-                            }
-                            if (_idBackImage == null) {
-                              return;
-                            }
-                            if (_faceImage == null) {
-                              return;
-                            }
-                            if (loaderKey == null) {
-                              loaderKey = GlobalKey<NavigatorState>();
-                            }
-                             _showLoadingPopup();
-                            await BlocProvider.of<UserCubit>(context)
-                                .addId(_idFrontImage, "idFront", widget.token)
-                                .whenComplete(
-                                  () => BlocProvider.of<UserCubit>(context)
-                                      .addId(_idBackImage, "idBack", widget.token)
-                                      .whenComplete(
-                                        () =>
-                                            BlocProvider.of<UserCubit>(context)
-                                                .addId(_faceImage, "selfie", widget.token),
-                                      )
-                                      .whenComplete(
-                                        () =>
-                                            BlocProvider.of<UserCubit>(context)
-                                                .emit(
-                                          UserState.idUploaded(
-                                              token: state.token,
-                                              user: state.user),
-                                        ),
-                                      ),
-                                );
-                          },
+                  bottomSheet: Container(
+                    decoration: BoxDecoration(
+                      color: FORMBACKGROUNDCOLOR,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 5,
+                          blurRadius: 7,
+                          offset: Offset(0, 10),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
+                    child: Wrap(
+                      children: <Widget>[
+                        Center(
+                          child: GestureDetector(
+                            child: Container(
+                              margin: EdgeInsets.symmetric(vertical: 20),
+                              width: size.width - 100,
+                              padding: EdgeInsets.symmetric(vertical: 20),
+                              decoration: BoxDecoration(
+                                color: ICONCOLOR,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10),
+                                ),
+                              ),
+                              child: Text(
+                                "enregistrer".toUpperCase(),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            onTap: () async {
+                              if (_idFrontImage == null) {
+                                //var message = "Veuillez saisir une image";
+                                return;
+                              }
+                              if (_idBackImage == null) {
+                                return;
+                              }
+                              if (_faceImage == null) {
+                                return;
+                              }
+                              if (loaderKey == null) {
+                                loaderKey = GlobalKey<NavigatorState>();
+                              }
+                              _showLoadingPopup();
+                              await BlocProvider.of<UserCubit>(context)
+                                  .addId(_idFrontImage, "idFront", widget.token)
+                                  .whenComplete(
+                                    () => BlocProvider.of<UserCubit>(context)
+                                        .addId(_idBackImage, "idBack",
+                                            widget.token)
+                                        .whenComplete(
+                                          () => BlocProvider.of<UserCubit>(
+                                                  context)
+                                              .addId(_faceImage, "selfie",
+                                                  widget.token),
+                                        )
+                                        .whenComplete(
+                                          () => BlocProvider.of<UserCubit>(
+                                                  context)
+                                              .emit(
+                                            UserState.idUploaded(
+                                                token: state.token,
+                                                user: state.user),
+                                          ),
+                                        ),
+                                  );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },
@@ -385,6 +395,35 @@ class _IdFormScreenState extends State<IdFormScreen> {
               child: CircularProgressIndicator(),
             )
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget selectionText() {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 12),
+        child: Opacity(
+          opacity: 0.7,
+          child: CText(
+            "Sélectionner une image",
+            fontSize: 18,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget seeImageText() {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 12),
+        child: CText(
+          "Voir l'image",
+          fontSize: 18,
         ),
       ),
     );

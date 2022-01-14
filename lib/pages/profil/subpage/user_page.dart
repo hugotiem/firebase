@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:pts/blocs/user/user_cubit.dart';
 import 'package:pts/const.dart';
-import 'package:pts/components/back_appbar.dart';
+import 'package:pts/components/appbar.dart';
 import 'package:pts/components/horizontal_separator.dart';
 import 'package:pts/models/Capitalize.dart';
 

@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:pts/blocs/user/user_cubit.dart';
-import 'package:pts/components/back_appbar.dart';
+import 'package:pts/components/appbar.dart';
 import 'package:pts/components/custom_text.dart';
-import 'package:pts/components/title_appbar.dart';
 import 'package:pts/const.dart';
 
 class HelpPage extends StatelessWidget {

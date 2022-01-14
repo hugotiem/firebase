@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:pts/components/form/custom_ttf_form.dart';
 import 'package:pts/const.dart';
 import 'package:pts/pages/login/register_form_screen.dart';
 import 'package:pts/blocs/login/login_cubit.dart';
-import 'package:pts/components/components_creation/tff_text.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key? key}) : super(key: key);

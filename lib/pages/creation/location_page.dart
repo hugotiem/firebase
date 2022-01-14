@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pts/components/form/custom_text_form.dart';
+import 'package:pts/components/form/custom_ttf_form.dart';
+import 'package:pts/components/form/fab_form.dart';
 import 'package:pts/const.dart';
 import 'package:pts/models/address.dart';
 import 'package:pts/blocs/parties/build_parties_cubit.dart';
-import 'package:pts/components/back_appbar.dart';
+import 'package:pts/components/appbar.dart';
 import 'package:pts/models/capitalize.dart';
-import 'package:pts/components/components_creation/fab_form.dart';
-import 'package:pts/components/components_creation/headertext_one.dart';
-import 'package:pts/components/components_creation/headertext_two.dart';
-import 'package:pts/components/components_creation/tff_text.dart';
 
 class LocationPage extends StatefulWidget {
   final void Function()? onNext;
