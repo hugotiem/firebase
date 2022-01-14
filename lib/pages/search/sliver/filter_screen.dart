@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pts/blocs/parties/parties_cubit.dart';
+import 'package:pts/components/components_creation/selectable_items.dart';
 
 class FilterScreen extends StatefulWidget {
   final ScrollController sc;
@@ -33,6 +34,8 @@ class _FilterScreenState extends State<FilterScreen> {
   double _currentPrice = 0;
   bool isCustomPrice = false;
   bool isFree = false;
+
+  bool? isAnimals;
 
   WidgetSpan _buildWidgetSpan(BuildContext context, String title,
       bool isSelected, void Function() onSelect, void Function() onClose) {
@@ -161,6 +164,10 @@ class _FilterScreenState extends State<FilterScreen> {
                         if (isFree || _currentPrice != 0)
                           filters['price'] = _currentPrice;
 
+                        if (isAnimals != null) {
+                          filters['animals'] = isAnimals;
+                        }
+
                         print(filters);
 
                         BlocProvider.of<PartiesCubit>(context)
@@ -234,6 +241,25 @@ class _FilterScreenState extends State<FilterScreen> {
                                   ),
                                 ],
                               ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(10),
+                              child: Text("Par prix :"),
+                            ),
+                            Container(
+                              child: SingleSelectableItemsWidget<bool>(
+                                onSelected: (bool? value) => setState(() {
+                                  isAnimals = value;
+                                }),
+                                items: [
+                                  {"title": "oui", "selected": true},
+                                  {"title": "non", "selected": false},
+                                ],
+                              ),
+                            ),
                           ],
                         ),
                       ],

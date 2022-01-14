@@ -9,7 +9,7 @@ class Party {
   DateTime date;
   DateTime? startTime;
   DateTime? endTime;
-  var price;
+  double? price;
   String? desc;
   String? address;
   String? city;
@@ -61,7 +61,7 @@ class Party {
     var date = data['date'].toDate();
     var startTime = data['startTime'].toDate();
     var endTime = data['endTime'].toDate();
-    var price = data['price'];
+    double? price = data['price'];
     var desc = data['description'];
     var address = data['address'];
     var city = data['city'];
@@ -75,6 +75,7 @@ class Party {
         ((data['coordinates'] ?? []) as List<dynamic>).cast<double>();
     var approximativeCoordinates =
         coordinates.map((e) => e + random()).toList();
+
     return Party(
         id,
         name,

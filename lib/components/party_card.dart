@@ -298,7 +298,7 @@ Widget buildPartyCard(BuildContext context, Party party) {
                         ),
                       ),
                       bottomNavigationBar: CardBNB(
-                          prix: party.price,
+                          prix: party.price.toString(),
                           heureDebut:
                               "${DateFormat.Hm('fr').format(party.startTime!).split(":")[0]}h${DateFormat.Hm('fr').format(party.startTime!).split(":")[1]}",
                           heureFin:
