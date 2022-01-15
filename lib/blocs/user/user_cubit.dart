@@ -59,6 +59,7 @@ class UserCubit extends AppBaseCubit<UserState> {
       "gender": gender,
       "birthday": birthday,
       'id': token,
+      "photo": "",
     };
     await firestore.setWithId(token, data: data);
     emit(UserState.dataLoaded(user: state.user, token: state.token));

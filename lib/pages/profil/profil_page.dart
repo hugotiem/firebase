@@ -52,6 +52,14 @@ class _ProfilState extends State<Profil> {
             if (user == null) {
               return Center(child: CircularProgressIndicator());
             }
+            print(user.photo);
+
+            String? photo = "";
+            if (user.photo!.isEmpty) {
+              photo = "assets/roundBlankProfilPicture.png";
+            } else {
+              photo = user.photo;
+            }
 
             return SingleChildScrollView(
               child: Container(
@@ -64,12 +72,15 @@ class _ProfilState extends State<Profil> {
                         containerShadow: true,
                         child: Row(
                           children: <Widget>[
-                            CircleAvatar(
-                              radius: 30,
-                              backgroundImage: AssetImage(
-                                "assets/roundBlankProfilPicture.png",
-                              ),
-                            ),
+                            photo == "assets/roundBlankProfilPicture.png"
+                                ? CircleAvatar(
+                                    radius: 30,
+                                    backgroundImage: AssetImage(photo!),
+                                  )
+                                : CircleAvatar(
+                                    radius: 30,
+                                    backgroundImage: NetworkImage(photo!),
+                                  ),
                             Container(
                               margin: EdgeInsets.only(left: 20),
                               child: new Column(

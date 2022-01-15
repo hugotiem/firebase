@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pts/blocs/parties/parties_cubit.dart';
-import 'package:pts/components/components_creation/selectable_items.dart';
+import 'package:pts/components/form/selectable_items.dart';
 
 class FilterScreen extends StatefulWidget {
   final ScrollController sc;
