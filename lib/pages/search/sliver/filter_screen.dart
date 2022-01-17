@@ -6,7 +6,15 @@ import 'package:pts/components/form/selectable_items.dart';
 class FilterScreen extends StatefulWidget {
   final ScrollController sc;
   final BuildContext context;
-  FilterScreen({Key? key, required this.sc, required this.context})
+  final String currentCity;
+
+  final DateTime? currentDate;
+  FilterScreen(
+      {Key? key,
+      required this.sc,
+      required this.context,
+      required this.currentCity,
+      this.currentDate})
       : super(key: key);
 
   @override
@@ -37,99 +45,6 @@ class _FilterScreenState extends State<FilterScreen> {
 
   bool? isAnimals;
 
-  WidgetSpan _buildWidgetSpan(BuildContext context, String title,
-      bool isSelected, void Function() onSelect, void Function() onClose) {
-    return WidgetSpan(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: GestureDetector(
-          child: Container(
-            padding: EdgeInsets.only(
-              right: 15,
-              top: isSelected ? 0 : 15,
-              bottom: isSelected ? 0 : 15,
-              left: isSelected ? 0 : 15,
-            ),
-            decoration: BoxDecoration(
-              border: Border.all(),
-              borderRadius: BorderRadius.circular(10),
-              color: isSelected ? Colors.grey.withOpacity(0.2) : null,
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (isSelected)
-                  IconButton(onPressed: onClose, icon: Icon(Icons.close)),
-                Text(title),
-              ],
-            ),
-          ),
-          onTap: onSelect,
-        ),
-      ),
-    );
-  }
-
-  List<WidgetSpan> _buildThemeWidgetSpan(
-      BuildContext context, List<Map<String, dynamic>> items) {
-    return items.map<WidgetSpan>((e) {
-      return _buildWidgetSpan(
-        context,
-        e['title'],
-        e['selected'],
-        () => setState(() {
-          e['selected'] = true;
-        }),
-        () => setState(() {
-          e['selected'] = false;
-        }),
-      );
-    }).toList();
-  }
-
-  List<WidgetSpan> _buildPriceWidgetSpan(
-      BuildContext context, List<Map<String, dynamic>> items) {
-    return items.map<WidgetSpan>((e) {
-      bool _isCustomPrice = e['id'] == 'custom';
-      bool _isFree = e['id'] is bool;
-      if (_isFree) {
-        e['id'] = isFree;
-      }
-      return _buildWidgetSpan(
-        context,
-        e['title'],
-        _isCustomPrice
-            ? isCustomPrice
-            : _isFree
-                ? e['id']
-                : _currentPrice == e['id'],
-        () => setState(() {
-          if (_isCustomPrice) {
-            _currentPrice = 0;
-            isCustomPrice = true;
-            isFree = false;
-          } else if (_isFree) {
-            _currentPrice = 0;
-            isFree = true;
-          } else {
-            isCustomPrice = false;
-            _currentPrice = (e['id'] as int).toDouble();
-            isFree = false;
-          }
-        }),
-        () => setState(() {
-          if (_isCustomPrice) {
-            isCustomPrice = false;
-          }
-          if (_isFree) {
-            isFree = false;
-          }
-          _currentPrice = 0;
-        }),
-      );
-    }).toList();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -153,12 +68,17 @@ class _FilterScreenState extends State<FilterScreen> {
                     TextButton(
                       onPressed: () {
                         Map<String, dynamic> filters = {};
+                        filters['city'] = widget.currentCity.split(",")[0];
+                        if (widget.currentDate != null) {
+                          filters['date'] = widget.currentDate;
+                        }
+
                         themes.forEach((element) {
                           if (element['selected']) {
-                            if (filters['themes'] == null) {
-                              filters['themes'] = [];
+                            if (filters['theme'] == null) {
+                              filters['theme'] = [];
                             }
-                            (filters['themes'] as List).add(element['title']);
+                            (filters['theme'] as List).add(element['title']);
                           }
                         });
                         if (isFree || _currentPrice != 0)
@@ -192,14 +112,7 @@ class _FilterScreenState extends State<FilterScreen> {
                               child: Text("Par thèmes :"),
                             ),
                             Container(
-                              child: RichText(
-                                text: TextSpan(
-                                  children: _buildThemeWidgetSpan(
-                                    context,
-                                    themes,
-                                  ),
-                                ),
-                              ),
+                              child: MultipleSelectableItemsWidget(items: themes,),
                             ),
                           ],
                         ),
@@ -211,11 +124,14 @@ class _FilterScreenState extends State<FilterScreen> {
                               child: Text("Par prix :"),
                             ),
                             Container(
-                              child: RichText(
-                                text: TextSpan(
-                                  children:
-                                      _buildPriceWidgetSpan(context, prices),
-                                ),
+                              child: PriceSelectableItemsWidget(
+                                initialPrice: 0,
+                                items: prices,
+                                onSelected: (double value, bool isCustom) =>
+                                    setState(() {
+                                  _currentPrice = value;
+                                  isCustomPrice = isCustom;
+                                }),
                               ),
                             ),
                             if (isCustomPrice)
@@ -247,18 +163,26 @@ class _FilterScreenState extends State<FilterScreen> {
                           children: [
                             Container(
                               padding: EdgeInsets.all(10),
-                              child: Text("Par prix :"),
+                              child: Text("Animaux :"),
                             ),
-                            Container(
-                              child: SingleSelectableItemsWidget<bool>(
-                                onSelected: (bool? value) => setState(() {
-                                  isAnimals = value;
-                                }),
-                                items: [
-                                  {"title": "oui", "selected": true},
-                                  {"title": "non", "selected": false},
-                                ],
-                              ),
+                            Column(
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.all(10),
+                                  child: Text("Animaux :"),
+                                ),
+                                Container(
+                                  child: SingleSelectableItemsWidget<bool>(
+                                    onSelected: (bool? value) => setState(() {
+                                      isAnimals = value;
+                                    }),
+                                    items: [
+                                      {"title": "oui", "selected": true},
+                                      {"title": "non", "selected": false},
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),

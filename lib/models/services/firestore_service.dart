@@ -34,14 +34,20 @@ class FireStoreServices {
     return this._firestore.collection(collection).doc(id).get();
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getDataWithWhereIsEqualTo2(
-      String key1, dynamic data1, String key2, dynamic data2) async {
-    return this
-        ._firestore
-        .collection(collection)
-        .where(key1, isEqualTo: data1)
-        .where(key2, isEqualTo: data2)
-        .get();
+  Future<QuerySnapshot<Map<String, dynamic>>> getDataWithMultipleWhereIsEqualTo(
+      Map<String, dynamic> conditions) async {
+    Query<Map<String, dynamic>> query = this._firestore.collection(collection);
+    for (var condition in conditions.keys) {
+      var cond = conditions[condition];
+      if (cond is List) {
+        query = query.where(condition, whereIn: cond);
+      } else if (condition == 'price') {
+        query = query.where(condition, isLessThanOrEqualTo: cond);
+      } else {
+        query = query.where(condition, isEqualTo: cond);
+      }
+    }
+    return query.get();
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>> getDataWithWhereIsEqualTo(

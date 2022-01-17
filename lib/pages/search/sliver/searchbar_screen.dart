@@ -625,6 +625,7 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                   return FilterScreen(
                     sc: sc,
                     context: context,
+                    currentCity: result,
                   );
                 },
                 controller: _filterPanelController,

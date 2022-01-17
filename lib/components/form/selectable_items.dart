@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:pts/const.dart';
 
 WidgetSpan _buildWidgetSpan(BuildContext context, String title, bool isSelected,
-    void Function() onSelect, void Function() onClose,
-    {bool showIcon = true}) {
+    void Function() onSelect,
+    {void Function()? onClose, bool showIcon = true}) {
   return WidgetSpan(
     child: Padding(
       padding: const EdgeInsets.all(8.0),
@@ -60,7 +60,7 @@ class SingleSelectableItemsWidget<T> extends StatelessWidget {
         e["title"],
         isSelected,
         () => onSelected(e[selector]),
-        () => onSelected(null),
+        onClose: () => onSelected(null),
         showIcon: false,
       );
     }).toList();
@@ -128,7 +128,7 @@ class _PriceSelectableItemsWidgetState
           }
           widget.onSelected(_price, isCustomPrice);
         }),
-        () => setState(() {
+        onClose: () => setState(() {
           if (_isCustomPrice) {
             isCustomPrice = false;
           }
@@ -156,7 +156,10 @@ class _PriceSelectableItemsWidgetState
 }
 
 class MultipleSelectableItemsWidget extends StatefulWidget {
-  MultipleSelectableItemsWidget({Key? key}) : super(key: key);
+  final List<Map<String, dynamic>> items;
+
+  MultipleSelectableItemsWidget({Key? key, required this.items})
+      : super(key: key);
 
   @override
   _MultipleSelectableItemsWidgetState createState() =>
@@ -167,6 +170,20 @@ class _MultipleSelectableItemsWidgetState
     extends State<MultipleSelectableItemsWidget> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return RichText(
+        text: TextSpan(
+            children: widget.items
+                .map<WidgetSpan>(
+                  (e) => _buildWidgetSpan(
+                    context,
+                    e['title'],
+                    e['selected'],
+                    () => setState(() {
+                      e['selected'] = !e['selected'];
+                    }),
+                    showIcon: false,
+                  ),
+                )
+                .toList()));
   }
 }
