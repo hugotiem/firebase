@@ -29,11 +29,11 @@ class PartiesCubit extends AppBaseCubit<PartiesState> {
     emit(PartiesState.loaded(parties, state.filters));
   }
 
-  Future fetchPartiesByIdentifier(String id) async {
-    var parties =
-        await services.firestore.collection(services.collection).doc(id).get();
-    emit(PartiesState.loaded(parties, state.filters));
-  }
+  // Future fetchPartiesByIdentifier(String id) async {
+  //   var parties =
+  //       await services.firestore.collection(services.collection).doc(id).get();
+  //   emit(PartiesState.loaded(parties, state.filters));
+  // }
 
   Future fetchPartiesWithWhereIsEqualTo(var key, String? data,
       {isWithDate = false}) async {
@@ -86,24 +86,33 @@ class PartiesCubit extends AppBaseCubit<PartiesState> {
       });
     });
     if (state.filters != null) {
-      applyFilters(state.filters!);
+      await applyFilters(state.filters!, filtersChanged: false);
     } else {
       emit(PartiesState.loaded(partiesWithDates, state.filters,
           currentDate: date));
     }
   }
 
-  Future applyFilters(Map<String, dynamic> filters) async {
-    var parties = state.parties;
-    var filteredParties = List.from(parties?.where((e) {
-          if ((filters['themes'] as List).contains(e.theme)) {
-            return true;
-          }
-          return false;
-        }).toList() ??
-        []);
+  Future<void> applyFilters(Map<String, dynamic> filters,
+      {bool filtersChanged = true}) async {
+    if (filtersChanged) {
+      emit(state.setRequestInProgress() as PartiesState);
+    }
+    var filteredParties =
+        await services.getDataWithMultipleWhereIsEqualTo(filters);
 
-    emit(PartiesState.loaded(filteredParties, filters,
+    //  List<Party>.from(parties?.where((e) {
+    //       print(e.theme);
+    //       if ((filters['themes'] as List).contains(e.theme)) {
+    //         return true;
+    //       }
+    //       return false;
+    //     }).toList() ??
+    //     []);
+
+    var parties = filteredParties.docs.map<Party>((e) => Party.fromSnapShots(e)).toList();
+
+    emit(PartiesState.loaded(parties, filters,
         currentDate: state.currentDate));
   }
 
