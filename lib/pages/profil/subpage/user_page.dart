@@ -1,17 +1,188 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:pts/blocs/user/user_cubit.dart';
 import 'package:pts/const.dart';
 import 'package:pts/components/appbar.dart';
 import 'package:pts/components/horizontal_separator.dart';
 import 'package:pts/models/Capitalize.dart';
+import 'package:path/path.Dart' as Path;
+import 'package:pts/models/services/auth_service.dart';
+import 'package:pts/models/services/storage_service.dart';
 
-class ProfilDetails extends StatelessWidget {
+class ProfilDetails extends StatefulWidget {
   const ProfilDetails({Key? key}) : super(key: key);
 
   @override
+  State<ProfilDetails> createState() => _ProfilDetailsState();
+}
+
+class _ProfilDetailsState extends State<ProfilDetails> {
+  File? image;
+
+  @override
   Widget build(BuildContext context) {
+    registerPhotoInFirebase(String photo) {
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+      String userID = AuthService().currentUser!.uid;
+
+      try {
+        firestore.collection('user').doc(userID).update({"photo": photo});
+      } catch (e) {
+        print(e.toString());
+      }
+    }
+
+    Future registerPhoto() async {
+      String fileName = Path.basename(image!.path);
+      String destination = "UserPhoto/$fileName";
+      UploadTask task = StorageService(destination).uploadFile(image!);
+
+      task.then((element) async {
+        var url = await element.ref.getDownloadURL();
+        registerPhotoInFirebase(url);
+      });
+
+      Navigator.pop(context);
+    }
+
+    Future photoSelected() async {
+      return showModalBottomSheet(
+          isScrollControlled: true,
+          context: context,
+          builder: (BuildContext context) {
+            return Scaffold(
+              appBar: PreferredSize(
+                preferredSize: Size.fromHeight(80),
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 20.0),
+                  child: BackAppBar(actions: [
+                    TextButton(
+                      onPressed: () => registerPhoto(),
+                      child: Text(
+                        'Enregistrer',
+                        style: TextStyle(color: SECONDARY_COLOR, fontSize: 16),
+                      ),
+                    ),
+                  ]),
+                ),
+              ),
+              body: Center(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                  child: Container(
+                    child: Image.file(image!),
+                  ),
+                ),
+              ),
+            );
+          });
+    }
+
+    Future pickImage() async {
+      try {
+        final image =
+            await ImagePicker().pickImage(source: ImageSource.gallery);
+        if (image == null) return;
+
+        final imageTemporary = File(image.path);
+        setState(() => this.image = imageTemporary);
+
+        Navigator.pop(context);
+        photoSelected();
+      } on PlatformException catch (e) {
+        print('failed to pick image: $e');
+      }
+    }
+
+    Future takePhoto() async {
+      try {
+        final image = await ImagePicker().pickImage(source: ImageSource.camera);
+        if (image == null) return;
+
+        final imageTemporary = File(image.path);
+        setState(() => this.image = imageTemporary);
+
+        Navigator.pop(context);
+        photoSelected();
+      } on PlatformException catch (e) {
+        print('failed to pick image: $e');
+      }
+    }
+
+    Future<void> pickDialog() async {
+      return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Prendre une photo'),
+            content: Text(
+                'Prenez une nouvelle photo ou importez-en une depuis votre bibliothèque.'),
+            actions: <Widget>[
+              TextButton(
+                  onPressed: () => pickImage(),
+                  child: Text('GALERIE',
+                      style: TextStyle(color: SECONDARY_COLOR))),
+              TextButton(
+                  onPressed: () => takePhoto(),
+                  child: Text(
+                    'APPAREIL',
+                    style: TextStyle(color: SECONDARY_COLOR),
+                  ))
+            ],
+          );
+        },
+      );
+    }
+
+    Future showPhoto(String photo) async {
+      return showModalBottomSheet(
+        isScrollControlled: true,
+        context: context,
+        builder: (BuildContext context) {
+          return Scaffold(
+            appBar: PreferredSize(
+              preferredSize: Size.fromHeight(80),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: BackAppBar(
+                  actions: [
+                    TextButton(
+                      onPressed: () => pickDialog(),
+                      child: Text(
+                        'Modifier',
+                        style: TextStyle(
+                          color: SECONDARY_COLOR,
+                          fontSize: 16,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            body: Center(
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                child: Container(
+                  child: photo == "assets/roundBlankProfilPicture.png"
+                      ? Image.asset(photo)
+                      : Image.network(photo, fit: BoxFit.cover),
+                ),
+              ),
+            ),
+          );
+        },
+      );
+    }
+
     return Scaffold(
       backgroundColor: PRIMARY_COLOR,
       appBar: PreferredSize(
@@ -20,12 +191,21 @@ class ProfilDetails extends StatelessWidget {
       ),
       body: BlocProvider(
         create: (context) => UserCubit()..init(),
-        child: BlocBuilder<UserCubit, UserState>(
-          builder: (context, state) {
+        child: BlocBuilder<UserCubit, UserState>(builder: (context, state) {
           var user = state.user;
 
-          if (user == null) return Center(child: CircularProgressIndicator(),);
+          if (user == null)
+            return Center(
+              child: CircularProgressIndicator(),
+            );
 
+          String? photo = "";
+          if (user.photo!.isEmpty) {
+            photo = "assets/roundBlankProfilPicture.png";
+          } else {
+            photo = user.photo;
+          }
+          
           return SafeArea(
             child: SingleChildScrollView(
               child: Column(
@@ -33,7 +213,8 @@ class ProfilDetails extends StatelessWidget {
                   HeadProfil(
                     fullName: '${user.name} ${user.surname.toString().inCaps}',
                     age: user.age.toString(),
-                    photo: "assets/roundBlankProfilPicture.png",
+                    photo: photo,
+                    onTap: () => showPhoto(photo!),
                     identiteVerif: 'Identité vérifiée',
                     avis: '0',
                   ),
@@ -60,6 +241,7 @@ class HeadProfil extends StatelessWidget {
   final String? photo;
   final String? identiteVerif;
   final String? avis;
+  final void Function()? onTap;
 
   const HeadProfil(
       {this.fullName,
@@ -67,6 +249,7 @@ class HeadProfil extends StatelessWidget {
       this.photo,
       this.avis,
       this.identiteVerif,
+      this.onTap,
       Key? key})
       : super(key: key);
 
@@ -74,12 +257,19 @@ class HeadProfil extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 40),
-            child: CircleAvatar(
-              radius: 60,
-              backgroundImage: AssetImage(photo!),
+        InkWell(
+          onTap: onTap,
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 40),
+              child: photo == "assets/roundBlankProfilPicture.png"
+                  ? CircleAvatar(
+                      radius: 60,
+                      backgroundImage: AssetImage(photo!),
+                    )
+                  : CircleAvatar(  
+                    radius: 60,
+                    backgroundImage: NetworkImage(photo!)),
             ),
           ),
         ),

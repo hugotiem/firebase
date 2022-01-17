@@ -17,19 +17,22 @@ class User {
   String? email;
   bool? verified;
   bool? banned;
+  String? photo;
 
-  User(
-      {this.id,
-      this.name,
-      this.surname,
-      this.age,
-      this.birthday,
-      this.gender,
-      this.hasIdChecked,
-      this.email,
-      this.phone,
-      this.verified,
-      this.banned});
+  User({
+    this.id,
+    this.name,
+    this.surname,
+    this.age,
+    this.birthday,
+    this.gender,
+    this.hasIdChecked,
+    this.email,
+    this.phone,
+    this.verified,
+    this.banned,
+    this.photo,
+  });
 
   Future<User?> get currentUser async {
     var token = await authService.getToken();
@@ -52,18 +55,21 @@ class User {
     var hasIdChecked = data['idFront'] != null;
     var verified = data['verified'];
     var banned = data['banned'];
+    var photo = data['photo'];
 
     return User(
-        id: id,
-        name: name,
-        surname: surname,
-        hasIdChecked: hasIdChecked,
-        age: age,
-        gender: gender,
-        email: email,
-        phone: phone,
-        verified: verified,
-        banned: banned,
-        birthday: birthday);
+      id: id,
+      name: name,
+      surname: surname,
+      hasIdChecked: hasIdChecked,
+      age: age,
+      gender: gender,
+      email: email,
+      phone: phone,
+      verified: verified,
+      banned: banned,
+      birthday: birthday,
+      photo: photo,
+    );
   }
 }
