@@ -16,7 +16,7 @@ class Connect extends StatelessWidget {
           children: [
             Container(
               child: Text(
-                "Vous n'etes pas connecté",
+                "Tu n'es pas connecté",
                 textAlign: TextAlign.center,
               ),
             ),
@@ -40,8 +40,11 @@ class Connect extends StatelessWidget {
                   color: ICONCOLOR,
                   borderRadius: BorderRadius.circular(15),
                 ),
-                child: BoldText(
-                  text: "Se connecter",
+                child: CText(
+                  "Se connecter",
+                  color: PRIMARY_COLOR,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),

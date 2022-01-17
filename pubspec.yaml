@@ -102,6 +102,7 @@ flutter:
     - assets/gaming.jpg
     - assets/jeuxdesociete.jpg
     - assets/theme.jpg
+    - assets/logo.png
 
   fonts: 
     - family: MerriweatherSans

@@ -2,7 +2,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ionicons/ionicons.dart';
 import 'package:pts/components/form/custom_ttf_form.dart';
 import 'package:pts/const.dart';
 import 'package:pts/pages/login/register_form_screen.dart';
@@ -73,10 +72,12 @@ class _LoginPageState extends State<LoginPage>
                 child: Column(
                   children: [
                     Container(
-                      child: Icon(
-                        Ionicons.home,
-                        color: SECONDARY_COLOR,
-                        size: 100,
+                      margin: EdgeInsets.symmetric(vertical: 12),
+                      height: 150,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage("assets/logo.png"),
+                        ),
                       ),
                     ),
                     Container(
@@ -182,7 +183,7 @@ class _LoginPageState extends State<LoginPage>
                 child: Text(
                   textBtn,
                   style: TextStyle(
-                    color: ICONCOLOR,
+                    color: Colors.white,
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),

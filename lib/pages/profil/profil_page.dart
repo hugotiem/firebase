@@ -52,10 +52,9 @@ class _ProfilState extends State<Profil> {
             if (user == null) {
               return Center(child: CircularProgressIndicator());
             }
-            print(user.photo);
-
+            
             String? photo = "";
-            if (user.photo!.isEmpty) {
+            if (user.photo == "") {
               photo = "assets/roundBlankProfilPicture.png";
             } else {
               photo = user.photo;

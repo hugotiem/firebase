@@ -5,7 +5,7 @@ import 'package:pts/components/appbar.dart';
 import 'package:pts/components/custom_container.dart';
 
 import 'package:pts/const.dart';
-import '../Profil_page.dart';
+import '../../profil/Profil_page.dart';
 
 class GuestWaitList extends StatelessWidget {
   const GuestWaitList({Key? key}) : super(key: key);
