@@ -8,7 +8,6 @@ import 'package:pts/const.dart';
 import 'package:pts/models/services/firestore_service.dart';
 import 'package:pts/blocs/parties/build_parties_cubit.dart';
 import 'package:pts/components/appbar.dart';
-import 'package:pts/models/user.dart';
 
 class DescriptionPage extends StatefulWidget {
   final void Function()? onNext;

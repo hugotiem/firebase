@@ -10,13 +10,76 @@ import 'package:pts/components/horizontal_separator.dart';
 import 'package:pts/const.dart';
 import 'package:pts/models/calendar_data_source.dart';
 import 'package:pts/blocs/calendar/calendar_cubit.dart';
+import 'package:pts/pages/Planning/subpage/list_user_party_page.dart';
+import 'package:pts/pages/Planning/subpage/waitlist_guest_page.dart';
+import 'package:pts/pages/Planning/subpage/waitlist_party_page.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-
-import 'subpage/manageparty_page.dart';
 
 class CalendarPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Widget titleText(String str) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 22),
+        child: CText(
+          str,
+          fontSize: 22,
+          fontWeight: FontWeight.w500,
+        ),
+      );
+    }
+
+    Widget onTapContainer(String str, Widget to) {
+      return InkWell(
+        onTap: () => Navigator.push(
+            context, MaterialPageRoute(builder: (context) => to)),
+        child: Container(
+          margin: EdgeInsets.only(bottom: 22),
+          height: 55,
+          width: MediaQuery.of(context).size.width,
+          alignment: Alignment.centerLeft,
+          decoration: BoxDecoration(
+              border: Border(
+            bottom:
+                BorderSide(color: Colors.grey.withOpacity(0.23), width: 1.5),
+          )),
+          child: CText(
+            str,
+            fontSize: 18,
+          ),
+        ),
+      );
+    }
+
+    Future<dynamic> manageParty() {
+      return showModalBottomSheet(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(25.0),
+            topRight: Radius.circular(25.0),
+          ),
+        ),
+        context: context,
+        builder: (BuildContext context) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 22),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                titleText("Gère tes soirées :"),
+                onTapContainer("Mes soirées", MyParty()),
+                onTapContainer(
+                    "Demande de la part des invités", GuestWaitList()),
+                onTapContainer("Demande de ma part pour rejoindre une soirée",
+                    PartyWaitList()),
+              ],
+            ),
+          );
+        },
+      );
+    }
+
     return Scaffold(
         backgroundColor: PRIMARY_COLOR,
         appBar: AppBar(
@@ -33,10 +96,7 @@ class CalendarPage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(right: 8.0),
               child: GestureDetector(
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => ManageParty()));
-                },
+                onTap: () => manageParty(),
                 child: Icon(
                   Ionicons.calendar_clear_outline,
                   color: ICONCOLOR,

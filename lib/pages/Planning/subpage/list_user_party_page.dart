@@ -2,18 +2,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:pts/blocs/user/user_cubit.dart';
 import 'package:pts/const.dart';
 import 'package:pts/blocs/parties/parties_cubit.dart';
 import 'package:pts/components/appbar.dart';
 import 'package:pts/components/party_card.dart';
 
-class GetPartyData extends StatelessWidget {
+class MyParty extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: DefaultTabController(
-      length: 2,
-      child: Scaffold(
+      body: DefaultTabController(
+        length: 2,
+        child: Scaffold(
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(110),
             child: new BackAppBar(
@@ -41,19 +42,41 @@ class GetPartyData extends StatelessWidget {
               ),
             ),
           ),
-          body: TabBarView(children: [PartyJoin(), PartyCreate()])),
-    ));
+          body: BlocProvider(
+            create: (context) => UserCubit()..init(),
+            child: BlocBuilder<UserCubit, UserState>(
+              builder: (context, state) {
+                
+                var user = state.user;
+                if (user == null) {
+                  return Center(child: CircularProgressIndicator(),);
+                }
+                
+                return TabBarView(
+                  children: [
+                    PartyJoin(user.name, user.id),
+                    PartyCreate(user.id),
+                  ],
+                );
+              },
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
 
 class PartyJoin extends StatelessWidget {
-  const PartyJoin({Key? key}) : super(key: key);
+  final String? name;
+  final String? token;
+  const PartyJoin(this.name, this.token, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => PartiesCubit()
-        ..fetchPartiesWithWhereArrayContains('validate guest list'),
+        ..fetchPartiesWithWhereArrayContains('validate guest list', name, token),
       child: BlocBuilder<PartiesCubit, PartiesState>(builder: (context, state) {
         if (state.parties == null)
           return Center(child: const CircularProgressIndicator());
@@ -80,13 +103,14 @@ class PartyJoin extends StatelessWidget {
 }
 
 class PartyCreate extends StatelessWidget {
-  const PartyCreate({Key? key}) : super(key: key);
+  final String? token;
+  const PartyCreate(this.token, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-          PartiesCubit()..fetchPartiesWithWhereIsEqualTo('uid', 'uid'),
+          PartiesCubit()..fetchPartiesWithWhereIsEqualTo('party owner', token),
       child: BlocBuilder<PartiesCubit, PartiesState>(builder: (context, state) {
         if (state.parties == null)
           return Center(child: const CircularProgressIndicator());

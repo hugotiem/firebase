@@ -1,7 +1,6 @@
 import 'package:pts/models/party.dart';
 import 'package:pts/models/services/auth_service.dart';
 import 'package:pts/models/services/firestore_service.dart';
-import 'package:pts/models/user.dart';
 import 'package:pts/blocs/base/app_base_cubit.dart';
 import 'package:pts/blocs/base/app_base_state.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -116,12 +115,9 @@ class PartiesCubit extends AppBaseCubit<PartiesState> {
         currentDate: state.currentDate));
   }
 
-  Future fetchPartiesWithWhereArrayContains(var key) async {
-    var token = await auth.getToken();
-    var data = await userServices.getDataById(token);
-    var user = User.fromSnapshot(data);
+  Future fetchPartiesWithWhereArrayContains(var key, String? name, String? token) async {
     var partiesSnapShots =
-        await services.getDataWithWhereArrayContains(key, user.name, user.id);
+        await services.getDataWithWhereArrayContains(key, name, token);
     List<Party> parties =
         partiesSnapShots.docs.map((e) => Party.fromSnapShots(e)).toList();
     emit(PartiesState.loaded(parties, state.filters));

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pts/blocs/user/user_cubit.dart';
 import 'package:pts/const.dart';
 import 'package:pts/blocs/parties/parties_cubit.dart';
 import 'package:pts/components/appbar.dart';
@@ -11,35 +12,40 @@ class PartyWaitList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: PRIMARY_COLOR,
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(50),
-          child: BackAppBar(title: TitleAppBar('Soirées en attentes')),
-        ),
-        body: BlocProvider(
-          create: (context) => PartiesCubit()
-            ..fetchPartiesWithWhereArrayContains('validate guest list'),
-          child: BlocBuilder<PartiesCubit, PartiesState>(
-              builder: (context, state) {
-            if (state.parties == null)
-              return Center(child: const CircularProgressIndicator());
-            return ListView.builder(
-              itemCount: state.parties!.length,
-              itemBuilder: (BuildContext context, int index) =>
-                  buildPartyCard(context, state.parties![index]),
+      backgroundColor: PRIMARY_COLOR,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(50),
+        child: BackAppBar(title: TitleAppBar('Soirées en attentes')),
+      ),
+      body: BlocProvider(
+        create: (context) => UserCubit()..init(),
+        child: BlocBuilder<UserCubit, UserState>(
+          builder: (context, state) {
+            if (state.user == null) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            print(state.token);
+            return BlocProvider(
+              create: (context) => PartiesCubit()
+                ..fetchPartiesWithWhereArrayContains(
+                    'validate guest list', state.user!.name, state.token),
+              child: BlocBuilder<PartiesCubit, PartiesState>(
+                builder: (context, state) {
+                  if (state.parties == null)
+                    return Center(child: const CircularProgressIndicator());
+                  return ListView.builder(
+                    itemCount: state.parties!.length,
+                    itemBuilder: (BuildContext context, int index) =>
+                        buildPartyCard(context, state.parties![index]),
+                  );
+                },
+              ),
             );
-          }),
-        ));
+          },
+        ),
+      ),
+    );
   }
-
-  // Stream<QuerySnapshot> getPartyWaitList(BuildContext context) async* {
-  //   Map _uid = {
-  //     'Name': AuthService.currentUser.displayName.split(' ')[0],
-  //     'uid': AuthService.currentUser.uid
-  //   };
-  //   yield* FirebaseFirestore.instance
-  //       .collection('party')
-  //       .where('wait list', arrayContains: _uid)
-  //       .snapshots();
-  // }
 }

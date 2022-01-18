@@ -22,6 +22,7 @@ class Party {
   int? distance;
   List<double> coordinates;
   List<double> approximativeCoordinates;
+  List? waitList;
 
   Party(
       this.id,
@@ -43,6 +44,7 @@ class Party {
       this.validateGuestList,
       this.coordinates,
       this.approximativeCoordinates,
+      this.waitList,
       {this.distance});
 
   static double random() {
@@ -75,26 +77,29 @@ class Party {
         ((data['coordinates'] ?? []) as List<dynamic>).cast<double>();
     var approximativeCoordinates =
         coordinates.map((e) => e + random()).toList();
+    var waitList = data["wait list"];
 
     return Party(
-        id,
-        name,
-        theme,
-        number,
-        date,
-        startTime,
-        endTime,
-        price,
-        desc,
-        address,
-        city,
-        postalCode,
-        smoke,
-        animals,
-        owner,
-        uid,
-        validateGuestList,
-        coordinates,
-        approximativeCoordinates);
+      id,
+      name,
+      theme,
+      number,
+      date,
+      startTime,
+      endTime,
+      price,
+      desc,
+      address,
+      city,
+      postalCode,
+      smoke,
+      animals,
+      owner,
+      uid,
+      validateGuestList,
+      coordinates,
+      approximativeCoordinates,
+      waitList,
+    );
   }
 }
