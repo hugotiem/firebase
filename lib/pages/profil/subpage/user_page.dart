@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:pts/blocs/user/user_cubit.dart';
+import 'package:pts/components/profile_photo.dart';
 import 'package:pts/const.dart';
 import 'package:pts/components/appbar.dart';
 import 'package:pts/components/horizontal_separator.dart';
@@ -213,7 +214,7 @@ class _ProfilDetailsState extends State<ProfilDetails> {
                   HeadProfil(
                     fullName: '${user.name} ${user.surname.toString().inCaps}',
                     age: user.age.toString(),
-                    photo: photo,
+                    photo: user.photo,
                     onTap: () => showPhoto(photo!),
                     identiteVerif: 'Identité vérifiée',
                     avis: '0',
@@ -262,14 +263,7 @@ class HeadProfil extends StatelessWidget {
           child: Center(
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 40),
-              child: photo == "assets/roundBlankProfilPicture.png"
-                  ? CircleAvatar(
-                      radius: 60,
-                      backgroundImage: AssetImage(photo!),
-                    )
-                  : CircleAvatar(  
-                    radius: 60,
-                    backgroundImage: NetworkImage(photo!)),
+              child: ProfilePhoto(photo, radius: 70,)
             ),
           ),
         ),

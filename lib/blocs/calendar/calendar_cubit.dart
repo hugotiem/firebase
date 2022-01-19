@@ -33,10 +33,10 @@ class CalendarCubit extends AppBaseCubit<CalendarState> {
           'validate guest list', user.name, token);
 
       var organisedParties = organisedPartiesData.docs
-          .map((e) => Meeting.fromSnapShot(e, SECONDARY_COLOR))
+          .map((e) => Meeting.fromSnapShot(e, ICONCOLOR))
           .toList();
       var invitedParties = invitedPartiesData.docs
-          .map((e) => Meeting.fromSnapShot(e, Colors.pink))
+          .map((e) => Meeting.fromSnapShot(e, SECONDARY_COLOR))
           .toList();
       emit(CalendarState.dataLoaded(organisedParties, invitedParties));
     }

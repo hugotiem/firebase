@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:pts/components/custom_container.dart';
 import 'package:pts/models/capitalize.dart';
 import 'package:pts/models/party.dart';
 import 'package:pts/models/user.dart';
@@ -32,10 +33,12 @@ Widget buildPartyCard(BuildContext context, Party party) {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  CText(doc['name'],
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                      color: SECONDARY_COLOR),
+                  CText(
+                    "doc['name']",
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    color: SECONDARY_COLOR,
+                  ),
                   Opacity(
                     opacity: 0.7,
                     child: Row(
@@ -58,10 +61,11 @@ Widget buildPartyCard(BuildContext context, Party party) {
                   width: 50,
                   clipBehavior: Clip.antiAlias,
                   decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                          image: AssetImage(
-                              "assets/roundBlankProfilPicture.png"))),
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      image: AssetImage("assets/roundBlankProfilPicture.png"),
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -70,8 +74,10 @@ Widget buildPartyCard(BuildContext context, Party party) {
             padding: const EdgeInsets.only(top: 24),
             child: Container(
               decoration: BoxDecoration(
-                  border:
-                      Border(top: BorderSide(width: 2, color: FOCUS_COLOR))),
+                border: Border(
+                  top: BorderSide(width: 2, color: FOCUS_COLOR),
+                ),
+              ),
             ),
           )
         ],
@@ -79,68 +85,42 @@ Widget buildPartyCard(BuildContext context, Party party) {
     );
   }).toList();
 
-  List listPhoto = nameList.map((doc) {
-    return Align(
-      widthFactor: 0.6,
-      alignment: Alignment.center,
-      child: Container(
-        height: 40,
-        width: 40,
-        decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            image: DecorationImage(
-                image: AssetImage("assets/roundBlankProfilPicture.png"))),
-      ),
-    );
-  }).toList();
-
-  List listPhoto1 = nameList.map((doc) {
-    return Align(
-      widthFactor: 0.6,
-      alignment: Alignment.center,
-      child: Container(
-        height: 40,
-        width: 40,
-        decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            image: DecorationImage(
-                image: AssetImage("assets/roundBlankProfilPicture.png"))),
-      ),
-    );
-  }).toList();
-
-  if (listPhoto.length >= 3) {
-    listPhoto1 = listPhoto1.sublist(0, 3);
-  }
-
-  List<Color> colors;
+  String? image;
+  Color? color;
+  Color? textColor;
 
   if (party.theme == 'Festive') {
-    colors = [Color(0xFFf12711), Color(0xFFf5af19)];
-  } else if (party.theme == 'Gaming') {
-    colors = [Color(0xFF1c92d2), Color(0xFFf2fcfe)];
-  } else if (party.theme == 'Jeux de société') {
-    colors = [Color(0xFFa8ff78), Color(0xFF78ffd6)];
-  } else if (party.theme == 'Thème') {
-    colors = [Color(0xFFb24592), Color(0xFFf15f79)];
-  } else {
-    colors = [Color(0xFFFFFFFF), Color(0xFFFFFFFF)];
+    image = "assets/festive.jpg";
+    color = ICONCOLOR;
+    textColor = SECONDARY_COLOR;
+  } else if (party.theme == "Gaming") {
+    image = "assets/gaming.jpg";
+    color = ICONCOLOR;
+    textColor = SECONDARY_COLOR;
+  } else if (party.theme == "Jeux de société") {
+    image = "assets/jeuxdesociete.jpg";
+    color = SECONDARY_COLOR;
+    textColor = PRIMARY_COLOR;
+  } else if (party.theme == "Thème") {
+    image = "assets/theme.jpg";
+    color = SECONDARY_COLOR;
+    textColor = PRIMARY_COLOR;
   }
 
-  void contacter() async {
+  void contacter(String? ownerName) async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     var chatCollection = firestore.collection('chat');
     var currentUserID = AuthService().currentUser!.uid;
     var currentUserName = AuthService().currentUser!.displayName;
-    var otherUserUID = party.uid;
+    var otherUserUID = party.ownerId;
     List currentUIDList = [];
     List otherUIDList = [];
     List emptyList = [];
 
     currentUIDList.add({'uid': currentUserID, 'name': currentUserName});
-    otherUIDList.add({'uid': party.uid, 'name': party.owner});
+    otherUIDList.add({'uid': party.ownerId, 'name': ownerName});
 
-    chatCollection.doc(party.uid).snapshots().listen((datasnapshot) async {
+    chatCollection.doc(party.ownerId).snapshots().listen((datasnapshot) async {
       chatCollection
           .doc(currentUserID)
           .snapshots()
@@ -154,7 +134,7 @@ Widget buildPartyCard(BuildContext context, Party party) {
         }
       });
       if (datasnapshot.exists) {
-        await chatCollection.doc(party.uid).update({
+        await chatCollection.doc(party.ownerId).update({
           'userid': FieldValue.arrayUnion(currentUIDList),
         }).then((value) {
           chatCollection.doc(currentUserID).update({
@@ -164,200 +144,233 @@ Widget buildPartyCard(BuildContext context, Party party) {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        ChatPage(otherUserUID, otherUserName: party.owner)));
+                        ChatPage(otherUserUID, otherUserName: ownerName)));
           });
         });
       } else {
         await chatCollection
-            .doc(party.uid)
+            .doc(party.ownerId)
             .set({'userid': emptyList}).then((value) {
           chatCollection.doc(currentUserID).set({'userid': emptyList});
         });
 
-        await chatCollection.doc(party.uid).update({
+        await chatCollection.doc(party.ownerId).update({
           'userid': FieldValue.arrayUnion(currentUIDList),
         }).then((value) {
           chatCollection.doc(currentUserID).update({
             'userid': FieldValue.arrayUnion(otherUIDList),
           }).then((value) {
             Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        ChatPage(otherUserUID, otherUserName: party.owner)));
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    ChatPage(otherUserUID, otherUserName: ownerName),
+              ),
+            );
           });
         });
       }
     });
   }
 
-  return Stack(
-    children: <Widget>[
-      Padding(
-        padding: const EdgeInsets.only(top: 20),
-        child: Center(
-          child: Container(
-            // height: 250,
-            width: MediaQuery.of(context).size.width * 0.85,
-            decoration: BoxDecoration(
-              color: PRIMARY_COLOR,
-            ),
-            child: OpenContainer(
-              closedElevation: 0,
-              transitionDuration: Duration(milliseconds: 200),
-              closedShape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
-              closedColor: Colors.white,
-              openColor: Colors.white,
-              closedBuilder: (context, returnValue) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Stack(
-                      children: [
-                        Container(
-                          width: double.infinity,
-                          color: ICONCOLOR,
-                          height: 180,
-                          child: Image.asset("assets/festive.jpg"),
-                        ),
-                        Container(
-                          color: Colors.black38,
-                          margin: EdgeInsets.all(10),
-                          child: Padding(
+  return BlocProvider(
+    create: (context) => UserCubit()..loadDataByUserID(party.ownerId),
+    child: BlocBuilder<UserCubit, UserState>(
+      builder: (context, state) {
+        if (state.user == null) {
+          return Center(child: CircularProgressIndicator());
+        }
+        User? user = state.user;
+
+        return Stack(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(top: 20),
+              child: Center(
+                child: Container(
+                  // height: 250,
+                  width: MediaQuery.of(context).size.width * 0.85,
+                  decoration: BoxDecoration(
+                    color: PRIMARY_COLOR,
+                  ),
+                  child: OpenContainer(
+                    closedElevation: 0,
+                    transitionDuration: Duration(milliseconds: 200),
+                    closedShape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    closedColor: Colors.white,
+                    openColor: Colors.white,
+                    closedBuilder: (context, returnValue) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Stack(
+                            children: [
+                              Container(
+                                width: double.infinity,
+                                color: color,
+                                height: 180,
+                                child: Image.asset(image!),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(10),
+                                child: BlurryContainer(
+                                  bgColor: color == SECONDARY_COLOR
+                                      ? Colors.blueGrey
+                                      : Colors.yellow.shade100,
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        DateFormat.MMM('fr').format(party.date),
+                                        style: TextStyle(
+                                            color: textColor,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 16),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 4),
+                                        child: Text(
+                                          DateFormat.d('fr').format(party.date),
+                                          style: TextStyle(
+                                              color: textColor,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 20),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                          Container(
                             padding: EdgeInsets.all(10),
-                            child: Text(
-                              "date",
-                              style: TextStyle(color: Colors.white),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(party.name!),
+                                Row(
+                                  children: [
+                                    Text("${user!.name!} ${user.surname!}"),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Icon(
+                                      user.verified == true
+                                          ? Icons.verified
+                                          : null,
+                                      size: 15,
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(party.city!),
+                                    Text("${party.distance.toString()} km"),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                    openBuilder: (context, returnValue) {
+                      return CustomSliverCard(
+                        image: image,
+                        color: color,
+                        name: party.name,
+                        date:
+                            '${DateFormat.E('fr').format(party.startTime!).inCaps} ${DateFormat.d('fr').format(party.startTime!)} ${DateFormat.MMMM('fr').format(party.startTime!)}',
+                        location: party.city,
+                        body: SizedBox.expand(
+                          child: SingleChildScrollView(
+                            child: CardBody(
+                              nombre: party.number,
+                              desc: party.desc != null ? party.desc : '',
+                              nomOrganisateur: "${user!.name} ${user.surname}",
+                              avis: '4.9 / 5 - 0 avis',
+                              animal: party.animals!,
+                              smoke: party.smoke!,
+                              list: list,
+                              nameList: nameList,
+                              contacter: () => contacter(user.name),
                             ),
                           ),
                         ),
-                      ],
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Titre de la soirée"),
-                          Row(
-                            children: [
-                              Text("Hugo Tiem"),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Icon(
-                                Icons.verified,
-                                size: 15,
-                              ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("Bénouville"),
-                              Text("10km"),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                );
-              },
-              openBuilder: (context, returnValue) {
-                return BlocProvider(
-                  create: (context) => UserCubit()..loadData(),
-                  child: BlocBuilder<UserCubit, UserState>(
-                      builder: (context, state) {
-                    User? user = state.user;
+                        bottomNavigationBar: CardBNB(
+                            prix: party.price.toString(),
+                            heureDebut:
+                                "${DateFormat.Hm('fr').format(party.startTime!).split(":")[0]}h${DateFormat.Hm('fr').format(party.startTime!).split(":")[1]}",
+                            heureFin:
+                                "${DateFormat.Hm('fr').format(party.endTime!).split(':')[0]}h${DateFormat.Hm('fr').format(party.endTime!).split(':')[1]}",
+                            onTap: () async {
+                              var token = await AuthService().getToken();
 
-                    return CustomSliverCard(
-                      color: colors,
-                      name: party.name,
-                      date:
-                          '${DateFormat.E('fr').format(party.startTime!).inCaps} ${DateFormat.d('fr').format(party.startTime!)} ${DateFormat.MMMM('fr').format(party.startTime!)}',
-                      location: party.city,
-                      body: SizedBox.expand(
-                        child: SingleChildScrollView(
-                          child: CardBody(
-                            nombre: party.number,
-                            desc: party.desc != null ? party.desc : '',
-                            nomOrganisateur: party.owner,
-                            avis: '4.9 / 5 - 0 avis',
-                            animal: party.animals! ? "oui" : "non",
-                            smoke: party.smoke! ? "oui" : "nom",
-                            list: list,
-                            nameList: nameList,
-                            contacter: () => contacter(),
-                          ),
-                        ),
-                      ),
-                      bottomNavigationBar: CardBNB(
-                          prix: party.price.toString(),
-                          heureDebut:
-                              "${DateFormat.Hm('fr').format(party.startTime!).split(":")[0]}h${DateFormat.Hm('fr').format(party.startTime!).split(":")[1]}",
-                          heureFin:
-                              "${DateFormat.Hm('fr').format(party.endTime!).split(':')[0]}h${DateFormat.Hm('fr').format(party.endTime!).split(':')[1]}",
-                          onTap: user == null
-                              ? () {
-                                  final snackBar = SnackBar(
-                                    content:
-                                        const CText("Vous n'êtes pas connecté"),
-                                    duration: Duration(seconds: 2),
+                              if (token == null) {
+                                final snackBar = SnackBar(
+                                  content:
+                                      const CText("Vous n'êtes pas connecté"),
+                                  duration: Duration(seconds: 2),
+                                );
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(snackBar);
+                              } else {
+                                if (party.price == 0) {
+                                  final _db = FirebaseFirestore.instance
+                                      .collection('parties')
+                                      .doc(party.id);
+
+                                  final uid = user.id;
+                                  List waitList = [];
+
+                                  waitList.add({"uid": uid});
+
+                                  await _db.update({
+                                    "wait list":
+                                        FieldValue.arrayUnion(waitList),
+                                  });
+
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => JoinWaitList(),
+                                    ),
                                   );
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(snackBar);
+                                } else {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ExistingCard(),
+                                    ),
+                                  );
                                 }
-                              : () async {
-                                  if (party.price == '0') {
-                                    final _db = FirebaseFirestore.instance
-                                        .collection('parties')
-                                        .doc(party.id);
-
-                                    final name = user.name;
-                                    final uid = user.id;
-                                    List waitList = [];
-
-                                    waitList.add({"name": name, "uid": uid});
-
-                                    await _db.update({
-                                      "wait list":
-                                          FieldValue.arrayUnion(waitList),
-                                    });
-
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                JoinWaitList()));
-                                  } else {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                ExistingCard()));
-                                  }
-                                }),
-                    );
-                  }),
-                );
-              },
+                              }
+                            }),
+                      );
+                    },
+                  ),
+                ),
+              ),
             ),
-          ),
-        ),
-      ),
-    ],
+          ],
+        );
+      },
+    ),
   );
 }
 
 class CustomSliverCard extends StatefulWidget {
-  final List<Color>? color;
   final Widget? body, titleText, bottomNavigationBar;
-  final String? name, date, location;
+  final String? name, date, location, image;
+  final Color? color;
 
   const CustomSliverCard(
-      {this.color,
+      {this.image,
+      this.color,
       this.body,
       this.titleText,
       this.name,
@@ -405,13 +418,15 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
           height: _size,
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: widget.color!),
-              borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(60),
-                  bottomRight: Radius.circular(60))),
+            color: widget.color,
+            image: DecorationImage(
+              image: AssetImage(widget.image!),
+            ),
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(60),
+              bottomRight: Radius.circular(60),
+            ),
+          ),
         ),
       ),
       body: widget.body!,
@@ -440,91 +455,98 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
               SizedBox(height: (_size! - 80) > 50 ? _size! - 80 : 50),
               Center(
                 child: Container(
-                    width: _barSizeWidth,
-                    height: _barSizeHeight,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(_borderRadius!),
-                            bottomRight: Radius.circular(_borderRadius!),
-                            topRight: Radius.circular(30),
-                            bottomLeft: Radius.circular(30))),
-                    child: Container(
-                        child: _headerName == true
-                            ? Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 27.5, left: 27.5),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 16),
-                                      child: CText(widget.name,
-                                          fontSize: 22,
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                    Padding(
-                                        padding:
-                                            const EdgeInsets.only(bottom: 8.0),
-                                        child: _headerDate == true
-                                            ? Row(
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            right: 8.0),
-                                                    child: Icon(
-                                                      Ionicons
-                                                          .calendar_clear_outline,
-                                                      color: SECONDARY_COLOR,
-                                                    ),
-                                                  ),
-                                                  CText(widget.date,
-                                                      color: SECONDARY_COLOR)
-                                                ],
-                                              )
-                                            : Container()),
-                                    _headerLocation == true
+                  width: _barSizeWidth,
+                  height: _barSizeHeight,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(_borderRadius!),
+                          bottomRight: Radius.circular(_borderRadius!),
+                          topRight: Radius.circular(30),
+                          bottomLeft: Radius.circular(30))),
+                  child: Container(
+                    child: _headerName == true
+                        ? Padding(
+                            padding:
+                                const EdgeInsets.only(top: 27.5, left: 27.5),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 16),
+                                  child: CText(
+                                    widget.name,
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                Padding(
+                                    padding: const EdgeInsets.only(bottom: 8.0),
+                                    child: _headerDate == true
                                         ? Row(
                                             children: [
                                               Padding(
                                                 padding: const EdgeInsets.only(
-                                                    right: 8.0),
+                                                  right: 8.0,
+                                                ),
                                                 child: Icon(
-                                                  Ionicons.location_outline,
+                                                  Ionicons
+                                                      .calendar_clear_outline,
                                                   color: SECONDARY_COLOR,
                                                 ),
                                               ),
-                                              CText(
-                                                widget.location,
-                                                color: SECONDARY_COLOR,
-                                              )
+                                              CText(widget.date,
+                                                  color: SECONDARY_COLOR)
                                             ],
                                           )
-                                        : Container()
-                                  ],
+                                        : Container()),
+                                _headerLocation == true
+                                    ? Row(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 8.0),
+                                            child: Icon(
+                                              Ionicons.location_outline,
+                                              color: SECONDARY_COLOR,
+                                            ),
+                                          ),
+                                          CText(
+                                            widget.location,
+                                            color: SECONDARY_COLOR,
+                                          )
+                                        ],
+                                      )
+                                    : Container()
+                              ],
+                            ),
+                          )
+                        : Stack(
+                            children: [
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: IconButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  icon: Icon(
+                                    Ionicons.arrow_back_outline,
+                                    color: ICONCOLOR,
+                                  ),
                                 ),
-                              )
-                            : Stack(
-                                children: [
-                                  Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: IconButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        icon: Icon(Ionicons.arrow_back_outline,
-                                            color: ICONCOLOR)),
-                                  ),
-                                  Center(
-                                    child: CText(widget.name,
-                                        fontSize: 22,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ],
-                              ))),
+                              ),
+                              Center(
+                                child: CText(
+                                  widget.name,
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                  ),
+                ),
               ),
             ],
           ),
@@ -576,7 +598,8 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
 }
 
 class CardBody extends StatelessWidget {
-  final String? desc, nomOrganisateur, avis, animal, smoke, nombre;
+  final bool? animal, smoke;
+  final String? desc, nomOrganisateur, avis, nombre;
   final List? nameList, list;
   final void Function()? contacter;
 
@@ -648,9 +671,7 @@ class CardBody extends StatelessWidget {
                   child: DescriptionTextWidget(text: this.desc),
                 ),
               )
-            : Container(
-                height: 0,
-              ),
+            : Container(),
         Padding(
           padding: this.desc == ""
               ? const EdgeInsets.only(left: 22)
@@ -678,7 +699,7 @@ class CardBody extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 15),
                 child: Row(
                   children: [
-                    this.animal == 'Oui'
+                    this.animal == true
                         ? Padding(
                             padding: const EdgeInsets.only(right: 22),
                             child: Icon(Ionicons.paw),
@@ -701,7 +722,7 @@ class CardBody extends StatelessWidget {
                               ],
                             ),
                           ),
-                    this.animal == 'Oui'
+                    this.animal == true
                         ? CText(
                             "Le propriétaire possède un ou des animaux",
                             fontSize: 17,
@@ -717,45 +738,41 @@ class CardBody extends StatelessWidget {
               ),
               Row(
                 children: [
-                  if (this.smoke == "A l'intérieur")
-                    Padding(
-                      padding: const EdgeInsets.only(right: 22),
-                      child: (Icon(Icons.smoking_rooms_outlined)),
-                    )
-                  else if (this.smoke == "Dans un fumoir")
-                    Padding(
-                      padding: const EdgeInsets.only(right: 22),
-                      child: (Icon(Icons.smoking_rooms_outlined)),
-                    )
-                  else if (this.smoke == 'Dehors')
-                    (Stack(
-                      children: [
-                        Padding(
+                  this.smoke == true
+                      ? Padding(
                           padding: const EdgeInsets.only(right: 22),
-                          child: Icon(Icons.smoking_rooms_outlined),
-                        ),
-                        Positioned(
-                          left: -5,
-                          child: Transform.rotate(
-                            angle: 45,
-                            child: Icon(
-                              Icons.horizontal_rule_outlined,
-                              size: 35,
-                              color: Colors.red,
-                            ),
-                          ),
+                          child: (Icon(Icons.smoking_rooms_outlined)),
                         )
-                      ],
-                    )),
-                  if (this.smoke == "A l'intérieur")
-                    CText("Vous pouvez fumer à l'intérieur",
-                        fontSize: 17, color: SECONDARY_COLOR)
-                  else if (this.smoke == "Dans un fumoir")
-                    CText("Vous pouvez fumer dans un fumoir",
-                        fontSize: 17, color: SECONDARY_COLOR)
-                  else if (this.smoke == "Dehors")
-                    (CText("Vous devez fumer dehors",
-                        fontSize: 17, color: SECONDARY_COLOR))
+                      : Stack(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(right: 22),
+                              child: Icon(Icons.smoking_rooms_outlined),
+                            ),
+                            Positioned(
+                              left: -5,
+                              child: Transform.rotate(
+                                angle: 45,
+                                child: Icon(
+                                  Icons.horizontal_rule_outlined,
+                                  size: 35,
+                                  color: Colors.red,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                  this.smoke == true
+                      ? CText(
+                          "Vous pouvez fumer à l'intérieur",
+                          fontSize: 17,
+                          color: SECONDARY_COLOR,
+                        )
+                      : CText(
+                          "Vous devez fumer dehors",
+                          fontSize: 17,
+                          color: SECONDARY_COLOR,
+                        ),
                 ],
               ),
             ],
@@ -848,15 +865,14 @@ class CardBNB extends StatelessWidget {
   }
 }
 
-
 class JoinWaitList extends StatelessWidget {
-  const JoinWaitList({ Key? key }) : super(key: key);
+  const JoinWaitList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: SECONDARY_COLOR,
-      floatingActionButton: FloatingActionButton.extended(  
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           Navigator.of(context).popUntil((route) => route.isFirst);
         },
@@ -864,30 +880,24 @@ class JoinWaitList extends StatelessWidget {
         elevation: 0,
         label: Text(
           'OK',
-          style: TextStyle(  
-            fontSize: 15
-          ),
+          style: TextStyle(fontSize: 15),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 16, right: 16),
-            child: Text(
-              "Vous venez de rejoindre la liste d'attente de la soirée !",
-              style: TextStyle(
+      body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 16, right: 16),
+          child: Text(
+            "Vous venez de rejoindre la liste d'attente de la soirée !",
+            style: TextStyle(
                 fontSize: 25,
                 fontWeight: FontWeight.bold,
                 height: 1.4,
-                color: Colors.white
-              ),
-              textAlign: TextAlign.center,
-            ),
+                color: Colors.white),
+            textAlign: TextAlign.center,
           ),
-        ]
-      ),
+        ),
+      ]),
     );
   }
 }

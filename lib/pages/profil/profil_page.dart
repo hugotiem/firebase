@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:pts/components/custom_text.dart';
+import 'package:pts/components/profile_photo.dart';
 import 'package:pts/models/services/auth_service.dart';
 import 'package:pts/onboarding_page.dart';
 import 'package:pts/const.dart';
@@ -52,13 +53,6 @@ class _ProfilState extends State<Profil> {
             if (user == null) {
               return Center(child: CircularProgressIndicator());
             }
-            
-            String? photo = "";
-            if (user.photo == "") {
-              photo = "assets/roundBlankProfilPicture.png";
-            } else {
-              photo = user.photo;
-            }
 
             return SingleChildScrollView(
               child: Container(
@@ -71,15 +65,7 @@ class _ProfilState extends State<Profil> {
                         containerShadow: true,
                         child: Row(
                           children: <Widget>[
-                            photo == "assets/roundBlankProfilPicture.png"
-                                ? CircleAvatar(
-                                    radius: 30,
-                                    backgroundImage: AssetImage(photo!),
-                                  )
-                                : CircleAvatar(
-                                    radius: 30,
-                                    backgroundImage: NetworkImage(photo!),
-                                  ),
+                            ProfilePhoto(user.photo),
                             Container(
                               margin: EdgeInsets.only(left: 20),
                               child: new Column(

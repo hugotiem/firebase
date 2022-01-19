@@ -73,6 +73,7 @@ Widget buildValidationCard(BuildContext context, Party party) {
             children: [
               Padding(
                 padding: const EdgeInsets.only(left: 8.0, right: 22),
+                // Widget profilePage()
                 child: CircleAvatar(
                   radius: 20,
                   backgroundImage: AssetImage(
@@ -84,7 +85,7 @@ Widget buildValidationCard(BuildContext context, Party party) {
                 height: 70,
                 child: Center(
                   child: Text(
-                    doc['name'],
+                    "doc['name']",
                     style: TextStyle(fontSize: 17),
                   ),
                 ),
@@ -96,7 +97,7 @@ Widget buildValidationCard(BuildContext context, Party party) {
               IconButton(
                   onPressed: () async {
                     List list1 = [];
-                    list1.add({'name': doc['name'], 'uid': doc['uid']});
+                    list1.add({'uid': doc['uid']});
 
                     await _db.update(
                         {'validate guest list': FieldValue.arrayUnion(list1)});
@@ -111,7 +112,7 @@ Widget buildValidationCard(BuildContext context, Party party) {
               IconButton(
                 onPressed: () async {
                   List list1 = [];
-                  list1.add({'name': doc['name'], 'uid': doc['uid']});
+                  list1.add({'uid': doc['uid']});
 
                   await _db
                       .update({'wait list': FieldValue.arrayRemove(list1)});

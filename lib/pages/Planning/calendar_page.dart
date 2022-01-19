@@ -39,10 +39,11 @@ class CalendarPage extends StatelessWidget {
           width: MediaQuery.of(context).size.width,
           alignment: Alignment.centerLeft,
           decoration: BoxDecoration(
-              border: Border(
-            bottom:
-                BorderSide(color: Colors.grey.withOpacity(0.23), width: 1.5),
-          )),
+            border: Border(
+              bottom:
+                  BorderSide(color: Colors.grey.withOpacity(0.23), width: 1.5),
+            ),
+          ),
           child: CText(
             str,
             fontSize: 18,
@@ -69,10 +70,10 @@ class CalendarPage extends StatelessWidget {
               children: [
                 titleText("Gère tes soirées :"),
                 onTapContainer("Mes soirées", MyParty()),
-                onTapContainer(
-                    "Demande de la part des invités", GuestWaitList()),
-                onTapContainer("Demande de ma part pour rejoindre une soirée",
+                onTapContainer("Mes demandes pour rejoindre des soirées",
                     PartyWaitList()),
+                onTapContainer(
+                    "Les demandes pour rejoindre ma soirée", GuestWaitList()),
               ],
             ),
           );
@@ -196,6 +197,14 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                       child: ListView.separated(
                         itemCount: _appointmentDetails.length,
                         itemBuilder: (BuildContext context, int index) {
+                          Color? textColor;
+
+                          if (_appointmentDetails[index].background == SECONDARY_COLOR) {
+                            textColor = PRIMARY_COLOR;
+                          } else if (_appointmentDetails[index].background == ICONCOLOR) {
+                            textColor = SECONDARY_COLOR;
+                          }
+
                           return Padding(
                             padding: const EdgeInsets.only(
                                 top: 8, left: 12, right: 22),
@@ -228,7 +237,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                                     child: Container(
                                       height: 55,
                                       decoration: BoxDecoration(
-                                          color: SECONDARY_COLOR,
+                                          color: _appointmentDetails[index].background,
                                           borderRadius:
                                               BorderRadius.circular(8)),
                                       child: Padding(
@@ -242,14 +251,14 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                                             FontText(
                                               data: _appointmentDetails[index]
                                                   .eventName,
-                                              color: PRIMARY_COLOR,
+                                              color: textColor,
                                               fontSize: 16.5,
                                             ),
                                             SizedBox(height: 2),
                                             OpacityText(
                                               data:
                                                   'De ${DateFormat.Hm('fr_FR').format(_appointmentDetails[index].from!)} à ${DateFormat.Hm('fr_FR').format(_appointmentDetails[index].to!)}',
-                                              color: PRIMARY_COLOR,
+                                              color: textColor,
                                             ),
                                           ],
                                         ),

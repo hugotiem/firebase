@@ -16,8 +16,7 @@ class Party {
   String? postalCode;
   bool? smoke;
   bool? animals;
-  var owner;
-  var uid;
+  var ownerId;
   List<dynamic>? validateGuestList;
   int? distance;
   List<double> coordinates;
@@ -39,8 +38,7 @@ class Party {
       this.postalCode,
       this.smoke,
       this.animals,
-      this.owner,
-      this.uid,
+      this.ownerId,
       this.validateGuestList,
       this.coordinates,
       this.approximativeCoordinates,
@@ -68,10 +66,9 @@ class Party {
     var address = data['address'];
     var city = data['city'];
     var postalCode = data['postal code'];
-    var smoke = data['smoke'] == "true" ? true : false;
-    var animals = data['animals'] == "true" ? true : false;
-    var owner = data['owner'];
-    var uid = data['uid'];
+    var smoke = data['smoke'];
+    var animals = data['animals'];
+    var ownerId = data['party owner'];
     var validateGuestList = data['validate guest list'];
     var coordinates =
         ((data['coordinates'] ?? []) as List<dynamic>).cast<double>();
@@ -94,8 +91,7 @@ class Party {
       postalCode,
       smoke,
       animals,
-      owner,
-      uid,
+      ownerId,
       validateGuestList,
       coordinates,
       approximativeCoordinates,

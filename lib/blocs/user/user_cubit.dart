@@ -45,6 +45,17 @@ class UserCubit extends AppBaseCubit<UserState> {
     }
   }
 
+  Future<void> loadDataByUserID(String? token) async {
+    if (token != null) {
+      firestore.getDataById(token).then((value) {
+        emit(
+            UserState.dataLoaded(user: User.fromSnapshot(value), token: token));
+      }).catchError(onHandleError);
+    } else {
+      emit(UserState.dataLoaded(user: null, token: null));
+    }
+  }
+
   Future<void> updateUserInfo(String? token,
       {String? name,
       String? surname,
