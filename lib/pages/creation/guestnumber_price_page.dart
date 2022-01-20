@@ -22,7 +22,6 @@ class GuestNumber extends StatefulWidget {
 class _GuestNumberState extends State<GuestNumber> {
   String _nombre = '20';
   double _prix = 5;
-  RadioChoix _choixRadio = RadioChoix.Dix;
   double? _revenu;
 
   changText() {

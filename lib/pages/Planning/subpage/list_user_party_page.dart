@@ -76,7 +76,7 @@ class PartyJoin extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => PartiesCubit()
-        ..fetchPartiesWithWhereArrayContains('validate guest list', name, token),
+        ..fetchPartiesWithWhereArrayContains('validate guest list', token),
       child: BlocBuilder<PartiesCubit, PartiesState>(builder: (context, state) {
         if (state.parties == null)
           return Center(child: const CircularProgressIndicator());

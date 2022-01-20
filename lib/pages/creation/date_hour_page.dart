@@ -167,28 +167,6 @@ class _DateHourPageState extends State<DateHourPage> {
     );
   }
 
-  Future<Null> _selectionDate() async {
-    DateTime? _dateChoisie = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime.now(),
-        lastDate: DateTime(2030),
-        builder: (BuildContext context, Widget? child) {
-          return Theme(
-              data: ThemeData.light().copyWith(
-                colorScheme: ColorScheme.light().copyWith(
-                    primary: SECONDARY_COLOR, onPrimary: PRIMARY_COLOR),
-              ),
-              child: child!);
-        });
-
-    if (_dateChoisie != null && _dateChoisie != _date) {
-      setState(() {
-        _date = _dateChoisie;
-      });
-    }
-  }
-
   Future<Null> _selectionHeureArrivee() async {
     TimeOfDay? _heureChoisieArrivee = await showTimePicker(
         context: context,

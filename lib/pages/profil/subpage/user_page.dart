@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:pts/blocs/parties/parties_cubit.dart';
 import 'package:pts/blocs/user/user_cubit.dart';
 import 'package:pts/components/profile_photo.dart';
 import 'package:pts/const.dart';
@@ -206,28 +207,59 @@ class _ProfilDetailsState extends State<ProfilDetails> {
           } else {
             photo = user.photo;
           }
-          
-          return SafeArea(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  HeadProfil(
-                    fullName: '${user.name} ${user.surname.toString().inCaps}',
-                    age: user.age.toString(),
-                    photo: user.photo,
-                    onTap: () => showPhoto(photo!),
-                    identiteVerif: 'Identité vérifiée',
-                    avis: '0',
+
+          return BlocProvider(
+            create: (context) => PartiesCubit()
+              ..fetchPartiesWithWhereIsEqualTo("party owner", user.id),
+            child: BlocBuilder<PartiesCubit, PartiesState>(
+              builder: (context, partyStateOwner) {
+                if (partyStateOwner.parties == null) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                return BlocProvider(
+                  create: (context) => PartiesCubit()
+                    ..fetchPartiesWithWhereArrayContains(
+                        "validate guest list", user.id),
+                  child: BlocBuilder<PartiesCubit, PartiesState>(
+                    builder: (context, partyStateJoin) {
+                      if (partyStateJoin.parties == null) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      return SafeArea(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              HeadProfil(
+                                fullName:
+                                    '${user.name} ${user.surname.toString().inCaps}',
+                                age: user.age.toString(),
+                                photo: user.photo,
+                                onTap: () => showPhoto(photo!),
+                                identiteVerif: user.verified,
+                                avis: '0',
+                              ),
+                              HorzontalSeparator(),
+                              Histoty(
+                                soireeOrganisee:
+                                    partyStateOwner.parties!.length.toString(),
+                                soireeParticipee:
+                                    partyStateJoin.parties!.length.toString(),
+                              ),
+                              HorzontalSeparator(),
+                              Comment(),
+                              SizedBox(height: 50)
+                            ],
+                          ),
+                        ),
+                      );
+                    },
                   ),
-                  HorzontalSeparator(),
-                  Histoty(
-                    soireeOrganisee: "0",
-                    soireeParticipee: "0",
-                  ),
-                  HorzontalSeparator(),
-                  Comment(),
-                ],
-              ),
+                );
+              },
             ),
           );
         }),
@@ -240,7 +272,7 @@ class HeadProfil extends StatelessWidget {
   final String? fullName;
   final String? age;
   final String? photo;
-  final String? identiteVerif;
+  final bool? identiteVerif;
   final String? avis;
   final void Function()? onTap;
 
@@ -262,9 +294,11 @@ class HeadProfil extends StatelessWidget {
           onTap: onTap,
           child: Center(
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 40),
-              child: ProfilePhoto(photo, radius: 70,)
-            ),
+                padding: const EdgeInsets.symmetric(vertical: 40),
+                child: ProfilePhoto(
+                  photo,
+                  radius: 70,
+                )),
           ),
         ),
         Text(
@@ -307,10 +341,16 @@ class HeadProfil extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 22),
-              child: Icon(Icons.verified_user_sharp, color: ICONCOLOR),
+              child: Icon(
+                  identiteVerif! == true
+                      ? Icons.verified_user_sharp
+                      : Icons.close_outlined,
+                  color: identiteVerif! == true ? ICONCOLOR : Colors.red),
             ),
             Text(
-              identiteVerif!,
+              identiteVerif! == true
+                  ? "Profil vérifiée"
+                  : "Profil non vérifiée",
               style: TextStyle(
                 fontSize: 16,
                 color: SECONDARY_COLOR,

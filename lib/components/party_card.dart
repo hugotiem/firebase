@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:pts/components/custom_container.dart';
+import 'package:pts/components/profile_photo.dart';
 import 'package:pts/models/capitalize.dart';
 import 'package:pts/models/party.dart';
 import 'package:pts/models/user.dart';
@@ -22,65 +23,74 @@ Widget buildPartyCard(BuildContext context, Party party) {
   List nameList = party.validateGuestList!;
 
   List list = nameList.map((doc) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 24, right: 24, bottom: 16),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CText(
-                    "doc['name']",
-                    fontSize: 20,
-                    fontWeight: FontWeight.w500,
-                    color: SECONDARY_COLOR,
-                  ),
-                  Opacity(
-                    opacity: 0.7,
-                    child: Row(
+    return BlocProvider(
+      create: (context) => UserCubit()..loadDataByUserID(doc['uid']),
+      child: BlocBuilder<UserCubit, UserState>(
+        builder: (context, state) {
+          if (state.user == null) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          User? user = state.user;
+          return Padding(
+            padding: const EdgeInsets.only(left: 24, right: 24, bottom: 16),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Ionicons.star, color: ICONCOLOR),
                         CText(
-                          '4.9 / 5 - 0 avis',
-                          fontSize: 16,
+                          "${user!.name!.inCaps} ${user.surname!.inCaps}",
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
                           color: SECONDARY_COLOR,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 4),
+                          child: Opacity(
+                            opacity: 0.7,
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 8),
+                                  child: Icon(Ionicons.star, color: ICONCOLOR),
+                                ),
+                                CText(
+                                  '4.9 / 5 - 0 avis',
+                                  fontSize: 16,
+                                  color: SECONDARY_COLOR,
+                                )
+                              ],
+                            ),
+                          ),
                         )
                       ],
                     ),
-                  )
-                ],
-              ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: Container(
-                  height: 50,
-                  width: 50,
-                  clipBehavior: Clip.antiAlias,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                      image: AssetImage("assets/roundBlankProfilPicture.png"),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: ProfilePhoto(user.photo, radius: 25),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 24),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border(
+                        top: BorderSide(width: 2, color: FOCUS_COLOR),
+                      ),
                     ),
                   ),
-                ),
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 24),
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border(
-                  top: BorderSide(width: 2, color: FOCUS_COLOR),
-                ),
-              ),
+                )
+              ],
             ),
-          )
-        ],
+          );
+        },
       ),
     );
   }).toList();
@@ -224,9 +234,10 @@ Widget buildPartyCard(BuildContext context, Party party) {
                                       Text(
                                         DateFormat.MMM('fr').format(party.date),
                                         style: TextStyle(
-                                            color: textColor,
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 16),
+                                          color: textColor,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 16,
+                                        ),
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.only(top: 4),
@@ -235,7 +246,7 @@ Widget buildPartyCard(BuildContext context, Party party) {
                                           style: TextStyle(
                                               color: textColor,
                                               fontWeight: FontWeight.w500,
-                                              fontSize: 20),
+                                              fontSize: 22),
                                         ),
                                       )
                                     ],
@@ -245,31 +256,46 @@ Widget buildPartyCard(BuildContext context, Party party) {
                             ],
                           ),
                           Container(
-                            padding: EdgeInsets.all(10),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 8, horizontal: 12),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(party.name!),
-                                Row(
-                                  children: [
-                                    Text("${user!.name!} ${user.surname!}"),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Icon(
-                                      user.verified == true
-                                          ? Icons.verified
-                                          : null,
-                                      size: 15,
-                                    ),
-                                  ],
+                                CText(party.name!,
+                                    fontSize: 15, fontWeight: FontWeight.w500),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 1),
+                                  child: Row(
+                                    children: [
+                                      CText("${user!.name!} ${user.surname!}",
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w500),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Icon(
+                                        user.verified == true
+                                            ? Icons.verified
+                                            : null,
+                                        size: 15,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(party.city!),
-                                    Text("${party.distance.toString()} km"),
+                                    CText(party.city!,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w500),
+                                    CText(
+                                        party.distance != null
+                                            ? "${party.distance.toString()} km"
+                                            : "",
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w500),
                                   ],
                                 ),
                               ],
@@ -298,6 +324,7 @@ Widget buildPartyCard(BuildContext context, Party party) {
                               list: list,
                               nameList: nameList,
                               contacter: () => contacter(user.name),
+                              photoUserProfile: user.photo,
                             ),
                           ),
                         ),
@@ -599,7 +626,7 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
 
 class CardBody extends StatelessWidget {
   final bool? animal, smoke;
-  final String? desc, nomOrganisateur, avis, nombre;
+  final String? desc, nomOrganisateur, avis, nombre, photoUserProfile;
   final List? nameList, list;
   final void Function()? contacter;
 
@@ -614,6 +641,7 @@ class CardBody extends StatelessWidget {
     this.list,
     this.nombre,
     this.contacter,
+    this.photoUserProfile,
   }) : super(key: key);
 
   @override
@@ -637,30 +665,25 @@ class CardBody extends StatelessWidget {
                           fontWeight: FontWeight.w500,
                           color: SECONDARY_COLOR)
                       : CText(''),
-                  Opacity(
-                    opacity: 0.7,
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(right: 16),
-                          child: Icon(Ionicons.star, color: ICONCOLOR),
-                        ),
-                        CText(this.avis, fontSize: 16, color: SECONDARY_COLOR),
-                      ],
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4),
+                    child: Opacity(
+                      opacity: 0.7,
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8),
+                            child: Icon(Ionicons.star, color: ICONCOLOR),
+                          ),
+                          CText(this.avis,
+                              fontSize: 16, color: SECONDARY_COLOR),
+                        ],
+                      ),
                     ),
                   )
                 ],
               ),
-              Container(
-                height: 55,
-                width: 55,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                    image: AssetImage("assets/roundBlankProfilPicture.png"),
-                  ),
-                ),
-              )
+              ProfilePhoto(photoUserProfile),
             ],
           ),
         ),
@@ -839,11 +862,15 @@ class CardBNB extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Row(
-                  children: [
-                    CText(this.prix, fontWeight: FontWeight.w600, fontSize: 20),
-                    Icon(Icons.euro_outlined, size: 20)
-                  ],
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 4),
+                  child: Row(
+                    children: [
+                      CText(this.prix,
+                          fontWeight: FontWeight.w600, fontSize: 20),
+                      Icon(Icons.euro_outlined, size: 20)
+                    ],
+                  ),
                 ),
                 CText('De ${this.heureDebut} à ${this.heureFin}')
               ],

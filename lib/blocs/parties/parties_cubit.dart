@@ -115,9 +115,9 @@ class PartiesCubit extends AppBaseCubit<PartiesState> {
         currentDate: state.currentDate));
   }
 
-  Future fetchPartiesWithWhereArrayContains(var key, String? name, String? token) async {
+  Future fetchPartiesWithWhereArrayContains(var key, String? token) async {
     var partiesSnapShots =
-        await services.getDataWithWhereArrayContains(key, name, token);
+        await services.getDataWithWhereArrayContains(key, token);
     List<Party> parties =
         partiesSnapShots.docs.map((e) => Party.fromSnapShots(e)).toList();
     emit(PartiesState.loaded(parties, state.filters));

@@ -35,7 +35,7 @@ class GuestWaitList extends StatelessWidget {
               create: (context) => PartiesCubit()
                 ..fetchPartiesWithWhereIsEqualTo("party owner", state.token)
                 ..fetchPartiesWithWhereArrayContains(
-                    "wait list", state.user!.name, state.token),
+                    "wait list", state.token),
               child: BlocBuilder<PartiesCubit, PartiesState>(
                 builder: (context, state) {
                   if (state.parties == null) {
