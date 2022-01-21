@@ -4,8 +4,7 @@ import 'package:pts/const.dart';
 import 'package:pts/pages/login/login.dart';
 
 class Connect extends StatelessWidget {
-  final BuildContext context;
-  const Connect(this.context, {Key? key}) : super(key: key);
+  const Connect({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
