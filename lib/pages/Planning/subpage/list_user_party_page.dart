@@ -83,7 +83,7 @@ class PartyJoin extends StatelessWidget {
         return ListView.builder(
           itemCount: state.parties!.length,
           itemBuilder: (BuildContext context, int index) =>
-              buildPartyCard(context, state.parties![index]),
+              PartyCard(party: state.parties![index]),
         );
       }),
     );
@@ -117,7 +117,7 @@ class PartyCreate extends StatelessWidget {
         return ListView.builder(
           itemCount: state.parties!.length,
           itemBuilder: (BuildContext context, int index) =>
-              buildPartyCard(context, state.parties![index]),
+              PartyCard(party: state.parties![index]),
         );
       }),
     );

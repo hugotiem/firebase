@@ -61,6 +61,7 @@ dependencies:
   ionicons: ^0.1.2
   table_calendar: ^3.0.3
   flutter_email_sender: ^5.0.2
+  qr_flutter: ^4.0.0
 
 dev_dependencies:
   flutter_test:
