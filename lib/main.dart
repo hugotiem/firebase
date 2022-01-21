@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 //import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:pts/blocs/app_bloc_delegate.dart';
+import 'package:pts/blocs/user/user_cubit.dart';
 import 'package:pts/models/services/notification_service.dart';
 import 'home.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -57,7 +58,17 @@ class MyApp extends StatelessWidget {
             print("ERROR");
             return Text("ERROR");
           } else if (snapshot.hasData) {
-            return Home();
+            return BlocProvider(
+              create: (context) => UserCubit()..init(),
+              child: BlocBuilder<UserCubit, UserState>(
+                builder: (context, state) {
+                  if (state.user == null) {
+                    return HomeNotConnect();
+                  }
+                  return Home();
+                },
+              ),
+            );
           } else {
             return Center(
               child: CircularProgressIndicator(),

@@ -10,7 +10,6 @@ import 'package:pts/const.dart';
 import 'package:pts/models/Capitalize.dart';
 import 'package:pts/blocs/user/user_cubit.dart';
 import 'package:pts/components/custom_container.dart';
-import 'package:pts/pages/login/connect.dart';
 import 'package:pts/pages/profil/subpage/qr_code_page.dart';
 import '../../components/custom_container.dart';
 import 'package:pts/pages/profil/subpage/about_page.dart';
@@ -44,11 +43,6 @@ class _ProfilState extends State<Profil> {
         create: (context) => UserCubit()..init(),
         child: BlocBuilder<UserCubit, UserState>(
           builder: (context, state) {
-            var isLogged = state.token != null;
-
-            if (!isLogged) {
-              return Connect(context);
-            }
 
             var user = state.user;
             if (user == null) {

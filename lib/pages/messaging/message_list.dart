@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pts/blocs/user/user_cubit.dart';
-import 'package:pts/pages/login/connect.dart';
 import 'package:pts/const.dart';
 import 'package:pts/models/services/auth_service.dart';
 import 'package:pts/pages/messaging/subpage/chatpage.dart';
@@ -60,13 +59,8 @@ class _ListMessageState extends State<ListMessage> {
     return BlocProvider(
       create: (context) => UserCubit()..init(),
       child: BlocBuilder<UserCubit, UserState>(builder: (context, state) {
-        var isLogged = state.token != null;
-        if (!isLogged) {
-          return Connect(context);
-        }
 
         var user = state.user;
-
         if (user == null) {
           return Center(child: CircularProgressIndicator());
         }

@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:pts/const.dart';
 import 'package:pts/pages/creation/creation_page.dart';
+import 'package:pts/pages/login/connect.dart';
 import 'package:pts/pages/login/id_form_screen.dart';
 import 'package:pts/blocs/user/user_cubit.dart';
 import 'package:pts/components/custom_text.dart';
@@ -158,6 +159,120 @@ class _HomeState extends State<Home> {
       builder: (context) => CheckIdPopup(),
     );
   }
+}
+
+class HomeNotConnect extends StatefulWidget {
+  const HomeNotConnect({Key? key}) : super(key: key);
+
+  @override
+  State<HomeNotConnect> createState() => _HomeNotConnectState();
+}
+
+class _HomeNotConnectState extends State<HomeNotConnect> {
+  int _currentIndex = 0;
+  final List<Widget> _children = [
+      Search(),
+      Connect(),
+      Container(),
+      Connect(),
+      Connect(),
+    ];
+  @override
+  Widget build(BuildContext context) {
+    
+    
+
+    return Stack(
+      children: [
+        Scaffold(
+          extendBodyBehindAppBar: true,
+          body: _children[_currentIndex],
+          bottomNavigationBar: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            selectedFontSize: 10,
+            unselectedFontSize: 10,
+            showSelectedLabels: true,
+            showUnselectedLabels: true,
+            selectedItemColor: ICONCOLOR,
+            unselectedItemColor: SECONDARY_COLOR,
+            currentIndex: _currentIndex,
+            onTap: onTabTapped,
+            items: [
+              BottomNavigationBarItem(
+                icon: new Icon(
+                  Ionicons.search_outline,
+                  size: 25,
+                ),
+                label: "Rechercher",
+              ),
+              BottomNavigationBarItem(
+                icon: new Icon(
+                  Ionicons.calendar_clear_outline,
+                  size: 25,
+                ),
+                label: "Soirées",
+              ),
+              BottomNavigationBarItem(
+                icon: new Icon(
+                  Ionicons.add_circle_outline,
+                  color: Colors.transparent,
+                  size: 40,
+                ),
+                label: "",
+              ),
+              BottomNavigationBarItem(
+                icon: new Icon(
+                  Ionicons.chatbox_outline,
+                  size: 25,
+                ),
+                label: "Messages",
+              ),
+              BottomNavigationBarItem(
+                icon: new Icon(
+                  Ionicons.person_outline,
+                  size: 25,
+                ),
+                label: "Profil",
+              ),
+            ],
+            backgroundColor: Colors.white,
+          ),
+        ),
+        SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 2.5),
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: FloatingActionButton(
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => Scaffold(backgroundColor: PRIMARY_COLOR, body: Connect(),),
+                    fullscreenDialog: true,
+                  ),
+                ),
+                backgroundColor: SECONDARY_COLOR,
+                child: Icon(Icons.add_rounded),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  void onTabTapped(int index) {
+      if (index == 2) {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => Connect(),
+            fullscreenDialog: true,
+          ),
+        );
+      } else
+        setState(() {
+          _currentIndex = index;
+        });
+    }
 }
 
 class CheckIdPopup extends StatelessWidget {
@@ -428,11 +543,12 @@ class _ReauthenticateState extends State<Reauthenticate> {
   Future reauthentification() async {
     try {
       AuthCredential credential = EmailAuthProvider.credential(
-      email: _email!,
-      password: _password!,
-    );
+        email: _email!,
+        password: _password!,
+      );
 
-    await FirebaseAuth.instance.currentUser?.reauthenticateWithCredential(credential);
+      await FirebaseAuth.instance.currentUser
+          ?.reauthenticateWithCredential(credential);
     } on FirebaseAuthException {
       print('wrong password or email');
     }
