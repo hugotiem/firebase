@@ -71,6 +71,8 @@ class _NamePageState extends State<NamePage> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Vous devez rentrer un nom';
+                  } else if (value.length < 3) {
+                    return "Le nom de la soirée est trop court";
                   } else {
                     return null;
                   }

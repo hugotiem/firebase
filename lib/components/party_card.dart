@@ -171,298 +171,281 @@ class PartyCard extends StatelessWidget {
       });
     }
 
-    return BlocProvider(
-      create: (context) => UserCubit()..loadDataByUserID(party.ownerId),
-      child: BlocBuilder<UserCubit, UserState>(
-        builder: (context, state) {
-          if (state.user == null) {
-            return Center(child: CircularProgressIndicator());
-          }
-          User? user = state.user;
-
-          return Stack(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(top: 20),
-                child: Center(
-                  child: Container(
-                    // height: 250,
-                    width: MediaQuery.of(context).size.width * 0.85,
-                    decoration: BoxDecoration(
-                      color: PRIMARY_COLOR,
-                    ),
-                    child: OpenContainer(
-                      closedElevation: 0,
-                      transitionDuration: Duration(milliseconds: 200),
-                      closedShape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      closedColor: Colors.white,
-                      openColor: Colors.white,
-                      closedBuilder: (context, returnValue) {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Stack(
-                              children: [
-                                Container(
-                                  width: double.infinity,
-                                  color: color,
-                                  height: 180,
-                                  child: Image.asset(image!),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(10),
-                                  child: BlurryContainer(
-                                    bgColor: color == SECONDARY_COLOR
-                                        ? Colors.blueGrey
-                                        : Colors.yellow.shade100,
-                                    child: Column(
-                                      children: [
-                                        Text(
-                                          DateFormat.MMM('fr')
-                                              .format(party.date),
-                                          style: TextStyle(
-                                            color: textColor,
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 16,
-                                          ),
+    return Padding(
+      padding: const EdgeInsets.only(top: 20),
+      child: Center(
+        child: Container(
+          //height: 270,
+          width: MediaQuery.of(context).size.width * 0.85,
+          decoration: BoxDecoration(
+            color: PRIMARY_COLOR,
+          ),
+          child: BlocProvider(
+            create: (context) => UserCubit()..loadDataByUserID(party.ownerId),
+            child: BlocBuilder<UserCubit, UserState>(
+              builder: (context, state) {
+                if (state.user == null) {
+                  return Center(child: CircularProgressIndicator());
+                }
+                User? user = state.user;
+                return OpenContainer(
+                  closedElevation: 0,
+                  transitionDuration: Duration(milliseconds: 200),
+                  closedShape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  closedColor: Colors.white,
+                  openColor: Colors.white,
+                  closedBuilder: (context, returnValue) {
+                    return Container(
+                      height: 250,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Stack(
+                            children: [
+                              Container(
+                                width: double.infinity,
+                                color: color,
+                                height: 180,
+                                child: Image.asset(image!),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(10),
+                                child: BlurryContainer(
+                                  bgColor: color == SECONDARY_COLOR
+                                      ? Colors.blueGrey
+                                      : Colors.yellow.shade100,
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        DateFormat.MMM('fr').format(party.date),
+                                        style: TextStyle(
+                                          color: textColor,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 16,
                                         ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 4),
-                                          child: Text(
-                                            DateFormat.d('fr')
-                                                .format(party.date),
-                                            style: TextStyle(
-                                                color: textColor,
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 22),
-                                          ),
-                                        )
-                                      ],
-                                    ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 4),
+                                        child: Text(
+                                          DateFormat.d('fr').format(party.date),
+                                          style: TextStyle(
+                                              color: textColor,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 22),
+                                        ),
+                                      )
+                                    ],
                                   ),
-                                )
-                              ],
-                            ),
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 8, horizontal: 12),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                ),
+                              )
+                            ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 8, horizontal: 12),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                CText(party.name,
+                                    fontSize: 15, fontWeight: FontWeight.w500),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 2),
+                                  child: Row(
+                                    children: [
+                                      CText("${user!.name!} ${user.surname!}",
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w500),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Icon(
+                                        user.verified == true
+                                            ? Icons.verified
+                                            : null,
+                                        size: 15,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    CText(party.name,
+                                    CText(party.city!,
                                         fontSize: 15,
                                         fontWeight: FontWeight.w500),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 1),
-                                      child: Row(
-                                        children: [
-                                          CText(
-                                              "${user!.name!} ${user.surname!}",
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w500),
-                                          SizedBox(
-                                            width: 5,
-                                          ),
-                                          Icon(
-                                            user.verified == true
-                                                ? Icons.verified
-                                                : null,
-                                            size: 15,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        CText(party.city!,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w500),
-                                        CText(
-                                            party.distance != null
-                                                ? "${party.distance.toString()} km"
-                                                : "",
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w500),
-                                      ],
-                                    ),
+                                    CText(
+                                        party.distance != null
+                                            ? "${party.distance.toString()} km"
+                                            : "",
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w500),
                                   ],
                                 ),
-                              ),
-                            ),
-                          ],
-                        );
-                      },
-                      openBuilder: (context, returnValue) {
-                        return CustomSliverCard(
-                          image: image,
-                          color: color,
-                          name: party.name,
-                          date:
-                              '${DateFormat.E('fr').format(party.startTime!).inCaps} ${DateFormat.d('fr').format(party.startTime!)} ${DateFormat.MMMM('fr').format(party.startTime!)}',
-                          location: party.city,
-                          body: SizedBox.expand(
-                            child: SingleChildScrollView(
-                              child: CardBody(
-                                nombre: party.number,
-                                desc: party.desc != null ? party.desc : '',
-                                nomOrganisateur:
-                                    "${user!.name} ${user.surname}",
-                                avis: '4.9 / 5 - 0 avis',
-                                animal: party.animals!,
-                                smoke: party.smoke!,
-                                list: list,
-                                nameList: nameList,
-                                contacter: () => contacter(user.name),
-                                photoUserProfile: user.photo,
-                              ),
+                              ],
                             ),
                           ),
-                          bottomNavigationBar: CardBNB(
-                            prix: party.price.toString(),
-                            heureDebut:
-                                "${DateFormat.Hm('fr').format(party.startTime!).split(":")[0]}h${DateFormat.Hm('fr').format(party.startTime!).split(":")[1]}",
-                            heureFin:
-                                "${DateFormat.Hm('fr').format(party.endTime!).split(':')[0]}h${DateFormat.Hm('fr').format(party.endTime!).split(':')[1]}",
-                            onTap: BlocProvider(
-                              create: (context) => UserCubit()..init(),
-                              child: BlocBuilder<UserCubit, UserState>(
-                                builder: (context, connectUserState) {
-                                  if (connectUserState.user == null) {
-                                    return GestureDetector(
-                                      onTap: () async {
-                                        showModalBottomSheet(
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(25.0),
-                                              topRight: Radius.circular(25.0),
-                                            ),
-                                          ),
-                                          context: context,
-                                          builder: (context) {
-                                            return Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Center(
-                                                  child: Padding(
-                                                    padding: const EdgeInsets
-                                                            .symmetric(
+                        ],
+                      ),
+                    );
+                  },
+                  openBuilder: (context, returnValue) {
+                    return CustomSliverCard(
+                      image: image,
+                      color: color,
+                      name: party.name,
+                      date:
+                          '${DateFormat.E('fr').format(party.startTime!).inCaps} ${DateFormat.d('fr').format(party.startTime!)} ${DateFormat.MMMM('fr').format(party.startTime!)}',
+                      location: party.city,
+                      body: SizedBox.expand(
+                        child: SingleChildScrollView(
+                          child: CardBody(
+                            nombre: party.number,
+                            desc: party.desc != null ? party.desc : '',
+                            nomOrganisateur: "${user!.name} ${user.surname}",
+                            avis: '4.9 / 5 - 0 avis',
+                            animal: party.animals!,
+                            smoke: party.smoke!,
+                            list: list,
+                            nameList: nameList,
+                            contacter: () => contacter(user.name),
+                            photoUserProfile: user.photo,
+                          ),
+                        ),
+                      ),
+                      bottomNavigationBar: CardBNB(
+                        prix: party.price.toString(),
+                        heureDebut:
+                            "${DateFormat.Hm('fr').format(party.startTime!).split(":")[0]}h${DateFormat.Hm('fr').format(party.startTime!).split(":")[1]}",
+                        heureFin:
+                            "${DateFormat.Hm('fr').format(party.endTime!).split(':')[0]}h${DateFormat.Hm('fr').format(party.endTime!).split(':')[1]}",
+                        onTap: BlocProvider(
+                          create: (context) => UserCubit()..init(),
+                          child: BlocBuilder<UserCubit, UserState>(
+                            builder: (context, connectUserState) {
+                              if (connectUserState.user == null) {
+                                return GestureDetector(
+                                  onTap: () async {
+                                    showModalBottomSheet(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(25.0),
+                                          topRight: Radius.circular(25.0),
+                                        ),
+                                      ),
+                                      context: context,
+                                      builder: (context) {
+                                        return Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Center(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
                                                         vertical: 22,
                                                         horizontal: 18),
-                                                    child: Text(
-                                                      "Tu dois être connecté pour rejoindre une soirée",
-                                                      style: TextStyle(
-                                                        fontSize: 22,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                      ),
-                                                    ),
+                                                child: Text(
+                                                  "Tu dois être connecté pour rejoindre une soirée",
+                                                  style: TextStyle(
+                                                    fontSize: 22,
+                                                    fontWeight: FontWeight.w500,
                                                   ),
                                                 ),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          bottom: 22),
-                                                  child: Connect(
-                                                    text: false,
-                                                  ),
-                                                ),
-                                              ],
-                                            );
-                                          },
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  bottom: 22),
+                                              child: Connect(
+                                                text: false,
+                                              ),
+                                            ),
+                                          ],
                                         );
                                       },
-                                      child: Container(
-                                        padding: EdgeInsets.all(15),
-                                        decoration: BoxDecoration(
-                                          color: SECONDARY_COLOR,
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(15),
-                                          ),
-                                        ),
-                                        child: CText('Rejoindre',
-                                            color: PRIMARY_COLOR, fontSize: 16),
+                                    );
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.all(15),
+                                    decoration: BoxDecoration(
+                                      color: SECONDARY_COLOR,
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(15),
+                                      ),
+                                    ),
+                                    child: CText('Rejoindre',
+                                        color: PRIMARY_COLOR, fontSize: 16),
+                                  ),
+                                );
+                              }
+                              return GestureDetector(
+                                onTap: () async {
+                                  if (party.price == 0) {
+                                    final uid = connectUserState.user!.id;
+                                    FireStoreServices services =
+                                        FireStoreServices("parties");
+
+                                    if (uid == null) {
+                                      throw Error();
+                                    }
+
+                                    await services.setWithId(party.id, data: {
+                                      uid: {
+                                        "token":
+                                            "${party.name.substring(0, 5)}${getRandomString(5)}",
+                                        "name": connectUserState.user!.name,
+                                        "surname":
+                                            connectUserState.user!.surname,
+                                        "photo": connectUserState.user!.photo,
+                                        "gender": connectUserState.user!.gender,
+                                      }
+                                    });
+
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => JoinWaitList(),
+                                      ),
+                                    );
+                                  } else {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ExistingCard(),
                                       ),
                                     );
                                   }
-                                  return GestureDetector(
-                                    onTap: () async {
-                                      if (party.price == 0) {
-                                        final uid = connectUserState.user!.id;
-                                        FireStoreServices services =
-                                            FireStoreServices("parties");
-
-                                        if (uid == null) {
-                                          throw Error();
-                                        }
-
-                                        await services
-                                            .setWithId(party.id, data: {
-                                          uid: {
-                                            "token":
-                                                "${party.name.substring(0, 5)}${getRandomString(5)}",
-                                            "name": connectUserState.user!.name,
-                                            "surname":
-                                                connectUserState.user!.surname,
-                                            "photo":
-                                                connectUserState.user!.photo,
-                                            "gender":
-                                                connectUserState.user!.gender,
-                                          }
-                                        });
-
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                JoinWaitList(),
-                                          ),
-                                        );
-                                      } else {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                ExistingCard(),
-                                          ),
-                                        );
-                                      }
-                                    },
-                                    child: Container(
-                                      padding: EdgeInsets.all(15),
-                                      decoration: BoxDecoration(
-                                        color: SECONDARY_COLOR,
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(15),
-                                        ),
-                                      ),
-                                      child: CText('Rejoindre',
-                                          color: PRIMARY_COLOR, fontSize: 16),
-                                    ),
-                                  );
                                 },
-                              ),
-                            ),
+                                child: Container(
+                                  padding: EdgeInsets.all(15),
+                                  decoration: BoxDecoration(
+                                    color: SECONDARY_COLOR,
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(15),
+                                    ),
+                                  ),
+                                  child: CText('Rejoindre',
+                                      color: PRIMARY_COLOR, fontSize: 16),
+                                ),
+                              );
+                            },
                           ),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          );
-        },
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        ),
       ),
     );
   }
