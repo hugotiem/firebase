@@ -4,7 +4,8 @@ import 'package:pts/const.dart';
 import 'package:pts/pages/login/login.dart';
 
 class Connect extends StatelessWidget {
-  const Connect({Key? key}) : super(key: key);
+  final bool? text;
+  const Connect({this.text = true, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,12 +14,13 @@ class Connect extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
+            this.text == true 
+            ? Container(
               child: Text(
                 "Tu n'es pas connecté",
                 textAlign: TextAlign.center,
               ),
-            ),
+            ) : Container(),
             GestureDetector(
               onTap: () {
                 Navigator.of(context).push(

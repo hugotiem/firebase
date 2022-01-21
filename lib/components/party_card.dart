@@ -14,6 +14,7 @@ import 'package:pts/models/services/firestore_service.dart';
 import 'package:pts/models/user.dart';
 import 'package:pts/blocs/user/user_cubit.dart';
 import 'package:pts/models/services/auth_service.dart';
+import 'package:pts/pages/login/connect.dart';
 import 'package:pts/pages/messaging/subpage/chatpage.dart';
 import 'package:pts/pages/profil/subpage/existingcard_page.dart';
 import 'package:pts/pages/search/sliver/custom_sliver.dart';
@@ -42,75 +43,39 @@ class PartyCard extends StatelessWidget {
     List nameList = party.validateGuestList!;
 
     List list = nameList.map((doc) {
-      return BlocProvider(
-        create: (context) => UserCubit()..loadDataByUserID(doc['uid']),
-        child: BlocBuilder<UserCubit, UserState>(
-          builder: (context, state) {
-            if (state.user == null) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            User? user = state.user;
-            return Padding(
-              padding: const EdgeInsets.only(left: 24, right: 24, bottom: 16),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          CText(
-                            "${user!.name!.inCaps} ${user.surname!.inCaps}",
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
-                            color: SECONDARY_COLOR,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 4),
-                            child: Opacity(
-                              opacity: 0.7,
-                              child: Row(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 8),
-                                    child:
-                                        Icon(Ionicons.star, color: ICONCOLOR),
-                                  ),
-                                  CText(
-                                    '4.9 / 5 - 0 avis',
-                                    fontSize: 16,
-                                    color: SECONDARY_COLOR,
-                                  )
-                                ],
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: ProfilePhoto(user.photo, radius: 25),
-                      ),
-                    ],
+      return Padding(
+        padding: const EdgeInsets.only(left: 24, right: 24, bottom: 16),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: ProfilePhoto(doc["photo"], radius: 25),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 12),
+                  child: CText(
+                    "${doc["name"].toString().inCaps} ${doc["surname"].toString().inCaps}",
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    color: SECONDARY_COLOR,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 24),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border(
-                          top: BorderSide(width: 2, color: FOCUS_COLOR),
-                        ),
-                      ),
-                    ),
-                  )
-                ],
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 24),
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border(
+                    top: BorderSide(width: 2, color: FOCUS_COLOR),
+                  ),
+                ),
               ),
-            );
-          },
+            ),
+          ],
         ),
       );
     }).toList();
@@ -281,51 +246,54 @@ class PartyCard extends StatelessWidget {
                                 )
                               ],
                             ),
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 8, horizontal: 12),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  CText(party.name!,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w500),
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.symmetric(vertical: 1),
-                                    child: Row(
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 8, horizontal: 12),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    CText(party.name!,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w500),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 1),
+                                      child: Row(
+                                        children: [
+                                          CText(
+                                              "${user!.name!} ${user.surname!}",
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w500),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Icon(
+                                            user.verified == true
+                                                ? Icons.verified
+                                                : null,
+                                            size: 15,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
-                                        CText("${user!.name!} ${user.surname!}",
+                                        CText(party.city!,
                                             fontSize: 15,
                                             fontWeight: FontWeight.w500),
-                                        SizedBox(
-                                          width: 5,
-                                        ),
-                                        Icon(
-                                          user.verified == true
-                                              ? Icons.verified
-                                              : null,
-                                          size: 15,
-                                        ),
+                                        CText(
+                                            party.distance != null
+                                                ? "${party.distance.toString()} km"
+                                                : "",
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w500),
                                       ],
                                     ),
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      CText(party.city!,
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w500),
-                                      CText(
-                                          party.distance != null
-                                              ? "${party.distance.toString()} km"
-                                              : "",
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w500),
-                                    ],
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           ],
@@ -357,66 +325,143 @@ class PartyCard extends StatelessWidget {
                             ),
                           ),
                           bottomNavigationBar: CardBNB(
-                              prix: party.price.toString(),
-                              heureDebut:
-                                  "${DateFormat.Hm('fr').format(party.startTime!).split(":")[0]}h${DateFormat.Hm('fr').format(party.startTime!).split(":")[1]}",
-                              heureFin:
-                                  "${DateFormat.Hm('fr').format(party.endTime!).split(':')[0]}h${DateFormat.Hm('fr').format(party.endTime!).split(':')[1]}",
-                              onTap: () async {
-                                var token = await AuthService().getToken();
-
-                                if (token == null) {
-                                  final snackBar = SnackBar(
-                                    content:
-                                        const CText("Vous n'êtes pas connecté"),
-                                    duration: Duration(seconds: 2),
-                                  );
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(snackBar);
-                                } else {
-                                  if (party.price == 0) {
-                                    final _db = services.document(party.id);
-
-                                    final uid = user.id;
-                                    List waitList = [];
-
-                                    print("name : ${state.user?.name}");
-
-                                    waitList.add({
-                                      "uid": uid,
-                                      "token":
-                                          "${party.name?.substring(0, 5)}${getRandomString(5)}",
-                                      "name": user.name,
-                                      "surname": user.surname,
-                                    });
-
-                                    await _db.update({
-                                      "wait list":
-                                          FieldValue.arrayUnion(waitList),
-                                    });
-
-                                    var data = await _db.get();
-
-                                    await services.setWithId(party.id,
-                                        data:
-                                            data.data() ?? <String, dynamic>{});
-
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => JoinWaitList(),
-                                      ),
-                                    );
-                                  } else {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => ExistingCard(),
+                            prix: party.price.toString(),
+                            heureDebut:
+                                "${DateFormat.Hm('fr').format(party.startTime!).split(":")[0]}h${DateFormat.Hm('fr').format(party.startTime!).split(":")[1]}",
+                            heureFin:
+                                "${DateFormat.Hm('fr').format(party.endTime!).split(':')[0]}h${DateFormat.Hm('fr').format(party.endTime!).split(':')[1]}",
+                            onTap: BlocProvider(
+                              create: (context) => UserCubit()..init(),
+                              child: BlocBuilder<UserCubit, UserState>(
+                                builder: (context, connectUserState) {
+                                  if (connectUserState.user == null) {
+                                    return GestureDetector(
+                                      onTap: () async {
+                                        showModalBottomSheet(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(25.0),
+                                              topRight: Radius.circular(25.0),
+                                            ),
+                                          ),
+                                          context: context,
+                                          builder: (context) {
+                                            return Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Center(
+                                                  child: Padding(
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
+                                                        vertical: 22,
+                                                        horizontal: 18),
+                                                    child: Text(
+                                                      "Tu dois être connecté pour rejoindre une soirée",
+                                                      style: TextStyle(
+                                                        fontSize: 22,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          bottom: 22),
+                                                  child: Connect(
+                                                    text: false,
+                                                  ),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.all(15),
+                                        decoration: BoxDecoration(
+                                          color: SECONDARY_COLOR,
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(15),
+                                          ),
+                                        ),
+                                        child: CText('Rejoindre',
+                                            color: PRIMARY_COLOR, fontSize: 16),
                                       ),
                                     );
                                   }
-                                }
-                              }),
+                                  return GestureDetector(
+                                    onTap: () async {
+                                      if (party.price == 0) {
+                                        final _db = services.document(party.id);
+
+                                        final uid = connectUserState.user!.id;
+                                        List waitList = [];
+
+                                        print(
+                                            "name : ${connectUserState.user?.name}");
+
+                                        waitList.add({
+                                          "uid": uid,
+                                          "token":
+                                              "${party.name?.substring(0, 5)}${getRandomString(5)}",
+                                          "name": connectUserState.user!.name,
+                                          "surname":
+                                              connectUserState.user!.surname,
+                                          "photo": connectUserState.user!.photo,
+                                          "gender":
+                                              connectUserState.user!.gender,
+                                        });
+
+                                        await _db.update({
+                                          "wait list":
+                                              FieldValue.arrayUnion(waitList),
+                                        });
+
+                                        var data = await _db.get();
+
+                                        await services.setWithId(party.id,
+                                            data: data.data() ??
+                                                <String, dynamic>{});
+
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                JoinWaitList(),
+                                          ),
+                                        );
+                                      } else {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                ExistingCard(),
+                                          ),
+                                        );
+                                      }
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.all(15),
+                                      decoration: BoxDecoration(
+                                        color: SECONDARY_COLOR,
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(15),
+                                        ),
+                                      ),
+                                      child: CText('Rejoindre',
+                                          color: PRIMARY_COLOR, fontSize: 16),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
                         );
                       },
                     ),
@@ -888,7 +933,7 @@ class CardBody extends StatelessWidget {
 
 class CardBNB extends StatelessWidget {
   final String? prix, heureDebut, heureFin;
-  final void Function()? onTap;
+  final Widget? onTap;
 
   const CardBNB(
       {this.prix, this.onTap, this.heureDebut, this.heureFin, Key? key})
@@ -921,16 +966,7 @@ class CardBNB extends StatelessWidget {
                 CText('De ${this.heureDebut} à ${this.heureFin}')
               ],
             ),
-            GestureDetector(
-              onTap: onTap,
-              child: Container(
-                padding: EdgeInsets.all(15),
-                decoration: BoxDecoration(
-                    color: SECONDARY_COLOR,
-                    borderRadius: BorderRadius.all(Radius.circular(15))),
-                child: CText('Rejoindre', color: PRIMARY_COLOR, fontSize: 16),
-              ),
-            )
+            onTap!,
           ],
         ),
       ),
