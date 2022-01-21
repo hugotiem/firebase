@@ -287,7 +287,7 @@ class PartyCard extends StatelessWidget {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  CText(party.name!,
+                                  CText(party.name,
                                       fontSize: 15,
                                       fontWeight: FontWeight.w500),
                                   Padding(
@@ -375,31 +375,30 @@ class PartyCard extends StatelessWidget {
                                       .showSnackBar(snackBar);
                                 } else {
                                   if (party.price == 0) {
-                                    final _db = services.document(party.id);
+                                    final _db = services.firestore
+                                        .collection("parties")
+                                        .doc(party.waitListId);
 
-                                    final uid = user.id;
+                                    String? uid = user.id;
                                     List waitList = [];
 
-                                    print("name : ${state.user?.name}");
-
-                                    waitList.add({
-                                      "uid": uid,
-                                      "token":
-                                          "${party.name?.substring(0, 5)}${getRandomString(5)}",
-                                      "name": user.name,
-                                      "surname": user.surname,
+                                    if (user.id == null) {
+                                      throw Error();
+                                    }
+                                    await _db.set({
+                                      uid!: {
+                                        "token":
+                                            "${party.name.substring(0, party.name.length < 5 ? party.name.length : 5)}${getRandomString(5)}",
+                                        "name": user.name,
+                                        "surname": user.surname,
+                                      }
                                     });
 
-                                    await _db.update({
-                                      "wait list":
-                                          FieldValue.arrayUnion(waitList),
-                                    });
+                                    // var data = await _db.get();
 
-                                    var data = await _db.get();
-
-                                    await services.setWithId(party.id,
-                                        data:
-                                            data.data() ?? <String, dynamic>{});
+                                    // await services.setWithId(party.id,
+                                    //     data:
+                                    //         data.data() ?? <String, dynamic>{});
 
                                     Navigator.push(
                                       context,

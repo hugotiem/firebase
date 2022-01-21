@@ -3,7 +3,7 @@ import 'dart:math' as math;
 
 class Party {
   String id;
-  String? name;
+  String name;
   String? theme;
   String? number;
   DateTime date;
@@ -22,6 +22,7 @@ class Party {
   List<double> coordinates;
   List<double> approximativeCoordinates;
   List? waitList;
+  final String? waitListId;
 
   Party(
       this.id,
@@ -43,6 +44,7 @@ class Party {
       this.coordinates,
       this.approximativeCoordinates,
       this.waitList,
+      this.waitListId,
       {this.distance});
 
   static double random() {
@@ -75,6 +77,7 @@ class Party {
     var approximativeCoordinates =
         coordinates.map((e) => e + random()).toList();
     var waitList = data["wait list"];
+    var waitListId = data["waitListId"];
 
     return Party(
       id,
@@ -96,6 +99,7 @@ class Party {
       coordinates,
       approximativeCoordinates,
       waitList,
+      waitListId,
     );
   }
 }

@@ -42,7 +42,7 @@ class QrCodePage extends StatelessWidget {
                   child: Column(
                     children: parties.map<Widget>((e) {
                       print(
-                          "link =app.pts.com?token=${e.validateGuestList?.where((element) => (element as Map).containsValue(token)).toList()[0]['token']}");
+                          "link = app.pts.com?token=${e.validateGuestList?.where((element) => (element as Map).containsValue(token)).toList()[0]['token']}");
                       return QrImage(
                           data:
                               "app.pts.com?token=${e.validateGuestList?.where((element) => (element as Map).containsValue(token)).toList()[0]['token']}");

@@ -11,11 +11,10 @@ class FireStoreServices {
   DocumentReference<Map<String, dynamic>> document(String id) =>
       _firestore.collection(collection).doc(id);
 
-  
-
-  Future<void> add({Map<String, dynamic>? data}) async {
-    if (data == null) return;
-    await this._firestore.collection(collection).add(data);
+  Future<String?> add({Map<String, dynamic>? data}) async {
+    if (data == null) return null;
+    var query = await this._firestore.collection(collection).add(data);
+    return query.id;
   }
 
   Future<void> setWithId(String? id,
