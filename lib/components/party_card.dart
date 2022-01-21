@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:animations/animations.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +10,7 @@ import 'package:pts/components/custom_container.dart';
 import 'package:pts/components/profile_photo.dart';
 import 'package:pts/models/capitalize.dart';
 import 'package:pts/models/party.dart';
+import 'package:pts/models/services/firestore_service.dart';
 import 'package:pts/models/user.dart';
 import 'package:pts/blocs/user/user_cubit.dart';
 import 'package:pts/models/services/auth_service.dart';
@@ -19,375 +22,418 @@ import 'custom_text.dart';
 import 'horizontal_separator.dart';
 import 'piechart.dart';
 
-Widget buildPartyCard(BuildContext context, Party party) {
-  List nameList = party.validateGuestList!;
+class PartyCard extends StatelessWidget {
+  final Party party;
 
-  List list = nameList.map((doc) {
+  final String _chars =
+      'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+  final Random _rnd = Random();
+
+  final FireStoreServices services = FireStoreServices("parties");
+
+  PartyCard({Key? key, required this.party}) : super(key: key);
+
+  String getRandomString(int length) {
+    return String.fromCharCodes(Iterable.generate(
+        length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
+  }
+
+  Widget buildPartyCard(BuildContext context, Party party) {
+    List nameList = party.validateGuestList!;
+
+    List list = nameList.map((doc) {
+      return BlocProvider(
+        create: (context) => UserCubit()..loadDataByUserID(doc['uid']),
+        child: BlocBuilder<UserCubit, UserState>(
+          builder: (context, state) {
+            if (state.user == null) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            User? user = state.user;
+            return Padding(
+              padding: const EdgeInsets.only(left: 24, right: 24, bottom: 16),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CText(
+                            "${user!.name!.inCaps} ${user.surname!.inCaps}",
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                            color: SECONDARY_COLOR,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 4),
+                            child: Opacity(
+                              opacity: 0.7,
+                              child: Row(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 8),
+                                    child:
+                                        Icon(Ionicons.star, color: ICONCOLOR),
+                                  ),
+                                  CText(
+                                    '4.9 / 5 - 0 avis',
+                                    fontSize: 16,
+                                    color: SECONDARY_COLOR,
+                                  )
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: ProfilePhoto(user.photo, radius: 25),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 24),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border(
+                          top: BorderSide(width: 2, color: FOCUS_COLOR),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            );
+          },
+        ),
+      );
+    }).toList();
+
+    String? image;
+    Color? color;
+    Color? textColor;
+
+    if (party.theme == 'Festive') {
+      image = "assets/festive.jpg";
+      color = ICONCOLOR;
+      textColor = SECONDARY_COLOR;
+    } else if (party.theme == "Gaming") {
+      image = "assets/gaming.jpg";
+      color = ICONCOLOR;
+      textColor = SECONDARY_COLOR;
+    } else if (party.theme == "Jeux de société") {
+      image = "assets/jeuxdesociete.jpg";
+      color = SECONDARY_COLOR;
+      textColor = PRIMARY_COLOR;
+    } else if (party.theme == "Thème") {
+      image = "assets/theme.jpg";
+      color = SECONDARY_COLOR;
+      textColor = PRIMARY_COLOR;
+    }
+
+    void contacter(String? ownerName) async {
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+      var chatCollection = firestore.collection('chat');
+      var currentUserID = AuthService().currentUser!.uid;
+      var currentUserName = AuthService().currentUser!.displayName;
+      var otherUserUID = party.ownerId;
+      List currentUIDList = [];
+      List otherUIDList = [];
+      List emptyList = [];
+
+      currentUIDList.add({'uid': currentUserID, 'name': currentUserName});
+      otherUIDList.add({'uid': party.ownerId, 'name': ownerName});
+
+      chatCollection
+          .doc(party.ownerId)
+          .snapshots()
+          .listen((datasnapshot) async {
+        chatCollection
+            .doc(currentUserID)
+            .snapshots()
+            .listen((datasnapshot) async {
+          if (datasnapshot.exists) {
+            return;
+          } else {
+            await chatCollection.doc(currentUserID).set({
+              'userid': FieldValue.arrayUnion(emptyList),
+            });
+          }
+        });
+        if (datasnapshot.exists) {
+          await chatCollection.doc(party.ownerId).update({
+            'userid': FieldValue.arrayUnion(currentUIDList),
+          }).then((value) {
+            chatCollection.doc(currentUserID).update({
+              'userid': FieldValue.arrayUnion(otherUIDList),
+            }).then((value) {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          ChatPage(otherUserUID, otherUserName: ownerName)));
+            });
+          });
+        } else {
+          await chatCollection
+              .doc(party.ownerId)
+              .set({'userid': emptyList}).then((value) {
+            chatCollection.doc(currentUserID).set({'userid': emptyList});
+          });
+
+          await chatCollection.doc(party.ownerId).update({
+            'userid': FieldValue.arrayUnion(currentUIDList),
+          }).then((value) {
+            chatCollection.doc(currentUserID).update({
+              'userid': FieldValue.arrayUnion(otherUIDList),
+            }).then((value) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      ChatPage(otherUserUID, otherUserName: ownerName),
+                ),
+              );
+            });
+          });
+        }
+      });
+    }
+
     return BlocProvider(
-      create: (context) => UserCubit()..loadDataByUserID(doc['uid']),
+      create: (context) => UserCubit()..loadDataByUserID(party.ownerId),
       child: BlocBuilder<UserCubit, UserState>(
         builder: (context, state) {
           if (state.user == null) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
+            return Center(child: CircularProgressIndicator());
           }
           User? user = state.user;
-          return Padding(
-            padding: const EdgeInsets.only(left: 24, right: 24, bottom: 16),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CText(
-                          "${user!.name!.inCaps} ${user.surname!.inCaps}",
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
-                          color: SECONDARY_COLOR,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 4),
-                          child: Opacity(
-                            opacity: 0.7,
-                            child: Row(
+
+          return Stack(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: Center(
+                  child: Container(
+                    // height: 250,
+                    width: MediaQuery.of(context).size.width * 0.85,
+                    decoration: BoxDecoration(
+                      color: PRIMARY_COLOR,
+                    ),
+                    child: OpenContainer(
+                      closedElevation: 0,
+                      transitionDuration: Duration(milliseconds: 200),
+                      closedShape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      closedColor: Colors.white,
+                      openColor: Colors.white,
+                      closedBuilder: (context, returnValue) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Stack(
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 8),
-                                  child: Icon(Ionicons.star, color: ICONCOLOR),
+                                Container(
+                                  width: double.infinity,
+                                  color: color,
+                                  height: 180,
+                                  child: Image.asset(image!),
                                 ),
-                                CText(
-                                  '4.9 / 5 - 0 avis',
-                                  fontSize: 16,
-                                  color: SECONDARY_COLOR,
+                                Padding(
+                                  padding: const EdgeInsets.all(10),
+                                  child: BlurryContainer(
+                                    bgColor: color == SECONDARY_COLOR
+                                        ? Colors.blueGrey
+                                        : Colors.yellow.shade100,
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          DateFormat.MMM('fr')
+                                              .format(party.date),
+                                          style: TextStyle(
+                                            color: textColor,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 4),
+                                          child: Text(
+                                            DateFormat.d('fr')
+                                                .format(party.date),
+                                            style: TextStyle(
+                                                color: textColor,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 22),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
                                 )
                               ],
                             ),
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 8, horizontal: 12),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  CText(party.name!,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w500),
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 1),
+                                    child: Row(
+                                      children: [
+                                        CText("${user!.name!} ${user.surname!}",
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w500),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        Icon(
+                                          user.verified == true
+                                              ? Icons.verified
+                                              : null,
+                                          size: 15,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      CText(party.city!,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w500),
+                                      CText(
+                                          party.distance != null
+                                              ? "${party.distance.toString()} km"
+                                              : "",
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w500),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                      openBuilder: (context, returnValue) {
+                        return CustomSliverCard(
+                          image: image,
+                          color: color,
+                          name: party.name,
+                          date:
+                              '${DateFormat.E('fr').format(party.startTime!).inCaps} ${DateFormat.d('fr').format(party.startTime!)} ${DateFormat.MMMM('fr').format(party.startTime!)}',
+                          location: party.city,
+                          body: SizedBox.expand(
+                            child: SingleChildScrollView(
+                              child: CardBody(
+                                nombre: party.number,
+                                desc: party.desc != null ? party.desc : '',
+                                nomOrganisateur:
+                                    "${user!.name} ${user.surname}",
+                                avis: '4.9 / 5 - 0 avis',
+                                animal: party.animals!,
+                                smoke: party.smoke!,
+                                list: list,
+                                nameList: nameList,
+                                contacter: () => contacter(user.name),
+                                photoUserProfile: user.photo,
+                              ),
+                            ),
                           ),
-                        )
-                      ],
-                    ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: ProfilePhoto(user.photo, radius: 25),
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 24),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border(
-                        top: BorderSide(width: 2, color: FOCUS_COLOR),
-                      ),
+                          bottomNavigationBar: CardBNB(
+                              prix: party.price.toString(),
+                              heureDebut:
+                                  "${DateFormat.Hm('fr').format(party.startTime!).split(":")[0]}h${DateFormat.Hm('fr').format(party.startTime!).split(":")[1]}",
+                              heureFin:
+                                  "${DateFormat.Hm('fr').format(party.endTime!).split(':')[0]}h${DateFormat.Hm('fr').format(party.endTime!).split(':')[1]}",
+                              onTap: () async {
+                                var token = await AuthService().getToken();
+
+                                if (token == null) {
+                                  final snackBar = SnackBar(
+                                    content:
+                                        const CText("Vous n'êtes pas connecté"),
+                                    duration: Duration(seconds: 2),
+                                  );
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(snackBar);
+                                } else {
+                                  if (party.price == 0) {
+                                    final _db = services.document(party.id);
+
+                                    final uid = user.id;
+                                    List waitList = [];
+
+                                    print("name : ${state.user?.name}");
+
+                                    waitList.add({
+                                      "uid": uid,
+                                      "token":
+                                          "${party.name?.substring(0, 5)}${getRandomString(5)}",
+                                      "name": user.name,
+                                      "surname": user.surname,
+                                    });
+
+                                    await _db.update({
+                                      "wait list":
+                                          FieldValue.arrayUnion(waitList),
+                                    });
+
+                                    var data = await _db.get();
+
+                                    await services.setWithId(party.id,
+                                        data:
+                                            data.data() ?? <String, dynamic>{});
+
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => JoinWaitList(),
+                                      ),
+                                    );
+                                  } else {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ExistingCard(),
+                                      ),
+                                    );
+                                  }
+                                }
+                              }),
+                        );
+                      },
                     ),
                   ),
-                )
-              ],
-            ),
+                ),
+              ),
+            ],
           );
         },
       ),
     );
-  }).toList();
-
-  String? image;
-  Color? color;
-  Color? textColor;
-
-  if (party.theme == 'Festive') {
-    image = "assets/festive.jpg";
-    color = ICONCOLOR;
-    textColor = SECONDARY_COLOR;
-  } else if (party.theme == "Gaming") {
-    image = "assets/gaming.jpg";
-    color = ICONCOLOR;
-    textColor = SECONDARY_COLOR;
-  } else if (party.theme == "Jeux de société") {
-    image = "assets/jeuxdesociete.jpg";
-    color = SECONDARY_COLOR;
-    textColor = PRIMARY_COLOR;
-  } else if (party.theme == "Thème") {
-    image = "assets/theme.jpg";
-    color = SECONDARY_COLOR;
-    textColor = PRIMARY_COLOR;
   }
 
-  void contacter(String? ownerName) async {
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
-    var chatCollection = firestore.collection('chat');
-    var currentUserID = AuthService().currentUser!.uid;
-    var currentUserName = AuthService().currentUser!.displayName;
-    var otherUserUID = party.ownerId;
-    List currentUIDList = [];
-    List otherUIDList = [];
-    List emptyList = [];
-
-    currentUIDList.add({'uid': currentUserID, 'name': currentUserName});
-    otherUIDList.add({'uid': party.ownerId, 'name': ownerName});
-
-    chatCollection.doc(party.ownerId).snapshots().listen((datasnapshot) async {
-      chatCollection
-          .doc(currentUserID)
-          .snapshots()
-          .listen((datasnapshot) async {
-        if (datasnapshot.exists) {
-          return;
-        } else {
-          await chatCollection.doc(currentUserID).set({
-            'userid': FieldValue.arrayUnion(emptyList),
-          });
-        }
-      });
-      if (datasnapshot.exists) {
-        await chatCollection.doc(party.ownerId).update({
-          'userid': FieldValue.arrayUnion(currentUIDList),
-        }).then((value) {
-          chatCollection.doc(currentUserID).update({
-            'userid': FieldValue.arrayUnion(otherUIDList),
-          }).then((value) {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        ChatPage(otherUserUID, otherUserName: ownerName)));
-          });
-        });
-      } else {
-        await chatCollection
-            .doc(party.ownerId)
-            .set({'userid': emptyList}).then((value) {
-          chatCollection.doc(currentUserID).set({'userid': emptyList});
-        });
-
-        await chatCollection.doc(party.ownerId).update({
-          'userid': FieldValue.arrayUnion(currentUIDList),
-        }).then((value) {
-          chatCollection.doc(currentUserID).update({
-            'userid': FieldValue.arrayUnion(otherUIDList),
-          }).then((value) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) =>
-                    ChatPage(otherUserUID, otherUserName: ownerName),
-              ),
-            );
-          });
-        });
-      }
-    });
+  @override
+  Widget build(BuildContext context) {
+    return buildPartyCard(context, party);
   }
-
-  return BlocProvider(
-    create: (context) => UserCubit()..loadDataByUserID(party.ownerId),
-    child: BlocBuilder<UserCubit, UserState>(
-      builder: (context, state) {
-        if (state.user == null) {
-          return Center(child: CircularProgressIndicator());
-        }
-        User? user = state.user;
-
-        return Stack(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top: 20),
-              child: Center(
-                child: Container(
-                  // height: 250,
-                  width: MediaQuery.of(context).size.width * 0.85,
-                  decoration: BoxDecoration(
-                    color: PRIMARY_COLOR,
-                  ),
-                  child: OpenContainer(
-                    closedElevation: 0,
-                    transitionDuration: Duration(milliseconds: 200),
-                    closedShape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    closedColor: Colors.white,
-                    openColor: Colors.white,
-                    closedBuilder: (context, returnValue) {
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Stack(
-                            children: [
-                              Container(
-                                width: double.infinity,
-                                color: color,
-                                height: 180,
-                                child: Image.asset(image!),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(10),
-                                child: BlurryContainer(
-                                  bgColor: color == SECONDARY_COLOR
-                                      ? Colors.blueGrey
-                                      : Colors.yellow.shade100,
-                                  child: Column(
-                                    children: [
-                                      Text(
-                                        DateFormat.MMM('fr').format(party.date),
-                                        style: TextStyle(
-                                          color: textColor,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 16,
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 4),
-                                        child: Text(
-                                          DateFormat.d('fr').format(party.date),
-                                          style: TextStyle(
-                                              color: textColor,
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 22),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 8, horizontal: 12),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                CText(party.name!,
-                                    fontSize: 15, fontWeight: FontWeight.w500),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 1),
-                                  child: Row(
-                                    children: [
-                                      CText("${user!.name!} ${user.surname!}",
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w500),
-                                      SizedBox(
-                                        width: 5,
-                                      ),
-                                      Icon(
-                                        user.verified == true
-                                            ? Icons.verified
-                                            : null,
-                                        size: 15,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    CText(party.city!,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w500),
-                                    CText(
-                                        party.distance != null
-                                            ? "${party.distance.toString()} km"
-                                            : "",
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w500),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      );
-                    },
-                    openBuilder: (context, returnValue) {
-                      return CustomSliverCard(
-                        image: image,
-                        color: color,
-                        name: party.name,
-                        date:
-                            '${DateFormat.E('fr').format(party.startTime!).inCaps} ${DateFormat.d('fr').format(party.startTime!)} ${DateFormat.MMMM('fr').format(party.startTime!)}',
-                        location: party.city,
-                        body: SizedBox.expand(
-                          child: SingleChildScrollView(
-                            child: CardBody(
-                              nombre: party.number,
-                              desc: party.desc != null ? party.desc : '',
-                              nomOrganisateur: "${user!.name} ${user.surname}",
-                              avis: '4.9 / 5 - 0 avis',
-                              animal: party.animals!,
-                              smoke: party.smoke!,
-                              list: list,
-                              nameList: nameList,
-                              contacter: () => contacter(user.name),
-                              photoUserProfile: user.photo,
-                            ),
-                          ),
-                        ),
-                        bottomNavigationBar: CardBNB(
-                            prix: party.price.toString(),
-                            heureDebut:
-                                "${DateFormat.Hm('fr').format(party.startTime!).split(":")[0]}h${DateFormat.Hm('fr').format(party.startTime!).split(":")[1]}",
-                            heureFin:
-                                "${DateFormat.Hm('fr').format(party.endTime!).split(':')[0]}h${DateFormat.Hm('fr').format(party.endTime!).split(':')[1]}",
-                            onTap: () async {
-                              var token = await AuthService().getToken();
-
-                              if (token == null) {
-                                final snackBar = SnackBar(
-                                  content:
-                                      const CText("Vous n'êtes pas connecté"),
-                                  duration: Duration(seconds: 2),
-                                );
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(snackBar);
-                              } else {
-                                if (party.price == 0) {
-                                  final _db = FirebaseFirestore.instance
-                                      .collection('parties')
-                                      .doc(party.id);
-
-                                  final uid = user.id;
-                                  List waitList = [];
-
-                                  waitList.add({"uid": uid});
-
-                                  await _db.update({
-                                    "wait list":
-                                        FieldValue.arrayUnion(waitList),
-                                  });
-
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => JoinWaitList(),
-                                    ),
-                                  );
-                                } else {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => ExistingCard(),
-                                    ),
-                                  );
-                                }
-                              }
-                            }),
-                      );
-                    },
-                  ),
-                ),
-              ),
-            ),
-          ],
-        );
-      },
-    ),
-  );
 }
 
 class CustomSliverCard extends StatefulWidget {

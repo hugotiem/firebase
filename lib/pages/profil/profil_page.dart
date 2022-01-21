@@ -10,6 +10,7 @@ import 'package:pts/const.dart';
 import 'package:pts/models/Capitalize.dart';
 import 'package:pts/blocs/user/user_cubit.dart';
 import 'package:pts/components/custom_container.dart';
+import 'package:pts/pages/profil/subpage/qr_code_page.dart';
 import '../../components/custom_container.dart';
 import 'package:pts/pages/profil/subpage/about_page.dart';
 import 'package:pts/pages/profil/subpage/contactus_page.dart';
@@ -153,6 +154,11 @@ class _ProfilState extends State<Profil> {
                               to: IntroScreen(),
                               text: "test intro slide",
                               icon: Ionicons.location_outline,
+                            ),
+                            CickableContainerProfil(
+                              to: QrCodePage(),
+                              text: "QR code",
+                              icon: Ionicons.qr_code,
                               bottomBorder: false,
                             ),
                           ],

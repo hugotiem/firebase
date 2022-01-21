@@ -446,8 +446,8 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                                         controller: sc,
                                         itemCount: parties.length,
                                         itemBuilder: (context, index) {
-                                          return buildPartyCard(
-                                            context,
+                                          return PartyCard(
+                                            party:
                                             parties[index],
                                           );
                                           // return Container(

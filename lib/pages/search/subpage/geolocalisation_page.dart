@@ -80,7 +80,7 @@ class _GeolocationWidgetState extends State<GeolocationWidget> {
                   ) =>
                       Padding(
                     padding: const EdgeInsets.only(right: 15),
-                    child: buildPartyCard(context, state.parties![index]),
+                    child: PartyCard(party: state.parties![index]),
                   ),
                 );
               }),

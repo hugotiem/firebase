@@ -8,6 +8,11 @@ class FireStoreServices {
 
   FirebaseFirestore get firestore => _firestore;
 
+  DocumentReference<Map<String, dynamic>> document(String id) =>
+      _firestore.collection(collection).doc(id);
+
+  
+
   Future<void> add({Map<String, dynamic>? data}) async {
     if (data == null) return;
     await this._firestore.collection(collection).add(data);
