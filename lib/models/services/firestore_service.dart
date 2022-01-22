@@ -63,13 +63,12 @@ class FireStoreServices {
         .get();
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getDataWithWhereArrayContains(
-      String key, String? uid) async {
-    Map _map = {'uid': uid};
+  Future<QuerySnapshot<Map<String, dynamic>>> getDataWithWhereMapContains(
+      String field, String? uid) async {
     return this
         ._firestore
         .collection(collection)
-        .where(key, arrayContains: _map)
+        .where(field, arrayContains: uid)
         .get();
   }
 

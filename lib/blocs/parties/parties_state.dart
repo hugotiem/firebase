@@ -25,7 +25,7 @@ class PartiesState extends AppBaseState<PartiesStatus> {
   const PartiesState.initial() : this(PartiesStatus.initial);
   const PartiesState.loading()
       : this(PartiesStatus.loading, requestInProgress: true);
-  const PartiesState.loaded(List<Party> parties, filters, {DateTime? currentDate})
+  const PartiesState.loaded(List<Party>? parties, filters, {DateTime? currentDate})
       : this(PartiesStatus.loaded,
             parties: parties, filters: filters, currentDate: currentDate);
 

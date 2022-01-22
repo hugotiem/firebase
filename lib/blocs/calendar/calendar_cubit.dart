@@ -24,7 +24,7 @@ class CalendarCubit extends AppBaseCubit<CalendarState> {
       }
       var organisedPartiesData = await services.getDataWithWhereIsEqualTo(
           'party owner', token);
-      var invitedPartiesData = await services.getDataWithWhereArrayContains(
+      var invitedPartiesData = await services.getDataWithWhereMapContains(
           'validate guest list', token);
 
       var organisedParties = organisedPartiesData.docs

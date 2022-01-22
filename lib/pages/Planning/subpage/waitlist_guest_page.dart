@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,10 +11,13 @@ import 'package:pts/components/custom_container.dart';
 
 import 'package:pts/const.dart';
 import 'package:pts/models/party.dart';
+import 'package:pts/models/services/firestore_service.dart';
 import '../../profil/Profil_page.dart';
 
 class GuestWaitList extends StatelessWidget {
-  const GuestWaitList({Key? key}) : super(key: key);
+  GuestWaitList({Key? key}) : super(key: key);
+
+  final FireStoreServices services = FireStoreServices("parties");
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +39,7 @@ class GuestWaitList extends StatelessWidget {
             return BlocProvider(
               create: (context) => PartiesCubit()
                 ..fetchPartiesWithWhereIsEqualTo("party owner", state.token)
-                ..fetchPartiesWithWhereArrayContains(
-                    "wait list", state.token),
+                ..fetchPartiesWithWhereArrayContains("waitList", state.token),
               child: BlocBuilder<PartiesCubit, PartiesState>(
                 builder: (context, state) {
                   if (state.parties == null) {
@@ -46,7 +50,8 @@ class GuestWaitList extends StatelessWidget {
                   return ListView.builder(
                     itemCount: state.parties!.length,
                     itemBuilder: (BuildContext context, int index) =>
-                        buildValidationCard(context, state.parties![index]),
+                        buildValidationCard(
+                            context, state.parties![index], services),
                   );
                 },
               ),
@@ -58,12 +63,13 @@ class GuestWaitList extends StatelessWidget {
   }
 }
 
-Widget buildValidationCard(BuildContext context, Party party) {
+Widget buildValidationCard(
+    BuildContext context, Party party, FireStoreServices services) {
   String? partyName = party.name;
-  List? nameList = party.waitList;
-  final _db = FirebaseFirestore.instance.collection('parties').doc(party.id);
+  List? idList = party.waitList;
 
-  List list = nameList!.map((doc) {
+  List list = idList!.map((doc) {
+    var infos = party.waitListInfo[doc];
     return Padding(
       padding: const EdgeInsets.only(left: 8, right: 8),
       child: Row(
@@ -85,7 +91,7 @@ Widget buildValidationCard(BuildContext context, Party party) {
                 height: 70,
                 child: Center(
                   child: Text(
-                    "doc['name']",
+                    infos['name'],
                     style: TextStyle(fontSize: 17),
                   ),
                 ),
@@ -96,14 +102,9 @@ Widget buildValidationCard(BuildContext context, Party party) {
             children: [
               IconButton(
                   onPressed: () async {
-                    List list1 = [];
-                    list1.add({'uid': doc['uid']});
-
-                    await _db.update(
-                        {'validate guest list': FieldValue.arrayUnion(list1)});
-
-                    await _db
-                        .update({'wait list': FieldValue.arrayRemove(list1)});
+                    infos['id'] = doc;
+                    await BlocProvider.of<PartiesCubit>(context)
+                        .addUserInValidatedList(infos, party);
                   },
                   icon: Icon(
                     Ionicons.checkmark_outline,
@@ -111,11 +112,8 @@ Widget buildValidationCard(BuildContext context, Party party) {
                   )),
               IconButton(
                 onPressed: () async {
-                  List list1 = [];
-                  list1.add({'uid': doc['uid']});
-
-                  await _db
-                      .update({'wait list': FieldValue.arrayRemove(list1)});
+                  await BlocProvider.of<PartiesCubit>(context)
+                      .removeUserFromWaitList(party, doc);
                 },
                 icon: Icon(
                   Ionicons.close_outline,
@@ -139,7 +137,7 @@ Widget buildValidationCard(BuildContext context, Party party) {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               TitleTextProfil(text: partyName),
-              nameList.isNotEmpty
+              idList.isNotEmpty
                   ? Column(
                       children: list as List<Widget>,
                     )

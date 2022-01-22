@@ -54,8 +54,6 @@ class _DescriptionPageState extends State<DescriptionPage> {
                     //   _description
                     // );
 
-                    List waitList = [];
-
                     BlocProvider.of<BuildPartiesCubit>(context)
                       // ..addItem('uid', AuthService.currentUser.uid)
                       // ..addItem('owner', AuthService.currentUser.displayName)

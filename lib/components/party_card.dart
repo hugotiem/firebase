@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:pts/blocs/parties/parties_cubit.dart';
 import 'package:pts/components/custom_container.dart';
 import 'package:pts/components/profile_photo.dart';
 import 'package:pts/models/capitalize.dart';
@@ -26,21 +27,12 @@ import 'piechart.dart';
 class PartyCard extends StatelessWidget {
   final Party party;
 
-  final String _chars =
-      'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
-  final Random _rnd = Random();
-
   final FireStoreServices services = FireStoreServices("parties");
 
   PartyCard({Key? key, required this.party}) : super(key: key);
 
-  String getRandomString(int length) {
-    return String.fromCharCodes(Iterable.generate(
-        length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
-  }
-
   Widget buildPartyCard(BuildContext context, Party party) {
-    List nameList = party.validateGuestList!;
+    List nameList = party.validatedList ?? [];
 
     List list = nameList.map((doc) {
       return Padding(
@@ -393,59 +385,53 @@ class PartyCard extends StatelessWidget {
                                       ),
                                     );
                                   }
-                                  return GestureDetector(
-                                    onTap: () async {
-                                      if (party.price == 0) {
-                                        final uid = connectUserState.user!.id;
-                                        FireStoreServices services =
-                                            FireStoreServices("parties");
-
-                                        if (uid == null) {
-                                          throw Error();
-                                        }
-
-                                        await services
-                                            .setWithId(party.id, data: {
-                                          uid: {
-                                            "token":
-                                                "${party.name.substring(0, 5)}${getRandomString(5)}",
-                                            "name": connectUserState.user!.name,
-                                            "surname":
-                                                connectUserState.user!.surname,
-                                            "photo":
-                                                connectUserState.user!.photo,
-                                            "gender":
-                                                connectUserState.user!.gender,
-                                          }
-                                        });
-
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                JoinWaitList(),
-                                          ),
-                                        );
-                                      } else {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                ExistingCard(),
+                                  return BlocProvider(
+                                    create: (context) => PartiesCubit(),
+                                    child: BlocBuilder<PartiesCubit, PartiesState>(
+                                      builder: (context, state) {
+                                        return GestureDetector(
+                                          onTap: () async {
+                                            if (party.price == 0) {
+                                              final uid = connectUserState.user!.id;
+                                  
+                                              if (uid == null) {
+                                                throw Error();
+                                              }
+                                  
+                                              await BlocProvider.of<PartiesCubit>(
+                                                      context)
+                                                  .addUserInWaitList(user, party);
+                                  
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      JoinWaitList(),
+                                                ),
+                                              );
+                                            } else {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ExistingCard(),
+                                                ),
+                                              );
+                                            }
+                                          },
+                                          child: Container(
+                                            padding: EdgeInsets.all(15),
+                                            decoration: BoxDecoration(
+                                              color: SECONDARY_COLOR,
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(15),
+                                              ),
+                                            ),
+                                            child: CText('Rejoindre',
+                                                color: PRIMARY_COLOR, fontSize: 16),
                                           ),
                                         );
                                       }
-                                    },
-                                    child: Container(
-                                      padding: EdgeInsets.all(15),
-                                      decoration: BoxDecoration(
-                                        color: SECONDARY_COLOR,
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(15),
-                                        ),
-                                      ),
-                                      child: CText('Rejoindre',
-                                          color: PRIMARY_COLOR, fontSize: 16),
                                     ),
                                   );
                                 },

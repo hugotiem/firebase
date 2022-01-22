@@ -17,12 +17,13 @@ class Party {
   bool? smoke;
   bool? animals;
   var ownerId;
-  List<dynamic>? validateGuestList;
+  List<dynamic>? validatedList;
+  final Map<String, dynamic> validatedListInfo;
   int? distance;
   List<double> coordinates;
   List<double> approximativeCoordinates;
   List? waitList;
-  final String? waitListId;
+  final Map<String, dynamic> waitListInfo;
 
   Party(
       this.id,
@@ -40,17 +41,74 @@ class Party {
       this.smoke,
       this.animals,
       this.ownerId,
-      this.validateGuestList,
+      this.validatedList,
+      this.validatedListInfo,
       this.coordinates,
       this.approximativeCoordinates,
       this.waitList,
-      this.waitListId,
+      this.waitListInfo,
       {this.distance});
 
   static double random() {
     // generate number between -0.001 and 0.001
     double rand = ((math.Random().nextDouble() * 2) - 1) * 0.001;
     return rand;
+  }
+
+  factory Party.fromDocument(
+      DocumentSnapshot<Map<String, dynamic>> snapshots) {
+    var id = snapshots.id;
+    var data = snapshots.data();
+    var name = data?['name'];
+    var theme = data?['theme'];
+    var number = data?['number'];
+    var date = data?['date'].toDate();
+    var startTime = data?['startTime'].toDate();
+    var endTime = data?['endTime'].toDate();
+    double? price = data?['price'];
+    var desc = data?['description'];
+    var address = data?['address'];
+    var city = data?['city'];
+    var postalCode = data?['postal code'];
+    var smoke = data?['smoke'];
+    var animals = data?['animals'];
+    var ownerId = data?['party owner'];
+    var validatedList = data?['validatedList'];
+    var validatedListInfo =
+        (data?['validatedListInfo'] as Map?)?.cast<String, dynamic>() ??
+            <String, dynamic>{};
+    var coordinates =
+        ((data?['coordinates'] ?? []) as List<dynamic>).cast<double>();
+    var approximativeCoordinates =
+        coordinates.map((e) => e + random()).toList();
+    var waitList = data?["waitList"];
+    var waitListInfo =
+        (data?["waitListInfo"] as Map?)?.cast<String, dynamic>() ??
+            <String, dynamic>{};
+
+    return Party(
+      id,
+      name,
+      theme,
+      number,
+      date,
+      startTime,
+      endTime,
+      price,
+      desc,
+      address,
+      city,
+      postalCode,
+      smoke,
+      animals,
+      ownerId,
+      validatedList,
+      validatedListInfo,
+      coordinates,
+      approximativeCoordinates,
+      waitList,
+      waitListInfo,
+    );
   }
 
   factory Party.fromSnapShots(
@@ -71,13 +129,18 @@ class Party {
     var smoke = data['smoke'];
     var animals = data['animals'];
     var ownerId = data['party owner'];
-    var validateGuestList = data['validate guest list'];
+    var validatedList = data['validatedList'];
+    var validatedListInfo =
+        (data['validatedListInfo'] as Map?)?.cast<String, dynamic>() ??
+            <String, dynamic>{};
     var coordinates =
         ((data['coordinates'] ?? []) as List<dynamic>).cast<double>();
     var approximativeCoordinates =
         coordinates.map((e) => e + random()).toList();
-    var waitList = data["wait list"];
-    var waitListId = data["waitListId"];
+    var waitList = data["waitList"];
+    var waitListInfo =
+        (data["waitListInfo"] as Map?)?.cast<String, dynamic>() ??
+            <String, dynamic>{};
 
     return Party(
       id,
@@ -95,11 +158,12 @@ class Party {
       smoke,
       animals,
       ownerId,
-      validateGuestList,
+      validatedList,
+      validatedListInfo,
       coordinates,
       approximativeCoordinates,
       waitList,
-      waitListId,
+      waitListInfo,
     );
   }
 }
