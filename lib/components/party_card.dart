@@ -35,6 +35,7 @@ class PartyCard extends StatelessWidget {
     List nameList = party.validatedList ?? [];
 
     List list = nameList.map((doc) {
+      var infos = party.validatedListInfo[doc];
       return Padding(
         padding: const EdgeInsets.only(left: 24, right: 24, bottom: 16),
         child: Column(
@@ -44,12 +45,12 @@ class PartyCard extends StatelessWidget {
               children: [
                 Align(
                   alignment: Alignment.centerRight,
-                  child: ProfilePhoto(doc["photo"], radius: 25),
+                  child: ProfilePhoto(infos["photo"], radius: 25),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 12),
                   child: CText(
-                    "${doc["name"].toString().inCaps} ${doc["surname"].toString().inCaps}",
+                    "${infos["name"].toString().inCaps} ${infos["surname"].toString().inCaps}",
                     fontSize: 20,
                     fontWeight: FontWeight.w500,
                     color: SECONDARY_COLOR,

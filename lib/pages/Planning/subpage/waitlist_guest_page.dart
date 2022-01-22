@@ -8,6 +8,7 @@ import 'package:pts/blocs/parties/parties_cubit.dart';
 import 'package:pts/blocs/user/user_cubit.dart';
 import 'package:pts/components/appbar.dart';
 import 'package:pts/components/custom_container.dart';
+import 'package:pts/components/profile_photo.dart';
 
 import 'package:pts/const.dart';
 import 'package:pts/models/party.dart';
@@ -79,19 +80,13 @@ Widget buildValidationCard(
             children: [
               Padding(
                 padding: const EdgeInsets.only(left: 8.0, right: 22),
-                // Widget profilePage()
-                child: CircleAvatar(
-                  radius: 20,
-                  backgroundImage: AssetImage(
-                    "assets/roundBlankProfilPicture.png",
-                  ),
-                ),
+                child: ProfilePhoto(infos['photo'], radius: 20,)
               ),
               Container(
                 height: 70,
                 child: Center(
                   child: Text(
-                    infos['name'],
+                    "${infos['name']} ${infos['surname']}",
                     style: TextStyle(fontSize: 17),
                   ),
                 ),
