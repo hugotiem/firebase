@@ -97,7 +97,7 @@ class ThemeBox extends StatelessWidget {
             ),
             body: BlocProvider(
               create: (context) => PartiesCubit()
-                ..fetchPartiesWithWhereIsEqualTo('theme', this.text),
+                ..fetchPartiesWithWhereIsEqualToAndIsActive('theme', this.text),
               child: BlocBuilder<PartiesCubit, PartiesState>(
                 builder: (context, state) {
                   if (state.parties == null)
