@@ -20,27 +20,11 @@ class FireStoreServices {
   Future<void> setWithId(String? id,
       {required Map<String, dynamic> data, String? path}) async {
     if (path != null) {
-      this
-          ._firestore
-          .collection(collection)
-          .doc(id)
-          .snapshots()
-          .listen((event) async {
-        var eventData = event.data() ?? {};
-        var field = path.split(".")[0];
-        var value = path.split(".")[1];
-        if (!eventData.containsKey(field)) {
-          await this._firestore.collection(collection).doc(id).set({
-            field: {value: data}
-          }, SetOptions(merge: true));
-        } else {
-          await this
-              ._firestore
-              .collection(collection)
-              .doc(id)
-              .update({path: data});
-        }
-      });
+      var field = path.split(".")[0];
+      var value = path.split(".")[1];
+      await this._firestore.collection(collection).doc(id).set({
+        field: {value: data}
+      }, SetOptions(merge: true));
     } else {
       await this
           ._firestore
@@ -63,7 +47,11 @@ class FireStoreServices {
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>> getActiveData() async {
-    return this._firestore.collection(collection).where("isActive", isEqualTo: true).get();
+    return this
+        ._firestore
+        .collection(collection)
+        .where("isActive", isEqualTo: true)
+        .get();
   }
 
   Future<DocumentSnapshot<Map<String, dynamic>>> getDataById(String? id) async {
@@ -95,8 +83,8 @@ class FireStoreServices {
         .get();
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getDataWithWhereIsEqualToAndIsActive(
-      String key, String? data) async {
+  Future<QuerySnapshot<Map<String, dynamic>>>
+      getDataWithWhereIsEqualToAndIsActive(String key, String? data) async {
     return this
         ._firestore
         .collection(collection)
