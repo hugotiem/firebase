@@ -48,7 +48,7 @@ class _GeolocationWidgetState extends State<GeolocationWidget> {
           SizedBox(
             height: 270,
             child: BlocProvider(
-              create: (context) => PartiesCubit()..fetchParties(),
+              create: (context) => PartiesCubit()..fetchActiveParties(),
               child: BlocBuilder<PartiesCubit, PartiesState>(
                   builder: (context, state) {
                 var parties = state.parties;

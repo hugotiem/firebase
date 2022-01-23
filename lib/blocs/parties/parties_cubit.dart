@@ -34,6 +34,27 @@ class PartiesCubit extends AppBaseCubit<PartiesState> {
     emit(PartiesState.loaded(parties, state.filters));
   }
 
+  Future disablePartiesAfterDate() async {
+    var partiesSnapshots = await services.getActiveData();
+    DateTime now = DateTime.now();
+    List<Party> parties =
+        partiesSnapshots.docs.map((e) => Party.fromSnapShots(e)).toList();
+    parties.map((e) async {
+      DateTime startTime = e.startTime!;
+      if (startTime.isBefore(now)) {
+        await services.updateValue(e.id, {"isActive": false});
+      }
+    }).toList();
+    emit(PartiesState.loaded(parties, state.filters));
+  }
+
+  Future fetchActiveParties() async {
+    var partiesSnapShots = await services.getActiveData();
+    List<Party> parties =
+        partiesSnapShots.docs.map((e) => Party.fromSnapShots(e)).toList();
+    emit(PartiesState.loaded(parties, state.filters));
+  }
+
   Future fetchPartiesByOrder() async {
     var partiesSnapShots = await services.getDataByOrder();
     List<Party> parties =
@@ -57,6 +78,26 @@ class PartiesCubit extends AppBaseCubit<PartiesState> {
     }
     emit(state.setRequestInProgress() as PartiesState);
     var partiesSnapShots = await services.getDataWithWhereIsEqualTo(key, data);
+    List<Party> parties =
+        partiesSnapShots.docs.map((e) => Party.fromSnapShots(e)).toList();
+    if (!isWithDate) {
+      emit(PartiesState.loaded(parties, state.filters));
+    } else {
+      return parties;
+    }
+  }
+
+  Future fetchPartiesWithWhereIsEqualToAndIsActive(var key, String? data,
+      {isWithDate = false}) async {
+    if (data == null) {
+      return;
+    }
+    if (data == 'uid') {
+      data = await auth.getToken();
+    }
+    emit(state.setRequestInProgress() as PartiesState);
+    var partiesSnapShots =
+        await services.getDataWithWhereIsEqualToAndIsActive(key, data);
     List<Party> parties =
         partiesSnapShots.docs.map((e) => Party.fromSnapShots(e)).toList();
     if (!isWithDate) {
@@ -198,12 +239,11 @@ class PartiesCubit extends AppBaseCubit<PartiesState> {
     });
   }
 
-  Future<void> removeUserFromWaitList(
-      Party party, String userId) async {
+  Future<void> removeUserFromWaitList(Party party, String userId) async {
     await services.setWithId(party.id, data: {
       'waitList': FieldValue.arrayRemove([userId])
     });
-     Map<String, dynamic> map = party.waitListInfo..remove(userId);
+    Map<String, dynamic> map = party.waitListInfo..remove(userId);
     await services.setWithId(party.id, data: {
       'waitListInfo': map,
     });

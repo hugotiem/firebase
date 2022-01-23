@@ -77,7 +77,7 @@ class CityBox extends StatelessWidget {
             ),
             body: BlocProvider(
               create: (context) => PartiesCubit()
-                ..fetchPartiesWithWhereIsEqualTo('city', this.text),
+                ..fetchPartiesWithWhereIsEqualToAndIsActive('city', this.text),
               child: BlocBuilder<PartiesCubit, PartiesState>(
                 builder: (context, state) {
                   if (state.parties == null)

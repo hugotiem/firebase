@@ -26,12 +26,20 @@ class FireStoreServices {
         .set(data, SetOptions(merge: true));
   }
 
+  Future<void> updateValue(String? id, Map<String, dynamic> data) async {
+    await this._firestore.collection(collection).doc(id).update(data);
+  }
+
   Stream<QuerySnapshot<Map<String, dynamic>>> getSnapshots() {
     return this._firestore.collection(collection).snapshots();
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>> getData() async {
     return this._firestore.collection(collection).get();
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getActiveData() async {
+    return this._firestore.collection(collection).where("isActive", isEqualTo: true).get();
   }
 
   Future<DocumentSnapshot<Map<String, dynamic>>> getDataById(String? id) async {
@@ -60,6 +68,16 @@ class FireStoreServices {
         ._firestore
         .collection(collection)
         .where(key, isEqualTo: data)
+        .get();
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getDataWithWhereIsEqualToAndIsActive(
+      String key, String? data) async {
+    return this
+        ._firestore
+        .collection(collection)
+        .where(key, isEqualTo: data)
+        .where("isActive", isEqualTo: true)
         .get();
   }
 

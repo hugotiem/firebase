@@ -24,6 +24,7 @@ class Party {
   List<double> approximativeCoordinates;
   List? waitList;
   final Map<String, dynamic> waitListInfo;
+  bool? isActive;
 
   Party(
       this.id,
@@ -47,6 +48,7 @@ class Party {
       this.approximativeCoordinates,
       this.waitList,
       this.waitListInfo,
+      this.isActive,
       {this.distance});
 
   static double random() {
@@ -85,6 +87,7 @@ class Party {
     var waitListInfo =
         (data?["waitListInfo"] as Map?)?.cast<String, dynamic>() ??
             <String, dynamic>{};
+    var isActive = data?['isActive'];
 
     return Party(
       id,
@@ -108,6 +111,7 @@ class Party {
       approximativeCoordinates,
       waitList,
       waitListInfo,
+      isActive,
     );
   }
 
@@ -141,6 +145,7 @@ class Party {
     var waitListInfo =
         (data["waitListInfo"] as Map?)?.cast<String, dynamic>() ??
             <String, dynamic>{};
+    var isActive = data['isActive'];
 
     return Party(
       id,
@@ -164,6 +169,7 @@ class Party {
       approximativeCoordinates,
       waitList,
       waitListInfo,
+      isActive,
     );
   }
 }

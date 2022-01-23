@@ -221,7 +221,7 @@ class _ProfilDetailsState extends State<ProfilDetails> {
                 return BlocProvider(
                   create: (context) => PartiesCubit()
                     ..fetchPartiesWithWhereArrayContains(
-                        "validate guest list", user.id),
+                        "validatedList", user.id),
                   child: BlocBuilder<PartiesCubit, PartiesState>(
                     builder: (context, partyStateJoin) {
                       if (partyStateJoin.parties == null) {

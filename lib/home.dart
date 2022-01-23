@@ -5,7 +5,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:pts/blocs/parties/parties_cubit.dart';
 import 'package:pts/const.dart';
+import 'package:pts/models/party.dart';
 import 'package:pts/pages/creation/creation_page.dart';
 import 'package:pts/pages/login/connect.dart';
 import 'package:pts/pages/login/id_form_screen.dart';
@@ -34,105 +36,114 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => UserCubit()..loadData(),
-      child: BlocListener<UserCubit, UserState>(
-        listener: (context, state) {
-          if (state.user != null) {
-            if (!state.user!.hasIdChecked!) {
-              _showLoadingPopup();
-            }
+      create: (context) => UserCubit()..init(),
+      child: BlocBuilder<UserCubit, UserState>(
+        builder: (context, userState) {
+          if (userState.user?.banned == true) {
+            return Banned(userState.user!.id);
           }
-        },
-        child: BlocBuilder<UserCubit, UserState>(
-          builder: (context, state) {
-            return BlocProvider(
-              create: (context) => UserCubit()..init(),
-              child: BlocBuilder<UserCubit, UserState>(
-                builder: (context, state1) {
-                  if (state1.user?.banned == true) {
-                    return Banned(state1.user!.id);
+          return BlocProvider(
+            create: (context) => UserCubit()..loadData(),
+            child: BlocListener<UserCubit, UserState>(
+              listener: (context, state) {
+                if (state.user != null) {
+                  if (!state.user!.hasIdChecked!) {
+                    _showLoadingPopup();
                   }
-                  return Stack(
-                    children: [
-                      Scaffold(
-                        extendBodyBehindAppBar: true,
-                        body: _children[_currentIndex],
-                        bottomNavigationBar: BottomNavigationBar(
-                          type: BottomNavigationBarType.fixed,
-                          selectedFontSize: 10,
-                          unselectedFontSize: 10,
-                          showSelectedLabels: true,
-                          showUnselectedLabels: true,
-                          selectedItemColor: ICONCOLOR,
-                          unselectedItemColor: SECONDARY_COLOR,
-                          onTap: onTabTapped,
-                          currentIndex: _currentIndex,
-                          items: [
-                            BottomNavigationBarItem(
-                              icon: new Icon(
-                                Ionicons.search_outline,
-                                size: 25,
+                }
+              },
+              child: BlocBuilder<UserCubit, UserState>(
+                builder: (context, state) {
+                  return BlocProvider(
+                    create: (context) =>
+                        PartiesCubit()..disablePartiesAfterDate(),
+                    child: BlocBuilder<PartiesCubit, PartiesState>(
+                      builder: (context, stateparty) {
+                        return Stack(
+                          children: [
+                            Scaffold(
+                              extendBodyBehindAppBar: true,
+                              body: _children[_currentIndex],
+                              bottomNavigationBar: BottomNavigationBar(
+                                type: BottomNavigationBarType.fixed,
+                                selectedFontSize: 10,
+                                unselectedFontSize: 10,
+                                showSelectedLabels: true,
+                                showUnselectedLabels: true,
+                                selectedItemColor: ICONCOLOR,
+                                unselectedItemColor: SECONDARY_COLOR,
+                                onTap: onTabTapped,
+                                currentIndex: _currentIndex,
+                                items: [
+                                  BottomNavigationBarItem(
+                                    icon: new Icon(
+                                      Ionicons.search_outline,
+                                      size: 25,
+                                    ),
+                                    label: "Rechercher",
+                                  ),
+                                  BottomNavigationBarItem(
+                                    icon: new Icon(
+                                      Ionicons.calendar_clear_outline,
+                                      size: 25,
+                                    ),
+                                    label: "Soirées",
+                                  ),
+                                  BottomNavigationBarItem(
+                                    icon: new Icon(
+                                      Ionicons.add_circle_outline,
+                                      color: Colors.transparent,
+                                      size: 40,
+                                    ),
+                                    label: "",
+                                  ),
+                                  BottomNavigationBarItem(
+                                    icon: new Icon(
+                                      Ionicons.chatbox_outline,
+                                      size: 25,
+                                    ),
+                                    label: "Messages",
+                                  ),
+                                  BottomNavigationBarItem(
+                                    icon: new Icon(
+                                      Ionicons.person_outline,
+                                      size: 25,
+                                    ),
+                                    label: "Profil",
+                                  ),
+                                ],
+                                backgroundColor: Colors.white,
                               ),
-                              label: "Rechercher",
                             ),
-                            BottomNavigationBarItem(
-                              icon: new Icon(
-                                Ionicons.calendar_clear_outline,
-                                size: 25,
-                              ),
-                              label: "Soirées",
-                            ),
-                            BottomNavigationBarItem(
-                              icon: new Icon(
-                                Ionicons.add_circle_outline,
-                                color: Colors.transparent,
-                                size: 40,
-                              ),
-                              label: "",
-                            ),
-                            BottomNavigationBarItem(
-                              icon: new Icon(
-                                Ionicons.chatbox_outline,
-                                size: 25,
-                              ),
-                              label: "Messages",
-                            ),
-                            BottomNavigationBarItem(
-                              icon: new Icon(
-                                Ionicons.person_outline,
-                                size: 25,
-                              ),
-                              label: "Profil",
-                            ),
-                          ],
-                          backgroundColor: Colors.white,
-                        ),
-                      ),
-                      SafeArea(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 2.5),
-                          child: Align(
-                            alignment: Alignment.bottomCenter,
-                            child: FloatingActionButton(
-                              onPressed: () => Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => CreationPage(),
-                                  fullscreenDialog: true,
+                            SafeArea(
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 2.5),
+                                child: Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: FloatingActionButton(
+                                    onPressed: () => Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) => CreationPage(),
+                                        fullscreenDialog: true,
+                                      ),
+                                    ),
+                                    backgroundColor: SECONDARY_COLOR,
+                                    child: Icon(Icons.add_rounded),
+                                  ),
                                 ),
                               ),
-                              backgroundColor: SECONDARY_COLOR,
-                              child: Icon(Icons.add_rounded),
                             ),
-                          ),
-                        ),
-                      ),
-                    ],
+                          ],
+                        );
+                      },
+                    ),
                   );
                 },
               ),
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }
@@ -171,17 +182,14 @@ class HomeNotConnect extends StatefulWidget {
 class _HomeNotConnectState extends State<HomeNotConnect> {
   int _currentIndex = 0;
   final List<Widget> _children = [
-      Search(),
-      Connect(),
-      Container(),
-      Connect(),
-      Connect(),
-    ];
+    Search(),
+    Connect(),
+    Container(),
+    Connect(),
+    Connect(),
+  ];
   @override
   Widget build(BuildContext context) {
-    
-    
-
     return Stack(
       children: [
         Scaffold(
@@ -246,7 +254,10 @@ class _HomeNotConnectState extends State<HomeNotConnect> {
               child: FloatingActionButton(
                 onPressed: () => Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => Scaffold(backgroundColor: PRIMARY_COLOR, body: Connect(),),
+                    builder: (context) => Scaffold(
+                      backgroundColor: PRIMARY_COLOR,
+                      body: Connect(),
+                    ),
                     fullscreenDialog: true,
                   ),
                 ),
@@ -261,18 +272,18 @@ class _HomeNotConnectState extends State<HomeNotConnect> {
   }
 
   void onTabTapped(int index) {
-      if (index == 2) {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => Connect(),
-            fullscreenDialog: true,
-          ),
-        );
-      } else
-        setState(() {
-          _currentIndex = index;
-        });
-    }
+    if (index == 2) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => Connect(),
+          fullscreenDialog: true,
+        ),
+      );
+    } else
+      setState(() {
+        _currentIndex = index;
+      });
+  }
 }
 
 class CheckIdPopup extends StatelessWidget {
