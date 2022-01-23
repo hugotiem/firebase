@@ -18,12 +18,36 @@ class FireStoreServices {
   }
 
   Future<void> setWithId(String? id,
-      {required Map<String, dynamic> data}) async {
-    await this
-        ._firestore
-        .collection(collection)
-        .doc(id)
-        .set(data, SetOptions(merge: true));
+      {required Map<String, dynamic> data, String? path}) async {
+    if (path != null) {
+      this
+          ._firestore
+          .collection(collection)
+          .doc(id)
+          .snapshots()
+          .listen((event) async {
+        var eventData = event.data() ?? {};
+        var field = path.split(".")[0];
+        var value = path.split(".")[1];
+        if (!eventData.containsKey(field)) {
+          await this._firestore.collection(collection).doc(id).set({
+            field: {value: data}
+          }, SetOptions(merge: true));
+        } else {
+          await this
+              ._firestore
+              .collection(collection)
+              .doc(id)
+              .update({path: data});
+        }
+      });
+    } else {
+      await this
+          ._firestore
+          .collection(collection)
+          .doc(id)
+          .set(data, SetOptions(merge: true));
+    }
   }
 
   Stream<QuerySnapshot<Map<String, dynamic>>> getSnapshots() {

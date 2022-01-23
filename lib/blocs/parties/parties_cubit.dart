@@ -145,24 +145,17 @@ class PartiesCubit extends AppBaseCubit<PartiesState> {
   Future<void> addUserInWaitList(User user, Party party) async {
     emit(state.setRequestInProgress() as PartiesState);
     await services.setWithId(party.id, data: {
-      "waitList": party.waitList ?? [] + [user.id],
+      "waitList": FieldValue.arrayUnion([user.id]),
     });
 
-    Map<String, dynamic> waitListInfo = party.waitListInfo
-      ..addAll({
-        user.id!: {
-          // "token":
-          //     "${party.name.substring(0, party.name.length < 5 ? party.name.length : 5)}${getRandomString(5)}",
+    await services.setWithId(party.id,
+        data: {
           "name": user.name,
           "surname": user.surname,
           "photo": user.photo,
           "gender": user.gender,
-        }
-      });
-
-    await services.setWithId(party.id, data: {
-      "waitListInfo": waitListInfo,
-    });
+        },
+        path: "waitListInfo.${user.id}");
     emit(PartiesState.loaded(state.parties, state.filters));
   }
 
@@ -172,38 +165,31 @@ class PartiesCubit extends AppBaseCubit<PartiesState> {
       'validatedList': FieldValue.arrayUnion([infos['id']]),
     });
 
-    Map<String, dynamic> validatedListInfo = party.validatedListInfo
-      ..addAll({
-        infos['id']: {
+    await services.setWithId(party.id,
+        data: {
           "token":
-              "${party.name.substring(0, party.name.length < 5 ? party.name.length : 5)}${getRandomString(5)}",
+              "${party.name.replaceAll(" ", "_").substring(0, party.name.length < 5 ? party.name.length : 5)}${getRandomString(5)}",
           "name": infos['name'],
           "surname": infos['surname'],
           "photo": infos['photo'],
           "gender": infos['gender'],
-        }
-      });
-
-    await services.setWithId(party.id, data: {
-      "validatedListInfo": validatedListInfo,
-    });
+        },
+        path: "validatedListInfo.${infos['id']}");
 
     await services.setWithId(party.id, data: {
       'waitList': FieldValue.arrayRemove([infos['id']])
     });
 
-    Map<String, dynamic> map = party.waitListInfo..remove(infos['id']);
     await services.setWithId(party.id, data: {
-      'waitListInfo': map,
+      'waitListInfo.${infos['id']}': FieldValue.delete(),
     });
   }
 
-  Future<void> removeUserFromWaitList(
-      Party party, String userId) async {
+  Future<void> removeUserFromWaitList(Party party, String userId) async {
     await services.setWithId(party.id, data: {
       'waitList': FieldValue.arrayRemove([userId])
     });
-     Map<String, dynamic> map = party.waitListInfo..remove(userId);
+    Map<String, dynamic> map = party.waitListInfo..remove(userId);
     await services.setWithId(party.id, data: {
       'waitListInfo': map,
     });
