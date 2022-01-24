@@ -68,7 +68,7 @@ class Party {
     var startTime = data?['startTime'].toDate();
     var endTime = data?['endTime'].toDate();
     double? price = data?['price'];
-    var desc = data?['description'];
+    var desc = data?['desc'];
     var address = data?['address'];
     var city = data?['city'];
     var postalCode = data?['postal code'];
@@ -126,7 +126,7 @@ class Party {
     var startTime = data['startTime'].toDate();
     var endTime = data['endTime'].toDate();
     double? price = data['price'];
-    var desc = data['description'];
+    var desc = data['desc'];
     var address = data['address'];
     var city = data['city'];
     var postalCode = data['postal code'];

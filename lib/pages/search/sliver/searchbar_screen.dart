@@ -446,9 +446,12 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                                         controller: sc,
                                         itemCount: parties.length,
                                         itemBuilder: (context, index) {
-                                          return PartyCard(
-                                            party:
-                                            parties[index],
+                                          return Padding(
+                                            padding: const EdgeInsets.symmetric(vertical: 12),
+                                            child: PartyCard(
+                                              party:
+                                              parties[index],
+                                            ),
                                           );
                                           // return Container(
                                           //   margin: EdgeInsets.all(20),

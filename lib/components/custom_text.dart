@@ -50,7 +50,6 @@ class BoldText extends StatelessWidget {
   }
 }
 
-
 class DescriptionTextWidget extends StatefulWidget {
   final String? text;
 
@@ -83,36 +82,36 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget> {
   Widget build(BuildContext context) {
     return Container(
       child: secondHalf.isEmpty
-      ? Text(firstHalf!)
-      : Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Opacity(
-            opacity: 0.7,
-            child: Text(
-              flag ? (firstHalf! + "...") : (firstHalf! + secondHalf), 
-              style: TextStyle(
-                fontSize: 16,
-                color: SECONDARY_COLOR
-              ),
+          ? Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 6),
+                child: Opacity(opacity: 0.7, child: CText(firstHalf!)),
+              ))
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Opacity(
+                  opacity: 0.7,
+                  child: CText(
+                    flag ? (firstHalf! + "...") : (firstHalf! + secondHalf),
+                    fontSize: 16,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 6),
+                  child: InkWell(
+                    child: Text(flag ? "Afficher" : "Réduire",
+                        style: TextStyle(color: Colors.blue, fontSize: 16)),
+                    onTap: () {
+                      setState(() {
+                        flag = !flag;
+                      });
+                    },
+                  ),
+                ),
+              ],
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 6),
-            child: InkWell(
-              child: Text(
-                flag ? "Afficher" : "Réduire",
-                style: TextStyle(color: Colors.blue, fontSize: 16)
-              ),
-              onTap: () {
-                setState(() {
-                  flag = !flag;
-                });
-              },
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

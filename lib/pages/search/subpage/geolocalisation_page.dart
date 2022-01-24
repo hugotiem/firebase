@@ -43,10 +43,10 @@ class _GeolocationWidgetState extends State<GeolocationWidget> {
               ? Container()
               : TitleText(
                   text: 'Au plus proche de toi',
-                  margin: EdgeInsets.only(top: 30, left: 20),
+                  margin: EdgeInsets.only(top: 30, left: 20, bottom: 22),
                 ),
           SizedBox(
-            height: 270,
+            height: 250,
             child: BlocProvider(
               create: (context) => PartiesCubit()..fetchActiveParties(),
               child: BlocBuilder<PartiesCubit, PartiesState>(
