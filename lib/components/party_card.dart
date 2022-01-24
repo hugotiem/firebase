@@ -292,6 +292,8 @@ class PartyCard extends StatelessWidget {
                       child: BlocBuilder<UserCubit, UserState>(
                           builder: (context, connectUserState) {
                         return CustomSliverCard(
+                          user: connectUserState.user,
+                          partyOwner: party.ownerId,
                           image: image,
                           color: color,
                           name: party.name,
@@ -450,8 +452,9 @@ class PartyCard extends StatelessWidget {
 
 class CustomSliverCard extends StatefulWidget {
   final Widget? body, titleText, bottomNavigationBar;
-  final String? name, date, location, image, startHour, endHour;
+  final String? name, date, location, image, startHour, endHour, partyOwner;
   final Color? color;
+  final User? user;
 
   const CustomSliverCard(
       {this.image,
@@ -464,6 +467,8 @@ class CustomSliverCard extends StatefulWidget {
       this.bottomNavigationBar,
       this.endHour,
       this.startHour,
+      this.user,
+      this.partyOwner,
       Key? key})
       : super(key: key);
 
@@ -495,8 +500,6 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
   Widget build(BuildContext context) {
     return CustomSliver(
       backgroundColor: PRIMARY_COLOR,
-
-      // brightness: _brightness,
       toolbarColor: _toolbarColor,
       appBar: Opacity(
         opacity: _opacity!,
@@ -536,6 +539,24 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
               ),
             ),
           ),
+          widget.partyOwner == widget.user?.id 
+          ? Align(
+            alignment: Alignment.topRight,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 55, right: 22),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: PRIMARY_COLOR.withOpacity(0.4),
+                  shape: BoxShape.circle,
+                ),
+                child: IconButton(
+                  icon: Icon(Ionicons.ellipsis_vertical_outline),
+                  onPressed: () {},
+                ),
+              ),
+            ),
+          )
+          : Container(),
           Column(
             children: [
               SizedBox(height: (_size! - 80) > 50 ? _size! - 80 : 50),
@@ -637,6 +658,16 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: IconButton(
+                                  onPressed: () {},
+                                  icon: Icon(
+                                    Ionicons.ellipsis_vertical_outline,
+                                    color: ICONCOLOR,
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                   ),
@@ -716,9 +747,9 @@ class CardBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int countMale = 0;
-    int countFemale = 0;
-    int countOther = 0;
+    dynamic countMale = 0;
+    dynamic countFemale = 0;
+    dynamic countOther = 0;
 
     if(gender!.contains("Homme")) {
       countMale = gender!.where((element) => element == "Homme").length;
@@ -729,9 +760,9 @@ class CardBody extends StatelessWidget {
     if (gender!.contains("Autre")) {
       countOther = gender!.where((element) => element == "Autre").length;
     }
-    countMale = ((countMale / gender!.length) * 100).toInt();
-    countFemale = ((countFemale / gender!.length) * 100).toInt();
-    countOther = ((countOther / gender!.length) * 100).toInt();
+    countMale = (countMale / gender!.length) * 100;
+    countFemale = (countFemale / gender!.length) * 100;
+    countOther = (countOther / gender!.length) * 100;
     return Column(
       children: [
         SizedBox(
@@ -919,11 +950,11 @@ class CardBody extends StatelessWidget {
                 children: [
                   // graphique pourcentage homme/femme/autre
                   PieChartInformation(
-                    valueHomme: countMale.toDouble(),
+                    valueHomme: countMale,
                     titleHomme: '$countMale %',
-                    valueFemme: countFemale.toDouble(),
+                    valueFemme: countFemale,
                     titleFemme: '$countFemale %',
-                    valueAutre: countOther.toDouble(),
+                    valueAutre: countOther,
                     titleAutre: '$countOther %',
                   ),
                   PieChartLegend(),
