@@ -202,6 +202,7 @@ class PartiesCubit extends AppBaseCubit<PartiesState> {
 
   Future<void> addUserInValidatedList(
       Map<String, dynamic> infos, Party party) async {
+    emit(state.setRequestInProgress() as PartiesState);
     await services.setWithId(party.id, data: {
       'validatedList': FieldValue.arrayUnion([infos['id']]),
     });
@@ -217,22 +218,21 @@ class PartiesCubit extends AppBaseCubit<PartiesState> {
         },
         path: "validatedListInfo.${infos['id']}");
 
-    await services.setWithId(party.id, data: {
-      'waitList': FieldValue.arrayRemove([infos['id']])
-    });
-
-    await services.setWithId(party.id, data: {
-      'waitListInfo.${infos['id']}': FieldValue.delete(),
-    });
+    removeUserFromWaitList(party, infos['id'], fromBloc: true);
   }
 
-  Future<void> removeUserFromWaitList(Party party, String userId) async {
+  Future<void> removeUserFromWaitList(Party party, String userId,
+      {bool fromBloc = false}) async {
+    if (!fromBloc) emit(state.setRequestInProgress() as PartiesState);
     await services.setWithId(party.id, data: {
       'waitList': FieldValue.arrayRemove([userId])
     });
-    Map<String, dynamic> map = party.waitListInfo..remove(userId);
-    await services.setWithId(party.id, data: {
-      'waitListInfo': map,
-    });
+
+    await services.deleteValue(party.id, "waitListInfo.$userId");
+    emit(PartiesState.loaded(state.parties, state.filters));
+    // Map<String, dynamic> map = party.waitListInfo..remove(userId);
+    // await services.setWithId(party.id, data: {
+    //   'waitListInfo': map,
+    // });
   }
 }

@@ -38,6 +38,14 @@ class FireStoreServices {
     await this._firestore.collection(collection).doc(id).update(data);
   }
 
+  Future<void> deleteValue(String id, String path) async {
+    await this
+        .firestore
+        .collection(collection)
+        .doc(id)
+        .update({path: FieldValue.delete()});
+  }
+
   Stream<QuerySnapshot<Map<String, dynamic>>> getSnapshots() {
     return this._firestore.collection(collection).snapshots();
   }
