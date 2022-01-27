@@ -235,4 +235,8 @@ class PartiesCubit extends AppBaseCubit<PartiesState> {
     //   'waitListInfo': map,
     // });
   }
+
+  Future updateParty(String id, Map<String, dynamic> data) async {
+    await services.updateValue(id, data);
+  }
 }

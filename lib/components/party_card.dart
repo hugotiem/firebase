@@ -5,8 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:pts/blocs/parties/parties_cubit.dart';
+import 'package:pts/components/appbar.dart';
 import 'package:pts/components/custom_container.dart';
+import 'package:pts/components/form/custom_text_form.dart';
 import 'package:pts/components/profile_photo.dart';
+import 'package:pts/components/showModalBottomSheet.dart';
 import 'package:pts/models/capitalize.dart';
 import 'package:pts/models/party.dart';
 import 'package:pts/models/services/firestore_service.dart';
@@ -292,14 +295,12 @@ class PartyCard extends StatelessWidget {
                       child: BlocBuilder<UserCubit, UserState>(
                           builder: (context, connectUserState) {
                         return CustomSliverCard(
+                          party: party,
                           user: connectUserState.user,
-                          partyOwner: party.ownerId,
                           image: image,
                           color: color,
-                          name: party.name,
                           date:
                               '${DateFormat.E('fr').format(party.startTime!).inCaps} ${DateFormat.d('fr').format(party.startTime!)} ${DateFormat.MMMM('fr').format(party.startTime!)}',
-                          location: party.city,
                           startHour:
                               "${DateFormat.Hm('fr').format(party.startTime!).split(":")[0]}h${DateFormat.Hm('fr').format(party.startTime!).split(":")[1]}",
                           endHour:
@@ -452,23 +453,22 @@ class PartyCard extends StatelessWidget {
 
 class CustomSliverCard extends StatefulWidget {
   final Widget? body, titleText, bottomNavigationBar;
-  final String? name, date, location, image, startHour, endHour, partyOwner;
+  final String? date, image, startHour, endHour;
   final Color? color;
   final User? user;
+  final Party party;
 
   const CustomSliverCard(
       {this.image,
       this.color,
       this.body,
       this.titleText,
-      this.name,
       this.date,
-      this.location,
       this.bottomNavigationBar,
       this.endHour,
       this.startHour,
       this.user,
-      this.partyOwner,
+      required this.party,
       Key? key})
       : super(key: key);
 
@@ -498,6 +498,34 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
 
   @override
   Widget build(BuildContext context) {
+    int count = 0;
+    Future<void> editParty() {
+      return customShowModalBottomSheet(
+        context,
+        [
+          titleText("Gère ta soirée"),
+          onTapContainer(context, "Modifie ta soirée", EditParty(widget.party)),
+          onTapContainerToDialog(
+            context,
+            "Supprime ta soirée",
+            title: "Supprime ta soirée",
+            textButton1: "OUI",
+            textButton2: "NON",
+            onPressed1: () {
+              FirebaseFirestore.instance
+                  .collection("parties")
+                  .doc(widget.party.id)
+                  .delete();
+              Navigator.popUntil(context, (route) {
+                return count++ == 2;
+              });
+            }, //supprime la soirée
+            onPressed2: () => Navigator.pop(context),
+          ),
+        ],
+      );
+    }
+
     return CustomSliver(
       backgroundColor: PRIMARY_COLOR,
       toolbarColor: _toolbarColor,
@@ -539,24 +567,24 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
               ),
             ),
           ),
-          widget.partyOwner == widget.user?.id 
-          ? Align(
-            alignment: Alignment.topRight,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 55, right: 22),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: PRIMARY_COLOR.withOpacity(0.4),
-                  shape: BoxShape.circle,
-                ),
-                child: IconButton(
-                  icon: Icon(Ionicons.ellipsis_vertical_outline),
-                  onPressed: () {},
-                ),
-              ),
-            ),
-          )
-          : Container(),
+          widget.party.ownerId == widget.user?.id
+              ? Align(
+                  alignment: Alignment.topRight,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 55, right: 22),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: PRIMARY_COLOR.withOpacity(0.4),
+                        shape: BoxShape.circle,
+                      ),
+                      child: IconButton(
+                        icon: Icon(Ionicons.ellipsis_vertical_outline),
+                        onPressed: () => editParty(),
+                      ),
+                    ),
+                  ),
+                )
+              : Container(),
           Column(
             children: [
               SizedBox(height: (_size! - 80) > 50 ? _size! - 80 : 50),
@@ -585,7 +613,7 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
                                 Padding(
                                   padding: const EdgeInsets.only(bottom: 16),
                                   child: CText(
-                                    widget.name,
+                                    widget.party.name,
                                     fontSize: 26,
                                     fontWeight: FontWeight.w500,
                                   ),
@@ -627,7 +655,7 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
                                             ),
                                           ),
                                           CText(
-                                            widget.location,
+                                            widget.party.city,
                                             color: SECONDARY_COLOR,
                                             fontSize: 16,
                                           )
@@ -653,21 +681,23 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
                               ),
                               Center(
                                 child: CText(
-                                  widget.name,
+                                  widget.party.name,
                                   fontSize: 26,
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
-                              Align(
-                                alignment: Alignment.centerRight,
-                                child: IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Ionicons.ellipsis_vertical_outline,
-                                    color: ICONCOLOR,
-                                  ),
-                                ),
-                              ),
+                              widget.party.ownerId == widget.user?.id
+                                  ? Align(
+                                      alignment: Alignment.centerRight,
+                                      child: IconButton(
+                                        onPressed: () => editParty(),
+                                        icon: Icon(
+                                          Ionicons.ellipsis_vertical_outline,
+                                          color: ICONCOLOR,
+                                        ),
+                                      ),
+                                    )
+                                  : SizedBox(),
                             ],
                           ),
                   ),
@@ -751,7 +781,7 @@ class CardBody extends StatelessWidget {
     dynamic countFemale = 0;
     dynamic countOther = 0;
 
-    if(gender!.contains("Homme")) {
+    if (gender!.contains("Homme")) {
       countMale = gender!.where((element) => element == "Homme").length;
     }
     if (gender!.contains("Femme")) {
@@ -1053,5 +1083,275 @@ class JoinWaitList extends StatelessWidget {
         ),
       ]),
     );
+  }
+}
+
+class EditParty extends StatefulWidget {
+  final Party party;
+  const EditParty(this.party, {Key? key}) : super(key: key);
+
+  @override
+  State<EditParty> createState() => _EditPartyState();
+}
+
+class _EditPartyState extends State<EditParty> {
+  String? _name;
+  String? _theme;
+  String? _number;
+  bool? _animal;
+  bool? _smoke;
+  String? _desc;
+
+  TextEditingController? _nameController;
+  TextEditingController? _numberController;
+  TextEditingController? _descController;
+
+  @override
+  void initState() {
+    _nameController = TextEditingController(text: widget.party.name)
+      ..addListener(() {
+        _name = _nameController!.text;
+      });
+    _numberController = TextEditingController(text: widget.party.number)
+      ..addListener(() {
+        _number = _numberController!.text;
+      });
+    _descController = TextEditingController(text: widget.party.desc)
+      ..addListener(() {
+        _desc = _descController!.text;
+      });
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    _animal == null ? _animal = widget.party.animals : _animal = _animal;
+    _name == null ? _name = widget.party.name : _name = _name;
+    _number == null ? _number = widget.party.number : _number = _number;
+    _theme == null ? _theme = widget.party.theme : _theme = _theme;
+    _smoke == null ? _smoke = widget.party.smoke : _smoke = _smoke;
+    _desc == null ? _desc = widget.party.desc : _desc = _desc;
+    return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(50),
+        child: BackAppBar(actions: [
+          TextButton(
+            onPressed: () async {
+              saveData(widget.party.id, {
+                "name": _name,
+                "theme": _theme,
+                "number": _number,
+                "animals": _animal,
+                "smoke": _smoke,
+                "desc": _desc
+              });
+              int count = 0;
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: CText("Modifié"),
+                      content: CText("Tu as bien modifié t'as soirée"),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.popUntil(context, (route) {
+                            return count++ == 3;
+                          }),
+                          child: CText("OK"),
+                        )
+                      ],
+                    );
+                  });
+            },
+            child: CText("Sauvegarder"),
+          )
+        ]),
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 22),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              HeaderText1(text: "Modifie ta soirée"),
+              ttf("Nom", _nameController),
+              dropdownTheme("Thème", widget.party.theme),
+              ttf("Nombre d'invité", _numberController),
+              dropdownAnimals("Animaux", widget.party.animals),
+              dropdownSmoke("Fumé", widget.party.smoke),
+              ttf('Description', _descController, maxLength: true)
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget ttf(String text, TextEditingController? controller,
+      {bool? maxLength = false}) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 22),
+      child: Stack(
+        children: [
+          hintText1(text),
+          Padding(
+            padding:
+                EdgeInsets.only(top: controller!.text.length > 60 ? 12 : 0),
+            child: TextFormField(
+              maxLines: 100,
+              minLines: 1,
+              maxLength: maxLength == true ? 500 : null,
+              textAlignVertical: TextAlignVertical.bottom,
+              controller: controller,
+              decoration: InputDecoration(
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: SECONDARY_COLOR),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget dropdownTheme(String text, String? theme) {
+    return Stack(
+      children: [
+        hintText1(text),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 22, top: 2),
+          child: DropdownButtonFormField<String>(
+            value: _theme,
+            items: [
+              'Festive',
+              'Gaming',
+              'Jeux de société',
+              "Thème",
+            ].map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: CText(
+                  value,
+                  fontSize: 16,
+                ),
+              );
+            }).toList(),
+            hint: Text(
+              theme!,
+            ),
+            elevation: 0,
+            decoration: InputDecoration(
+              contentPadding: EdgeInsets.only(top: 15),
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey),
+              ),
+            ),
+            onChanged: (String? value) {
+              setState(() {
+                _theme = value;
+              });
+            },
+            alignment: Alignment.bottomLeft,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget dropdownAnimals(String text, bool? animal) {
+    String? val;
+    return Stack(
+      children: [
+        hintText1(text),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 22, top: 2),
+          child: DropdownButtonFormField<String>(
+            value: val,
+            items: [
+              'Oui',
+              'Non',
+            ].map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: CText(
+                  value,
+                  fontSize: 16,
+                ),
+              );
+            }).toList(),
+            hint: Text(
+              animal == true ? "Oui" : "Non",
+            ),
+            elevation: 0,
+            decoration: InputDecoration(
+              contentPadding: EdgeInsets.only(top: 15),
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey),
+              ),
+            ),
+            onChanged: (String? value) {
+              setState(() {
+                val = value;
+                val == "Oui" ? _animal = true : _animal = false;
+              });
+            },
+            alignment: Alignment.bottomLeft,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget dropdownSmoke(String text, bool? smoke) {
+    String? val;
+    return Stack(
+      children: [
+        hintText1(text),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 22, top: 2),
+          child: DropdownButtonFormField<String>(
+            value: val,
+            items: [
+              'Oui',
+              'Non',
+            ].map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: CText(
+                  value,
+                  fontSize: 16,
+                ),
+              );
+            }).toList(),
+            hint: Text(
+              smoke == true ? "Oui" : "Non",
+            ),
+            elevation: 0,
+            decoration: InputDecoration(
+              contentPadding: EdgeInsets.only(top: 15),
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey),
+              ),
+            ),
+            onChanged: (String? value) {
+              setState(() {
+                val = value;
+                val == "Oui" ? _smoke = true : _smoke = false;
+              });
+            },
+            alignment: Alignment.bottomLeft,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget hintText1(String text) {
+    return Opacity(opacity: 0.65, child: CText(text));
+  }
+
+  Future saveData(String id, Map<String, dynamic> data) async {
+    await FirebaseFirestore.instance.collection("parties").doc(id).update(data);
   }
 }

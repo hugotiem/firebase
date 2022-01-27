@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:pts/components/custom_text.dart';
 import 'package:pts/components/horizontal_separator.dart';
+import 'package:pts/components/showModalBottomSheet.dart';
 import 'package:pts/const.dart';
 import 'package:pts/models/calendar_data_source.dart';
 import 'package:pts/blocs/calendar/calendar_cubit.dart';
@@ -18,66 +19,23 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 class CalendarPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Widget titleText(String str) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 22),
-        child: CText(
-          str,
-          fontSize: 22,
-          fontWeight: FontWeight.w500,
-        ),
-      );
-    }
-
-    Widget onTapContainer(String str, Widget to) {
-      return InkWell(
-        onTap: () => Navigator.push(
-            context, MaterialPageRoute(builder: (context) => to)),
-        child: Container(
-          margin: EdgeInsets.only(bottom: 22),
-          height: 55,
-          width: MediaQuery.of(context).size.width,
-          alignment: Alignment.centerLeft,
-          decoration: BoxDecoration(
-            border: Border(
-              bottom:
-                  BorderSide(color: Colors.grey.withOpacity(0.23), width: 1.5),
-            ),
-          ),
-          child: CText(
-            str,
-            fontSize: 18,
-          ),
-        ),
-      );
-    }
-
     Future<dynamic> manageParty() {
-      return showModalBottomSheet(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(25.0),
-            topRight: Radius.circular(25.0),
+      return customShowModalBottomSheet(
+        context,
+        [
+          titleText("Gère tes soirées :"),
+          onTapContainer(context, "Mes soirées", MyParty()),
+          onTapContainer(
+            context,
+            "Mes demandes pour rejoindre des soirées",
+            PartyWaitList(),
           ),
-        ),
-        context: context,
-        builder: (BuildContext context) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 22),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                titleText("Gère tes soirées :"),
-                onTapContainer("Mes soirées", MyParty()),
-                onTapContainer("Mes demandes pour rejoindre des soirées",
-                    PartyWaitList()),
-                onTapContainer(
-                    "Les demandes pour rejoindre ma soirée", GuestWaitList()),
-              ],
-            ),
-          );
-        },
+          onTapContainer(
+            context,
+            "Les demandes pour rejoindre ma soirée",
+            GuestWaitList(),
+          ),
+        ],
       );
     }
 
@@ -199,9 +157,11 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                         itemBuilder: (BuildContext context, int index) {
                           Color? textColor;
 
-                          if (_appointmentDetails[index].background == SECONDARY_COLOR) {
+                          if (_appointmentDetails[index].background ==
+                              SECONDARY_COLOR) {
                             textColor = PRIMARY_COLOR;
-                          } else if (_appointmentDetails[index].background == ICONCOLOR) {
+                          } else if (_appointmentDetails[index].background ==
+                              ICONCOLOR) {
                             textColor = SECONDARY_COLOR;
                           }
 
@@ -237,7 +197,8 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                                     child: Container(
                                       height: 55,
                                       decoration: BoxDecoration(
-                                          color: _appointmentDetails[index].background,
+                                          color: _appointmentDetails[index]
+                                              .background,
                                           borderRadius:
                                               BorderRadius.circular(8)),
                                       child: Padding(
