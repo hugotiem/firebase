@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pts/models/party.dart';
 import 'package:pts/models/services/auth_service.dart';
+import 'package:pts/models/services/dynamic_links_services.dart';
 import 'package:pts/models/services/firestore_service.dart';
 import 'package:pts/blocs/base/app_base_cubit.dart';
 import 'package:pts/blocs/base/app_base_state.dart';
@@ -169,11 +170,18 @@ class PartiesCubit extends AppBaseCubit<PartiesState> {
     emit(PartiesState.loaded(parties, filters, currentDate: state.currentDate));
   }
 
-  Future fetchPartiesWithWhereArrayContains(var key, String? token) async {
+  Future fetchPartiesWithWhereArrayContains(var key, String? token,
+      {bool userLink = false}) async {
     var partiesSnapShots =
         await services.getDataWithWhereMapContains(key, token);
     List<Party> parties =
         partiesSnapShots.docs.map((e) => Party.fromSnapShots(e)).toList();
+    if (userLink) {
+      // parties.forEach((element) {
+      //   element.userLink =
+      //       'https://ptsapp.page.link/?link=pts.com?token=${element.validatedListInfo[token]["token"]}&apn=pts-beta-yog&ibi=com.yog.pts';
+      // });
+    }
     emit(PartiesState.loaded(parties, state.filters));
   }
 
@@ -235,4 +243,6 @@ class PartiesCubit extends AppBaseCubit<PartiesState> {
     //   'waitListInfo': map,
     // });
   }
+
+  Future<void> createQrCodeLink() async {}
 }

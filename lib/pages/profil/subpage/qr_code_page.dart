@@ -18,11 +18,11 @@ class QrCodePage extends StatelessWidget {
             if (state.token == null) {
               return Container();
             }
-            print("user token = $token");
             return BlocProvider(
               create: (context) => PartiesCubit()
                 ..fetchPartiesWithWhereArrayContains(
-                    "validatedList", state.token),
+                    "validatedList", state.token,
+                    userLink: true),
               child: BlocBuilder<PartiesCubit, PartiesState>(
                   builder: (context, state) {
                 var parties = state.parties;
@@ -38,11 +38,7 @@ class QrCodePage extends StatelessWidget {
                 return SingleChildScrollView(
                   child: Column(
                     children: parties.map<Widget>((e) {
-                      print(
-                          "link = app.pts.com?token=${e.validatedListInfo[token]['token']}");
-                      return QrImage(
-                          data:
-                              "app.pts.com?token=${e.validatedListInfo[token]['token']}");
+                      return QrImage(data: e.userLink!);
                     }).toList(),
                   ),
                 );

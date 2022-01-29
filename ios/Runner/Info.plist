@@ -66,5 +66,27 @@
 		<false/>
 		<key>UIStatusBarHidden</key>
 		<false/>
+
+		<!-- DYNAMIC LINKS -->
+		<key>FirebaseDynamicLinksCustomDomains</key>
+		<array>
+			<string>https://custom.domain.io/path1</string>
+			<string>https://custom.domain.io/path2</string>
+		</array>
+
+		<!-- UNI LINKS -->
+		<key>CFBundleURLTypes</key>
+		<array>
+			<dict>
+				<key>CFBundleTypeRole</key>
+				<string>Editor</string>
+				<key>CFBundleURLName</key>
+				<string>app.pts.com</string>
+				<key>CFBundleURLSchemes</key>
+				<array>
+					<string>link:</string>
+				</array>
+			</dict>
+		</array>
 	</dict>
 </plist>

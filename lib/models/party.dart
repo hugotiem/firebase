@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:math' as math;
 
+import 'package:pts/models/user.dart';
+
 class Party {
   String id;
   String name;
@@ -25,6 +27,7 @@ class Party {
   List? waitList;
   final Map<String, dynamic> waitListInfo;
   bool? isActive;
+  String? userLink;
 
   Party(
       this.id,
@@ -49,7 +52,8 @@ class Party {
       this.waitList,
       this.waitListInfo,
       this.isActive,
-      {this.distance});
+      {this.distance,
+      this.userLink});
 
   static double random() {
     // generate number between -0.001 and 0.001
@@ -57,8 +61,7 @@ class Party {
     return rand;
   }
 
-  factory Party.fromDocument(
-      DocumentSnapshot<Map<String, dynamic>> snapshots) {
+  factory Party.fromDocument(DocumentSnapshot<Map<String, dynamic>> snapshots) {
     var id = snapshots.id;
     var data = snapshots.data();
     var name = data?['name'];

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,6 +15,7 @@ import 'package:pts/pages/login/id_form_screen.dart';
 import 'package:pts/blocs/user/user_cubit.dart';
 import 'package:pts/components/custom_text.dart';
 import 'package:pts/pages/messaging/message_list.dart';
+import 'package:uni_links/uni_links.dart';
 import 'pages/Planning/calendar_page.dart';
 import 'pages/profil/profil_page.dart';
 import 'pages/search/search_page.dart';
@@ -32,6 +34,25 @@ class _HomeState extends State<Home> {
     MessagePage(),
     Profil(),
   ];
+
+  StreamSubscription? _sub;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  Future<void> initUniLinks() async {
+    try {
+      final initialLink = getInitialUri();
+
+      print("initial link = $initialLink");
+
+      _sub = linkStream.listen((String? link) {
+        print("stream link = $link"); 
+      });
+    } on FormatException {}
+  }
 
   @override
   Widget build(BuildContext context) {
