@@ -245,4 +245,7 @@ class PartiesCubit extends AppBaseCubit<PartiesState> {
   }
 
   Future<void> createQrCodeLink() async {}
+  Future updateParty(String id, Map<String, dynamic> data) async {
+    await services.updateValue(id, data);
+  }
 }

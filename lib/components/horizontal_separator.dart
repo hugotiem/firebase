@@ -12,7 +12,7 @@ class HorzontalSeparator extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           border: Border(
-            top: BorderSide(width: 2, color: FOCUS_COLOR),
+            top: BorderSide(width: 1.1, color: FOCUS_COLOR),
           ),
         ),
       ),

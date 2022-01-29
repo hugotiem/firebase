@@ -105,7 +105,10 @@ class ThemeBox extends StatelessWidget {
                   return ListView.builder(
                     itemCount: state.parties!.length,
                     itemBuilder: (BuildContext context, int index) =>
-                        SizedBox(height: 270, child: PartyCard(party: state.parties![index])),
+                        SizedBox(height: 270, child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          child: PartyCard(party: state.parties![index]),
+                        )),
                   );
                 },
               ),
