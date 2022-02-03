@@ -96,8 +96,9 @@ class _PriceSelectableItemsWidgetState
   bool isFree = false;
   late double _price;
 
-  List<WidgetSpan> _buildPriceWidgetSpan(
-      BuildContext context, List<Map<String, dynamic>> items) {
+  List<WidgetSpan> _buildPriceWidgetSpan(BuildContext context,
+      List<Map<String, dynamic>> items, void Function(bool, bool, int) onSelect,
+      {required void Function(bool, bool) onClose}) {
     return items.map<WidgetSpan>((e) {
       bool _isCustomPrice = e['id'] == 'custom';
       bool _isFree = e['id'] is bool;
@@ -112,31 +113,8 @@ class _PriceSelectableItemsWidgetState
             : _isFree
                 ? e['id']
                 : _price == e['id'],
-        () => setState(() {
-          if (_isCustomPrice) {
-            _price = 0;
-            isCustomPrice = true;
-            isFree = false;
-          } else if (_isFree) {
-            _price = 0;
-            isFree = true;
-            isCustomPrice = false;
-          } else {
-            isCustomPrice = false;
-            _price = (e['id'] as int).toDouble();
-            isFree = false;
-          }
-          widget.onSelected(_price, isCustomPrice);
-        }),
-        onClose: () => setState(() {
-          if (_isCustomPrice) {
-            isCustomPrice = false;
-          }
-          if (_isFree) {
-            isFree = false;
-          }
-          widget.onSelected(_price, isCustomPrice);
-        }),
+        () => onSelect(_isCustomPrice, _isFree, _isFree ? 0 : e['id'] as int),
+        // onClose: () => onClose(_isCustomPrice, _isFree),
         showIcon: false,
       );
     }).toList();
@@ -151,7 +129,38 @@ class _PriceSelectableItemsWidgetState
   @override
   Widget build(BuildContext context) {
     return RichText(
-        text: TextSpan(children: _buildPriceWidgetSpan(context, widget.items)));
+      text: TextSpan(
+        children: _buildPriceWidgetSpan(
+          context,
+          widget.items,
+          (bool _isCustomPrice, bool _isFree, int price) => setState(() {
+            if (_isCustomPrice) {
+              _price = 0;
+              isCustomPrice = true;
+              isFree = false;
+            } else if (_isFree) {
+              _price = 0;
+              isFree = true;
+              isCustomPrice = false;
+            } else {
+              isCustomPrice = false;
+              _price = price.toDouble();
+              isFree = false;
+            }
+            widget.onSelected(_price, isCustomPrice);
+          }),
+          onClose: (bool _isCustomPrice, bool _isFree) => setState(() {
+            if (_isCustomPrice) {
+              isCustomPrice = false;
+            }
+            if (_isFree) {
+              isFree = false;
+            }
+            widget.onSelected(_price, isCustomPrice);
+          }),
+        ),
+      ),
+    );
   }
 }
 

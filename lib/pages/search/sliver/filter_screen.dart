@@ -44,6 +44,7 @@ class _FilterScreenState extends State<FilterScreen> {
   bool isFree = false;
 
   bool? isAnimals;
+  bool? isSmokeAllowed;
 
   @override
   Widget build(BuildContext context) {
@@ -88,6 +89,10 @@ class _FilterScreenState extends State<FilterScreen> {
                           filters['animals'] = isAnimals;
                         }
 
+                        if (isSmokeAllowed != null) {
+                          filters['smoke'] = isSmokeAllowed;
+                        }
+
                         print(filters);
 
                         BlocProvider.of<PartiesCubit>(context)
@@ -112,7 +117,9 @@ class _FilterScreenState extends State<FilterScreen> {
                               child: Text("Par thèmes :"),
                             ),
                             Container(
-                              child: MultipleSelectableItemsWidget(items: themes,),
+                              child: MultipleSelectableItemsWidget(
+                                items: themes,
+                              ),
                             ),
                           ],
                         ),
@@ -165,24 +172,35 @@ class _FilterScreenState extends State<FilterScreen> {
                               padding: EdgeInsets.all(10),
                               child: Text("Animaux :"),
                             ),
-                            Column(
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.all(10),
-                                  child: Text("Animaux :"),
-                                ),
-                                Container(
-                                  child: SingleSelectableItemsWidget<bool>(
-                                    onSelected: (bool? value) => setState(() {
-                                      isAnimals = value;
-                                    }),
-                                    items: [
-                                      {"title": "oui", "selected": true},
-                                      {"title": "non", "selected": false},
-                                    ],
-                                  ),
-                                ),
-                              ],
+                            Container(
+                              child: SingleSelectableItemsWidget<bool>(
+                                onSelected: (bool? value) => setState(() {
+                                  isAnimals = value;
+                                }),
+                                items: [
+                                  {"title": "oui", "selected": true},
+                                  {"title": "non", "selected": false},
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(10),
+                              child: Text("Fumer à la soirée possible :"),
+                            ),
+                            Container(
+                              child: SingleSelectableItemsWidget<bool>(
+                                onSelected: (bool? value) => setState(() {
+                                  isSmokeAllowed = value;
+                                }),
+                                items: [
+                                  {"title": "oui", "selected": true},
+                                  {"title": "non", "selected": false},
+                                ],
+                              ),
                             ),
                           ],
                         ),

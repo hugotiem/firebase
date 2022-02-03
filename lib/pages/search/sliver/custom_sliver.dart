@@ -36,8 +36,12 @@ class CustomSliver extends StatelessWidget {
             appBar!,
             body!,
             Container(
-              height: toolbarColor == Colors.transparent ? 0 : 100,
-              color: toolbarColor,
+              height: toolbarColor == Colors.transparent ? 0 : 120,
+              decoration: BoxDecoration(
+                border: Border(
+                    bottom: BorderSide(color: Colors.grey.withOpacity(0.3))),
+                color: toolbarColor,
+              ),
             ),
             searchBar!,
           ],

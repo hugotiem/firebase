@@ -27,7 +27,11 @@ class _GeolocationWidgetState extends State<GeolocationWidget> {
     super.initState();
     _getLocation().then((position) {
       userLocation = position;
-      _getcity();
+      _getcity(
+        (String? locality) => setState(() {
+          _currentCity = locality;
+        }),
+      );
     });
   }
 
@@ -106,16 +110,14 @@ class _GeolocationWidgetState extends State<GeolocationWidget> {
     }
   }
 
-  Future<void> _getcity() async {
+  Future<void> _getcity(void Function(String?) onChanged) async {
     try {
       List<Placemark> placemarks = await placemarkFromCoordinates(
           userLocation!.latitude, userLocation!.longitude);
 
       Placemark place = placemarks[0];
 
-      setState(() {
-        _currentCity = place.locality;
-      });
+      onChanged(place.locality);
     } catch (e) {
       print(e);
     }

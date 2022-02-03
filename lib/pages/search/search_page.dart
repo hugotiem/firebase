@@ -23,8 +23,7 @@ class _SearchState extends State<Search> {
   double? _size;
   double? current;
   late double _opacity;
-  double? _barSizeWidth;
-  double? _barSizeHeight;
+
   Color? _toolbarColor;
   SystemUiOverlayStyle? _systemOverlayStyle;
 
@@ -34,8 +33,6 @@ class _SearchState extends State<Search> {
       _size = 400;
       current = 0;
       _opacity = 1;
-      _barSizeWidth = 350;
-      _barSizeHeight = 60;
       _systemOverlayStyle = SystemUiOverlayStyle.light;
       _toolbarColor = Colors.transparent;
     });
@@ -152,8 +149,6 @@ class _SearchState extends State<Search> {
               } else if (_pixels <= 250) {
                 _opacity = 1;
               }
-              _barSizeWidth = 350 - (_pixels / 8);
-              _barSizeHeight = 60 - (_pixels / 15);
             } else if (_pixels > 300) {
               _size = 100;
               _opacity = 0;
@@ -165,61 +160,89 @@ class _SearchState extends State<Search> {
 
         return true;
       },
-      searchBar: Column(
-        children: [
-          SizedBox(
-            height: (_size! - 80) > 50 ? _size! - 80 : 50,
-          ),
-          Center(
-            child: OpenContainer(
-              tappable: true,
-              transitionDuration: Duration(milliseconds: 400),
-              closedColor: Colors.white,
-              openColor: Colors.white,
-              closedElevation: 0,
-              closedShape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(29.5),
-              ),
-              closedBuilder: (context, returnValue) {
-                return Container(
-                  width: _barSizeWidth,
-                  height: _barSizeHeight,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                  ),
-                  child: Container(
-                    child: Row(
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20),
-                          child: Icon(
-                            Ionicons.search_outline,
-                            size: 20,
-                            color: ICONCOLOR,
-                          ),
-                        ),
-                        Opacity(
-                          opacity: 0.7,
-                          child: Container(
-                            padding: EdgeInsets.only(left: 20),
-                            child: CText(
-                              "Rechercher",
-                              fontSize: 18,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-              openBuilder: (context, returnValue) {
-                return SearchBarScreen();
-              },
-            ),
-          ),
-        ],
+      searchBar: Container(
+        margin: EdgeInsets.only(
+            right: 20,
+            left: 20,
+            top:
+                (_size! - 100) > 50 ? _size! - 100 : 50), //(_size ?? 0) - 130),
+        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+        decoration: BoxDecoration(
+          color: Colors.white
+              .withOpacity(_opacity < 0.2 ? 0.8 + 0.2 - _opacity : 0.8),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: OpenContainer(
+          closedElevation: 0,
+          closedColor: Colors.transparent,
+          closedBuilder: (context, returnValue) {
+            return Container(
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              width: double.infinity,
+              child: Text("Selectionne une ville"),
+            );
+          },
+          openBuilder: (BuildContext context, returnValue) {
+            return SearchBarScreen();
+          },
+        ),
       ),
+
+      //  Column(
+      //   children: [
+      //     SizedBox(
+      //       height: (_size! - 80) > 50 ? _size! - 80 : 50,
+      //     ),
+      //     Center(
+      //       child: OpenContainer(
+      //         tappable: true,
+      //         transitionDuration: Duration(milliseconds: 400),
+      //         closedColor: Colors.white,
+      //         openColor: Colors.white,
+      //         closedElevation: 0,
+      //         closedShape: RoundedRectangleBorder(
+      //           borderRadius: BorderRadius.circular(29.5),
+      //         ),
+      //         closedBuilder: (context, returnValue) {
+      //           return Container(
+      //             width: _barSizeWidth,
+      //             height: _barSizeHeight,
+      //             decoration: BoxDecoration(
+      //               color: Colors.white,
+      //             ),
+      //             child: Container(
+      //               child: Row(
+      //                 children: <Widget>[
+      //                   Padding(
+      //                     padding: const EdgeInsets.only(left: 20),
+      //                     child: Icon(
+      //                       Ionicons.search_outline,
+      //                       size: 20,
+      //                       color: ICONCOLOR,
+      //                     ),
+      //                   ),
+      //                   Opacity(
+      //                     opacity: 0.7,
+      //                     child: Container(
+      //                       padding: EdgeInsets.only(left: 20),
+      //                       child: CText(
+      //                         "Rechercher",
+      //                         fontSize: 18,
+      //                       ),
+      //                     ),
+      //                   ),
+      //                 ],
+      //               ),
+      //             ),
+      //           );
+      //         },
+      //         openBuilder: (context, returnValue) {
+      //           return SearchBarScreen();
+      //         },
+      //       ),
+      //     ),
+      //   ],
+      // ),
     );
   }
 }
