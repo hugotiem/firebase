@@ -9,6 +9,7 @@ import 'package:ionicons/ionicons.dart';
 import 'package:pts/blocs/parties/parties_cubit.dart';
 import 'package:pts/const.dart';
 import 'package:pts/models/party.dart';
+import 'package:pts/models/services/payment_service.dart';
 import 'package:pts/pages/creation/creation_page.dart';
 import 'package:pts/pages/login/connect.dart';
 import 'package:pts/pages/login/id_form_screen.dart';
@@ -49,7 +50,7 @@ class _HomeState extends State<Home> {
       print("initial link = $initialLink");
 
       _sub = linkStream.listen((String? link) {
-        print("stream link = $link"); 
+        print("stream link = $link");
       });
     } on FormatException {}
   }
@@ -169,7 +170,7 @@ class _HomeState extends State<Home> {
     );
   }
 
-  void onTabTapped(int index) {
+  void onTabTapped(int index) async {
     if (index == 2) {
       Navigator.of(context).push(
         MaterialPageRoute(
@@ -181,6 +182,9 @@ class _HomeState extends State<Home> {
       setState(() {
         _currentIndex = index;
       });
+
+    await PaymentService(amount: 500)
+        .initPaymentSheet(context, email: "hugotiem@gmail.com");
   }
 
   Future<dynamic> _showLoadingPopup() async {
