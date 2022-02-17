@@ -128,38 +128,67 @@ class _PriceSelectableItemsWidgetState
 
   @override
   Widget build(BuildContext context) {
-    return RichText(
-      text: TextSpan(
-        children: _buildPriceWidgetSpan(
-          context,
-          widget.items,
-          (bool _isCustomPrice, bool _isFree, int price) => setState(() {
-            if (_isCustomPrice) {
-              _price = 0;
-              isCustomPrice = true;
-              isFree = false;
-            } else if (_isFree) {
-              _price = 0;
-              isFree = true;
-              isCustomPrice = false;
-            } else {
-              isCustomPrice = false;
-              _price = price.toDouble();
-              isFree = false;
-            }
-            widget.onSelected(_price, isCustomPrice);
-          }),
-          onClose: (bool _isCustomPrice, bool _isFree) => setState(() {
-            if (_isCustomPrice) {
-              isCustomPrice = false;
-            }
-            if (_isFree) {
-              isFree = false;
-            }
-            widget.onSelected(_price, isCustomPrice);
-          }),
+    return Column(
+      children: [
+        RichText(
+          text: TextSpan(
+            children: _buildPriceWidgetSpan(
+              context,
+              widget.items,
+              (bool _isCustomPrice, bool _isFree, int price) => setState(() {
+                if (_isCustomPrice) {
+                  _price = 0;
+                  isCustomPrice = true;
+                  isFree = false;
+                } else if (_isFree) {
+                  _price = 0;
+                  isFree = true;
+                  isCustomPrice = false;
+                } else {
+                  isCustomPrice = false;
+                  _price = price.toDouble();
+                  isFree = false;
+                }
+                widget.onSelected(_price, isCustomPrice);
+              }),
+              onClose: (bool _isCustomPrice, bool _isFree) => setState(() {
+                if (_isCustomPrice) {
+                  isCustomPrice = false;
+                }
+                if (_isFree) {
+                  isFree = false;
+                }
+                widget.onSelected(_price, isCustomPrice);
+              }),
+            ),
+          ),
         ),
-      ),
+        if (isCustomPrice)
+          Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: EdgeInsets.all(10),
+                  child: Text(
+                      "moins de ${_price < 101 ? _price.toInt() : "100+"}€"),
+                ),
+                Container(
+                  child: Slider(
+                    onChanged: (double value) {
+                      setState(() {
+                        _price = value;
+                      });
+                    },
+                    min: 0,
+                    max: 101,
+                    value: _price,
+                  ),
+                ),
+              ],
+            ),
+          ),
+      ],
     );
   }
 }

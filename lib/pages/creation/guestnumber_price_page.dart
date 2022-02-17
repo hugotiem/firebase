@@ -78,7 +78,7 @@ class _GuestNumberState extends State<GuestNumber> {
     {'title': '5€', 'id': 5},
     {'title': '10€', 'id': 10},
     {'title': '20€', 'id': 20},
-    {'title': 'personaliser', 'id': 'custom'}
+    {'title': 'personnaliser', 'id': 'custom'}
   ];
 
   @override
@@ -116,7 +116,7 @@ class _GuestNumberState extends State<GuestNumber> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             HeaderText1(
-              text: "Combien de personnes souhaite tu inviter ?",
+              text: "Combien de personnes souhaites tu inviter ?",
             ),
             Row(
               children: [
@@ -132,9 +132,8 @@ class _GuestNumberState extends State<GuestNumber> {
               height: 30,
             ),
             HeaderText1(
-              text: "Parlons argent, Choisis un prix d'entrée !",
+              text: "Parlons argent, choisis un prix d'entrée !",
             ),
-            HeaderText2(text: 'Prédéfini'),
             Padding(
               padding: const EdgeInsets.only(left: 16),
               child: PriceSelectableItemsWidget(

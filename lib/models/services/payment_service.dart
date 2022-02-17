@@ -5,11 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:pts/const.dart';
 
 class PaymentService {
-  late double _amount;
+  late int _amount;
 
-  PaymentService({required double amount}) {
+  PaymentService({required int amount}) {
     this._amount = amount;
   }
 
@@ -28,8 +29,8 @@ class PaymentService {
   }
 
   Future<void> initPaymentSheet(BuildContext context,
-      {required String? email, double? amount}) async {
-    double pAmount = amount ?? _amount;
+      {required String? email, int? amount}) async {
+    int pAmount = amount ?? _amount;
     try {
       final res = await http.post(
         Uri.parse(
@@ -53,8 +54,6 @@ class PaymentService {
           style: ThemeMode.light,
           testEnv: true,
           merchantCountryCode: 'FRA',
-          allowsDelayedPaymentMethods: true,
-          customFlow: true,
         ),
       );
 
@@ -63,6 +62,4 @@ class PaymentService {
       print("payment failed: $e");
     }
   }
-
-  // Future<void> processPayment(PaymentMethod paymentMethod) async {}
 }

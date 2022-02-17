@@ -174,6 +174,7 @@ class _SearchState extends State<Search> {
         ),
         child: OpenContainer(
           closedElevation: 0,
+          openElevation: 0,
           closedColor: Colors.transparent,
           closedBuilder: (context, returnValue) {
             return Container(
@@ -277,6 +278,10 @@ class _ContainerAddPartyState extends State<ContainerAddParty> {
               fontWeight: FontWeight.w900,
               textAlign: TextAlign.center,
             ),
+          ),
+          Image.asset(
+            "assets/logo.png",
+            height: 200,
           ),
           GestureDetector(
             onTap: () {

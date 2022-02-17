@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intro_slider/intro_slider.dart';
 import 'package:intro_slider/slide_object.dart';
 import 'package:ionicons/ionicons.dart';
@@ -21,45 +22,47 @@ class IntroScreenState extends State<IntroScreen> {
 
     slides.add(
       new Slide(
-        styleTitle: TextStyle(fontSize: 60,  color: PRIMARY_COLOR),
-        styleDescription: TextStyle(fontSize: 20,  color: PRIMARY_COLOR),
+        styleTitle: TextStyle(fontSize: 60, color: PRIMARY_COLOR),
+        styleDescription: TextStyle(fontSize: 20, color: PRIMARY_COLOR),
         title: "BIENVENUE",
         description:
             "Merci d’avoir rejoint notre application PTS, nous allons te la présenter.",
-//        pathImage: "images/photo_eraser.png",
+        pathImage: "assets/hf_head.png",
         backgroundColor: SECONDARY_COLOR,
       ),
     );
     slides.add(
       new Slide(
-        styleTitle: TextStyle(fontSize: 60,  color: PRIMARY_COLOR),
-        styleDescription: TextStyle(fontSize: 20,  color: PRIMARY_COLOR),
+        styleTitle: TextStyle(fontSize: 60, color: PRIMARY_COLOR),
+        styleDescription: TextStyle(fontSize: 20, color: PRIMARY_COLOR),
         title: "REJOINS",
         description:
             "Cette application va te permettre de rejoindre des soirées proches de chez toi.\n\n Les soirées proposées sont suivant différents thèmes: (Festive, Gaming, À thème et Jeux de Société).\n\n D’autres informations sont présentes comme l’heure d’entrée, le nombre de personnes …",
-//        pathImage: "images/photo_pencil.png",
+        pathImage: "assets/join_party.png",
+        widthImage: double.infinity,
         backgroundColor: SECONDARY_COLOR,
       ),
     );
     slides.add(
       new Slide(
-        styleTitle: TextStyle(fontSize: 60,  color: PRIMARY_COLOR),
-        styleDescription: TextStyle(fontSize: 20,  color: PRIMARY_COLOR),
+        styleTitle: TextStyle(fontSize: 60, color: PRIMARY_COLOR),
+        styleDescription: TextStyle(fontSize: 20, color: PRIMARY_COLOR),
         title: "ORGANISE",
         description:
             "C’est à toi de définir tous les critères d’entrées Pour Ta Soirée (le titre, gratuit ou payant…).\n\n Maintenant tu n’as plus qu’à décider qui viendra Pour Ta Soirée!",
-//        pathImage: "images/photo_ruler.png",
+        pathImage: "assets/create_party.png",
         backgroundColor: SECONDARY_COLOR,
       ),
     );
     slides.add(
       new Slide(
-        styleTitle: TextStyle(fontSize: 60,  color: PRIMARY_COLOR),
-        styleDescription: TextStyle(fontSize: 20,  color: PRIMARY_COLOR),
+        styleTitle: TextStyle(
+            fontSize: 60, color: PRIMARY_COLOR, overflow: TextOverflow.visible),
+        styleDescription: TextStyle(fontSize: 20, color: PRIMARY_COLOR),
         title: "BONNE SOIREE",
         description:
             "PTS te souhaite sincèrement de faire de superbes rencontres lors de tes soirées.",
-//        pathImage: "images/photo_ruler.png",
+        pathImage: "assets/onboarding_img.png",
         backgroundColor: SECONDARY_COLOR,
       ),
     );
@@ -94,25 +97,28 @@ class IntroScreenState extends State<IntroScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return new IntroSlider(
-      // List slides
-      slides: this.slides,
+    return Scaffold(
+      backgroundColor: SECONDARY_COLOR,
+      body: new IntroSlider(
+        // List slides
+        slides: this.slides,
 
-      // Skip button
-      renderSkipBtn: this.renderSkipBtn(),
+        // Skip button
+        renderSkipBtn: this.renderSkipBtn(),
 
-      // Next button
-      renderNextBtn: this.renderNextBtn(),
+        // Next button
+        renderNextBtn: this.renderNextBtn(),
 
-      // Done button
-      renderDoneBtn: this.renderDoneBtn(),
-      onDonePress: this.onDonePress,
+        // Done button
+        renderDoneBtn: this.renderDoneBtn(),
+        onDonePress: this.onDonePress,
 
-      colorDot: ICONCOLOR,
+        colorDot: ICONCOLOR,
 
-      hideStatusBar: true,
+        hideStatusBar: true,
 
-      sizeDot: 8.0,
+        sizeDot: 8.0,
+      ),
     );
   }
 }

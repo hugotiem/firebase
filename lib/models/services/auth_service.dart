@@ -27,6 +27,16 @@ class AuthService extends ChangeNotifier {
     return;
   }
 
+  Future<void> add(String key, String value) async {
+    await storage.write(key: key, value: value);
+    return;
+  }
+
+  Future<bool> hasValue(String key) async {
+    var value = await storage.read(key: key);
+    return value != null;
+  }
+
   Future<User?> register(String _email, String _password,
       {Map<String, dynamic>? data}) async {
     try {

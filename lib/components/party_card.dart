@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:lottie/lottie.dart';
 import 'package:pts/blocs/parties/parties_cubit.dart';
 import 'package:pts/components/appbar.dart';
 import 'package:pts/components/custom_container.dart';
@@ -386,50 +387,58 @@ class PartyCard extends StatelessWidget {
                                           color: PRIMARY_COLOR, fontSize: 16),
                                     ),
                                   )
-                                : GestureDetector(
-                                    onTap: () async {
-                                      if (party.price == 0) {
-                                        final uid = connectUserState.user!.id;
+                                : BlocProvider(
+                                    create: (context) => PartiesCubit(),
+                                    child:
+                                        BlocBuilder<PartiesCubit, PartiesState>(
+                                            builder: (context, state) {
+                                      return GestureDetector(
+                                        onTap: () async {
+                                          if (party.price == 0) {
+                                            final uid =
+                                                connectUserState.user!.id;
 
-                                        if (uid == null) {
-                                          throw Error();
-                                        }
+                                            if (uid == null) {
+                                              throw Error();
+                                            }
 
-                                        await BlocProvider.of<PartiesCubit>(
-                                                context)
-                                            .addUserInWaitList(user, party);
+                                            await BlocProvider.of<PartiesCubit>(
+                                                    context)
+                                                .addUserInWaitList(user, party);
 
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                JoinWaitList(),
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    JoinWaitList(),
+                                              ),
+                                            );
+                                          } else {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ExistingCard(),
+                                              ),
+                                            );
+                                          }
+                                        },
+                                        child: Container(
+                                          padding: EdgeInsets.all(15),
+                                          decoration: BoxDecoration(
+                                            color: SECONDARY_COLOR,
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(15),
+                                            ),
                                           ),
-                                        );
-                                      } else {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                ExistingCard(),
+                                          child: CText(
+                                            'Rejoindre',
+                                            color: PRIMARY_COLOR,
+                                            fontSize: 16,
                                           ),
-                                        );
-                                      }
-                                    },
-                                    child: Container(
-                                      padding: EdgeInsets.all(15),
-                                      decoration: BoxDecoration(
-                                        color: SECONDARY_COLOR,
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(15),
                                         ),
-                                      ),
-                                      child: CText(
-                                        'Rejoindre',
-                                        color: PRIMARY_COLOR,
-                                        fontSize: 16,
-                                      ),
-                                    ),
+                                      );
+                                    }),
                                   ),
                           ),
                         );
@@ -1068,20 +1077,35 @@ class JoinWaitList extends StatelessWidget {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 16, right: 16),
-          child: Text(
-            "Vous venez de rejoindre la liste d'attente de la soirée !",
-            style: TextStyle(
-                fontSize: 25,
-                fontWeight: FontWeight.bold,
-                height: 1.4,
-                color: Colors.white),
-            textAlign: TextAlign.center,
+      body: Stack(
+        children: [
+          Center(
+            child: Container(
+              height: double.infinity,
+              child: Lottie.network(
+                  "https://assets8.lottiefiles.com/packages/lf20_pkanqwys.json",
+                  fit: BoxFit.cover),
+            ),
           ),
-        ),
-      ]),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 16, right: 16),
+                child: Text(
+                  "Vous venez de rejoindre la liste d'attente de la soirée !",
+                  style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                      height: 1.4,
+                      color: Colors.white),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

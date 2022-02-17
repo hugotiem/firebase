@@ -121,7 +121,7 @@ class _DateHourPageState extends State<DateHourPage> {
                 maxLength: 20,
               ),
               HeaderText2(
-                text: "Heure d'arrivé",
+                text: "Heure d'arrivée",
                 padding: EdgeInsets.only(top: 40, bottom: 20),
               ),
               DateHourPicker(
@@ -150,7 +150,7 @@ class _DateHourPageState extends State<DateHourPage> {
                   await _selectionHeureDepart();
                   heurefinctl.text = 'A ${_heurefin.format(context)} ';
                 },
-                hintText: 'Choisir une Heure',
+                hintText: 'Choisir une heure',
                 controller: heurefinctl,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
