@@ -28,7 +28,7 @@ class PaymentService {
     // PaymentMethod? paymentMethod = await Stripe.instance.initPaymentSheet(paymentSheetParameters: paymentSheetParameters);
   }
 
-  Future<void> initPaymentSheet(BuildContext context,
+  Future<bool> initPaymentSheet(BuildContext context,
       {required String? email, int? amount}) async {
     int pAmount = amount ?? _amount;
     try {
@@ -58,8 +58,11 @@ class PaymentService {
       );
 
       await Stripe.instance.presentPaymentSheet();
+
+      return true;
     } catch (e) {
       print("payment failed: $e");
+      return false;
     }
   }
 }

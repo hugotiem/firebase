@@ -14,6 +14,7 @@ import 'package:pts/components/showModalBottomSheet.dart';
 import 'package:pts/models/capitalize.dart';
 import 'package:pts/models/party.dart';
 import 'package:pts/models/services/firestore_service.dart';
+import 'package:pts/models/services/payment_service.dart';
 import 'package:pts/models/user.dart';
 import 'package:pts/blocs/user/user_cubit.dart';
 import 'package:pts/models/services/auth_service.dart';
@@ -414,13 +415,42 @@ class PartyCard extends StatelessWidget {
                                               ),
                                             );
                                           } else {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    ExistingCard(),
-                                              ),
+                                            print(party.price);
+
+                                            await PaymentService(
+                                                    amount:
+                                                        ((party.price ?? 0) *
+                                                                100)
+                                                            .toInt())
+                                                .initPaymentSheet(context,
+                                                    email: user.email)
+                                                .then(
+                                              (value) async {
+                                                if (value) {
+                                                  await BlocProvider.of<
+                                                          PartiesCubit>(context)
+                                                      .addUserInWaitList(
+                                                          user, party)
+                                                      .then(
+                                                        (value) =>
+                                                            Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                JoinWaitList(),
+                                                          ),
+                                                        ),
+                                                      );
+                                                }
+                                              },
                                             );
+                                            // Navigator.push(
+                                            //   context,
+                                            //   MaterialPageRoute(
+                                            //     builder: (context) =>
+                                            //         ExistingCard(),
+                                            //   ),
+                                            // );
                                           }
                                         },
                                         child: Container(

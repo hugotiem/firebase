@@ -181,9 +181,6 @@ class _HomeState extends State<Home> {
       setState(() {
         _currentIndex = index;
       });
-
-    await PaymentService(amount: 500)
-        .initPaymentSheet(context, email: "hugotiem@gmail.com");
   }
 
   Future<dynamic> _showLoadingPopup() async {
