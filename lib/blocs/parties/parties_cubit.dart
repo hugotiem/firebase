@@ -13,11 +13,19 @@ import 'package:table_calendar/table_calendar.dart';
 part 'parties_state.dart';
 
 class PartiesCubit extends AppBaseCubit<PartiesState> {
-  PartiesCubit() : super(PartiesState.initial());
+  PartiesCubit(
+      {AuthService? auth,
+      FireStoreServices? services,
+      FireStoreServices? userServices})
+      : super(PartiesState.initial()) {
+    this.auth = auth ?? AuthService();
+    this.services = services ?? FireStoreServices("parties");
+    this.userServices = userServices ?? FireStoreServices("user");
+  }
 
-  FireStoreServices services = FireStoreServices("parties");
-  FireStoreServices userServices = FireStoreServices("user");
-  AuthService auth = AuthService();
+  late FireStoreServices services;
+  late FireStoreServices userServices;
+  late AuthService auth;
 
   final String _chars =
       'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';

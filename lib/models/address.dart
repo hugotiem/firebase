@@ -22,8 +22,6 @@ class Address {
   factory Address.fromJson(Map<String, dynamic> data) {
     var properties = data['properties'];
     var coordinates = data['geometry']['coordinates'];
-    print(properties);
-    print(coordinates);
     List<String> context = (properties['context'] as String).split(", ");
     return Address(
       label: properties['label'],

@@ -5,9 +5,12 @@ import 'package:pts/models/services/firestore_service.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class AuthService extends ChangeNotifier {
+  AuthService({FlutterSecureStorage? secureStorage})
+      : this.storage = secureStorage ?? FlutterSecureStorage();
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FireStoreServices services = FireStoreServices("user");
-  final FlutterSecureStorage storage = FlutterSecureStorage();
+  FlutterSecureStorage storage = FlutterSecureStorage();
 
   FirebaseAuth get instance => _auth;
 
