@@ -20,7 +20,6 @@ import 'package:pts/blocs/user/user_cubit.dart';
 import 'package:pts/models/services/auth_service.dart';
 import 'package:pts/pages/login/connect.dart';
 import 'package:pts/pages/messaging/subpage/chatpage.dart';
-import 'package:pts/pages/profil/subpage/existingcard_page.dart';
 import 'package:pts/pages/search/sliver/custom_sliver.dart';
 import 'package:pts/const.dart';
 import 'custom_text.dart';

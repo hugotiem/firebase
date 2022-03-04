@@ -14,9 +14,10 @@ void main() {
         app.main();
         await tester.pumpAndSettle();
 
-        var finders = tester.widgetList(find.byType(OpenContainer));
+        var finder = find.byType(OpenContainer);
 
-        print(finders);
+        print(finder);
+        // tester.tap(find.byType(OpenContainer));
       },
     );
   });

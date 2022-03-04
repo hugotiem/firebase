@@ -15,13 +15,13 @@ class QrCodePage extends StatelessWidget {
           create: (context) => UserCubit()..init(),
           child: BlocBuilder<UserCubit, UserState>(builder: (context, state) {
             var token = state.token;
-            if (state.token == null) {
+            if (token == null) {
               return Container();
             }
             return BlocProvider(
               create: (context) => PartiesCubit()
                 ..fetchPartiesWithWhereArrayContains(
-                    "validatedList", state.token,
+                    "validatedList", token,
                     userLink: true),
               child: BlocBuilder<PartiesCubit, PartiesState>(
                   builder: (context, state) {
