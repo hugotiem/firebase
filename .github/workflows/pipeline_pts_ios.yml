@@ -14,15 +14,31 @@ on:
     - master 
 
 jobs:
-  build:
-    runs-on: macos-latest
 
+  before_script:
+    runs-on: macos-latest
+    
     steps:
       - uses: actions/checkout@v2
 
       - uses: subosito/flutter-action@v1.5.3
         with:
           channel: 'stable'
+
+  test:
+    runs-on: macos-latest
+    needs: before_script
+
+  build:
+    runs-on: macos-latest
+    needs: before_script
+
+    #steps:
+    #  - uses: actions/checkout@v2
+
+    #  - uses: subosito/flutter-action@v1.5.3
+    #    with:
+    #      channel: 'stable'
 
     #  - name: Install dependencies
     #  - run: flutter pub get
