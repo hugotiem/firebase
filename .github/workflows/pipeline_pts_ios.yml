@@ -30,30 +30,9 @@ jobs:
       
       - name: Analyze Dart/Flutter code
         uses: zgosalvez/github-actions-analyze-dart@v1.6.1
-      
-      - name: Analyze Dart/Flutter packages
-        uses: axel-op/dart-package-analyzer@v3
         
       - name: Launching tests
         run: flutter test
           
-      
-
-    #steps:
-    #  - uses: actions/checkout@v2
-
-    #  - uses: subosito/flutter-action@v1.5.3
-    #    with:
-    #      channel: 'stable'
-
-    #  - name: Install dependencies
-    #  - run: flutter pub get
-      
-      
-    #  - name: Analyze project source
-    #    uses: zgosalvez/github-actions-analyze-dart@v1.6.1
-
-    #  - name: Run tests
-    #  - run: flutter test
-      
-    #  
+      - name: Build ios app
+        run: flutter build --ios
