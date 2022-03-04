@@ -199,6 +199,20 @@ class PartiesCubit extends AppBaseCubit<PartiesState> {
     return party;
   }
 
+  Future<void> addComment(User? user, Party party, double note, String comment) async {
+    emit(state.setRequestInProgress() as PartiesState);
+     await services.setWithId(party.id, data: {
+      "commentIdList": FieldValue.arrayUnion([user!.id]),
+    });
+    await services.setWithId(party.id, 
+    data: {
+      "note": note,
+      "comment": comment
+    },
+    path: "comment.${user.id}");
+    emit(PartiesState.loaded(state.parties, state.filters));
+  }
+
   Future<void> addUserInWaitList(User user, Party party) async {
     emit(state.setRequestInProgress() as PartiesState);
     await services.setWithId(party.id, data: {
