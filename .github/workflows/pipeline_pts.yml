@@ -38,7 +38,7 @@ jobs:
         run: flutter test
           
       - name: Build ios app
-        run: flutter build ios
+        run: "echo iOS app can't be built without apple developper licence"
         
   android:
     runs-on: ubuntu-latest
@@ -58,7 +58,7 @@ jobs:
       #  uses: zgosalvez/github-actions-analyze-dart@v1.6.1
         
      # - name: Analyze Dart/Flutter code
-        uses: axel-op/dart-package-analyzer@v3
+      #  uses: axel-op/dart-package-analyzer@v3
         
       - name: Launching tests
         run: flutter test
