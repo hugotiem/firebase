@@ -31,6 +31,9 @@ jobs:
       - name: Analyze Dart/Flutter code
         uses: zgosalvez/github-actions-analyze-dart@v1.6.1
         
+      - name: Analyze Flutter code
+        run: flutter analyze
+        
       - name: Launching tests
         run: flutter test
           
@@ -51,10 +54,11 @@ jobs:
         run: flutter pub get
       
       - name: Analyze Dart/Flutter code
-        uses: zgosalvez/github-actions-analyze-dart@v1.6.1
+        run: flutter analyze
+      #  uses: zgosalvez/github-actions-analyze-dart@v1.6.1
         
-      - name: Analyze Dart/Flutter code
-        uses: axel-op/dart-package-analyzer@v3
+     # - name: Analyze Dart/Flutter code
+     #   uses: axel-op/dart-package-analyzer@v3
         
       - name: Launching tests
         run: flutter test
