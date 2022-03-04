@@ -26,7 +26,7 @@ jobs:
           channel: 'stable'
           
       - name: Clean and Setup workspace
-        run: flutter clean | flutter pub get
+        run: flutter clean && flutter pub get
       
       - name: Analyze Dart/Flutter code
         uses: zgosalvez/github-actions-analyze-dart@v1.6.1
@@ -51,7 +51,7 @@ jobs:
           channel: 'stable'
           
       - name: Clean and Setup workspace
-        run: flutter clean | flutter pub get
+        run: flutter clean && flutter pub get
       
       - name: Analyze Dart/Flutter code
       #  run: flutter analyze
