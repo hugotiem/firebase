@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:math' as math;
 
-import 'package:pts/models/user.dart';
-
 class Party {
   String id;
   String name;

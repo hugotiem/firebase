@@ -92,6 +92,7 @@ class _NewCreditCardState extends State<NewCreditCard> {
                               return null;
                             }
                           }
+                          return null;
                         },
                       ),
                     ],
@@ -124,6 +125,7 @@ class _NewCreditCardState extends State<NewCreditCard> {
                               return null;
                             }
                           }
+                          return null;
                         },
                       ),
                     ],
@@ -149,6 +151,7 @@ class _NewCreditCardState extends State<NewCreditCard> {
                       return null;
                     }
                   }
+                  return null;
                 },
               ),
             ],
@@ -183,7 +186,6 @@ class TextNewCreditCard extends StatelessWidget {
     );
   }
 }
-
 
 class MaskedTextInputFormatter extends TextInputFormatter {
   final String mask;

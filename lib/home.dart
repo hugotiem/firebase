@@ -8,7 +8,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:pts/blocs/parties/parties_cubit.dart';
 import 'package:pts/const.dart';
-import 'package:pts/models/services/payment_service.dart';
 import 'package:pts/pages/creation/creation_page.dart';
 import 'package:pts/pages/login/connect.dart';
 import 'package:pts/pages/login/id_form_screen.dart';
@@ -35,7 +34,7 @@ class _HomeState extends State<Home> {
     Profil(),
   ];
 
-  StreamSubscription? _sub;
+  // StreamSubscription? _sub;
 
   @override
   void initState() {
@@ -48,9 +47,9 @@ class _HomeState extends State<Home> {
 
       print("initial link = $initialLink");
 
-      _sub = linkStream.listen((String? link) {
-        print("stream link = $link");
-      });
+      // _sub = linkStream.listen((String? link) {
+      //   print("stream link = $link");
+      // });
     } on FormatException {}
   }
 

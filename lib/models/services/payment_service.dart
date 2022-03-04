@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 
 import 'package:http/http.dart' as http;
-import 'package:pts/const.dart';
 
 class PaymentService {
   late int _amount;
@@ -22,11 +21,11 @@ class PaymentService {
     await Stripe.instance.applySettings();
   }
 
-  Future<PaymentMethod?> createPaymentMethod() async {
-    print('transaction amount: $_amount');
+  // Future<PaymentMethod?> createPaymentMethod() async {
+  //   print('transaction amount: $_amount');
 
-    // PaymentMethod? paymentMethod = await Stripe.instance.initPaymentSheet(paymentSheetParameters: paymentSheetParameters);
-  }
+  //   // PaymentMethod? paymentMethod = await Stripe.instance.initPaymentSheet(paymentSheetParameters: paymentSheetParameters);
+  // }
 
   Future<bool> initPaymentSheet(BuildContext context,
       {required String? email, int? amount}) async {

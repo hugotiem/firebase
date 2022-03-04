@@ -8,7 +8,6 @@ import 'package:pts/blocs/user/user_cubit.dart';
 import 'package:pts/models/services/auth_service.dart';
 import 'package:pts/models/services/notification_service.dart';
 import 'package:pts/models/services/payment_service.dart';
-import 'package:pts/onboarding_page.dart';
 import 'home.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';

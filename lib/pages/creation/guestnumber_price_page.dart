@@ -37,39 +37,6 @@ class _GuestNumberState extends State<GuestNumber> {
     });
   }
 
-  WidgetSpan _buildWidgetSpan(BuildContext context, String title,
-      bool isSelected, void Function() onSelect, void Function() onClose) {
-    return WidgetSpan(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: GestureDetector(
-          child: Container(
-            padding: EdgeInsets.only(
-              right: 15,
-              top: isSelected ? 0 : 15,
-              bottom: isSelected ? 0 : 15,
-              left: isSelected ? 0 : 15,
-            ),
-            decoration: BoxDecoration(
-              border: Border.all(),
-              borderRadius: BorderRadius.circular(10),
-              color: isSelected ? Colors.grey.withOpacity(0.2) : null,
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (isSelected)
-                  IconButton(onPressed: onClose, icon: Icon(Icons.close)),
-                Text(title),
-              ],
-            ),
-          ),
-          onTap: onSelect,
-        ),
-      ),
-    );
-  }
-
   bool isCustomPrice = false;
   bool isFree = false;
 
