@@ -14,8 +14,10 @@ on:
     - master 
 
 jobs:
+    
 
-  before_script:
+
+  build:
     runs-on: macos-latest
     
     steps:
@@ -24,22 +26,18 @@ jobs:
       - uses: subosito/flutter-action@v1.5.3
         with:
           channel: 'stable'
-
-  test:
-    runs-on: macos-latest
-    needs: before_script
-    
-    steps:
-      - name: Flutter test
+          
+      - name: Get Flutter dependencies
+      - run: flutter pub get
+      
+      - name: Analyze Dart/Flutter code
+      - uses: zgosalvez/github-actions-analyze-dart@v1.6.1
+      
+      - name: Analyze Dart/Flutter packages
+        uses: axel-op/dart-package-analyzer@v3
+        
+      - name: Launching tests
         run: flutter test
-
-  build:
-    runs-on: macos-latest
-    needs: before_script
-    
-    steps:
-      - name: build the app
-        run: flutter build ios
 
     #steps:
     #  - uses: actions/checkout@v2
