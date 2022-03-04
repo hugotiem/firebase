@@ -18,11 +18,11 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
-Future<void> main() async {
+Future<void> main({bool isTesting = false}) async {
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
 
-    await NotificationService.init();
+    if (!isTesting) await NotificationService.init();
     await PaymentService.init();
 
     Bloc.observer = AppBlocDelegate();
