@@ -25,8 +25,8 @@ jobs:
         with:
           channel: 'stable'
           
-      - name: Get Flutter dependencies
-        run: flutter pub get
+      - name: Clean and Setup workspace
+        run: flutter clean && flutter pub get
       
       - name: Analyze Dart/Flutter code
         uses: zgosalvez/github-actions-analyze-dart@v1.6.1
@@ -50,15 +50,15 @@ jobs:
         with:
           channel: 'stable'
           
-      - name: Get Flutter dependencies
-        run: flutter pub get
+      - name: Clean and Setup workspace
+        run: flutter clean && flutter pub get
       
       - name: Analyze Dart/Flutter code
-        run: flutter analyze
+      #  run: flutter analyze
       #  uses: zgosalvez/github-actions-analyze-dart@v1.6.1
         
      # - name: Analyze Dart/Flutter code
-     #   uses: axel-op/dart-package-analyzer@v3
+        uses: axel-op/dart-package-analyzer@v3
         
       - name: Launching tests
         run: flutter test
