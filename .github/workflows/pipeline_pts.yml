@@ -3,7 +3,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Dart
+name: PTS pipeline
 
 on:
   push:
@@ -35,7 +35,7 @@ jobs:
         run: flutter test
           
       - name: Build ios app
-        run: flutter build --ios
+        run: flutter build ios
         
   android:
     runs-on: ubuntu-latest
@@ -60,4 +60,4 @@ jobs:
         run: flutter test
           
       - name: Build ios app
-        run: flutter build --apk
+        run: flutter build apk
