@@ -15,7 +15,7 @@ on:
 
 jobs:
     
-  build:
+  ios:
     runs-on: macos-latest
     
     steps:
@@ -36,3 +36,28 @@ jobs:
           
       - name: Build ios app
         run: flutter build --ios
+        
+  android:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: subosito/flutter-action@v1.5.3
+        with:
+          channel: 'stable'
+          
+      - name: Get Flutter dependencies
+        run: flutter pub get
+      
+      - name: Analyze Dart/Flutter code
+        uses: zgosalvez/github-actions-analyze-dart@v1.6.1
+        
+      - name: Analyze Dart/Flutter code
+        uses: axel-op/dart-package-analyzer@v3
+        
+      - name: Launching tests
+        run: flutter test
+          
+      - name: Build ios app
+        run: flutter build --apk
