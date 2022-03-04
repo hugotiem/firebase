@@ -15,8 +15,6 @@ on:
 
 jobs:
     
-
-
   build:
     runs-on: macos-latest
     
@@ -30,14 +28,7 @@ jobs:
       - name: Get Flutter dependencies
       - run: flutter pub get
       
-      - name: Analyze Dart/Flutter code
-      - uses: zgosalvez/github-actions-analyze-dart@v1.6.1
       
-      - name: Analyze Dart/Flutter packages
-        uses: axel-op/dart-package-analyzer@v3
-        
-      - name: Launching tests
-        run: flutter test
 
     #steps:
     #  - uses: actions/checkout@v2
