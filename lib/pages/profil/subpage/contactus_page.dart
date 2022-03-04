@@ -23,7 +23,7 @@ class ContactUsPage extends StatelessWidget {
           children: [
             SizedBox(height: 22),
             CText(
-              "Pour nous contacter il vous suffit de nous envoyer un mail à l'addresse suivante:",
+              "Pour nous contacter il vous suffit de nous envoyer un mail à l'adresse suivante:",
               fontSize: 16,
             ),
             SizedBox(height: 8),

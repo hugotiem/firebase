@@ -26,6 +26,8 @@ class Party {
   final Map<String, dynamic> waitListInfo;
   bool? isActive;
   String? userLink;
+  List<dynamic>? commentIdList;
+  Map<String, dynamic>? comment;
 
   Party(
       this.id,
@@ -50,6 +52,8 @@ class Party {
       this.waitList,
       this.waitListInfo,
       this.isActive,
+      this.comment,
+      this.commentIdList,
       {this.distance,
       this.userLink});
 
@@ -89,6 +93,8 @@ class Party {
         (data?["waitListInfo"] as Map?)?.cast<String, dynamic>() ??
             <String, dynamic>{};
     var isActive = data?['isActive'];
+    var comment = data?['comment'];
+    var commentIdList  = data?['commentIdList'];
 
     return Party(
       id,
@@ -113,6 +119,8 @@ class Party {
       waitList,
       waitListInfo,
       isActive,
+      comment,
+      commentIdList
     );
   }
 
@@ -147,6 +155,8 @@ class Party {
         (data["waitListInfo"] as Map?)?.cast<String, dynamic>() ??
             <String, dynamic>{};
     var isActive = data['isActive'];
+    var comment = data['comment'];
+    var commentIdList  = data['commentIdList'];
 
     return Party(
       id,
@@ -171,6 +181,8 @@ class Party {
       waitList,
       waitListInfo,
       isActive,
+      comment,
+      commentIdList
     );
   }
 }

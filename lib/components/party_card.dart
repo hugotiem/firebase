@@ -25,6 +25,7 @@ import 'package:pts/const.dart';
 import 'custom_text.dart';
 import 'horizontal_separator.dart';
 import 'piechart.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class PartyCard extends StatelessWidget {
   final Party party;
@@ -518,6 +519,8 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
   double? _size, _barSizeWidth, _barSizeHeight, _opacity;
   late Color _toolbarColor;
   bool? _headerName, _headerLocation, _headerDate;
+  double _note = 3;
+  String _comment = "";
 
   @override
   void initState() {
@@ -564,6 +567,134 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
       );
     }
 
+    Party party = widget.party;
+
+    Future<void> commentParty() {
+      return showModalBottomSheet(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(25),
+            topRight: Radius.circular(25),
+          ),
+        ),
+        context: context,
+        isScrollControlled: true,
+        builder: (context) {
+          return StatefulBuilder(
+              builder: (BuildContext context, StateSetter setModalState) {
+            if (!party.commentIdList!.contains(widget.user!.id)) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 22),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    titleText("Note la soirée"),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 22),
+                      child: RatingBar.builder(
+                        direction: Axis.horizontal,
+                        minRating: 1,
+                        initialRating: 3,
+                        itemCount: 5,
+                        itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                        itemBuilder: (context, _) =>
+                            Icon(Icons.star, color: ICONCOLOR),
+                        onRatingUpdate: (rating) {
+                          setModalState(() {
+                            _note = rating;
+                          });
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 22),
+                      child: Center(
+                        child: Container(
+                          height: 226,
+                          width: MediaQuery.of(context).size.width * 0.9,
+                          decoration: BoxDecoration(
+                            color: PRIMARY_COLOR,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 16, right: 16),
+                            child: TextFormField(
+                              onChanged: (value) {
+                                setModalState(() {
+                                  _comment = value;
+                                });
+                              },
+                              style: TextStyle(
+                                fontSize: TEXTFIELDFONTSIZE,
+                              ),
+                              maxLength: 500,
+                              keyboardType: TextInputType.multiline,
+                              minLines: 1,
+                              maxLines: 10,
+                              decoration: InputDecoration(
+                                hintText:
+                                    'Un mot sur la soirée que tu viens de passer',
+                                border: InputBorder.none,
+                                counterStyle: TextStyle(height: 1),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    BlocProvider(
+                      create: (context) => PartiesCubit(),
+                      child: BlocBuilder<PartiesCubit, PartiesState>(
+                          builder: (context, state) {
+                        return InkWell(
+                          onTap: () async {
+                            if (widget.user!.id == null) throw Error();
+                            await BlocProvider.of<PartiesCubit>(context)
+                                .addComment(
+                                    widget.user, party, _note, _comment);
+                            Navigator.pop(context);
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(bottom: 22),
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: Container(
+                                padding: EdgeInsets.all(15),
+                                decoration: BoxDecoration(
+                                  color: SECONDARY_COLOR,
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(15),
+                                  ),
+                                ),
+                                child: CText(
+                                  'Envoyer',
+                                  color: PRIMARY_COLOR,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      }),
+                    ),
+                  ],
+                ),
+              );
+            } else {
+              return Container(
+                margin: EdgeInsets.symmetric(vertical: 30, horizontal: 22),
+                child: CText(
+                  'Tu as déjà laissé un commentaire',
+                  fontSize: 18,
+                ),
+              );
+            }
+          });
+        },
+      );
+    }
+
     return CustomSliver(
       backgroundColor: PRIMARY_COLOR,
       toolbarColor: _toolbarColor,
@@ -605,24 +736,15 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
               ),
             ),
           ),
-          widget.party.ownerId == widget.user?.id
-              ? Align(
-                  alignment: Alignment.topRight,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 55, right: 22),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: PRIMARY_COLOR.withOpacity(0.4),
-                        shape: BoxShape.circle,
-                      ),
-                      child: IconButton(
-                        icon: Icon(Ionicons.ellipsis_vertical_outline),
-                        onPressed: () => editParty(),
-                      ),
-                    ),
-                  ),
-                )
-              : Container(),
+          if (widget.user == null)
+            Center(child: CircularProgressIndicator())
+          else if (party.ownerId == widget.user?.id)
+            setting(() => editParty())
+          else if (party.validatedList!.contains(widget.user!.id) &&
+              party.isActive == false)
+            setting(() => commentParty())
+          else
+            Container(),
           Column(
             children: [
               SizedBox(height: (_size! - 80) > 50 ? _size! - 80 : 50),
@@ -724,18 +846,14 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
-                              widget.party.ownerId == widget.user?.id
-                                  ? Align(
-                                      alignment: Alignment.centerRight,
-                                      child: IconButton(
-                                        onPressed: () => editParty(),
-                                        icon: Icon(
-                                          Ionicons.ellipsis_vertical_outline,
-                                          color: ICONCOLOR,
-                                        ),
-                                      ),
-                                    )
-                                  : SizedBox(),
+                              if (widget.party.ownerId == widget.user?.id)
+                                setting1(() => editParty())
+                              else if (party.validatedList!
+                                      .contains(widget.user!.id) &&
+                                  party.isActive == false)
+                                setting1(() => commentParty())
+                              else
+                                SizedBox(),
                             ],
                           ),
                   ),
@@ -784,6 +902,38 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
         return true;
       },
       bottomNavigationBar: widget.bottomNavigationBar!,
+    );
+  }
+
+  Widget setting(void Function()? onPressed) {
+    return Align(
+      alignment: Alignment.topRight,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 55, right: 22),
+        child: Container(
+          decoration: BoxDecoration(
+            color: PRIMARY_COLOR.withOpacity(0.4),
+            shape: BoxShape.circle,
+          ),
+          child: IconButton(
+            icon: Icon(Ionicons.ellipsis_vertical_outline),
+            onPressed: onPressed,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget setting1(void Function()? onPressed) {
+    return Align(
+      alignment: Alignment.centerRight,
+      child: IconButton(
+        onPressed: onPressed,
+        icon: Icon(
+          Ionicons.ellipsis_vertical_outline,
+          color: ICONCOLOR,
+        ),
+      ),
     );
   }
 }

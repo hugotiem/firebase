@@ -308,7 +308,7 @@ class _ListMessageState extends State<ListMessage> {
           _docs = snapshot.data!.docs;
           if (_docs.isEmpty) {
             return const Center(
-              child: Text("Envoyer votre premier message"),
+              child: Text("Envoi le premier message"),
             );
           }
           return SingleChildScrollView(

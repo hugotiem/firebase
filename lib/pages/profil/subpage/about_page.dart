@@ -25,7 +25,7 @@ class AboutPage extends StatelessWidget {
           onTapBox(
             context,
             'Aide',
-            'Posez-nous ici les questions que vous avez concernant PTS',
+            'Avez-vous des questions concernant PTS ?',
             to: HelpPage(),
           ),
           onTapBox(
