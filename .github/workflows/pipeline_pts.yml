@@ -15,7 +15,7 @@ on:
 
 jobs:
     
-  ios:
+  build_ios:
     runs-on: macos-latest
     
     steps:
@@ -40,7 +40,7 @@ jobs:
       - name: Build ios app
         run: echo "iOS app can't be built without apple developper licence"
         
-  android:
+  build_android:
     runs-on: macos-latest
     
     steps:
@@ -63,7 +63,24 @@ jobs:
       - name: Launching tests
         run: flutter test
           
-      - name: Build ios app
+      - name: Build android app
+        run: flutter build apk
+        
+  Deploy_android:
+    runs-on: ubuntu-latest
+    needs: build_android
+        
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: subosito/flutter-action@v1.5.3
+        with:
+          channel: 'stable'
+          
+      - name: Clean and Setup workspace
+        run: flutter clean && flutter pub get
+      
+      - name: Build android app
         run: flutter build apk
         
       - name: upload artifact to Firebase App Distribution
