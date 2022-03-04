@@ -28,10 +28,18 @@ jobs:
   test:
     runs-on: macos-latest
     needs: before_script
+    
+    steps:
+      - name: Flutter test
+        run: flutter test
 
   build:
     runs-on: macos-latest
     needs: before_script
+    
+    steps:
+      - name: build the app
+        run: flutter build ios
 
     #steps:
     #  - uses: actions/checkout@v2
@@ -50,5 +58,4 @@ jobs:
     #  - name: Run tests
     #  - run: flutter test
       
-    #  - name: build the app
-    #    run: flutter build ios
+    #  
