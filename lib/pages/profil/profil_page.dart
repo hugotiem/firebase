@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:pts/components/custom_text.dart';
 import 'package:pts/components/profile_photo.dart';
-import 'package:pts/models/services/auth_service.dart';
+import 'package:pts/services/auth_service.dart';
 import 'package:pts/onboarding_page.dart';
 import 'package:pts/const.dart';
 import 'package:pts/models/Capitalize.dart';

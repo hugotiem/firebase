@@ -5,7 +5,7 @@ import 'package:pts/blocs/user/user_cubit.dart';
 import 'package:pts/components/form/custom_text_form.dart';
 import 'package:pts/components/form/selectable_items.dart';
 import 'package:pts/const.dart';
-import 'package:pts/models/services/firestore_service.dart';
+import 'package:pts/services/firestore_service.dart';
 import 'package:pts/blocs/parties/build_parties_cubit.dart';
 import 'package:pts/components/appbar.dart';
 

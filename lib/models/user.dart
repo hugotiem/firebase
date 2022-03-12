@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:pts/models/services/auth_service.dart';
-import 'package:pts/models/services/firestore_service.dart';
+import 'package:pts/services/auth_service.dart';
+import 'package:pts/services/firestore_service.dart';
 
 class User {
   final AuthService authService = AuthService();

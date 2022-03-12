@@ -15,8 +15,8 @@ import 'package:pts/components/appbar.dart';
 import 'package:pts/components/horizontal_separator.dart';
 import 'package:pts/models/Capitalize.dart';
 import 'package:path/path.Dart' as Path;
-import 'package:pts/models/services/auth_service.dart';
-import 'package:pts/models/services/storage_service.dart';
+import 'package:pts/services/auth_service.dart';
+import 'package:pts/services/storage_service.dart';
 
 class ProfilDetails extends StatefulWidget {
   const ProfilDetails({Key? key}) : super(key: key);

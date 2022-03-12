@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:pts/models/services/auth_service.dart';
+import 'package:pts/services/auth_service.dart';
 import 'package:firebase_core_platform_interface/firebase_core_platform_interface.dart';
 
 typedef Callback(MethodCall call);

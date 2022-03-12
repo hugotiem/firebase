@@ -90,4 +90,5 @@ stack pour réduire (voir supprimer) les frais
     - Si le fichier est la base d'une page : `<page_name>_page.dart`.
     - Pour les composants (non génériques) d'une page (function name) : `_buildComponentName()`
 
-### Git branch names
+### Run the project :
+run: flutter run (add ios for iOS app and apk for Android app)

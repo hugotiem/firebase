@@ -9,7 +9,7 @@ import 'package:pts/components/profile_photo.dart';
 
 import 'package:pts/const.dart';
 import 'package:pts/models/party.dart';
-import 'package:pts/models/services/firestore_service.dart';
+import 'package:pts/services/firestore_service.dart';
 import '../../profil/Profil_page.dart';
 
 class GuestWaitList extends StatelessWidget {

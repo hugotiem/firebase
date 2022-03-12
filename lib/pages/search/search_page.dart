@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:animations/animations.dart';
 import 'package:flutter/services.dart';
+import 'package:pts/pages/search/search_form_page.dart';
+import 'package:pts/pages/search/sliver/searchbar.dart';
 import 'package:pts/pages/search/sliver/searchbar_screen.dart';
 import 'package:pts/components/custom_text.dart';
 import 'package:pts/const.dart';
@@ -165,26 +167,20 @@ class _SearchState extends State<Search> {
             left: 20,
             top:
                 (_size! - 100) > 50 ? _size! - 100 : 50), //(_size ?? 0) - 130),
-        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-        decoration: BoxDecoration(
-          color: Colors.white
-              .withOpacity(_opacity < 0.2 ? 0.8 + 0.2 - _opacity : 0.8),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: OpenContainer(
-          closedElevation: 0,
-          openElevation: 0,
-          closedColor: Colors.transparent,
-          closedBuilder: (context, returnValue) {
-            return Container(
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              width: double.infinity,
-              child: Text("Selectionne une ville"),
-            );
-          },
-          openBuilder: (BuildContext context, returnValue) {
-            return SearchBarScreen();
-          },
+
+        child: Hero(
+          tag: 'search-widget',
+          child: SearchBar(
+              backgroundColor: Colors.white.withOpacity(0.8),
+              readOnly: true,
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => SearchFormPage(),
+                    fullscreenDialog: true,
+                  ),
+                );
+              }),
         ),
       ),
 

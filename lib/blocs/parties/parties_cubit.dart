@@ -2,9 +2,9 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pts/models/party.dart';
-import 'package:pts/models/services/auth_service.dart';
+import 'package:pts/services/auth_service.dart';
 // import 'package:pts/models/services/dynamic_links_services.dart';
-import 'package:pts/models/services/firestore_service.dart';
+import 'package:pts/services/firestore_service.dart';
 import 'package:pts/blocs/base/app_base_cubit.dart';
 import 'package:pts/blocs/base/app_base_state.dart';
 import 'package:pts/models/user.dart';

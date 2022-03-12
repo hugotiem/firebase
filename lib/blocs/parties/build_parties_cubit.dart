@@ -1,5 +1,5 @@
 import 'package:pts/models/address.dart';
-import 'package:pts/models/services/firestore_service.dart';
+import 'package:pts/services/firestore_service.dart';
 import 'package:pts/blocs/base/app_base_cubit.dart';
 import 'package:pts/blocs/base/app_base_state.dart';
 

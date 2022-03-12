@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pts/blocs/user/user_cubit.dart';
 import 'package:pts/const.dart';
-import 'package:pts/models/services/auth_service.dart';
+import 'package:pts/services/auth_service.dart';
 import 'package:pts/pages/messaging/subpage/chatpage.dart';
 
 class MessagePage extends StatelessWidget {
