@@ -64,7 +64,8 @@ class _DescriptionPageState extends State<DescriptionPage> {
                       ..addItem("waitList", [])
                       ..addItem("isActive", true)
                       ..addItem("party owner", state.user!.id)
-                      ..addItem("commentIdList", []);
+                      ..addItem("commentIdList", [])
+                      ..addItem("comment", {});
 
                     await BlocProvider.of<BuildPartiesCubit>(context)
                         .addToFireStore();

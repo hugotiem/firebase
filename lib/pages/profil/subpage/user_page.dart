@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -5,10 +6,12 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:pts/blocs/parties/parties_cubit.dart';
 import 'package:pts/blocs/user/user_cubit.dart';
+import 'package:pts/components/custom_text.dart';
 import 'package:pts/components/profile_photo.dart';
 import 'package:pts/const.dart';
 import 'package:pts/components/appbar.dart';
@@ -17,6 +20,7 @@ import 'package:pts/models/Capitalize.dart';
 import 'package:path/path.Dart' as Path;
 import 'package:pts/models/services/auth_service.dart';
 import 'package:pts/models/services/storage_service.dart';
+import 'package:pts/models/party.dart';
 
 class ProfilDetails extends StatefulWidget {
   const ProfilDetails({Key? key}) : super(key: key);
@@ -250,7 +254,7 @@ class _ProfilDetailsState extends State<ProfilDetails> {
                                     partyStateJoin.parties!.length.toString(),
                               ),
                               HorzontalSeparator(),
-                              Comment(),
+                              Comment(partyStateOwner.parties),
                               SizedBox(height: 50)
                             ],
                           ),
@@ -427,11 +431,33 @@ class Histoty extends StatelessWidget {
   }
 }
 
-class Comment extends StatelessWidget {
-  const Comment({Key? key}) : super(key: key);
+class Comment extends StatefulWidget {
+  final List<Party>? party;
+  const Comment(this.party, {Key? key}) : super(key: key);
 
   @override
+  State<Comment> createState() => _CommentState();
+}
+
+class _CommentState extends State<Comment> {
+  @override
   Widget build(BuildContext context) {
+    Map comment;
+    List commentListId;
+    List list = [];
+    List<int> list1 = [];
+    int i = 0;
+
+    // ignore: unused_local_variable
+    for (var test in widget.party!) {
+      if (widget.party![i].commentIdList!.isNotEmpty) {
+        setState(() {
+          list1.add(1);
+        });
+      }
+      i++;
+    }
+
     return Align(
       alignment: Alignment.centerLeft,
       child: Padding(
@@ -443,19 +469,69 @@ class Comment extends StatelessWidget {
             Text(
               'Commentaire',
               style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 22,
-                  color: SECONDARY_COLOR),
+                fontWeight: FontWeight.w500,
+                fontSize: 22,
+                color: SECONDARY_COLOR,
+              ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 40),
-              child: Opacity(
+            ListView.builder(
+              shrinkWrap: true,
+              itemCount: widget.party!.length,
+              itemBuilder: (BuildContext context, int index) {
+                commentListId = widget.party![index].commentIdList ?? [];
+                list = commentListId.map((doc) {
+                  comment = widget.party![index].comment![doc];
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 40),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: ProfilePhoto(comment["photo"], radius: 25),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 12),
+                              child: CText(
+                                "${comment["name"].toString().inCaps} ${comment["surname"].toString().inCaps}",
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            )
+                          ],
+                        ),
+                        Opacity(
+                          opacity: 0.75,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 12),
+                            child: SizedBox(
+                              child: CText(comment["comment"], fontSize: 16),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  );
+                }).toList();
+
+                return Column(
+                  children: list as List<Widget>,
+                );
+              },
+            ),
+            if (list1.isEmpty)
+              Padding(
+                padding: const EdgeInsets.only(top: 40),
+                child: Opacity(
                   opacity: 0.65,
                   child: Text(
                     "Vous n'avez pas encore de commentaires",
                     style: TextStyle(color: SECONDARY_COLOR, fontSize: 16),
-                  )),
-            )
+                  ),
+                ),
+              )
           ],
         ),
       ),
