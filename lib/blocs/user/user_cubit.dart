@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:pts/models/services/auth_service.dart';
-import 'package:pts/models/services/firestore_service.dart';
-import 'package:pts/models/services/storage_service.dart';
+import 'package:pts/services/auth_service.dart';
+import 'package:pts/services/firestore_service.dart';
+import 'package:pts/services/storage_service.dart';
 import 'package:pts/models/user.dart';
 import 'package:pts/blocs/base/app_base_cubit.dart';
 import 'package:pts/blocs/base/app_base_state.dart';

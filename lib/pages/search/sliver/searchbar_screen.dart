@@ -213,12 +213,16 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                                 Stack(
                                   clipBehavior: Clip.none,
                                   children: [
-                                    SearchBar(
-                                      onChanged: (value) {
-                                        BlocProvider.of<SearchCubit>(context)
-                                            .fetchResults(value);
-                                      },
-                                      focusNode: focusNode,
+                                    Hero(
+                                      tag: 'search-widget',
+                                      child: SearchBar(
+                                        onChanged: (value) {
+                                          BlocProvider.of<SearchCubit>(
+                                                  context)
+                                              .fetchResults(value);
+                                        },
+                                        focusNode: focusNode,
+                                      ),
                                     ),
                                     Positioned(
                                       bottom: -60,
@@ -447,10 +451,10 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                                         itemCount: parties.length,
                                         itemBuilder: (context, index) {
                                           return Padding(
-                                            padding: const EdgeInsets.symmetric(vertical: 12),
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 12),
                                             child: PartyCard(
-                                              party:
-                                              parties[index],
+                                              party: parties[index],
                                             ),
                                           );
                                           // return Container(

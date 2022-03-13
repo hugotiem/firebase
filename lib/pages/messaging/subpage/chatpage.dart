@@ -9,10 +9,10 @@ import 'package:ionicons/ionicons.dart';
 import 'package:pts/components/appbar.dart';
 import 'package:pts/const.dart';
 import 'package:pts/models/Capitalize.dart';
-import 'package:pts/models/services/auth_service.dart';
+import 'package:pts/services/auth_service.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.Dart' as Path;
-import 'package:pts/models/services/storage_service.dart';
+import 'package:pts/services/storage_service.dart';
 
 class ChatPage extends StatelessWidget {
   final otherUserID;

@@ -1,7 +1,7 @@
 import 'package:pts/const.dart';
 import 'package:pts/models/calendar_data_source.dart';
-import 'package:pts/models/services/auth_service.dart';
-import 'package:pts/models/services/firestore_service.dart';
+import 'package:pts/services/auth_service.dart';
+import 'package:pts/services/firestore_service.dart';
 import 'package:pts/blocs/base/app_base_cubit.dart';
 import 'package:pts/blocs/base/app_base_state.dart';
 
