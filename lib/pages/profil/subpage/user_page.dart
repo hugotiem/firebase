@@ -245,6 +245,7 @@ class _ProfilDetailsState extends State<ProfilDetails> {
                                 onTap: () => showPhoto(photo!),
                                 identiteVerif: user.verified,
                                 avis: '0',
+                                party: partyStateOwner.parties,
                               ),
                               HorzontalSeparator(),
                               Histoty(
@@ -272,13 +273,14 @@ class _ProfilDetailsState extends State<ProfilDetails> {
   }
 }
 
-class HeadProfil extends StatelessWidget {
+class HeadProfil extends StatefulWidget {
   final String? fullName;
   final String? age;
   final String? photo;
   final bool? identiteVerif;
   final String? avis;
   final void Function()? onTap;
+  final List<Party>? party;
 
   const HeadProfil(
       {this.fullName,
@@ -287,26 +289,44 @@ class HeadProfil extends StatelessWidget {
       this.avis,
       this.identiteVerif,
       this.onTap,
+      this.party,
       Key? key})
       : super(key: key);
 
   @override
+  State<HeadProfil> createState() => _HeadProfilState();
+}
+
+class _HeadProfilState extends State<HeadProfil> {
+  @override
   Widget build(BuildContext context) {
+    int i = 0;
+    int count = 0;
+    // ignore: unused_local_variable
+    for (var test in widget.party!) {
+      if (widget.party![i].commentIdList!.isNotEmpty) {
+          setState(() {
+            count += widget.party![i].commentIdList!.length;
+          });
+      }
+      i++;
+    }
+
     return Column(
       children: [
         InkWell(
-          onTap: onTap,
+          onTap: widget.onTap,
           child: Center(
             child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 40),
                 child: ProfilePhoto(
-                  photo,
+                  widget.photo,
                   radius: 70,
                 )),
           ),
         ),
         Text(
-          fullName!,
+          widget.fullName!,
           style: TextStyle(
               fontWeight: FontWeight.w500,
               color: SECONDARY_COLOR,
@@ -317,7 +337,7 @@ class HeadProfil extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.only(top: 12),
             child: Text(
-              '$age ans',
+              '${widget.age} ans',
               style: TextStyle(color: SECONDARY_COLOR, fontSize: 16),
             ),
           ),
@@ -331,7 +351,7 @@ class HeadProfil extends StatelessWidget {
                 child: Icon(Ionicons.star, color: ICONCOLOR),
               ),
               Text(
-                '$avis avis',
+                '$count avis',
                 style: TextStyle(
                   fontSize: 16,
                   color: SECONDARY_COLOR,
@@ -346,13 +366,14 @@ class HeadProfil extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 22),
               child: Icon(
-                  identiteVerif! == true
+                  widget.identiteVerif! == true
                       ? Icons.verified_user_sharp
                       : Icons.close_outlined,
-                  color: identiteVerif! == true ? ICONCOLOR : Colors.red),
+                  color:
+                      widget.identiteVerif! == true ? ICONCOLOR : Colors.red),
             ),
             Text(
-              identiteVerif! == true
+              widget.identiteVerif! == true
                   ? "Profil vérifiée"
                   : "Profil non vérifiée",
               style: TextStyle(
@@ -490,13 +511,13 @@ class _CommentState extends State<Comment> {
                           children: [
                             Align(
                               alignment: Alignment.centerRight,
-                              child: ProfilePhoto(comment["photo"], radius: 25),
+                              child: ProfilePhoto(comment["photo"], radius: 20),
                             ),
                             Padding(
                               padding: const EdgeInsets.only(left: 12),
                               child: CText(
                                 "${comment["name"].toString().inCaps} ${comment["surname"].toString().inCaps}",
-                                fontSize: 20,
+                                fontSize: 18,
                                 fontWeight: FontWeight.w500,
                               ),
                             )
