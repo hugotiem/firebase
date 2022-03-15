@@ -296,162 +296,96 @@ class PartyCard extends StatelessWidget {
                       create: (context) => UserCubit()..init(),
                       child: BlocBuilder<UserCubit, UserState>(
                           builder: (context, connectUserState) {
-                        return CustomSliverCard(
-                          party: party,
-                          user: connectUserState.user,
-                          image: image,
-                          color: color,
-                          date:
-                              '${DateFormat.E('fr').format(party.startTime!).inCaps} ${DateFormat.d('fr').format(party.startTime!)} ${DateFormat.MMMM('fr').format(party.startTime!)}',
-                          startHour:
-                              "${DateFormat.Hm('fr').format(party.startTime!).split(":")[0]}h${DateFormat.Hm('fr').format(party.startTime!).split(":")[1]}",
-                          endHour:
-                              "${DateFormat.Hm('fr').format(party.endTime!).split(':')[0]}h${DateFormat.Hm('fr').format(party.endTime!).split(':')[1]}",
-                          body: SizedBox.expand(
-                            child: SingleChildScrollView(
-                              child: CardBody(
-                                user: connectUserState.user,
-                                nombre: party.number,
-                                desc: party.desc != null ? party.desc : '',
-                                nomOrganisateur:
-                                    "${user!.name} ${user.surname}",
-                                avis: '4.9 / 5 - 0 avis',
-                                animal: party.animals!,
-                                smoke: party.smoke!,
-                                list: list,
-                                nameList: nameList,
-                                contacter: () => contacter(user.name),
-                                photoUserProfile: user.photo,
-                                acceptedUserInfo: party.validatedListInfo,
-                                gender: gender,
+                        return BlocProvider(
+                          create: (context) => PartiesCubit()
+                            ..fetchPartiesWithWhereIsEqualTo(
+                                "party owner", state.user!.id),
+                          child: BlocBuilder<PartiesCubit, PartiesState>(
+                              builder: (context, partyOwnerState) {
+                            if (partyOwnerState.parties == null)
+                              return Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            return CustomSliverCard(
+                              party: party,
+                              user: connectUserState.user,
+                              image: image,
+                              color: color,
+                              date:
+                                  '${DateFormat.E('fr').format(party.startTime!).inCaps} ${DateFormat.d('fr').format(party.startTime!)} ${DateFormat.MMMM('fr').format(party.startTime!)}',
+                              startHour:
+                                  "${DateFormat.Hm('fr').format(party.startTime!).split(":")[0]}h${DateFormat.Hm('fr').format(party.startTime!).split(":")[1]}",
+                              endHour:
+                                  "${DateFormat.Hm('fr').format(party.endTime!).split(':')[0]}h${DateFormat.Hm('fr').format(party.endTime!).split(':')[1]}",
+                              body: SizedBox.expand(
+                                child: SingleChildScrollView(
+                                  child: CardBody(
+                                    user: connectUserState.user,
+                                    nombre: party.number,
+                                    desc: party.desc != null ? party.desc : '',
+                                    nomOrganisateur:
+                                        "${user!.name} ${user.surname}",
+                                    partyOwner: partyOwnerState.parties,
+                                    animal: party.animals!,
+                                    smoke: party.smoke!,
+                                    list: list,
+                                    nameList: nameList,
+                                    contacter: () => contacter(user.name),
+                                    photoUserProfile: user.photo,
+                                    acceptedUserInfo: party.validatedListInfo,
+                                    gender: gender,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                          bottomNavigationBar: CardBNB(
-                            prix: party.price.toString(),
-                            onTap: connectUserState.user == null
-                                ? GestureDetector(
-                                    onTap: () async {
-                                      showModalBottomSheet(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(25.0),
-                                            topRight: Radius.circular(25.0),
-                                          ),
-                                        ),
-                                        context: context,
-                                        builder: (context) {
-                                          return Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Center(
-                                                child: Padding(
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      vertical: 22,
-                                                      horizontal: 18),
-                                                  child: Text(
-                                                    "Tu dois être connecté pour rejoindre une soirée",
-                                                    style: TextStyle(
-                                                      fontSize: 22,
-                                                      fontWeight:
-                                                          FontWeight.w500,
+                              bottomNavigationBar: CardBNB(
+                                prix: party.price.toString(),
+                                onTap: connectUserState.user == null
+                                    ? GestureDetector(
+                                        onTap: () async {
+                                          showModalBottomSheet(
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(25.0),
+                                                topRight: Radius.circular(25.0),
+                                              ),
+                                            ),
+                                            context: context,
+                                            builder: (context) {
+                                              return Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Center(
+                                                    child: Padding(
+                                                      padding: const EdgeInsets
+                                                              .symmetric(
+                                                          vertical: 22,
+                                                          horizontal: 18),
+                                                      child: Text(
+                                                        "Tu dois être connecté pour rejoindre une soirée",
+                                                        style: TextStyle(
+                                                          fontSize: 22,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                        ),
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    bottom: 22),
-                                                child: Connect(
-                                                  text: false,
-                                                ),
-                                              ),
-                                            ],
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            bottom: 22),
+                                                    child: Connect(
+                                                      text: false,
+                                                    ),
+                                                  ),
+                                                ],
+                                              );
+                                            },
                                           );
-                                        },
-                                      );
-                                    },
-                                    child: Container(
-                                      padding: EdgeInsets.all(15),
-                                      decoration: BoxDecoration(
-                                        color: SECONDARY_COLOR,
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(15),
-                                        ),
-                                      ),
-                                      child: CText('Rejoindre',
-                                          color: PRIMARY_COLOR, fontSize: 16),
-                                    ),
-                                  )
-                                : BlocProvider(
-                                    create: (context) => PartiesCubit(),
-                                    child:
-                                        BlocBuilder<PartiesCubit, PartiesState>(
-                                            builder: (context, state) {
-                                      return GestureDetector(
-                                        onTap: () async {
-                                          if (party.price == 0) {
-                                            final uid =
-                                                connectUserState.user!.id;
-
-                                            if (uid == null) {
-                                              throw Error();
-                                            }
-
-                                            await BlocProvider.of<PartiesCubit>(
-                                                    context)
-                                                .addUserInWaitList(user, party);
-
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    JoinWaitList(),
-                                              ),
-                                            );
-                                          } else {
-                                            print(party.price);
-
-                                            await PaymentService(
-                                                    amount:
-                                                        ((party.price ?? 0) *
-                                                                100)
-                                                            .toInt())
-                                                .initPaymentSheet(context,
-                                                    email: user.email)
-                                                .then(
-                                              (value) async {
-                                                if (value) {
-                                                  await BlocProvider.of<
-                                                          PartiesCubit>(context)
-                                                      .addUserInWaitList(
-                                                          user, party)
-                                                      .then(
-                                                        (value) =>
-                                                            Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                JoinWaitList(),
-                                                          ),
-                                                        ),
-                                                      );
-                                                }
-                                              },
-                                            );
-                                            // Navigator.push(
-                                            //   context,
-                                            //   MaterialPageRoute(
-                                            //     builder: (context) =>
-                                            //         ExistingCard(),
-                                            //   ),
-                                            // );
-                                          }
                                         },
                                         child: Container(
                                           padding: EdgeInsets.all(15),
@@ -461,16 +395,99 @@ class PartyCard extends StatelessWidget {
                                               Radius.circular(15),
                                             ),
                                           ),
-                                          child: CText(
-                                            'Rejoindre',
-                                            color: PRIMARY_COLOR,
-                                            fontSize: 16,
-                                          ),
+                                          child: CText('Rejoindre',
+                                              color: PRIMARY_COLOR,
+                                              fontSize: 16),
                                         ),
-                                      );
-                                    }),
-                                  ),
-                          ),
+                                      )
+                                    : BlocProvider(
+                                        create: (context) => PartiesCubit(),
+                                        child: BlocBuilder<PartiesCubit,
+                                                PartiesState>(
+                                            builder: (context, state) {
+                                          return GestureDetector(
+                                            onTap: () async {
+                                              if (party.price == 0) {
+                                                final uid =
+                                                    connectUserState.user!.id;
+
+                                                if (uid == null) {
+                                                  throw Error();
+                                                }
+
+                                                await BlocProvider.of<
+                                                        PartiesCubit>(context)
+                                                    .addUserInWaitList(
+                                                        user, party);
+
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        JoinWaitList(),
+                                                  ),
+                                                );
+                                              } else {
+                                                print(party.price);
+
+                                                await PaymentService(
+                                                        amount: ((party.price ??
+                                                                    0) *
+                                                                100)
+                                                            .toInt())
+                                                    .initPaymentSheet(context,
+                                                        email: user.email)
+                                                    .then(
+                                                  (value) async {
+                                                    if (value) {
+                                                      await BlocProvider.of<
+                                                                  PartiesCubit>(
+                                                              context)
+                                                          .addUserInWaitList(
+                                                              user, party)
+                                                          .then(
+                                                            (value) =>
+                                                                Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        JoinWaitList(),
+                                                              ),
+                                                            ),
+                                                          );
+                                                    }
+                                                  },
+                                                );
+                                                // Navigator.push(
+                                                //   context,
+                                                //   MaterialPageRoute(
+                                                //     builder: (context) =>
+                                                //         ExistingCard(),
+                                                //   ),
+                                                // );
+                                              }
+                                            },
+                                            child: Container(
+                                              padding: EdgeInsets.all(15),
+                                              decoration: BoxDecoration(
+                                                color: SECONDARY_COLOR,
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(15),
+                                                ),
+                                              ),
+                                              child: CText(
+                                                'Rejoindre',
+                                                color: PRIMARY_COLOR,
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                          );
+                                        }),
+                                      ),
+                              ),
+                            );
+                          }),
                         );
                       }),
                     );
@@ -539,7 +556,7 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
 
   @override
   Widget build(BuildContext context) {
-    int count = 0;
+    int countComment = 0;
     Future<void> editParty() {
       return customShowModalBottomSheet(
         context,
@@ -558,7 +575,7 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
                   .doc(widget.party.id)
                   .delete();
               Navigator.popUntil(context, (route) {
-                return count++ == 2;
+                return countComment++ == 2;
               });
             }, //supprime la soirée
             onPressed2: () => Navigator.pop(context),
@@ -938,19 +955,20 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
   }
 }
 
-class CardBody extends StatelessWidget {
+class CardBody extends StatefulWidget {
   final bool? animal, smoke;
-  final String? desc, nomOrganisateur, avis, nombre, photoUserProfile;
+  final String? desc, nomOrganisateur, nombre, photoUserProfile;
   final List? nameList, list, gender;
   final void Function()? contacter;
   final Map? acceptedUserInfo;
   final User? user;
+  final List<Party>? partyOwner;
 
   const CardBody({
     Key? key,
     this.desc,
     this.nomOrganisateur,
-    this.avis,
+    this.partyOwner,
     this.animal,
     this.smoke,
     this.nameList,
@@ -964,23 +982,59 @@ class CardBody extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<CardBody> createState() => _CardBodyState();
+}
+
+class _CardBodyState extends State<CardBody> {
+  @override
   Widget build(BuildContext context) {
     dynamic countMale = 0;
     dynamic countFemale = 0;
     dynamic countOther = 0;
+    int i = 0;
+    int countComment = 0;
+    double countNote = 0;
 
-    if (gender!.contains("Homme")) {
-      countMale = gender!.where((element) => element == "Homme").length;
+    // ignore: unused_local_variable
+    for (var test in widget.partyOwner!) {
+      if (widget.partyOwner![i].commentIdList!.isNotEmpty) {
+        setState(() {
+          countComment += widget.partyOwner![i].commentIdList!.length;
+        });
+      }
+      i++;
     }
-    if (gender!.contains("Femme")) {
-      countFemale = gender!.where((element) => element == "Femme").length;
+
+    i = 0;
+    // ignore: unused_local_variable
+    for (var test in widget.partyOwner!) {
+      if (widget.partyOwner![i].commentIdList!.isNotEmpty) {
+        List  nameList = widget.partyOwner![i].commentIdList!;
+        // ignore: unused_local_variable
+        List list = nameList.map((doc) {
+          Map info = widget.partyOwner![i].comment![doc];
+          setState(() {
+            countNote += double.parse(info["note"]);
+          });
+        }).toList();
+      }
+      i++;
     }
-    if (gender!.contains("Autre")) {
-      countOther = gender!.where((element) => element == "Autre").length;
+    countNote /= countComment;
+
+    if (widget.gender!.contains("Homme")) {
+      countMale = widget.gender!.where((element) => element == "Homme").length;
     }
-    countMale = (countMale / gender!.length) * 100;
-    countFemale = (countFemale / gender!.length) * 100;
-    countOther = (countOther / gender!.length) * 100;
+    if (widget.gender!.contains("Femme")) {
+      countFemale =
+          widget.gender!.where((element) => element == "Femme").length;
+    }
+    if (widget.gender!.contains("Autre")) {
+      countOther = widget.gender!.where((element) => element == "Autre").length;
+    }
+    countMale = (countMale / widget.gender!.length) * 100;
+    countFemale = (countFemale / widget.gender!.length) * 100;
+    countOther = (countOther / widget.gender!.length) * 100;
     return Column(
       children: [
         SizedBox(
@@ -994,8 +1048,8 @@ class CardBody extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  this.nomOrganisateur != null
-                      ? CText(this.nomOrganisateur,
+                  this.widget.nomOrganisateur != null
+                      ? CText(this.widget.nomOrganisateur,
                           fontSize: 20,
                           fontWeight: FontWeight.w500,
                           color: SECONDARY_COLOR)
@@ -1011,7 +1065,7 @@ class CardBody extends StatelessWidget {
                             child: Icon(Ionicons.star, color: ICONCOLOR),
                           ),
                           CText(
-                            this.avis,
+                            "${countNote.toStringAsFixed(1)} / 5 - $countComment avis",
                             fontSize: 16,
                           ),
                         ],
@@ -1020,15 +1074,15 @@ class CardBody extends StatelessWidget {
                   )
                 ],
               ),
-              ProfilePhoto(photoUserProfile),
+              ProfilePhoto(widget.photoUserProfile),
             ],
           ),
         ),
-        this.desc != ""
+        this.widget.desc != ""
             ? Center(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 22),
-                  child: DescriptionTextWidget(text: this.desc),
+                  child: DescriptionTextWidget(text: this.widget.desc),
                 ),
               )
             : Align(
@@ -1044,22 +1098,22 @@ class CardBody extends StatelessWidget {
                   ),
                 ),
               ),
-        user == null
+        widget.user == null
             ? Container()
-            : nameList!.contains(user!.id)
+            : widget.nameList!.contains(widget.user!.id)
                 ? Padding(
                     padding: const EdgeInsets.only(left: 22, top: 16),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: TextButton(
                         child: CText(
-                          this.nomOrganisateur != null
-                              ? "contacter ${this.nomOrganisateur!.split(" ")[0]}"
+                          this.widget.nomOrganisateur != null
+                              ? "contacter ${this.widget.nomOrganisateur!.split(" ")[0]}"
                               : 'Contacter',
                           color: Colors.blue,
                           fontSize: 16,
                         ),
-                        onPressed: this.contacter,
+                        onPressed: this.widget.contacter,
                       ),
                     ),
                   )
@@ -1073,7 +1127,7 @@ class CardBody extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 15),
                 child: Row(
                   children: [
-                    this.animal == true
+                    this.widget.animal == true
                         ? Padding(
                             padding: const EdgeInsets.only(right: 22),
                             child: Icon(Ionicons.paw),
@@ -1096,7 +1150,7 @@ class CardBody extends StatelessWidget {
                               ],
                             ),
                           ),
-                    this.animal == true
+                    this.widget.animal == true
                         ? CText(
                             "Le propriétaire possède un ou des animaux",
                             fontSize: 17,
@@ -1112,7 +1166,7 @@ class CardBody extends StatelessWidget {
               ),
               Row(
                 children: [
-                  this.smoke == true
+                  this.widget.smoke == true
                       ? Padding(
                           padding: const EdgeInsets.only(right: 22),
                           child: (Icon(Icons.smoking_rooms_outlined)),
@@ -1136,7 +1190,7 @@ class CardBody extends StatelessWidget {
                             )
                           ],
                         ),
-                  this.smoke == true
+                  this.widget.smoke == true
                       ? CText(
                           "Vous pouvez fumer à l'intérieur",
                           fontSize: 17,
@@ -1160,10 +1214,12 @@ class CardBody extends StatelessWidget {
               decoration: BoxDecoration(
                   color: SECONDARY_COLOR,
                   borderRadius: BorderRadius.circular(15)),
-              child: CText("Personnes acceptées : ${list!.length}/$nombre",
-                  color: PRIMARY_COLOR, fontSize: 16)),
+              child: CText(
+                  "Personnes acceptées : ${widget.list!.length}/${widget.nombre}",
+                  color: PRIMARY_COLOR,
+                  fontSize: 16)),
         ),
-        this.nameList!.isNotEmpty
+        this.widget.nameList!.isNotEmpty
             ? Column(
                 children: [
                   // graphique pourcentage homme/femme/autre
@@ -1177,7 +1233,7 @@ class CardBody extends StatelessWidget {
                   ),
                   PieChartLegend(),
                   // faire la liste des personnes acceptées à la soirée
-                  Column(children: this.list as List<Widget>)
+                  Column(children: this.widget.list as List<Widget>)
                 ],
               )
             : Opacity(
@@ -1185,7 +1241,7 @@ class CardBody extends StatelessWidget {
                 child: CText("Il n'y a pas encore d'invité",
                     fontSize: 16, color: SECONDARY_COLOR),
               ),
-        SizedBox(height: this.list!.isNotEmpty ? 34 : 50)
+        SizedBox(height: this.widget.list!.isNotEmpty ? 34 : 50)
       ],
     );
   }
@@ -1348,7 +1404,7 @@ class _EditPartyState extends State<EditParty> {
                 "smoke": _smoke,
                 "desc": _desc
               });
-              int count = 0;
+              int countComment = 0;
               showDialog(
                   context: context,
                   builder: (BuildContext context) {
@@ -1358,7 +1414,7 @@ class _EditPartyState extends State<EditParty> {
                       actions: [
                         TextButton(
                           onPressed: () => Navigator.popUntil(context, (route) {
-                            return count++ == 3;
+                            return countComment++ == 3;
                           }),
                           child: CText("OK"),
                         )
