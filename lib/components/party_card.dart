@@ -201,91 +201,96 @@ class PartyCard extends StatelessWidget {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Stack(
-                          children: [
-                            Container(
-                              width: double.infinity,
-                              color: color,
-                              height: 180,
-                              child: Image.asset(image!),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: BlurryContainer(
-                                bgColor: color == SECONDARY_COLOR
-                                    ? Colors.blueGrey
-                                    : Colors.yellow.shade100,
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      DateFormat.MMM('fr').format(party.date),
-                                      style: TextStyle(
-                                        color: textColor,
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 4),
-                                      child: Text(
-                                        DateFormat.d('fr').format(party.date),
+                        Expanded(
+                          child: Stack(
+                            children: [
+                              Container(
+                                width: double.infinity,
+                                color: color,
+                                child: Image.asset(image!),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(10),
+                                child: BlurryContainer(
+                                  height: 85,
+                                  bgColor: color == SECONDARY_COLOR
+                                      ? Colors.blueGrey
+                                      : Colors.yellow.shade100,
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        DateFormat.MMM('fr').format(party.date),
                                         style: TextStyle(
                                           color: textColor,
                                           fontWeight: FontWeight.w500,
-                                          fontSize: 22,
+                                          fontSize: 16,
                                         ),
                                       ),
-                                    )
-                                  ],
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 4),
+                                        child: Text(
+                                          DateFormat.d('fr').format(party.date),
+                                          style: TextStyle(
+                                            color: textColor,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 22,
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            )
-                          ],
+                              )
+                            ],
+                          ),
                         ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 8, horizontal: 12),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              CText(party.name,
-                                  fontSize: 15, fontWeight: FontWeight.w500),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 1),
-                                child: Row(
+                        Expanded(
+                          flex: 0,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 8, horizontal: 12),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                CText(party.name,
+                                    fontSize: 15, fontWeight: FontWeight.w500),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 1),
+                                  child: Row(
+                                    children: [
+                                      CText("${user!.name!} ${user.surname!}",
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w500),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Icon(
+                                        user.verified == true
+                                            ? Icons.verified
+                                            : null,
+                                        size: 15,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    CText("${user!.name!} ${user.surname!}",
+                                    CText(party.city!,
                                         fontSize: 15,
                                         fontWeight: FontWeight.w500),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Icon(
-                                      user.verified == true
-                                          ? Icons.verified
-                                          : null,
-                                      size: 15,
-                                    ),
+                                    CText(
+                                        party.distance != null
+                                            ? "${party.distance.toString()} km"
+                                            : "",
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w500),
                                   ],
                                 ),
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  CText(party.city!,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w500),
-                                  CText(
-                                      party.distance != null
-                                          ? "${party.distance.toString()} km"
-                                          : "",
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w500),
-                                ],
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ],
