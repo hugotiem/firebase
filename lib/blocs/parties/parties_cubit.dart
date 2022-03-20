@@ -1,6 +1,8 @@
+import 'dart:collection';
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:pts/models/city.dart';
 import 'package:pts/models/party.dart';
 import 'package:pts/services/auth_service.dart';
 // import 'package:pts/models/services/dynamic_links_services.dart';
@@ -97,7 +99,7 @@ class PartiesCubit extends AppBaseCubit<PartiesState> {
   }
 
   Future fetchPartiesWithWhereIsEqualToAndIsActive(var key, String? data,
-      {isWithDate = false}) async {
+      {isWithDate = false, bool returnValue = false}) async {
     if (data == null) {
       return;
     }
@@ -109,11 +111,40 @@ class PartiesCubit extends AppBaseCubit<PartiesState> {
         await services.getDataWithWhereIsEqualToAndIsActive(key, data);
     List<Party> parties =
         partiesSnapShots.docs.map((e) => Party.fromSnapShots(e)).toList();
-    if (!isWithDate) {
+    if (!isWithDate && !returnValue) {
       emit(PartiesState.loaded(parties, state.filters));
     } else {
       return parties;
     }
+  }
+
+  Future<List<City>> fetchCitiesByPartiesNumber() async {
+    List<String> cities = [
+      "Paris",
+      "Lyon",
+      "Bordeaux",
+      "Lille",
+      "Marseille",
+      "Nice",
+      "Toulouse",
+      "Nantes",
+      "Montpellier",
+      "Strasbourg",
+    ];
+
+    Map<String, int> map = {};
+
+    for (var city in cities) {
+      var count = await services.getCountOf("city", city);
+      if (count > 0) {
+        map[city] = count;
+      }
+    }
+
+    var entries = map.entries.toList();
+    entries.sort((a, b) => b.value.compareTo(a.value));
+
+    return entries.map((e) => City(e.key, e.value)).toList();
   }
 
   // Future fetchPartiesWithWhereIsEqualTo2(
@@ -199,17 +230,14 @@ class PartiesCubit extends AppBaseCubit<PartiesState> {
     return party;
   }
 
-  Future<void> addComment(User? user, Party party, double note, String comment) async {
+  Future<void> addComment(
+      User? user, Party party, double note, String comment) async {
     emit(state.setRequestInProgress() as PartiesState);
-     await services.setWithId(party.id, data: {
+    await services.setWithId(party.id, data: {
       "commentIdList": FieldValue.arrayUnion([user!.id]),
     });
-    await services.setWithId(party.id, 
-    data: {
-      "note": note,
-      "comment": comment
-    },
-    path: "comment.${user.id}");
+    await services.setWithId(party.id,
+        data: {"note": note, "comment": comment}, path: "comment.${user.id}");
     emit(PartiesState.loaded(state.parties, state.filters));
   }
 

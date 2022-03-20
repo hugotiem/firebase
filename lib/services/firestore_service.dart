@@ -66,6 +66,17 @@ class FireStoreServices {
     return this._firestore.collection(collection).doc(id).get();
   }
 
+  Future<int> getCountOf(String key, dynamic value) async {
+    var data = await this
+        ._firestore
+        .collection(collection)
+        .where(key, isEqualTo: value)
+        .where('isActive', isEqualTo: true)
+        .get();
+
+    return data.docs.length;
+  }
+
   Future<QuerySnapshot<Map<String, dynamic>>> getDataWithMultipleWhereIsEqualTo(
       Map<String, dynamic> conditions) async {
     Query<Map<String, dynamic>> query = this._firestore.collection(collection);

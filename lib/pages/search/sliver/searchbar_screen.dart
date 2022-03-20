@@ -216,9 +216,9 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                                     Hero(
                                       tag: 'search-widget',
                                       child: SearchBar(
+                                        hintText: "",
                                         onChanged: (value) {
-                                          BlocProvider.of<SearchCubit>(
-                                                  context)
+                                          BlocProvider.of<SearchCubit>(context)
                                               .fetchResults(value);
                                         },
                                         focusNode: focusNode,

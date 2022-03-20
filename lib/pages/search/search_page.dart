@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:animations/animations.dart';
 import 'package:flutter/services.dart';
 import 'package:pts/pages/search/search_form_page.dart';
 import 'package:pts/pages/search/sliver/searchbar.dart';
@@ -9,7 +8,6 @@ import 'package:pts/const.dart';
 import 'package:pts/pages/creation/creation_page.dart';
 import 'package:pts/pages/search/subpage/geolocalisation_page.dart';
 import 'subpage/city_page.dart';
-// import 'subpage/last_party_page.dart';
 import 'subpage/themes_page.dart';
 import 'sliver/custom_sliver.dart';
 
@@ -163,14 +161,15 @@ class _SearchState extends State<Search> {
       },
       searchBar: Container(
         margin: EdgeInsets.only(
-            right: 20,
-            left: 20,
+            right: 30,
+            left: 30,
             top:
                 (_size! - 100) > 50 ? _size! - 100 : 50), //(_size ?? 0) - 130),
 
         child: Hero(
           tag: 'search-widget',
           child: SearchBar(
+            hintText: 'Sélectionne ta ville',
               backgroundColor: Colors.white.withOpacity(0.8),
               readOnly: true,
               onTap: () {

@@ -8,6 +8,10 @@ class SearchBar extends StatelessWidget {
   final FocusNode? focusNode;
   final bool readOnly;
   final Color? backgroundColor;
+  final bool autofocus;
+  final Color? borderColor;
+  final Color? hintColor;
+  final String hintText;
 
   const SearchBar(
       {Key? key,
@@ -15,42 +19,53 @@ class SearchBar extends StatelessWidget {
       this.onTap,
       this.focusNode,
       this.readOnly = false,
-      this.backgroundColor})
+      this.backgroundColor,
+      this.autofocus = false,
+      this.borderColor,
+      this.hintColor,
+      required this.hintText})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 60,
-      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-      decoration: BoxDecoration(
-        color: backgroundColor ?? Colors.white,
-        borderRadius: BorderRadius.circular(29.5),
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: TextField(
-          readOnly: readOnly,
-          focusNode: focusNode,
-          autofocus: true,
-          keyboardAppearance: Brightness.light,
-          decoration: InputDecoration(
-            hintText: 'Sélectionne ta ville',
-            hintStyle: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: SECONDARY_COLOR,
-            ),
-            icon: Icon(
-              Ionicons.search,
-              size: 25,
-              color: SECONDARY_COLOR,
-            ),
-            border: InputBorder.none,
+    return Material(
+      color: Colors.transparent,
+      child: TextField(
+        cursorColor: hintColor ?? SECONDARY_COLOR,
+        readOnly: readOnly,
+        focusNode: focusNode,
+        autofocus: autofocus,
+        keyboardAppearance: Brightness.light,
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+          filled: true,
+          fillColor: backgroundColor ?? Colors.white,
+          hintText: hintText,
+          hintStyle: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: hintColor ?? SECONDARY_COLOR,
           ),
-          onChanged: onChanged,
-          onTap: onTap,
+          prefixIcon: Icon(
+            Ionicons.search,
+            size: 25,
+            color: hintColor ?? SECONDARY_COLOR,
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(29.5),
+            borderSide: borderColor == null
+                ? BorderSide.none
+                : BorderSide(color: borderColor!, width: 1),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(29.5),
+            borderSide: borderColor == null
+                ? BorderSide.none
+                : BorderSide(color: borderColor!, width: 1),
+          ),
         ),
+        onChanged: onChanged,
+        onTap: onTap,
       ),
     );
   }
