@@ -594,11 +594,7 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
     Future<void> commentParty() {
       return showModalBottomSheet(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(25),
-            topRight: Radius.circular(25),
-          ),
-        ),
+            borderRadius: BorderRadius.vertical(top: Radius.circular(25))),
         context: context,
         isScrollControlled: true,
         builder: (context) {
@@ -631,34 +627,38 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 22),
-                      child: Center(
-                        child: Container(
-                          height: 226,
-                          width: MediaQuery.of(context).size.width * 0.9,
-                          decoration: BoxDecoration(
-                            color: PRIMARY_COLOR,
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 16, right: 16),
-                            child: TextFormField(
-                              onChanged: (value) {
-                                setModalState(() {
-                                  _comment = value;
-                                });
-                              },
-                              style: TextStyle(
-                                fontSize: TEXTFIELDFONTSIZE,
-                              ),
-                              maxLength: 500,
-                              keyboardType: TextInputType.multiline,
-                              minLines: 1,
-                              maxLines: 10,
-                              decoration: InputDecoration(
-                                hintText:
-                                    'Un mot sur la soirée que tu viens de passer',
-                                border: InputBorder.none,
-                                counterStyle: TextStyle(height: 1),
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            bottom: MediaQuery.of(context).viewInsets.bottom),
+                        child: Center(
+                          child: Container(
+                            height: 226,
+                            width: MediaQuery.of(context).size.width * 0.9,
+                            decoration: BoxDecoration(
+                              color: PRIMARY_COLOR,
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 16, right: 16),
+                              child: TextFormField(
+                                onChanged: (value) {
+                                  setModalState(() {
+                                    _comment = value;
+                                  });
+                                },
+                                style: TextStyle(
+                                  fontSize: TEXTFIELDFONTSIZE,
+                                ),
+                                maxLength: 500,
+                                keyboardType: TextInputType.multiline,
+                                minLines: 1,
+                                maxLines: 10,
+                                decoration: InputDecoration(
+                                  hintText:
+                                      'Un mot sur la soirée que tu viens de passer',
+                                  border: InputBorder.none,
+                                  counterStyle: TextStyle(height: 1),
+                                ),
                               ),
                             ),
                           ),
@@ -1014,12 +1014,12 @@ class _CardBodyState extends State<CardBody> {
     // ignore: unused_local_variable
     for (var test in widget.partyOwner!) {
       if (widget.partyOwner![i].commentIdList!.isNotEmpty) {
-        List  nameList = widget.partyOwner![i].commentIdList!;
+        List nameList = widget.partyOwner![i].commentIdList!;
         // ignore: unused_local_variable
         List list = nameList.map((doc) {
           Map info = widget.partyOwner![i].comment![doc];
           setState(() {
-            countNote += double.parse(info["note"]);
+            countNote += double.parse(info["note"].toString());
           });
         }).toList();
       }
@@ -1069,10 +1069,15 @@ class _CardBodyState extends State<CardBody> {
                             padding: const EdgeInsets.only(right: 8),
                             child: Icon(Ionicons.star, color: ICONCOLOR),
                           ),
-                          CText(
-                            "${countNote.toStringAsFixed(1)} / 5 - $countComment avis",
-                            fontSize: 16,
-                          ),
+                          countNote.isNaN
+                              ? CText(
+                                  "$countComment avis",
+                                  fontSize: 16,
+                                )
+                              : CText(
+                                  "${countNote.toStringAsFixed(1)} / 5 - $countComment avis",
+                                  fontSize: 16,
+                                ),
                         ],
                       ),
                     ),
