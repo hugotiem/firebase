@@ -43,7 +43,6 @@ class AppDateTime extends DateTime {
       : super.fromMicrosecondsSinceEpoch(microsecondsSinceEpoch);
 
   static AppDateTime from(DateTime dateTime) {
-    print("datetime: ${dateTime.day}");
     return AppDateTime(
       dateTime.year,
       dateTime.month,

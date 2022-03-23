@@ -4,13 +4,13 @@ import 'package:intl/intl.dart';
 import 'package:pts/blocs/parties/parties_cubit.dart';
 import 'package:pts/blocs/search/search_cubit.dart';
 import 'package:pts/components/app_datetime.dart';
+import 'package:pts/components/app_grid.dart';
 import 'package:pts/const.dart';
 import 'package:pts/models/city.dart';
 import 'package:pts/models/place_search.dart';
 import 'package:pts/pages/search/map_view_page.dart';
 import 'package:pts/pages/search/sliver/searchbar.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
-// import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class SearchFormPage extends StatefulWidget {
@@ -45,26 +45,30 @@ class _SearchFormPageState extends State<SearchFormPage> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios_new_rounded),
-            onPressed: () {
-              if (_panelController.isPanelClosed) {
-                _panelController.open();
-              } else {
-                Navigator.of(context).pop();
-              }
-            },
+          leadingWidth: 70,
+          leading: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: IconButton(
+              icon: Image.asset("assets/back-btn.png"),
+              onPressed: () {
+                if (_panelController.isPanelClosed) {
+                  _panelController.open();
+                } else {
+                  Navigator.of(context).pop();
+                }
+              },
+            ),
           ),
           flexibleSpace: Container(
-            decoration: new BoxDecoration(
-              gradient: new LinearGradient(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
                 colors: [
                   SECONDARY_COLOR,
                   ICONCOLOR,
                 ],
                 begin: const FractionalOffset(0.0, 0.0),
                 end: const FractionalOffset(1.0, 0.0),
-                stops: [0.0, 1.0],
+                stops: const [0.0, 1.0],
               ),
             ),
           ),
@@ -354,16 +358,20 @@ class CalendarContent extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: PageView(
+              child: TabBarView(
                 children: [
-                  CalendarWidget(
-                    onSelectedDay: (selected) => date = selected,
+                  SingleChildScrollView(
+                    clipBehavior: Clip.none,
+                    child: CalendarWidget(
+                      onSelectedDay: (selected) => date = selected,
+                    ),
                   ),
+                  IamFlexibleWidget(),
                 ],
               ),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 30),
+              padding: EdgeInsets.only(bottom: 140),
               child: Align(
                 alignment: Alignment.centerRight,
                 child: GestureDetector(
@@ -391,7 +399,7 @@ class CalendarContent extends StatelessWidget {
                   ),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -535,21 +543,6 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                     TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
                 selectedTextStyle:
                     TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-                // rangeHighlightColor: Colors.white.withOpacity(0.3),
-                // rangeEndTextStyle: TextStyle(
-                //   color: Colors.black,
-                //   fontWeight: FontWeight.bold,
-                // ),
-                // rangeEndDecoration: BoxDecoration(
-                //     color: Colors.white.withOpacity(0.3),
-                //     shape: BoxShape.circle),
-                // rangeStartTextStyle: TextStyle(
-                //   color: Colors.black,
-                //   fontWeight: FontWeight.bold,
-                // ),
-                // rangeStartDecoration: BoxDecoration(
-                //     color: Colors.white.withOpacity(0.3),
-                //     shape: BoxShape.circle),
               ),
               enabledDayPredicate: (day) {
                 return isSameDay(DateTime.now(), day) ||
@@ -586,6 +579,101 @@ class _CalendarWidgetState extends State<CalendarWidget> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class IamFlexibleWidget extends StatefulWidget {
+  const IamFlexibleWidget({Key? key}) : super(key: key);
+
+  @override
+  State<IamFlexibleWidget> createState() => _IamFlexibleWidgetState();
+}
+
+class _IamFlexibleWidgetState extends State<IamFlexibleWidget> {
+  final AppDateTime _first = AppDateTime.now();
+
+  @override
+  Widget build(BuildContext context) {
+    return PageView(
+      clipBehavior: Clip.none,
+      scrollDirection: Axis.vertical,
+      children: [
+        Container(
+          margin: EdgeInsets.symmetric(vertical: 40, horizontal: 20),
+          child: AppGrid.builder(
+            col: 2,
+            itemCount: 6,
+            verticalSpacing: 40,
+            horizontalSpacing: 40,
+            builder: (context, index) {
+              var _current = _first.addTime(month: index);
+              return GestureDetector(
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 30),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.white, width: 2),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Column(
+                    children: [
+                      Text(
+                        DateFormat.MMMM('fr').format(_current),
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20),
+                      ),
+                      Text(
+                        DateFormat.y('fr').format(_current),
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ],
+                  ),
+                ),
+                onTap: () {},
+              );
+            },
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.symmetric(vertical: 40, horizontal: 20),
+          child: AppGrid.builder(
+            col: 2,
+            itemCount: 6,
+            verticalSpacing: 40,
+            horizontalSpacing: 40,
+            builder: (context, index) {
+              var _current = _first.addTime(month: 6 + index);
+              return GestureDetector(
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 30),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.white, width: 2),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Column(
+                    children: [
+                      Text(
+                        DateFormat.MMMM('fr').format(_current),
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20),
+                      ),
+                      Text(
+                        DateFormat.y('fr').format(_current),
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ],
+                  ),
+                ),
+                onTap: () {},
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }

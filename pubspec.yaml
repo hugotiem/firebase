@@ -69,6 +69,7 @@ dependencies:
   mocktail: ^0.2.0
   flutter_rating_bar: ^4.0.0
   syncfusion_flutter_datepicker: ^19.4.55
+  flutter_svg: ^1.0.3
 
 dev_dependencies:
   bloc_test: ^8.5.0
@@ -117,6 +118,7 @@ flutter:
     - assets/onboarding_img.png
     - assets/join_party.png
     - assets/create_party.png
+    - assets/
 
   fonts: 
     - family: MerriweatherSans
