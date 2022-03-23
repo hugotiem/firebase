@@ -591,7 +591,9 @@ class IamFlexibleWidget extends StatefulWidget {
 }
 
 class _IamFlexibleWidgetState extends State<IamFlexibleWidget> {
-  final AppDateTime _first = AppDateTime.now();
+  final AppDateTime _first = AppDateTime.now().copyWith(day: 1);
+
+  List<AppDateTime> _selectedDates = [];
 
   @override
   Widget build(BuildContext context) {
@@ -608,12 +610,14 @@ class _IamFlexibleWidgetState extends State<IamFlexibleWidget> {
             horizontalSpacing: 40,
             builder: (context, index) {
               var _current = _first.addTime(month: index);
+              bool _isSelected = _selectedDates.contains(_current);
               return GestureDetector(
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 30),
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.white, width: 2),
                     borderRadius: BorderRadius.circular(20),
+                    color: _isSelected ? Colors.white.withOpacity(0.3) : null,
                   ),
                   child: Column(
                     children: [
@@ -631,7 +635,15 @@ class _IamFlexibleWidgetState extends State<IamFlexibleWidget> {
                     ],
                   ),
                 ),
-                onTap: () {},
+                onTap: () {
+                  setState(() {
+                    if (_isSelected) {
+                      _selectedDates.remove(_current);
+                    } else {
+                      _selectedDates.add(_current);
+                    }
+                  });
+                },
               );
             },
           ),
@@ -645,12 +657,14 @@ class _IamFlexibleWidgetState extends State<IamFlexibleWidget> {
             horizontalSpacing: 40,
             builder: (context, index) {
               var _current = _first.addTime(month: 6 + index);
+              bool _isSelected = _selectedDates.contains(_current);
               return GestureDetector(
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 30),
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.white, width: 2),
                     borderRadius: BorderRadius.circular(20),
+                    color: _isSelected ? Colors.white.withOpacity(0.3) : null,
                   ),
                   child: Column(
                     children: [
@@ -668,7 +682,15 @@ class _IamFlexibleWidgetState extends State<IamFlexibleWidget> {
                     ],
                   ),
                 ),
-                onTap: () {},
+                onTap: () {
+                  setState(() {
+                    if (_isSelected) {
+                      _selectedDates.remove(_current);
+                    } else {
+                      _selectedDates.add(_current);
+                    }
+                  });
+                },
               );
             },
           ),
