@@ -9,12 +9,14 @@ import 'package:image_picker/image_picker.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:pts/blocs/parties/parties_cubit.dart';
 import 'package:pts/blocs/user/user_cubit.dart';
+import 'package:pts/components/custom_text.dart';
 import 'package:pts/components/profile_photo.dart';
 import 'package:pts/const.dart';
 import 'package:pts/components/appbar.dart';
 import 'package:pts/components/horizontal_separator.dart';
 import 'package:pts/models/Capitalize.dart';
 import 'package:path/path.Dart' as Path;
+import 'package:pts/models/party.dart';
 import 'package:pts/services/auth_service.dart';
 import 'package:pts/services/storage_service.dart';
 
@@ -241,6 +243,7 @@ class _ProfilDetailsState extends State<ProfilDetails> {
                                 onTap: () => showPhoto(photo!),
                                 identiteVerif: user.verified,
                                 avis: '0',
+                                party: partyStateOwner.parties,
                               ),
                               HorzontalSeparator(),
                               Histoty(
@@ -250,7 +253,7 @@ class _ProfilDetailsState extends State<ProfilDetails> {
                                     partyStateJoin.parties!.length.toString(),
                               ),
                               HorzontalSeparator(),
-                              Comment(),
+                              Comment(partyStateOwner.parties),
                               SizedBox(height: 50)
                             ],
                           ),
@@ -268,13 +271,14 @@ class _ProfilDetailsState extends State<ProfilDetails> {
   }
 }
 
-class HeadProfil extends StatelessWidget {
+class HeadProfil extends StatefulWidget {
   final String? fullName;
   final String? age;
   final String? photo;
   final bool? identiteVerif;
   final String? avis;
   final void Function()? onTap;
+  final List<Party>? party;
 
   const HeadProfil(
       {this.fullName,
@@ -283,26 +287,44 @@ class HeadProfil extends StatelessWidget {
       this.avis,
       this.identiteVerif,
       this.onTap,
+      this.party,
       Key? key})
       : super(key: key);
 
   @override
+  State<HeadProfil> createState() => _HeadProfilState();
+}
+
+class _HeadProfilState extends State<HeadProfil> {
+  @override
   Widget build(BuildContext context) {
+    int i = 0;
+    int count = 0;
+    // ignore: unused_local_variable
+    for (var test in widget.party!) {
+      if (widget.party![i].commentIdList!.isNotEmpty) {
+          setState(() {
+            count += widget.party![i].commentIdList!.length;
+          });
+      }
+      i++;
+    }
+
     return Column(
       children: [
         InkWell(
-          onTap: onTap,
+          onTap: widget.onTap,
           child: Center(
             child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 40),
                 child: ProfilePhoto(
-                  photo,
+                  widget.photo,
                   radius: 70,
                 )),
           ),
         ),
         Text(
-          fullName!,
+          widget.fullName!,
           style: TextStyle(
               fontWeight: FontWeight.w500,
               color: SECONDARY_COLOR,
@@ -313,7 +335,7 @@ class HeadProfil extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.only(top: 12),
             child: Text(
-              '$age ans',
+              '${widget.age} ans',
               style: TextStyle(color: SECONDARY_COLOR, fontSize: 16),
             ),
           ),
@@ -327,7 +349,7 @@ class HeadProfil extends StatelessWidget {
                 child: Icon(Ionicons.star, color: ICONCOLOR),
               ),
               Text(
-                '$avis avis',
+                '$count avis',
                 style: TextStyle(
                   fontSize: 16,
                   color: SECONDARY_COLOR,
@@ -342,13 +364,14 @@ class HeadProfil extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 22),
               child: Icon(
-                  identiteVerif! == true
+                  widget.identiteVerif! == true
                       ? Icons.verified_user_sharp
                       : Icons.close_outlined,
-                  color: identiteVerif! == true ? ICONCOLOR : Colors.red),
+                  color:
+                      widget.identiteVerif! == true ? ICONCOLOR : Colors.red),
             ),
             Text(
-              identiteVerif! == true
+              widget.identiteVerif! == true
                   ? "Profil vérifiée"
                   : "Profil non vérifiée",
               style: TextStyle(
@@ -427,11 +450,33 @@ class Histoty extends StatelessWidget {
   }
 }
 
-class Comment extends StatelessWidget {
-  const Comment({Key? key}) : super(key: key);
+class Comment extends StatefulWidget {
+  final List<Party>? party;
+  const Comment(this.party, {Key? key}) : super(key: key);
 
   @override
+  State<Comment> createState() => _CommentState();
+}
+
+class _CommentState extends State<Comment> {
+  @override
   Widget build(BuildContext context) {
+    Map comment;
+    List commentListId;
+    List list = [];
+    List<int> list1 = [];
+    int i = 0;
+
+    // ignore: unused_local_variable
+    for (var test in widget.party!) {
+      if (widget.party![i].commentIdList!.isNotEmpty) {
+        setState(() {
+          list1.add(1);
+        });
+      }
+      i++;
+    }
+
     return Align(
       alignment: Alignment.centerLeft,
       child: Padding(
@@ -443,19 +488,69 @@ class Comment extends StatelessWidget {
             Text(
               'Commentaire',
               style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 22,
-                  color: SECONDARY_COLOR),
+                fontWeight: FontWeight.w500,
+                fontSize: 22,
+                color: SECONDARY_COLOR,
+              ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 40),
-              child: Opacity(
+            ListView.builder(
+              shrinkWrap: true,
+              itemCount: widget.party!.length,
+              itemBuilder: (BuildContext context, int index) {
+                commentListId = widget.party![index].commentIdList ?? [];
+                list = commentListId.map((doc) {
+                  comment = widget.party![index].comment![doc];
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 40),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: ProfilePhoto(comment["photo"], radius: 20),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 12),
+                              child: CText(
+                                "${comment["name"].toString().inCaps} ${comment["surname"].toString().inCaps}",
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            )
+                          ],
+                        ),
+                        Opacity(
+                          opacity: 0.75,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 12),
+                            child: SizedBox(
+                              child: CText(comment["comment"], fontSize: 16),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  );
+                }).toList();
+
+                return Column(
+                  children: list as List<Widget>,
+                );
+              },
+            ),
+            if (list1.isEmpty)
+              Padding(
+                padding: const EdgeInsets.only(top: 40),
+                child: Opacity(
                   opacity: 0.65,
                   child: Text(
                     "Vous n'avez pas encore de commentaires",
                     style: TextStyle(color: SECONDARY_COLOR, fontSize: 16),
-                  )),
-            )
+                  ),
+                ),
+              )
           ],
         ),
       ),

@@ -121,10 +121,11 @@ flutter:
     - assets/
 
   fonts: 
-    - family: MerriweatherSans
+    - family: Outfit
       fonts: 
-        - asset: fonts/MerriweatherSans-Italic-VariableFont_wght.ttf
-        - asset: fonts/MerriweatherSans-VariableFont_wght.ttf
+        - asset: fonts/Outfit-VariableFont_wght.ttf
+        # - asset: fonts/MerriweatherSans-Italic-VariableFont_wght.ttf
+        # - asset: fonts/MerriweatherSans-VariableFont_wght.ttf
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -237,7 +237,14 @@ class PartiesCubit extends AppBaseCubit<PartiesState> {
       "commentIdList": FieldValue.arrayUnion([user!.id]),
     });
     await services.setWithId(party.id,
-        data: {"note": note, "comment": comment}, path: "comment.${user.id}");
+        data: {
+          "note": note,
+          "comment": comment,
+          "name": user.name,
+          "surname": user.surname,
+          "photo": user.photo
+        },
+        path: "comment.${user.id}");
     emit(PartiesState.loaded(state.parties, state.filters));
   }
 
