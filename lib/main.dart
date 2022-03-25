@@ -86,7 +86,7 @@ class MyApp extends StatelessWidget {
           }
         },
       ),
-      theme: ThemeData(fontFamily: "MerriweatherSans"),
+      theme: ThemeData(fontFamily: "Outfit"),
       debugShowCheckedModeBanner: false,
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
