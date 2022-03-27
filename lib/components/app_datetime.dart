@@ -57,6 +57,22 @@ class AppDateTime extends DateTime {
   // : this(dateTime.year, dateTime.day, dateTime.hour, dateTime.minute,
   //       dateTime.second, dateTime.millisecond, dateTime.microsecond);
 
+  /// return AppDateTime object that use current date (or other if specified) for year, month and use initial value for the rest.
+
+  AppDateTime yM({DateTime? other}) {
+    return AppDateTime(
+      other?.year ?? this.year,
+      other?.month ?? this.month,
+    );
+  }
+
+  /// return AppDateTime object that use current date (or other if specified) for year, month, day and use initial value for the rest.
+
+  AppDateTime yMd({DateTime? other}) {
+    return AppDateTime(other?.year ?? this.year, other?.month ?? this.month,
+        other?.day ?? this.day);
+  }
+
   AppDateTime copyWith(
           {int? year,
           int? month,

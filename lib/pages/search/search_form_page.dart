@@ -283,126 +283,162 @@ class ResultsContent extends StatelessWidget {
   }
 }
 
-class CalendarContent extends StatelessWidget {
+class CalendarContent extends StatefulWidget {
   final String? destination;
   CalendarContent({Key? key, required this.destination}) : super(key: key);
 
+  @override
+  State<CalendarContent> createState() => _CalendarContentState();
+}
+
+class _CalendarContentState extends State<CalendarContent>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
   DateTime? date;
+  List<DateTime>? months;
+
+  @override
+  void initState() {
+    _tabController = TabController(length: 2, vsync: this);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            RichText(
-              text: TextSpan(
-                text: "Destination: ",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                ),
-                children: [
-                  TextSpan(
-                    text: '$destination',
-                    style: TextStyle(fontWeight: FontWeight.normal),
-                  ),
-                ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: RichText(
+            text: TextSpan(
+              text: "Destination: ",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
               ),
+              children: [
+                TextSpan(
+                  text: '${widget.destination}',
+                  style: TextStyle(fontWeight: FontWeight.normal),
+                ),
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20),
-              child: Text(
-                "Sélectionne tes dates",
-                style: TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(20),
+          child: Text(
+            "Sélectionne tes dates",
+            style: TextStyle(
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
             ),
-            Container(
-              decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.3),
-                  borderRadius: BorderRadius.circular(30),
-                  border: Border.all(color: Colors.white.withOpacity(0.1))),
-              child: TabBar(
-                padding: EdgeInsets.all(6),
-                labelStyle: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-                unselectedLabelStyle: TextStyle(
-                  fontWeight: FontWeight.normal,
-                ),
-                tabs: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    child: FittedBox(
-                      fit: BoxFit.fitWidth,
-                      child: Text("Calendrier"),
-                    ),
-                  ),
-                  FittedBox(
-                    fit: BoxFit.fitWidth,
-                    child: Text("Je suis flexible"),
-                  ),
-                ],
-                indicator: BoxDecoration(
-                  color: Colors.white.withOpacity(0.3),
-                  borderRadius: BorderRadius.circular(30),
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.symmetric(horizontal: 20),
+          decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.3),
+              borderRadius: BorderRadius.circular(30),
+              border: Border.all(color: Colors.white.withOpacity(0.1))),
+          child: TabBar(
+            padding: EdgeInsets.all(6),
+            labelStyle: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+            unselectedLabelStyle: TextStyle(
+              fontWeight: FontWeight.normal,
+            ),
+            controller: _tabController,
+            tabs: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 14),
+                child: FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: Text("Calendrier"),
                 ),
               ),
-            ),
-            Expanded(
-              child: TabBarView(
-                children: [
-                  SingleChildScrollView(
-                    clipBehavior: Clip.none,
-                    child: CalendarWidget(
-                      onSelectedDay: (selected) => date = selected,
-                    ),
-                  ),
-                  IamFlexibleWidget(),
-                ],
+              FittedBox(
+                fit: BoxFit.fitWidth,
+                child: Text("Je suis flexible"),
               ),
+            ],
+            indicator: BoxDecoration(
+              color: Colors.white.withOpacity(0.3),
+              borderRadius: BorderRadius.circular(30),
             ),
-            Padding(
-              padding: EdgeInsets.only(bottom: 140),
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: GestureDetector(
-                  child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 40),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(40),
-                        color: Colors.white.withOpacity(0.3)),
-                    child: Text(
-                      "Suivant".toUpperCase(),
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
-                    ),
+          ),
+        ),
+        Expanded(
+          child: TabBarView(
+            controller: _tabController,
+            children: [
+              SingleChildScrollView(
+                clipBehavior: Clip.none,
+                child: CalendarWidget(
+                  onSelectedDay: (selected) => date = selected,
+                ),
+              ),
+              IamFlexibleWidget(
+                onMonthSelected: (selected) => months = selected,
+              ),
+            ],
+          ),
+        ),
+        Container(
+          padding: EdgeInsets.only(bottom: 140),
+          margin: EdgeInsets.symmetric(horizontal: 20),
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: GestureDetector(
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 40),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(40),
+                    color: Colors.white.withOpacity(0.3)),
+                child: Text(
+                  "Suivant".toUpperCase(),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
                   ),
-                  onTap: () => Navigator.of(context).push(
+                ),
+              ),
+              onTap: () {
+                MapViewPage? page;
+                if (_tabController.index == 0 && date != null) {
+                  page = MapViewPage(
+                    result: widget.destination ?? "Paris",
+                    hasDate: true,
+                    date: date,
+                  );
+                } else if (_tabController.index == 1 && months != null) {
+                  page = MapViewPage(
+                    result: widget.destination ?? "Paris",
+                    hasDate: true,
+                    months: months,
+                  );
+                } else {
+                  print("Aucune date séléctionné");
+                }
+                if (page != null) {
+                  Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => MapViewPage(
-                        result: destination ?? "Paris",
-                      ),
+                      builder: (context) => page!,
                       fullscreenDialog: true,
                     ),
-                  ),
-                ),
-              ),
+                  );
+                }
+              },
             ),
-          ],
+          ),
         ),
-      ),
+      ],
     );
   }
 }
@@ -447,8 +483,9 @@ class _CalendarWidgetState extends State<CalendarWidget> {
     return SafeArea(
       child: Column(
         children: [
-          Padding(
+          Container(
             padding: const EdgeInsets.only(top: 20),
+            margin: EdgeInsets.symmetric(horizontal: 20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -496,8 +533,9 @@ class _CalendarWidgetState extends State<CalendarWidget> {
               ],
             ),
           ),
-          Padding(
+          Container(
             padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+            margin: EdgeInsets.symmetric(horizontal: 20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: _daysOfWeek
@@ -511,6 +549,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                               ? Colors.white
                               : Colors.white.withOpacity(0.3),
                           fontSize: 20,
+                          fontWeight: FontWeight.bold,
                         )),
                   )
                   .toList(),
@@ -518,6 +557,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
           ),
           Container(
             padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+            margin: EdgeInsets.symmetric(horizontal: 20),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30),
               border:
@@ -584,7 +624,8 @@ class _CalendarWidgetState extends State<CalendarWidget> {
 }
 
 class IamFlexibleWidget extends StatefulWidget {
-  const IamFlexibleWidget({Key? key}) : super(key: key);
+  final void Function(List<DateTime>)? onMonthSelected;
+  const IamFlexibleWidget({Key? key, this.onMonthSelected}) : super(key: key);
 
   @override
   State<IamFlexibleWidget> createState() => _IamFlexibleWidgetState();
@@ -643,6 +684,8 @@ class _IamFlexibleWidgetState extends State<IamFlexibleWidget> {
                       _selectedDates.add(_current);
                     }
                   });
+                  if (widget.onMonthSelected != null)
+                    widget.onMonthSelected!(_selectedDates);
                 },
               );
             },

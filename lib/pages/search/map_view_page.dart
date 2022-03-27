@@ -1,13 +1,28 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:pts/blocs/parties/parties_cubit.dart';
 import 'package:pts/pages/search/sliver/items.dart';
 
 class MapViewPage extends StatefulWidget {
   final String result;
-  const MapViewPage({Key? key, required this.result}) : super(key: key);
+  final bool hasDate;
+  final DateTime? date;
+  final List<DateTime>? months;
+  MapViewPage(
+      {Key? key,
+      required this.result,
+      this.date,
+      this.months,
+      this.hasDate = false})
+      : assert(
+            !hasDate ^
+                (hasDate &&
+                    (date != null || (months != null && months.isNotEmpty))),
+            "date or month must not be null because hasDate != false");
 
   @override
   State<MapViewPage> createState() => _MapViewPageState();
@@ -22,24 +37,89 @@ class _MapViewPageState extends State<MapViewPage> {
   double latitude = 0;
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      body: Stack(
-        children: [
-          GoogleMap(
-            myLocationButtonEnabled: false,
-            initialCameraPosition:
-                CameraPosition(target: LatLng(latitude, longitude), zoom: 14),
-            onMapCreated: (controller) {
-              mapController = controller;
+  void initState() {
+    _getCoordinates(widget.result);
+    super.initState();
+  }
 
-              mapControllerCompleter
-                  .complete(controller..setMapStyle(mapStyle));
-            },
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) {
+        if (widget.hasDate) {
+          if (widget.date != null) {
+            return PartiesCubit()
+              ..fetchPartiesByDateWithWhereIsEqualTo(
+                  "city", widget.result, widget.date!);
+          }
+          return PartiesCubit()
+            ..fetchPartiesByMonthsWithWhereIsEqualTo(
+                "city", widget.result, widget.months!);
+        }
+        return PartiesCubit()
+          ..fetchPartiesWithWhereIsEqualTo("city", widget.result);
+      },
+      child: BlocBuilder<PartiesCubit, PartiesState>(builder: (context, state) {
+        return Scaffold(
+          extendBodyBehindAppBar: true,
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            leadingWidth: 70,
+            leading: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: IconButton(
+                icon: Image.asset("assets/back-btn.png"),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ),
           ),
-        ],
-      ),
+          body: Stack(
+            children: [
+              GoogleMap(
+                myLocationButtonEnabled: false,
+                initialCameraPosition: CameraPosition(
+                    target: LatLng(latitude, longitude), zoom: 14),
+                onMapCreated: (controller) {
+                  mapController = controller;
+
+                  mapControllerCompleter
+                      .complete(controller..setMapStyle(mapStyle));
+                },
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 20)
+                    .add(EdgeInsets.only(top: 100)),
+                color: Colors.white.withOpacity(0.5),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        border: Border(bottom: BorderSide()),
+                      ),
+                      child: Text(widget.result),
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            child: Text("date"),
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      }),
     );
   }
 
