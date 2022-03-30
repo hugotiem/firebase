@@ -1,17 +1,22 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:pts/blocs/parties/parties_cubit.dart';
+import 'package:pts/const.dart';
 import 'package:pts/pages/search/sliver/items.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class MapViewPage extends StatefulWidget {
   final String result;
   final bool hasDate;
   final DateTime? date;
   final List<DateTime>? months;
+
   MapViewPage(
       {Key? key,
       required this.result,
@@ -29,16 +34,32 @@ class MapViewPage extends StatefulWidget {
 }
 
 class _MapViewPageState extends State<MapViewPage> {
+  final GlobalKey _seachDetailsKey = GlobalKey();
+
   GoogleMapController? mapController;
   Completer<GoogleMapController> mapControllerCompleter =
       Completer<GoogleMapController>();
 
-  double longitude = 0;
-  double latitude = 0;
+  double? longitude;
+  double? latitude;
+
+  double? _searchContainerHeight = 0;
+
+  double? _position;
+
+  bool _loadingScreen = true;
+  bool _hasOpacity = true;
 
   @override
   void initState() {
     _getCoordinates(widget.result);
+
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      setState(() {
+        _searchContainerHeight = _seachDetailsKey.currentContext?.size?.height;
+      });
+    });
+
     super.initState();
   }
 
@@ -76,46 +97,176 @@ class _MapViewPageState extends State<MapViewPage> {
           ),
           body: Stack(
             children: [
-              GoogleMap(
-                myLocationButtonEnabled: false,
-                initialCameraPosition: CameraPosition(
-                    target: LatLng(latitude, longitude), zoom: 14),
-                onMapCreated: (controller) {
-                  mapController = controller;
-
-                  mapControllerCompleter
-                      .complete(controller..setMapStyle(mapStyle));
-                },
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 20)
-                    .add(EdgeInsets.only(top: 100)),
-                color: Colors.white.withOpacity(0.5),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
+              SlidingUpPanel(
+                borderRadius: BorderRadius.circular(40),
+                onPanelSlide: (position) => setState(() {
+                  _position = position;
+                }),
+                snapPoint: 0.5,
+                maxHeight: MediaQuery.of(context).size.height -
+                    (_searchContainerHeight ?? 0) +
+                    20,
+                body: Stack(
                   children: [
-                    Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        border: Border(bottom: BorderSide()),
+                    if (longitude != null && latitude != null)
+                      GoogleMap(
+                        myLocationButtonEnabled: false,
+                        initialCameraPosition: CameraPosition(
+                            target: LatLng(latitude!, longitude!), zoom: 14),
+                        onMapCreated: (controller) {
+                          mapController = controller;
+
+                          mapControllerCompleter
+                              .complete(controller..setMapStyle(mapStyle));
+
+                          Future.delayed(const Duration(milliseconds: 200))
+                              .then((value) =>
+                                  setState(() => _hasOpacity = false));
+                        },
                       ),
-                      child: Text(widget.result),
+                  ],
+                ),
+                panelBuilder: (scrollController) {
+                  return Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(40),
                     ),
-                    Row(
+                    child: Column(
                       children: [
-                        Expanded(
-                          child: Container(
-                            child: Text("date"),
+                        Container(
+                          height: 8,
+                          width: 50,
+                          margin: EdgeInsets.symmetric(vertical: 10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: SECONDARY_COLOR,
                           ),
                         ),
                         Expanded(
-                          child: Container(),
+                          child: ListView.builder(
+                              itemCount: 5,
+                              itemBuilder: (context, index) {
+                                return Container();
+                              }),
                         )
                       ],
                     ),
-                  ],
+                  );
+                },
+              ),
+              Positioned(
+                key: _seachDetailsKey,
+                top: 100,
+                left: 0,
+                right: 0,
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                  decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.4),
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          border: Border(
+                              bottom:
+                                  BorderSide(color: Colors.white, width: 2)),
+                        ),
+                        padding:
+                            EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                        child: Text(
+                          widget.result,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20),
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 3,
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 15),
+                              decoration: BoxDecoration(
+                                  border: Border(
+                                      right: BorderSide(
+                                          color: Colors.white, width: 2))),
+                              child: Builder(builder: (context) {
+                                String _date;
+                                if (widget.date != null) {
+                                  _date = DateFormat.yMMMEd('fr')
+                                      .format(widget.date!);
+                                } else {
+                                  _date = "";
+                                }
+                                return Text(
+                                  _date,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20),
+                                );
+                              }),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 2,
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 15),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Filtre",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
+                                  ),
+                                  Icon(
+                                    Icons.sort,
+                                    color: Colors.white,
+                                  )
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
+              if (_loadingScreen)
+                AnimatedOpacity(
+                  duration: const Duration(milliseconds: 200),
+                  opacity: _hasOpacity ? 1 : 0,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          SECONDARY_COLOR,
+                          ICONCOLOR,
+                        ],
+                        begin: const FractionalOffset(0.0, 0.0),
+                        end: const FractionalOffset(1.0, 0.0),
+                        stops: const [0.0, 1.0],
+                      ),
+                    ),
+                  ),
+                  onEnd: () => setState(() {
+                    _loadingScreen = false;
+                  }),
+                ),
             ],
           ),
         );

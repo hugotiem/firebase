@@ -404,7 +404,7 @@ class _CalendarContentState extends State<CalendarContent>
                   "Suivant".toUpperCase(),
                   style: TextStyle(
                     color: Colors.white,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w900,
                     fontSize: 18,
                   ),
                 ),
