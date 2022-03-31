@@ -121,6 +121,105 @@ class _MapViewPageState extends State<MapViewPage> {
                                   setState(() => _hasOpacity = false));
                         },
                       ),
+                    Positioned(
+                      key: _seachDetailsKey,
+                      top: 100,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                        decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.4),
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                border: Border(
+                                    bottom: BorderSide(
+                                        color: Colors.white, width: 2)),
+                              ),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 15),
+                              child: Text(
+                                widget.result,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20),
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                  flex: 3,
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 10, horizontal: 15),
+                                    decoration: BoxDecoration(
+                                        border: Border(
+                                            right: BorderSide(
+                                                color: Colors.white,
+                                                width: 2))),
+                                    child: Builder(builder: (context) {
+                                      String _date = "";
+                                      if (widget.date != null) {
+                                        _date = DateFormat.yMMMEd('fr')
+                                            .format(widget.date!);
+                                      } else if (widget.months != null) {
+                                        for (DateTime month in widget.months!) {
+                                          _date +=
+                                              "${DateFormat.MMM("fr").format(month)}";
+                                              
+                                        }
+                                        
+                                      }
+                                      return Text(
+                                        _date,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20),
+                                      );
+                                    }),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 2,
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 10, horizontal: 15),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          "Filtre",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20),
+                                        ),
+                                        Icon(
+                                          Icons.sort,
+                                          color: Colors.white,
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ],
                 ),
                 panelBuilder: (scrollController) {
@@ -145,9 +244,22 @@ class _MapViewPageState extends State<MapViewPage> {
                           }
                           return Expanded(
                             child: ListView.builder(
-                                itemCount: 5,
+                                controller: scrollController,
+                                padding: EdgeInsets.symmetric(vertical: 20),
+                                itemCount: parties.length,
                                 itemBuilder: (context, index) {
-                                  return PartyCard(party: parties[index]);
+                                  var party = parties[index];
+                                  return Column(
+                                    children: [
+                                      PartyCard(party: party),
+                                      PartyCard(party: party),
+                                      PartyCard(party: party),
+                                      PartyCard(party: party),
+                                      PartyCard(party: party),
+                                      PartyCard(party: party),
+                                      PartyCard(party: party),
+                                    ],
+                                  );
                                 }),
                           );
                         })
@@ -155,98 +267,6 @@ class _MapViewPageState extends State<MapViewPage> {
                     ),
                   );
                 },
-              ),
-              Positioned(
-                key: _seachDetailsKey,
-                top: 100,
-                left: 0,
-                right: 0,
-                child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                  decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.4),
-                      borderRadius: BorderRadius.circular(20)),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          border: Border(
-                              bottom:
-                                  BorderSide(color: Colors.white, width: 2)),
-                        ),
-                        padding:
-                            EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                        child: Text(
-                          widget.result,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20),
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 3,
-                            child: Container(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 10, horizontal: 15),
-                              decoration: BoxDecoration(
-                                  border: Border(
-                                      right: BorderSide(
-                                          color: Colors.white, width: 2))),
-                              child: Builder(builder: (context) {
-                                String _date;
-                                if (widget.date != null) {
-                                  _date = DateFormat.yMMMEd('fr')
-                                      .format(widget.date!);
-                                } else {
-                                  _date = "";
-                                }
-                                return Text(
-                                  _date,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20),
-                                );
-                              }),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 2,
-                            child: Container(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 10, horizontal: 15),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "Filtre",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20),
-                                  ),
-                                  Icon(
-                                    Icons.sort,
-                                    color: Colors.white,
-                                  )
-                                ],
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
               ),
               if (_loadingScreen)
                 AnimatedOpacity(

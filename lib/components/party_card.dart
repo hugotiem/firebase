@@ -198,55 +198,58 @@ class PartyCard extends StatelessWidget {
                   closedColor: Colors.white,
                   openColor: Colors.white,
                   closedBuilder: (context, returnValue) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: Stack(
-                            children: [
-                              Container(
-                                width: double.infinity,
-                                color: color,
-                                child: Image.asset(image!),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(10),
-                                child: BlurryContainer(
-                                  height: 85,
-                                  bgColor: color == SECONDARY_COLOR
-                                      ? Colors.blueGrey
-                                      : Colors.yellow.shade100,
-                                  child: Column(
-                                    children: [
-                                      Text(
-                                        DateFormat.MMM('fr').format(party.date),
-                                        style: TextStyle(
-                                          color: textColor,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 16,
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 4),
-                                        child: Text(
-                                          DateFormat.d('fr').format(party.date),
+                    return SizedBox(
+                      height: 250,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Stack(
+                              children: [
+                                Container(
+                                  width: double.infinity,
+                                  color: color,
+                                  child: Image.asset(image!),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(10),
+                                  child: BlurryContainer(
+                                    height: 85,
+                                    bgColor: color == SECONDARY_COLOR
+                                        ? Colors.blueGrey
+                                        : Colors.yellow.shade100,
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          DateFormat.MMM('fr')
+                                              .format(party.date),
                                           style: TextStyle(
                                             color: textColor,
                                             fontWeight: FontWeight.w500,
-                                            fontSize: 22,
+                                            fontSize: 16,
                                           ),
                                         ),
-                                      )
-                                    ],
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 4),
+                                          child: Text(
+                                            DateFormat.d('fr')
+                                                .format(party.date),
+                                            style: TextStyle(
+                                              color: textColor,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 22,
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              )
-                            ],
+                                )
+                              ],
+                            ),
                           ),
-                        ),
-                        Expanded(
-                          flex: 0,
-                          child: Container(
+                          Container(
                             padding: const EdgeInsets.symmetric(
                                 vertical: 8, horizontal: 12),
                             child: Column(
@@ -292,8 +295,8 @@ class PartyCard extends StatelessWidget {
                               ],
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     );
                   },
                   openBuilder: (context, returnValue) {
@@ -508,7 +511,7 @@ class PartyCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: buildPartyCard(context, party));
+    return buildPartyCard(context, party);
   }
 }
 
