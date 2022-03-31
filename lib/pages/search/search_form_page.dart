@@ -14,7 +14,8 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class SearchFormPage extends StatefulWidget {
-  SearchFormPage({Key? key}) : super(key: key);
+  final String? destination;
+  SearchFormPage({Key? key, this.destination}) : super(key: key);
 
   @override
   State<SearchFormPage> createState() => _SearchFormPageState();
@@ -117,21 +118,26 @@ class _SearchFormPageState extends State<SearchFormPage> {
                     SearchBarContent(focusNode: _focusNode),
                     BlocBuilder<SearchCubit, SearchState>(
                         builder: (context, state) {
-                      var result = state.results;
-                      if (result == null || result.isEmpty) {
+                      var results = state.results;
+                      if (results == null || results.isEmpty) {
                         return NoResultContent();
                       }
                       return ResultsContent(
-                        results: result,
+                        results: results,
                         onTileTapped: (value) async {
-                          _focusNode.unfocus();
-                          setState(() {
-                            destination = value;
-                          });
-                          await Future.delayed(const Duration(
-                            milliseconds: 200,
-                          ));
-                          _panelController.close();
+                          if (widget.destination != null) {
+                            Navigator.of(context)
+                                .pop({'newResult': destination});
+                          } else {
+                            _focusNode.unfocus();
+                            setState(() {
+                              destination = value;
+                            });
+                            await Future.delayed(const Duration(
+                              milliseconds: 200,
+                            ));
+                            _panelController.close();
+                          }
                         },
                       );
                     }),

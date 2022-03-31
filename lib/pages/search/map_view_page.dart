@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:ui';
+
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,9 +7,13 @@ import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:pts/blocs/parties/parties_cubit.dart';
+import 'package:pts/blocs/search/search_cubit.dart';
 import 'package:pts/components/party_card.dart';
 import 'package:pts/const.dart';
+import 'package:pts/models/party.dart';
+import 'package:pts/pages/search/search_form_page.dart';
 import 'package:pts/pages/search/sliver/items.dart';
+import 'package:pts/pages/search/sliver/searchbar.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class MapViewPage extends StatefulWidget {
@@ -35,14 +39,16 @@ class MapViewPage extends StatefulWidget {
 }
 
 class _MapViewPageState extends State<MapViewPage> {
+  late String? _destination;
+
   final GlobalKey _seachDetailsKey = GlobalKey();
 
   GoogleMapController? mapController;
   Completer<GoogleMapController> mapControllerCompleter =
       Completer<GoogleMapController>();
 
-  double? longitude;
-  double? latitude;
+  double? _longitude;
+  double? _latitude;
 
   double? _searchContainerHeight = 0;
 
@@ -51,7 +57,9 @@ class _MapViewPageState extends State<MapViewPage> {
 
   @override
   void initState() {
-    _getCoordinates(widget.result);
+    _destination = BlocProvider.of<SearchCubit>(context).state.destination;
+
+    _getCoordinates(_destination);
 
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       setState(() {
@@ -105,11 +113,11 @@ class _MapViewPageState extends State<MapViewPage> {
                     20,
                 body: Stack(
                   children: [
-                    if (longitude != null && latitude != null)
+                    if (_longitude != null && _latitude != null)
                       GoogleMap(
                         myLocationButtonEnabled: false,
                         initialCameraPosition: CameraPosition(
-                            target: LatLng(latitude!, longitude!), zoom: 14),
+                            target: LatLng(_latitude!, _longitude!), zoom: 14),
                         onMapCreated: (controller) {
                           mapController = controller;
 
@@ -135,22 +143,31 @@ class _MapViewPageState extends State<MapViewPage> {
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                border: Border(
-                                    bottom: BorderSide(
-                                        color: Colors.white, width: 2)),
+                            GestureDetector(
+                              child: Container(
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                      bottom: BorderSide(
+                                          color: Colors.white, width: 2)),
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 10, horizontal: 15),
+                                child: Text(
+                                  widget.result,
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20),
+                                ),
                               ),
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 10, horizontal: 15),
-                              child: Text(
-                                widget.result,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20),
-                              ),
+                              onTap: () => Navigator.of(context)
+                                  .push(MaterialPageRoute(
+                                      builder: (context) => SearchFormPage(),
+                                      fullscreenDialog: true))
+                                  .then((value) {
+                                if (value != null) {}
+                              }),
                             ),
                             Row(
                               children: [
@@ -173,9 +190,10 @@ class _MapViewPageState extends State<MapViewPage> {
                                         for (DateTime month in widget.months!) {
                                           _date +=
                                               "${DateFormat.MMM("fr").format(month)}";
-                                              
+                                          if (widget.months!.last != month) {
+                                            _date += "-";
+                                          }
                                         }
-                                        
                                       }
                                       return Text(
                                         _date,
@@ -223,48 +241,9 @@ class _MapViewPageState extends State<MapViewPage> {
                   ],
                 ),
                 panelBuilder: (scrollController) {
-                  return Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(40),
-                    ),
-                    child: Column(
-                      children: [
-                        Container(
-                          height: 8,
-                          width: 50,
-                          margin: EdgeInsets.symmetric(vertical: 10),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: SECONDARY_COLOR,
-                          ),
-                        ),
-                        Builder(builder: (context) {
-                          if (parties == null) {
-                            return Container();
-                          }
-                          return Expanded(
-                            child: ListView.builder(
-                                controller: scrollController,
-                                padding: EdgeInsets.symmetric(vertical: 20),
-                                itemCount: parties.length,
-                                itemBuilder: (context, index) {
-                                  var party = parties[index];
-                                  return Column(
-                                    children: [
-                                      PartyCard(party: party),
-                                      PartyCard(party: party),
-                                      PartyCard(party: party),
-                                      PartyCard(party: party),
-                                      PartyCard(party: party),
-                                      PartyCard(party: party),
-                                      PartyCard(party: party),
-                                    ],
-                                  );
-                                }),
-                          );
-                        })
-                      ],
-                    ),
+                  return ResultsListContent(
+                    scrollController: scrollController,
+                    parties: parties,
                   );
                 },
               ),
@@ -303,14 +282,68 @@ class _MapViewPageState extends State<MapViewPage> {
     List<Location> coordinates = await locationFromAddress(res.split(',')[0]);
 
     Location place = coordinates[0];
-    double longitude = place.longitude;
-    double latitude = place.latitude;
+    double _longitude = place.longitude;
+    double _latitude = place.latitude;
 
     setState(() {
-      this.longitude = longitude;
-      this.latitude = latitude;
-      mapController
-          ?.animateCamera(CameraUpdate.newLatLng(LatLng(latitude, longitude)));
+      this._longitude = _longitude;
+      this._latitude = _latitude;
+      mapController?.animateCamera(
+          CameraUpdate.newLatLng(LatLng(_latitude, _longitude)));
     });
+  }
+}
+
+class ResultsListContent extends StatelessWidget {
+  final ScrollController? scrollController;
+  final List<Party>? parties;
+  const ResultsListContent({Key? key, this.scrollController, this.parties})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(40),
+      ),
+      child: Column(
+        children: [
+          Container(
+            height: 8,
+            width: 50,
+            margin: EdgeInsets.symmetric(vertical: 10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: SECONDARY_COLOR,
+            ),
+          ),
+          Builder(builder: (context) {
+            if (parties == null) {
+              return Container();
+            }
+            return Expanded(
+              child: ListView.builder(
+                  controller: scrollController,
+                  padding: EdgeInsets.symmetric(vertical: 20),
+                  itemCount: parties!.length,
+                  itemBuilder: (context, index) {
+                    var party = parties![index];
+                    return Column(
+                      children: [
+                        PartyCard(party: party),
+                        PartyCard(party: party),
+                        PartyCard(party: party),
+                        PartyCard(party: party),
+                        PartyCard(party: party),
+                        PartyCard(party: party),
+                        PartyCard(party: party),
+                      ],
+                    );
+                  }),
+            );
+          })
+        ],
+      ),
+    );
   }
 }
