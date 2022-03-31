@@ -7,6 +7,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:pts/blocs/parties/parties_cubit.dart';
+import 'package:pts/components/party_card.dart';
 import 'package:pts/const.dart';
 import 'package:pts/pages/search/sliver/items.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -45,8 +46,6 @@ class _MapViewPageState extends State<MapViewPage> {
 
   double? _searchContainerHeight = 0;
 
-  double? _position;
-
   bool _loadingScreen = true;
   bool _hasOpacity = true;
 
@@ -81,6 +80,7 @@ class _MapViewPageState extends State<MapViewPage> {
           ..fetchPartiesWithWhereIsEqualTo("city", widget.result);
       },
       child: BlocBuilder<PartiesCubit, PartiesState>(builder: (context, state) {
+        var parties = state.parties;
         return Scaffold(
           extendBodyBehindAppBar: true,
           appBar: AppBar(
@@ -99,9 +99,6 @@ class _MapViewPageState extends State<MapViewPage> {
             children: [
               SlidingUpPanel(
                 borderRadius: BorderRadius.circular(40),
-                onPanelSlide: (position) => setState(() {
-                  _position = position;
-                }),
                 snapPoint: 0.5,
                 maxHeight: MediaQuery.of(context).size.height -
                     (_searchContainerHeight ?? 0) +
@@ -142,13 +139,18 @@ class _MapViewPageState extends State<MapViewPage> {
                             color: SECONDARY_COLOR,
                           ),
                         ),
-                        Expanded(
-                          child: ListView.builder(
-                              itemCount: 5,
-                              itemBuilder: (context, index) {
-                                return Container();
-                              }),
-                        )
+                        Builder(builder: (context) {
+                          if (parties == null) {
+                            return Container();
+                          }
+                          return Expanded(
+                            child: ListView.builder(
+                                itemCount: 5,
+                                itemBuilder: (context, index) {
+                                  return PartyCard(party: parties[index]);
+                                }),
+                          );
+                        })
                       ],
                     ),
                   );
