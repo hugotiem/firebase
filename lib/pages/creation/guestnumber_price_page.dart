@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pts/components/form/fab_form.dart';
+import 'package:pts/components/form/background_form.dart';
 import 'package:pts/components/form/custom_text_form.dart';
-import 'package:pts/components/form/selectable_items.dart';
 import 'package:pts/components/form/custom_ttf_form.dart';
 import 'package:pts/const.dart';
 import 'package:pts/blocs/parties/build_parties_cubit.dart';
-import 'package:pts/components/appbar.dart';
-
-enum RadioChoix { Gratuit, Cinq, Dix, Quinze, Vingt }
 
 class GuestNumber extends StatefulWidget {
   final void Function()? onNext;
@@ -20,192 +16,174 @@ class GuestNumber extends StatefulWidget {
 }
 
 class _GuestNumberState extends State<GuestNumber> {
-  String _nombre = '20';
-  double _prix = 5;
-  double? _revenu;
-
-  changText() {
-    double _nombre1 = double.parse(_nombre);
-    double _prix1 = _prix;
-
-    setState(() {
-      if (_prix1 == 0) {
-        _revenu = 0;
-      } else {
-        _revenu = (_nombre1 * _prix1) * (1 - (0.17 + 0.014)) - 0.25;
-      }
-    });
-  }
+  int? prix;
+  int number = 0;
 
   bool isCustomPrice = false;
   bool isFree = false;
 
   List<Map<String, dynamic>> prices = [
-    {'title': 'gratuit', 'id': false},
+    {'title': 'Gratuit', 'id': 0},
     {'title': '5€', 'id': 5},
     {'title': '10€', 'id': 10},
     {'title': '20€', 'id': 20},
-    {'title': 'personnaliser', 'id': 'custom'}
+    {'title': 'Personnaliser', 'id': 21}
   ];
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: FORMBACKGROUNDCOLOR,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(50),
-        child: BackAppBar(
-          onPressed: () {
-            widget.onPrevious!();
-          },
-        ),
-      ),
-      floatingActionButton: FABForm(
-        tag: 'guest',
-        onPressed: () {
-          BlocProvider.of<BuildPartiesCubit>(context)
-            ..addItem("number", _nombre)
-            ..addItem("price", _prix);
-
-          widget.onNext!();
-
-          //   Soiree.setDataNumberPricePage(
-          //     _nombre,
-          //     _prix
-          //   );
-          //   Navigator.push(context,
-          //     MaterialPageRoute(builder: (context) => DescriptionPage())
-          //   );
-        },
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            HeaderText1(
-              text: "Combien de personnes souhaites tu inviter ?",
-            ),
-            Row(
-              children: [
-                TFFNumber(
-                    onChanged: (value) {
-                      _nombre = value;
-                    },
-                    hintText: '20'),
-                HintText(text: 'invités')
-              ],
-            ),
-            SizedBox(
-              height: 30,
-            ),
-            HeaderText1(
-              text: "Parlons argent, choisis un prix d'entrée !",
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 16),
-              child: PriceSelectableItemsWidget(
-                initialPrice: 5,
-                items: prices,
-                onSelected: (double value, bool isCustom) => setState(() {
-                  _prix = value;
-                  isCustomPrice = isCustom;
-                }),
+  Widget _buildPriceSelector(BuildContext context, Map<String, dynamic> data) {
+    bool _selected = prix == data['id'];
+    return GestureDetector(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Opacity(
+            opacity: _selected ? 1 : 0.6,
+            child: AnimatedContainer(
+              padding: EdgeInsets.all(12),
+              duration: Duration(milliseconds: 100),
+              decoration: BoxDecoration(
+                color: _selected ? ICONCOLOR : PRIMARY_COLOR,
+                border: Border.all(width: 1, color: ICONCOLOR),
+                borderRadius: BorderRadius.circular(15),
               ),
-            ),
-            if (isCustomPrice)
-              HeaderText2(
-                  text: 'Personnalise le prix',
-                  padding: EdgeInsets.only(bottom: 20, top: 40)),
-            if (isCustomPrice)
-              Row(
-                children: [
-                  TFFNumber(
-                    onChanged: (value) {
-                      _prix = double.parse(value);
-                    },
-                    hintText: '10',
-                  ),
-                  HintText(
-                    text: '€',
-                  )
-                ],
-              ),
-            SizedBox(
-              height: 30,
-            ),
-            HeaderText1(text: 'Revenu estimé'),
-            Padding(
-              padding: const EdgeInsets.only(left: 26),
-              child: Row(children: [
-                OutlinedButton(
-                    onPressed: () => changText(),
-                    child: Text(
-                      'Simuler',
-                      style: TextStyle(
-                          color: SECONDARY_COLOR,
-                          wordSpacing: 1.5,
-                          fontSize: 17,
-                          fontWeight: FontWeight.w500),
-                    )),
-                Padding(
-                  padding: const EdgeInsets.only(left: 6),
-                  child: Text(
-                    _revenu == null ? '' : '${_revenu!.toStringAsFixed(2)}',
-                    style: TextStyle(
-                        wordSpacing: 1.5,
-                        fontSize: 22,
-                        color: SECONDARY_COLOR,
-                        fontWeight: FontWeight.w500),
-                  ),
-                ),
-                HintText(text: _revenu == null ? '' : '€')
-              ]),
-            ),
-            SizedBox(
-              height: 50,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class RadioAndText extends StatelessWidget {
-  final dynamic value;
-  final dynamic groupValue;
-  final void Function(dynamic) onChanged;
-  final String text;
-
-  const RadioAndText(
-      {required this.value,
-      required this.groupValue,
-      required this.onChanged,
-      required this.text,
-      Key? key})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Radio(
-            activeColor: SECONDARY_COLOR,
-            value: this.value,
-            groupValue: this.groupValue,
-            onChanged: this.onChanged),
-        Padding(
-          padding: EdgeInsets.only(left: 8.0),
-          child: Container(
-            child: Opacity(
-              opacity: 0.7,
               child: Text(
-                this.text,
-                style: TextStyle(fontSize: 20, color: Colors.black),
+                data['title'],
+                style: TextStyle(
+                  color: _selected ? PRIMARY_COLOR : ICONCOLOR,
+                  fontWeight: FontWeight.w300,
+                  fontSize: 26,
+                ),
               ),
             ),
           ),
         ),
+        onTap: () => setState(() {
+              prix = data['id'];
+            }));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BackgroundForm(
+      onPrevious: () => widget.onPrevious!(),
+      onPressedFAB: () {
+        if (prix == null) return;
+        BlocProvider.of<BuildPartiesCubit>(context)
+           ..addItem("number", number)
+          ..addItem("price", prix);
+
+        widget.onNext!();
+      },
+      children: [
+        HeaderText1Form(text: "Les invités"),
+        HeaderText2Form("COMBIEN DE PERSONNES SOUHAITES-TU INVITER ?"),
+        Stack(
+          children: [
+            Align(
+              alignment: Alignment.centerLeft,
+              child: AnimatedContainer(
+                duration: Duration(milliseconds: 200),
+                margin: number < 100
+                    ? EdgeInsets.only(top: 80, left: 65)
+                    : EdgeInsets.only(top: 80, left: 45),
+                height: 70,
+                width: number < 100 ? 94 : 135,
+                decoration: BoxDecoration(
+                    border: Border.all(color: ICONCOLOR, width: 1.2),
+                    borderRadius: BorderRadius.circular(15)),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 80, left: 200),
+              child: Text(
+                "invités",
+                style: TextStyle(
+                  fontSize: 60,
+                  color: ICONCOLOR,
+                  fontWeight: FontWeight.w900,
+                  overflow: TextOverflow.ellipsis
+                ),
+              ),
+            ),
+            Container(
+              color: Colors.transparent,
+              height: 250,
+              width: MediaQuery.of(context).size.width * 0.55,
+              child: ListWheelScrollView.useDelegate(
+                squeeze: 1.1,
+                onSelectedItemChanged: (value) {
+                  setState(() {
+                    number = value;
+                  });
+                },
+                itemExtent: 70,
+                perspective: 0.001,
+                childDelegate: ListWheelChildBuilderDelegate(
+                    childCount: 1000,
+                    builder: (BuildContext context, int i) {
+                      return Opacity(
+                        opacity: number == i ? 1 : 0.5,
+                        child: Text(
+                          i.toString(),
+                          style: TextStyle(
+                              fontSize: 60, //number == i ? 60 : 45,
+                              color: ICONCOLOR,
+                              fontWeight: FontWeight.w900),
+                        ),
+                      );
+                    }),
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 20),
+        HeaderText2Form("CHOISI UN PRIX D'ENTRÉE"),
+        Padding(
+          padding: const EdgeInsets.only(left: 26),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    _buildPriceSelector(context, prices[0]),
+                    _buildPriceSelector(context, prices[1]),
+                    _buildPriceSelector(context, prices[2]),
+                    _buildPriceSelector(context, prices[3]),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 16, bottom: 75),
+                child: Row(
+                  children: [
+                    _buildPriceSelector(context, prices[4]),
+                    if (prix == 21)
+                      Row(
+                        children: [
+                          TFFNumber(
+                            onChanged: (value) {
+                              prix = int.parse(value);
+                            },
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8),
+                            child: Text(
+                              "€",
+                              style: TextStyle(
+                                color: ICONCOLOR,
+                                fontSize: 30,
+                              ),
+                            ),
+                          )
+                        ],
+                      )
+                  ],
+                ),
+              ),
+            ],
+          ),
+        )
       ],
     );
   }

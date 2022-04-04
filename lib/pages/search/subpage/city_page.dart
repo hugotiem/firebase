@@ -20,13 +20,10 @@ class NewCityGrid extends StatelessWidget {
           ),
           Row(
             children: [
-              CityBox(
-                text: "Paris",
-                image: "assets/toureiffel2.png",
-              ),
-              CityBox(text: "Marseille", image: "assets/marseille1.png"),
-              CityBox(text: "Bordeaux", image: "assets/bordeaux1.png"),
-              CityBox(text: "Lyon", image: "assets/lyon.png"),
+              CityBox(text: "Paris", image: "assets/paris.jpg"),
+              CityBox(text: "Marseille", image: "assets/marseille.jpg"),
+              CityBox(text: "Bordeaux", image: "assets/bordeaux.jpg"),
+              CityBox(text: "Lyon", image: "assets/lyon.jpg"),
               SizedBox(width: 32),
             ],
           ),
@@ -84,8 +81,9 @@ class CityBox extends StatelessWidget {
                     return Center(child: const CircularProgressIndicator());
                   return ListView.builder(
                     itemCount: state.parties!.length,
-                    itemBuilder: (BuildContext context, int index) =>
-                        SizedBox(height: 270, child: Padding(
+                    itemBuilder: (BuildContext context, int index) => SizedBox(
+                        height: 270,
+                        child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           child: PartyCard(party: state.parties![index]),
                         )),

@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:pts/components/appbar.dart';
 import 'package:pts/components/fab_join.dart';
 import 'package:pts/components/form/custom_ttf_form.dart';
+import 'package:pts/const.dart';
 
-import '../../../../const.dart';
 
 class NewCreditCard extends StatefulWidget {
   const NewCreditCard({Key? key}) : super(key: key);

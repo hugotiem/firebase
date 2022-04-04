@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pts/blocs/parties/parties_cubit.dart';
@@ -26,7 +27,6 @@ class QrCodePage extends StatelessWidget {
               child: BlocBuilder<PartiesCubit, PartiesState>(
                   builder: (context, state) {
                 var parties = state.parties;
-                print(parties);
                 if (state.status != PartiesStatus.loaded) {
                   return Center(child: CircularProgressIndicator());
                 } else if (parties == null) {
@@ -38,7 +38,23 @@ class QrCodePage extends StatelessWidget {
                 return SingleChildScrollView(
                   child: Column(
                     children: parties.map<Widget>((e) {
-                      return QrImage(data: e.userLink!);
+                      print(e.userLink);
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: Center(
+                          child: OpenContainer(
+                            closedBuilder: (context, returnValue) {
+                              return Container(
+                                padding: EdgeInsets.symmetric(vertical: 8),
+                                width: MediaQuery.of(context).size.width * 0.85,
+                                child: Text(e.name),
+                              );
+                            }, 
+                            openBuilder: (context, returnValue) {
+                              return Container();
+                            }),
+                        ),
+                      );//QrImage(data: e.userLink!);
                     }).toList(),
                   ),
                 );
