@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pts/components/components_export.dart';
 import 'package:pts/const.dart';
 
 class FABJoin extends StatelessWidget {
@@ -17,7 +18,7 @@ class FABJoin extends StatelessWidget {
     return FloatingActionButton.extended(
       label: Text(  
         this.label!,
-        style: TextStyle(  
+        style: AppTextStyle(  
           fontSize: 15
         ),
       ),

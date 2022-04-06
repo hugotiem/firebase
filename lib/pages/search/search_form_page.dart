@@ -5,6 +5,7 @@ import 'package:pts/blocs/parties/parties_cubit.dart';
 import 'package:pts/blocs/search/search_cubit.dart';
 import 'package:pts/components/app_datetime.dart';
 import 'package:pts/components/app_grid.dart';
+import 'package:pts/components/components_export.dart';
 import 'package:pts/const.dart';
 import 'package:pts/models/city.dart';
 import 'package:pts/models/place_search.dart';
@@ -14,8 +15,8 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class SearchFormPage extends StatefulWidget {
-  final String? destination;
-  SearchFormPage({Key? key, this.destination}) : super(key: key);
+  final String? last;
+  SearchFormPage({Key? key, this.last}) : super(key: key);
 
   @override
   State<SearchFormPage> createState() => _SearchFormPageState();
@@ -26,12 +27,14 @@ class _SearchFormPageState extends State<SearchFormPage> {
 
   String? destination;
 
+  late TextEditingController _textEditingController;
   late PanelController _panelController;
 
   double _hiddenPaddingFactor = 1;
 
   @override
   void initState() {
+    _textEditingController = TextEditingController(text: widget.last);
     _panelController = PanelController();
     Future.delayed(const Duration(milliseconds: 300))
         .then((_) => _focusNode.requestFocus());
@@ -41,110 +44,126 @@ class _SearchFormPageState extends State<SearchFormPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SearchCubit(),
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          leadingWidth: 70,
-          leading: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: IconButton(
-              icon: Image.asset("assets/back-btn.png"),
-              onPressed: () {
-                if (_panelController.isPanelClosed) {
-                  _panelController.open();
-                } else {
-                  Navigator.of(context).pop();
-                }
-              },
+      create: (context) {
+        if (widget.last != null) {
+          return SearchCubit()..fetchResults(widget.last);
+        }
+        return SearchCubit();
+      },
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            leadingWidth: 70,
+            leading: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: IconButton(
+                icon: Image.asset("assets/back-btn.png"),
+                onPressed: () {
+                  if (_panelController.isPanelClosed) {
+                    _panelController.open();
+                  } else {
+                    Navigator.of(context).pop();
+                  }
+                },
+              ),
+            ),
+            flexibleSpace: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    SECONDARY_COLOR,
+                    ICONCOLOR,
+                  ],
+                  begin: const FractionalOffset(0.0, 0.0),
+                  end: const FractionalOffset(1.0, 0.0),
+                  stops: const [0.0, 1.0],
+                ),
+              ),
             ),
           ),
-          flexibleSpace: Container(
+          body: Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
                   SECONDARY_COLOR,
                   ICONCOLOR,
                 ],
-                begin: const FractionalOffset(0.0, 0.0),
-                end: const FractionalOffset(1.0, 0.0),
-                stops: const [0.0, 1.0],
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+                stops: [0.0, 1.0],
               ),
             ),
-          ),
-        ),
-        body: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                SECONDARY_COLOR,
-                ICONCOLOR,
-              ],
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-              stops: [0.0, 1.0],
+            child: SlidingUpPanel(
+              panelSnapping: false,
+              borderRadius: BorderRadius.circular(40),
+              body: Padding(
+                padding: EdgeInsets.only(top: 50 * _hiddenPaddingFactor),
+                child: CalendarContent(destination: destination),
+              ),
+              maxHeight: MediaQuery.of(context).size.height,
+              margin: EdgeInsets.only(top: 20),
+              minHeight: 0,
+              defaultPanelState: PanelState.OPEN,
+              controller: _panelController,
+              isDraggable: false,
+              onPanelSlide: (value) {
+                setState(() {
+                  _hiddenPaddingFactor = value;
+                });
+              },
+              panelBuilder: (sc) {
+                return Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(40)),
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  margin: EdgeInsets.only(top: 20),
+                  clipBehavior: Clip.antiAlias,
+                  child: Column(
+                    children: [
+                      SearchBarContent(
+                        focusNode: _focusNode,
+                        controller: _textEditingController,
+                      ),
+                      BlocBuilder<SearchCubit, SearchState>(
+                          builder: (context, state) {
+                        var results = state.results;
+                        if (results == null || results.isEmpty) {
+                          return NoResultContent();
+                        }
+                        return ResultsContent(
+                          results: results,
+                          onTileTapped: (value) async {
+                            if (widget.last != null) {
+                              Navigator.of(context)
+                                  .pop({'newResult': destination});
+                            } else {
+                              _focusNode.unfocus();
+                              setState(() {
+                                destination = value;
+                              });
+                              BlocProvider.of<SearchCubit>(context)
+                                  .updateDestination(
+                                      destination: value,
+                                      last: _textEditingController.text);
+                              await Future.delayed(const Duration(
+                                milliseconds: 200,
+                              ));
+                              _panelController.close();
+                            }
+                          },
+                        );
+                      }),
+                    ],
+                  ),
+                );
+              },
             ),
-          ),
-          child: SlidingUpPanel(
-            panelSnapping: false,
-            borderRadius: BorderRadius.circular(40),
-            body: Padding(
-              padding: EdgeInsets.only(top: 50 * _hiddenPaddingFactor),
-              child: CalendarContent(destination: destination),
-            ),
-            maxHeight: MediaQuery.of(context).size.height,
-            margin: EdgeInsets.only(top: 20),
-            minHeight: 0,
-            defaultPanelState: PanelState.OPEN,
-            controller: _panelController,
-            isDraggable: false,
-            onPanelSlide: (value) {
-              setState(() {
-                _hiddenPaddingFactor = value;
-              });
-            },
-            panelBuilder: (sc) {
-              return Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(40)),
-                ),
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                margin: EdgeInsets.only(top: 20),
-                clipBehavior: Clip.antiAlias,
-                child: Column(
-                  children: [
-                    SearchBarContent(focusNode: _focusNode),
-                    BlocBuilder<SearchCubit, SearchState>(
-                        builder: (context, state) {
-                      var results = state.results;
-                      if (results == null || results.isEmpty) {
-                        return NoResultContent();
-                      }
-                      return ResultsContent(
-                        results: results,
-                        onTileTapped: (value) async {
-                          if (widget.destination != null) {
-                            Navigator.of(context)
-                                .pop({'newResult': destination});
-                          } else {
-                            _focusNode.unfocus();
-                            setState(() {
-                              destination = value;
-                            });
-                            await Future.delayed(const Duration(
-                              milliseconds: 200,
-                            ));
-                            _panelController.close();
-                          }
-                        },
-                      );
-                    }),
-                  ],
-                ),
-              );
-            },
           ),
         ),
       ),
@@ -156,7 +175,9 @@ class _SearchFormPageState extends State<SearchFormPage> {
 
 class SearchBarContent extends StatelessWidget {
   final FocusNode focusNode;
-  SearchBarContent({Key? key, required this.focusNode}) : super(key: key);
+  final TextEditingController? controller;
+  SearchBarContent({Key? key, required this.focusNode, this.controller})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -165,6 +186,7 @@ class SearchBarContent extends StatelessWidget {
       child: Hero(
         tag: 'search-widget',
         child: SearchBar(
+          controller: controller,
           hintText: 'Où vas-tu ?',
           borderColor: ICONCOLOR,
           hintColor: ICONCOLOR,
@@ -190,7 +212,7 @@ class NoResultContent extends StatelessWidget {
         children: [
           Text(
             "N'importe où, n'importe quand".toUpperCase(),
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: AppTextStyle(fontWeight: FontWeight.bold),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 40),
@@ -209,7 +231,7 @@ class NoResultContent extends StatelessWidget {
                 children: [
                   Text(
                     "Explorer",
-                    style: TextStyle(
+                    style: AppTextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
@@ -222,7 +244,7 @@ class NoResultContent extends StatelessWidget {
           ),
           Text(
             "Là où il y a du monde...".toUpperCase(),
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: AppTextStyle(fontWeight: FontWeight.bold),
           ),
           BlocProvider(
               create: (context) => PartiesCubit(), child: CitiesListContent()),
@@ -250,7 +272,7 @@ class CitiesListContent extends StatelessWidget {
                   ?.map<Widget>((e) => ListTile(
                         title: Text(
                           e.name.toUpperCase(),
-                          style: TextStyle(
+                          style: AppTextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 24,
                           ),
@@ -291,7 +313,11 @@ class ResultsContent extends StatelessWidget {
 
 class CalendarContent extends StatefulWidget {
   final String? destination;
-  CalendarContent({Key? key, required this.destination}) : super(key: key);
+  final Color? textColor;
+  final TextStyle? calendarTextStyle;
+  CalendarContent(
+      {Key? key, this.destination, this.textColor, this.calendarTextStyle})
+      : super(key: key);
 
   @override
   State<CalendarContent> createState() => _CalendarContentState();
@@ -315,35 +341,37 @@ class _CalendarContentState extends State<CalendarContent>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: RichText(
-            text: TextSpan(
-              text: "Destination: ",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-              ),
-              children: [
-                TextSpan(
-                  text: '${widget.destination}',
-                  style: TextStyle(fontWeight: FontWeight.normal),
+        if (widget.destination != null)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: RichText(
+              text: TextSpan(
+                text: "Destination: ",
+                style: AppTextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
                 ),
-              ],
+                children: [
+                  TextSpan(
+                    text: '${widget.destination}',
+                    style: AppTextStyle(fontWeight: FontWeight.normal),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(20),
-          child: Text(
-            "Sélectionne tes dates",
-            style: TextStyle(
-              fontSize: 25,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
+        if (widget.destination != null)
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: Text(
+              "Sélectionne tes dates",
+              style: AppTextStyle(
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
           ),
-        ),
         Container(
           margin: EdgeInsets.symmetric(horizontal: 20),
           decoration: BoxDecoration(
@@ -352,12 +380,13 @@ class _CalendarContentState extends State<CalendarContent>
               border: Border.all(color: Colors.white.withOpacity(0.1))),
           child: TabBar(
             padding: EdgeInsets.all(6),
-            labelStyle: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-            unselectedLabelStyle: TextStyle(
+            labelStyle: AppTextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: widget.textColor ?? Colors.white),
+            unselectedLabelStyle: AppTextStyle(
               fontWeight: FontWeight.normal,
+              color: widget.textColor ?? Colors.white,
             ),
             controller: _tabController,
             tabs: [
@@ -365,12 +394,16 @@ class _CalendarContentState extends State<CalendarContent>
                 padding: const EdgeInsets.symmetric(vertical: 14),
                 child: FittedBox(
                   fit: BoxFit.fitWidth,
-                  child: Text("Calendrier"),
+                  child: Text(
+                    "Calendrier",
+                    style: AppTextStyle(color: widget.textColor),
+                  ),
                 ),
               ),
               FittedBox(
                 fit: BoxFit.fitWidth,
-                child: Text("Je suis flexible"),
+                child: Text("Je suis flexible",
+                    style: AppTextStyle(color: widget.textColor)),
               ),
             ],
             indicator: BoxDecoration(
@@ -387,10 +420,12 @@ class _CalendarContentState extends State<CalendarContent>
                 clipBehavior: Clip.none,
                 child: CalendarWidget(
                   onSelectedDay: (selected) => date = selected,
+                  themeColor: widget.textColor,
                 ),
               ),
               IamFlexibleWidget(
                 onMonthSelected: (selected) => months = selected,
+                themeColor: widget.textColor,
               ),
             ],
           ),
@@ -408,8 +443,8 @@ class _CalendarContentState extends State<CalendarContent>
                     color: Colors.white.withOpacity(0.3)),
                 child: Text(
                   "Suivant".toUpperCase(),
-                  style: TextStyle(
-                    color: Colors.white,
+                  style: AppTextStyle(
+                    color: widget.textColor ?? Colors.white,
                     fontWeight: FontWeight.w900,
                     fontSize: 18,
                   ),
@@ -419,13 +454,11 @@ class _CalendarContentState extends State<CalendarContent>
                 MapViewPage? page;
                 if (_tabController.index == 0 && date != null) {
                   page = MapViewPage(
-                    result: widget.destination ?? "Paris",
                     hasDate: true,
                     date: date,
                   );
                 } else if (_tabController.index == 1 && months != null) {
                   page = MapViewPage(
-                    result: widget.destination ?? "Paris",
                     hasDate: true,
                     months: months,
                   );
@@ -451,7 +484,9 @@ class _CalendarContentState extends State<CalendarContent>
 
 class CalendarWidget extends StatefulWidget {
   final void Function(DateTime) onSelectedDay;
-  CalendarWidget({Key? key, required this.onSelectedDay}) : super(key: key);
+  final Color? themeColor;
+  CalendarWidget({Key? key, required this.onSelectedDay, this.themeColor})
+      : super(key: key);
 
   @override
   State<CalendarWidget> createState() => _CalendarWidgetState();
@@ -509,13 +544,13 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                   },
                   icon: Icon(
                     Icons.arrow_back_ios_new_rounded,
-                    color: Colors.white,
+                    color: widget.themeColor ?? Colors.white,
                   ),
                 ),
                 Text(
                   _currentDate,
-                  style: TextStyle(
-                    color: Colors.white,
+                  style: AppTextStyle(
+                    color: widget.themeColor ?? Colors.white,
                     fontWeight: FontWeight.bold,
                     fontSize: 25,
                   ),
@@ -533,7 +568,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                   }),
                   icon: Icon(
                     Icons.arrow_forward_ios_rounded,
-                    color: Colors.white,
+                    color: widget.themeColor ?? Colors.white,
                   ),
                 ),
               ],
@@ -547,13 +582,14 @@ class _CalendarWidgetState extends State<CalendarWidget> {
               children: _daysOfWeek
                   .map(
                     (e) => Text(e[0],
-                        style: TextStyle(
+                        style: AppTextStyle(
                           color: _selectedDay.weekday - 1 ==
                                       _daysOfWeek.indexOf(e) &&
                                   isMonthAndYearEquals(
                                       _selectedDay, _focusedDay)
-                              ? Colors.white
-                              : Colors.white.withOpacity(0.3),
+                              ? widget.themeColor ?? Colors.white
+                              : widget.themeColor?.withOpacity(0.3) ??
+                                  Colors.white.withOpacity(0.3),
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         )),
@@ -577,18 +613,20 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                 selectedDecoration: BoxDecoration(
                     color: Colors.white.withOpacity(0.3),
                     shape: BoxShape.circle),
-                defaultTextStyle: TextStyle(color: Colors.white),
+                defaultTextStyle:
+                    AppTextStyle(color: widget.themeColor ?? Colors.white),
                 outsideDaysVisible: false,
-                weekendTextStyle: TextStyle(color: Colors.white),
+                weekendTextStyle:
+                    AppTextStyle(color: widget.themeColor ?? Colors.white),
                 disabledTextStyle:
-                    TextStyle(color: Colors.white.withOpacity(0.3)),
+                    AppTextStyle(color: Colors.white.withOpacity(0.3)),
                 todayDecoration: BoxDecoration(
                     color: Colors.white.withOpacity(0.3),
                     shape: BoxShape.circle),
-                todayTextStyle:
-                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-                selectedTextStyle:
-                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                todayTextStyle: AppTextStyle(
+                    color: Colors.black, fontWeight: FontWeight.bold),
+                selectedTextStyle: AppTextStyle(
+                    color: Colors.black, fontWeight: FontWeight.bold),
               ),
               enabledDayPredicate: (day) {
                 return isSameDay(DateTime.now(), day) ||
@@ -631,7 +669,9 @@ class _CalendarWidgetState extends State<CalendarWidget> {
 
 class IamFlexibleWidget extends StatefulWidget {
   final void Function(List<DateTime>)? onMonthSelected;
-  const IamFlexibleWidget({Key? key, this.onMonthSelected}) : super(key: key);
+  final Color? themeColor;
+  const IamFlexibleWidget({Key? key, this.onMonthSelected, this.themeColor})
+      : super(key: key);
 
   @override
   State<IamFlexibleWidget> createState() => _IamFlexibleWidgetState();
@@ -662,7 +702,8 @@ class _IamFlexibleWidgetState extends State<IamFlexibleWidget> {
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 30),
                   decoration: BoxDecoration(
-                    border: Border.all(color: Colors.white, width: 2),
+                    border: Border.all(
+                        color: widget.themeColor ?? Colors.white, width: 2),
                     borderRadius: BorderRadius.circular(20),
                     color: _isSelected ? Colors.white.withOpacity(0.3) : null,
                   ),
@@ -670,14 +711,15 @@ class _IamFlexibleWidgetState extends State<IamFlexibleWidget> {
                     children: [
                       Text(
                         DateFormat.MMMM('fr').format(_current),
-                        style: TextStyle(
-                            color: Colors.white,
+                        style: AppTextStyle(
+                            color: widget.themeColor ?? Colors.white,
                             fontWeight: FontWeight.bold,
                             fontSize: 20),
                       ),
                       Text(
                         DateFormat.y('fr').format(_current),
-                        style: TextStyle(color: Colors.white),
+                        style: AppTextStyle(
+                            color: widget.themeColor ?? Colors.white),
                       ),
                     ],
                   ),
@@ -719,14 +761,14 @@ class _IamFlexibleWidgetState extends State<IamFlexibleWidget> {
                     children: [
                       Text(
                         DateFormat.MMMM('fr').format(_current),
-                        style: TextStyle(
+                        style: AppTextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                             fontSize: 20),
                       ),
                       Text(
                         DateFormat.y('fr').format(_current),
-                        style: TextStyle(color: Colors.white),
+                        style: AppTextStyle(color: Colors.white),
                       ),
                     ],
                   ),

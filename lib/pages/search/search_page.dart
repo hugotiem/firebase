@@ -321,6 +321,7 @@ class TitleText extends StatelessWidget {
         this.text,
         fontWeight: FontWeight.w900,
         fontSize: 20,
+      
       ),
     );
   }

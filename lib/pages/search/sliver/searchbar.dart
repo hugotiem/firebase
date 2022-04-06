@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:pts/components/app_text_style.dart';
 import 'package:pts/const.dart';
 
 class SearchBar extends StatelessWidget {
@@ -12,6 +13,7 @@ class SearchBar extends StatelessWidget {
   final Color? borderColor;
   final Color? hintColor;
   final String hintText;
+  final TextEditingController? controller;
 
   const SearchBar(
       {Key? key,
@@ -23,7 +25,7 @@ class SearchBar extends StatelessWidget {
       this.autofocus = false,
       this.borderColor,
       this.hintColor,
-      required this.hintText})
+      required this.hintText, this.controller})
       : super(key: key);
 
   @override
@@ -31,6 +33,7 @@ class SearchBar extends StatelessWidget {
     return Material(
       color: Colors.transparent,
       child: TextField(
+        controller: controller,
         cursorColor: hintColor ?? SECONDARY_COLOR,
         readOnly: readOnly,
         focusNode: focusNode,
@@ -41,7 +44,7 @@ class SearchBar extends StatelessWidget {
           filled: true,
           fillColor: backgroundColor ?? Colors.white,
           hintText: hintText,
-          hintStyle: TextStyle(
+          hintStyle: AppTextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
             color: hintColor ?? SECONDARY_COLOR,
