@@ -70,6 +70,7 @@ dependencies:
   flutter_rating_bar: ^4.0.0
   syncfusion_flutter_datepicker: ^19.4.55
   flutter_svg: ^1.0.3
+  firebase_messaging: ^11.2.11
 
 dev_dependencies:
   bloc_test: ^8.5.0
@@ -105,10 +106,10 @@ flutter:
     - assets/roundBlankProfilPicture.png
     - assets/google-logo.png
     - assets/map.png
-    - assets/toureiffel2.png
-    - assets/marseille1.png
-    - assets/bordeaux1.png
-    - assets/lyon.png
+    - assets/paris.jpg
+    - assets/marseille.jpg
+    - assets/bordeaux.jpg
+    - assets/lyon.jpg
     - assets/festive.jpg
     - assets/gaming.jpg
     - assets/jeuxdesociete.jpg
@@ -119,6 +120,8 @@ flutter:
     - assets/join_party.png
     - assets/create_party.png
     - assets/
+    - assets/RETOUR.png
+    - assets/clock.png
 
   fonts: 
     - family: Outfit

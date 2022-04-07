@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pts/pages/creation/date_hour_page.dart';
+import 'package:pts/pages/creation/date_page.dart';
 import 'package:pts/pages/creation/description_page.dart';
 import 'package:pts/pages/creation/end_page.dart';
 import 'package:pts/pages/creation/guestnumber_price_page.dart';
+import 'package:pts/pages/creation/hour_page.dart';
 import 'package:pts/pages/creation/location_page.dart';
 import 'package:pts/pages/creation/name_page.dart';
 import 'package:pts/pages/creation/theme_page.dart';
@@ -27,8 +28,10 @@ class _CreationPageState extends State<CreationPage> {
     _children = [
       KeepPageAlive(child: NamePage(onNext: onNext)),
       KeepPageAlive(child: ThemePage(onNext: onNext, onPrevious: onPrevious)),
+      KeepPageAlive(child: DatePage(onNext: onNext, onPrevious: onPrevious)),
       KeepPageAlive(
-          child: DateHourPage(onNext: onNext, onPrevious: onPrevious)),
+        child: HourPage(onNext: onNext, onPrevious: onPrevious),
+      ),
       KeepPageAlive(
           child: LocationPage(onNext: onNext, onPrevious: onPrevious)),
       KeepPageAlive(child: GuestNumber(onNext: onNext, onPrevious: onPrevious)),

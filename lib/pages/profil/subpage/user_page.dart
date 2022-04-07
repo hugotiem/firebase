@@ -233,6 +233,7 @@ class _ProfilDetailsState extends State<ProfilDetails> {
                       }
                       return SafeArea(
                         child: SingleChildScrollView(
+                          physics: ScrollPhysics(),
                           child: Column(
                             children: [
                               HeadProfil(
@@ -484,6 +485,7 @@ class _CommentState extends State<Comment> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Text(
               'Commentaire',
@@ -494,6 +496,7 @@ class _CommentState extends State<Comment> {
               ),
             ),
             ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemCount: widget.party!.length,
               itemBuilder: (BuildContext context, int index) {

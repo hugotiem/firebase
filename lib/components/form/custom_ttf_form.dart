@@ -33,7 +33,8 @@ class TFFText extends StatelessWidget {
     this.obscureText,
     this.controller,
     this.keyboardAppearance,
-    this.readOnly, this.onTap,
+    this.readOnly,
+    this.onTap,
   }) : super(key: key);
 
   @override
@@ -118,16 +119,16 @@ class TypeAheadTFFText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return Padding(
+      padding: const EdgeInsets.only(right: 34, left: 34, bottom: 35),
       child: Container(
-        height: HEIGHTCONTAINER,
-        width: this.width ?? MediaQuery.of(context).size.width * 0.9,
+        height: 64,
         decoration: BoxDecoration(
-          color: PRIMARY_COLOR,
-          borderRadius: BorderRadius.circular(15),
-        ),
+            color: PRIMARY_COLOR,
+            borderRadius: BorderRadius.circular(34),
+            border: Border.all(color: ICONCOLOR, width: 1.2)),
         child: Padding(
-          padding: const EdgeInsets.only(left: 16),
+          padding: const EdgeInsets.only(left: 25),
           child: Center(
             child: TypeAheadFormField(
               itemBuilder: itemBuilder,
@@ -142,9 +143,12 @@ class TypeAheadTFFText extends StatelessWidget {
                     this.textCapitalization ?? TextCapitalization.none,
                 onChanged: this.onChanged,
                 style: TextStyle(
-                  fontSize: TEXTFIELDFONTSIZE,
-                ),
+                    fontSize: 22,
+                    color: ICONCOLOR,
+                    fontWeight: FontWeight.w500),
                 decoration: InputDecoration(
+                  hintStyle: TextStyle(
+                      color: ICONCOLOR.withOpacity(0.6), fontSize: 22),
                   hintText: this.hintText,
                   border: InputBorder.none,
                   counterText: '',
@@ -162,45 +166,90 @@ class TypeAheadTFFText extends StatelessWidget {
   }
 }
 
-
 class TFFNumber extends StatelessWidget {
   final void Function(String) onChanged;
-  final String hintText;
 
-  const TFFNumber({ 
-    required this.onChanged,
-    required this.hintText,
-    Key? key 
-    }) 
-    : super(key: key);
+  const TFFNumber({required this.onChanged, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 32),
+      padding: const EdgeInsets.only(left: 16),
       child: Container(
-        height: 60,
-        width: 60,
-        decoration: BoxDecoration(  
+        height: 52,
+        width: 70,
+        decoration: BoxDecoration(
           color: PRIMARY_COLOR,
-          borderRadius: BorderRadius.circular(15)
+          borderRadius: BorderRadius.circular(15),
+          border: Border.all(color: ICONCOLOR),
         ),
-        child: Padding( 
+        child: Padding(
           padding: const EdgeInsets.only(left: 16),
-          child: Center( 
-            child: TextFormField(  
+          child: Center(
+            child: TextFormField(
               onChanged: this.onChanged,
               keyboardType: TextInputType.number,
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly
-              ],
-              style: TextStyle(  
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              style: TextStyle(
                 fontSize: 30,
+                color: ICONCOLOR,
               ),
-              decoration: InputDecoration(  
-                hintText: this.hintText,
-                border: InputBorder.none
-              ),
+              decoration: InputDecoration(border: InputBorder.none),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class TFFForm extends StatelessWidget {
+  final String hintText;
+  final String? Function(String?)? validator;
+  final Function(String)? onChanged;
+  final TextEditingController? controller;
+  final int? maxLength;
+  final TextInputType? keyboardType;
+  final List<TextInputFormatter>? inputFormatters;
+  const TFFForm(this.hintText,
+      {this.validator,
+      this.onChanged,
+      this.controller,
+      this.maxLength,
+      this.keyboardType,
+      this.inputFormatters,
+      Key? key})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 34, right: 34, bottom: 35),
+      child: Container(
+        height: 64,
+        decoration: BoxDecoration(
+            color: PRIMARY_COLOR,
+            border: Border.all(color: ICONCOLOR, width: 1.2),
+            borderRadius: BorderRadius.circular(34)),
+        child: Padding(
+          padding: const EdgeInsets.only(left: 25),
+          child: Center(
+            child: TextFormField(
+              controller: controller,
+              style: TextStyle(
+                  fontSize: 22, color: ICONCOLOR, fontWeight: FontWeight.w500),
+              decoration: InputDecoration(
+                  hintText: this.hintText,
+                  hintStyle: TextStyle(
+                      color: ICONCOLOR.withOpacity(0.6), fontSize: 22),
+                  border: InputBorder.none,
+                  errorStyle: TextStyle(height: 0),
+                  counterText: ""),
+              validator: this.validator,
+              onChanged: onChanged,
+              maxLength: maxLength,
+              keyboardType: keyboardType,
+              inputFormatters: inputFormatters,
             ),
           ),
         ),

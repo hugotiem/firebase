@@ -11,17 +11,17 @@ import 'package:pts/components/form/fab_form.dart';
 
 import 'package:pts/const.dart';
 
-class DateHourPage extends StatefulWidget {
+class DatePage extends StatefulWidget {
   final void Function()? onNext;
   final void Function()? onPrevious;
 
-  const DateHourPage({Key? key, this.onNext, this.onPrevious})
+  const DatePage({Key? key, this.onNext, this.onPrevious})
       : super(key: key);
   @override
   _DateHourPageState createState() => _DateHourPageState();
 }
 
-class _DateHourPageState extends State<DateHourPage> {
+class _DateHourPageState extends State<DatePage> {
   late DateTime _date;
   var _heuredebut;
   var _heurefin;
