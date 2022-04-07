@@ -17,6 +17,7 @@ class NamePage extends StatelessWidget {
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
     return BackgroundForm(
+      heroTag: "name",
       formkey: _formKey,
       onPressedFAB: () {
         if (!_formKey.currentState!.validate()) return;

@@ -64,6 +64,7 @@ class _GuestNumberState extends State<GuestNumber> {
   @override
   Widget build(BuildContext context) {
     return BackgroundForm(
+      heroTag: "guest number price",
       onPrevious: () => widget.onPrevious!(),
       onPressedFAB: () {
         if (prix == null) return;

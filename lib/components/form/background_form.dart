@@ -6,11 +6,13 @@ class BackgroundForm extends StatelessWidget {
   final void Function() onPressedFAB;
   final Key? formkey;
   final void Function()? onPrevious;
+  final String? heroTag;
   const BackgroundForm(
       {required this.children,
       required this.onPressedFAB,
       this.formkey,
       this.onPrevious,
+      this.heroTag,
       Key? key})
       : super(key: key);
 
@@ -18,6 +20,7 @@ class BackgroundForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
+        heroTag: heroTag,
         label: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12),
           child: Text(

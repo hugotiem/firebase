@@ -112,6 +112,7 @@ class _DescriptionPageState extends State<DescriptionPage> {
       child: BlocBuilder<UserCubit, UserState>(
         builder: (context, state) {
           return BackgroundForm(
+            heroTag: "description",
             onPrevious: () => widget.onPrevious!(),
             onPressedFAB: () async {
               BlocProvider.of<BuildPartiesCubit>(context)

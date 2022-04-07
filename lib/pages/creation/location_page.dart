@@ -29,6 +29,7 @@ class _LocationPageState extends State<LocationPage> {
   @override
   Widget build(BuildContext context) {
     return BackgroundForm(
+      heroTag: "location",
       onPrevious: () => widget.onPrevious!(),
       onPressedFAB: () {
         if (!_formKey.currentState!.validate()) return;

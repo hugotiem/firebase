@@ -142,6 +142,7 @@ class _HomeState extends State<Home> {
                                 child: Align(
                                   alignment: Alignment.bottomCenter,
                                   child: FloatingActionButton(
+                                    heroTag: "name",
                                     onPressed: () => Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (context) => CreationPage(),

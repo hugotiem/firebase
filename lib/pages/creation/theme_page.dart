@@ -49,8 +49,22 @@ class _ThemePageState extends State<ThemePage> {
         aspectRatio: 1.0,
         child: Stack(
           children: [
+            Center(
+              child: AnimatedContainer(
+                duration: Duration(milliseconds: 200),
+                margin: EdgeInsets.all(_selected ? 10 : 30),
+                decoration: BoxDecoration(
+                  color: Colors.transparent,
+                  borderRadius: BorderRadius.circular(_selected ? 40 : 20),
+                  border: Border.all(
+                    width: 4,
+                    color: data["iconColor"],
+                  ),
+                ),
+              ),
+            ),
             AnimatedContainer(
-              duration: const Duration(milliseconds: 100),
+              duration: const Duration(milliseconds: 200),
               margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(30),
@@ -62,19 +76,6 @@ class _ThemePageState extends State<ThemePage> {
                 ),
               ),
             ),
-            if (_selected)
-              Positioned.fill(
-                right: 10,
-                left: 10,
-                bottom: 10,
-                top: 10,
-                child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.transparent,
-                        borderRadius: BorderRadius.circular(40),
-                        border:
-                            Border.all(width: 4, color: data["iconColor"]))),
-              ),
           ],
         ),
       ),

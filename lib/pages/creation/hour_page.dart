@@ -22,6 +22,7 @@ class _HourPageState extends State<HourPage> {
   Widget build(BuildContext context) {
     double size = MediaQuery.of(context).size.width * 0.85;
     return BackgroundForm(
+      heroTag: " hour",
       onPrevious: () => widget.onPrevious!(),
       onPressedFAB: () {
         widget.onNext!();
