@@ -14,7 +14,7 @@ class Party {
   String? address;
   String? city;
   String? postalCode;
-  bool? smoke;
+  String? smoke;
   bool? animals;
   var ownerId;
   List<dynamic>? validatedList;
