@@ -5,12 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:lottie/lottie.dart';
+import 'package:pts/components/components_export.dart';
 import 'package:pts/blocs/parties/parties_cubit.dart';
-import 'package:pts/components/appbar.dart';
-import 'package:pts/components/custom_container.dart';
 import 'package:pts/components/form/custom_text_form.dart';
-import 'package:pts/components/profile_photo.dart';
-import 'package:pts/components/showModalBottomSheet.dart';
 import 'package:pts/models/capitalize.dart';
 import 'package:pts/models/party.dart';
 import 'package:pts/services/firestore_service.dart';
@@ -22,7 +19,6 @@ import 'package:pts/pages/login/connect.dart';
 import 'package:pts/pages/messaging/subpage/chatpage.dart';
 import 'package:pts/pages/search/sliver/custom_sliver.dart';
 import 'package:pts/const.dart';
-import 'custom_text.dart';
 import 'horizontal_separator.dart';
 import 'piechart.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -964,7 +960,7 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
 }
 
 class CardBody extends StatefulWidget {
-  final bool? animal, smoke;
+  final String? animal, smoke;
   final String? desc, nomOrganisateur, nombre, photoUserProfile;
   final List? nameList, list, gender;
   final void Function()? contacter;
