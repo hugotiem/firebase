@@ -103,25 +103,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/roundBlankProfilPicture.png
-    - assets/google-logo.png
-    - assets/map.png
-    - assets/paris.jpg
-    - assets/marseille.jpg
-    - assets/bordeaux.jpg
-    - assets/lyon.jpg
-    - assets/festive.jpg
-    - assets/gaming.jpg
-    - assets/jeuxdesociete.jpg
-    - assets/theme.jpg
-    - assets/logo.png
-    - assets/hf_head.png
-    - assets/onboarding_img.png
-    - assets/join_party.png
-    - assets/create_party.png
     - assets/
-    - assets/RETOUR.png
-    - assets/clock.png
 
   fonts: 
     - family: Outfit

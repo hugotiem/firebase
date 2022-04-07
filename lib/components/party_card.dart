@@ -180,7 +180,7 @@ class PartyCard extends StatelessWidget {
             return Center(child: CircularProgressIndicator());
           }
           User? user = state.user;
-
+    
           return Stack(children: [
             Center(
               child: Container(
@@ -329,7 +329,7 @@ class PartyCard extends StatelessWidget {
                                 child: SingleChildScrollView(
                                   child: CardBody(
                                     user: connectUserState.user,
-                                    nombre: party.number,
+                                    nombre: party.number?.toString(),
                                     desc: party.desc != null ? party.desc : '',
                                     nomOrganisateur:
                                         "${user!.name} ${user.surname}",
@@ -418,16 +418,16 @@ class PartyCard extends StatelessWidget {
                                               if (party.price == 0) {
                                                 final uid =
                                                     connectUserState.user!.id;
-
+    
                                                 if (uid == null) {
                                                   throw Error();
                                                 }
-
+    
                                                 await BlocProvider.of<
                                                         PartiesCubit>(context)
                                                     .addUserInWaitList(
                                                         user, party);
-
+    
                                                 Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
@@ -437,7 +437,7 @@ class PartyCard extends StatelessWidget {
                                                 );
                                               } else {
                                                 print(party.price);
-
+    
                                                 await PaymentService(
                                                         amount: ((party.price ??
                                                                     0) *
@@ -1384,7 +1384,7 @@ class _EditPartyState extends State<EditParty> {
       ..addListener(() {
         _name = _nameController!.text;
       });
-    _numberController = TextEditingController(text: widget.party.number)
+    _numberController = TextEditingController(text: widget.party.number.toString())
       ..addListener(() {
         _number = _numberController!.text;
       });
@@ -1399,7 +1399,7 @@ class _EditPartyState extends State<EditParty> {
   Widget build(BuildContext context) {
     _animal == null ? _animal = widget.party.animals : _animal = _animal;
     _name == null ? _name = widget.party.name : _name = _name;
-    _number == null ? _number = widget.party.number : _number = _number;
+    _number == null ? _number = widget.party.number.toString() : _number = _number;
     _theme == null ? _theme = widget.party.theme : _theme = _theme;
     _smoke == null ? _smoke = widget.party.smoke : _smoke = _smoke;
     _desc == null ? _desc = widget.party.desc : _desc = _desc;
