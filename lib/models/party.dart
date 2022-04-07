@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:math' as math;
 
+enum SmokeState { outside, inside, notAllowed }
+enum AnimalState { allowed, notAllowed }
+
 class Party {
   String id;
   String name;
@@ -14,8 +17,8 @@ class Party {
   String? address;
   String? city;
   String? postalCode;
-  String? smoke;
-  bool? animals;
+  SmokeState? smoke;
+  AnimalState? animals;
   var ownerId;
   List<dynamic>? validatedList;
   final Map<String, dynamic> validatedListInfo;
@@ -57,6 +60,17 @@ class Party {
       {this.distance,
       this.userLink});
 
+  static String getTitleByState(SmokeState state) {
+    switch (state) {
+      case SmokeState.outside:
+        return "Oui, à l'exterieur";
+      case SmokeState.inside:
+        return "Oui, à l'interieur";
+      default:
+        return "Non";
+    }
+  }
+
   static double random() {
     // generate number between -0.001 and 0.001
     double rand = ((math.Random().nextDouble() * 2) - 1) * 0.001;
@@ -77,8 +91,8 @@ class Party {
     var address = data?['address'];
     var city = data?['city'];
     var postalCode = data?['postal code'];
-    var smoke = data?['smoke'];
-    var animals = data?['animals'];
+    var smoke = SmokeState.values[data?['smoke']];
+    var animals = AnimalState.values[data?['animals']];
     var ownerId = data?['party owner'];
     var validatedList = data?['validatedList'];
     var validatedListInfo =
@@ -94,34 +108,33 @@ class Party {
             <String, dynamic>{};
     var isActive = data?['isActive'];
     var comment = data?['comment'];
-    var commentIdList  = data?['commentIdList'];
+    var commentIdList = data?['commentIdList'];
 
     return Party(
-      id,
-      name,
-      theme,
-      number,
-      date,
-      startTime,
-      endTime,
-      price,
-      desc,
-      address,
-      city,
-      postalCode,
-      smoke,
-      animals,
-      ownerId,
-      validatedList,
-      validatedListInfo,
-      coordinates,
-      approximativeCoordinates,
-      waitList,
-      waitListInfo,
-      isActive,
-      comment,
-      commentIdList
-    );
+        id,
+        name,
+        theme,
+        number,
+        date,
+        startTime,
+        endTime,
+        price,
+        desc,
+        address,
+        city,
+        postalCode,
+        smoke,
+        animals,
+        ownerId,
+        validatedList,
+        validatedListInfo,
+        coordinates,
+        approximativeCoordinates,
+        waitList,
+        waitListInfo,
+        isActive,
+        comment,
+        commentIdList);
   }
 
   factory Party.fromSnapShots(
@@ -156,33 +169,32 @@ class Party {
             <String, dynamic>{};
     var isActive = data['isActive'];
     var comment = data['comment'];
-    var commentIdList  = data['commentIdList'];
+    var commentIdList = data['commentIdList'];
 
     return Party(
-      id,
-      name,
-      theme,
-      number,
-      date,
-      startTime,
-      endTime,
-      price,
-      desc,
-      address,
-      city,
-      postalCode,
-      smoke,
-      animals,
-      ownerId,
-      validatedList,
-      validatedListInfo,
-      coordinates,
-      approximativeCoordinates,
-      waitList,
-      waitListInfo,
-      isActive,
-      comment,
-      commentIdList
-    );
+        id,
+        name,
+        theme,
+        number,
+        date,
+        startTime,
+        endTime,
+        price,
+        desc,
+        address,
+        city,
+        postalCode,
+        smoke,
+        animals,
+        ownerId,
+        validatedList,
+        validatedListInfo,
+        coordinates,
+        approximativeCoordinates,
+        waitList,
+        waitListInfo,
+        isActive,
+        comment,
+        commentIdList);
   }
 }

@@ -176,7 +176,7 @@ class PartyCard extends StatelessWidget {
             return Center(child: CircularProgressIndicator());
           }
           User? user = state.user;
-    
+
           return Stack(children: [
             Center(
               child: Container(
@@ -414,16 +414,16 @@ class PartyCard extends StatelessWidget {
                                               if (party.price == 0) {
                                                 final uid =
                                                     connectUserState.user!.id;
-    
+
                                                 if (uid == null) {
                                                   throw Error();
                                                 }
-    
+
                                                 await BlocProvider.of<
                                                         PartiesCubit>(context)
                                                     .addUserInWaitList(
                                                         user, party);
-    
+
                                                 Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
@@ -433,7 +433,7 @@ class PartyCard extends StatelessWidget {
                                                 );
                                               } else {
                                                 print(party.price);
-    
+
                                                 await PaymentService(
                                                         amount: ((party.price ??
                                                                     0) *
@@ -960,7 +960,8 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
 }
 
 class CardBody extends StatefulWidget {
-  final String? animal, smoke;
+  final AnimalState? animal;
+  final SmokeState? smoke;
   final String? desc, nomOrganisateur, nombre, photoUserProfile;
   final List? nameList, list, gender;
   final void Function()? contacter;
@@ -990,15 +991,15 @@ class CardBody extends StatefulWidget {
 }
 
 class _CardBodyState extends State<CardBody> {
+  dynamic countMale = 0;
+  dynamic countFemale = 0;
+  dynamic countOther = 0;
+  int i = 0;
+  int countComment = 0;
+  double countNote = 0;
+
   @override
   Widget build(BuildContext context) {
-    dynamic countMale = 0;
-    dynamic countFemale = 0;
-    dynamic countOther = 0;
-    int i = 0;
-    int countComment = 0;
-    double countNote = 0;
-
     // ignore: unused_local_variable
     for (var test in widget.partyOwner!) {
       if (widget.partyOwner![i].commentIdList!.isNotEmpty) {
@@ -1136,7 +1137,7 @@ class _CardBodyState extends State<CardBody> {
                 padding: const EdgeInsets.only(bottom: 15),
                 child: Row(
                   children: [
-                    this.widget.animal == true
+                    this.widget.animal == "Oui"
                         ? Padding(
                             padding: const EdgeInsets.only(right: 22),
                             child: Icon(Ionicons.paw),
@@ -1159,7 +1160,7 @@ class _CardBodyState extends State<CardBody> {
                               ],
                             ),
                           ),
-                    this.widget.animal == true
+                    this.widget.animal == "Non"
                         ? CText(
                             "Le propriétaire possède un ou des animaux",
                             fontSize: 17,
@@ -1199,7 +1200,7 @@ class _CardBodyState extends State<CardBody> {
                             )
                           ],
                         ),
-                  this.widget.smoke == true
+                  this.widget.smoke == SmokeState.inside
                       ? CText(
                           "Vous pouvez fumer à l'intérieur",
                           fontSize: 17,
@@ -1366,8 +1367,8 @@ class _EditPartyState extends State<EditParty> {
   String? _name;
   String? _theme;
   String? _number;
-  bool? _animal;
-  bool? _smoke;
+  AnimalState? _animal;
+  SmokeState? _smoke;
   String? _desc;
 
   TextEditingController? _nameController;
@@ -1380,10 +1381,11 @@ class _EditPartyState extends State<EditParty> {
       ..addListener(() {
         _name = _nameController!.text;
       });
-    _numberController = TextEditingController(text: widget.party.number.toString())
-      ..addListener(() {
-        _number = _numberController!.text;
-      });
+    _numberController =
+        TextEditingController(text: widget.party.number.toString())
+          ..addListener(() {
+            _number = _numberController!.text;
+          });
     _descController = TextEditingController(text: widget.party.desc)
       ..addListener(() {
         _desc = _descController!.text;
@@ -1395,7 +1397,9 @@ class _EditPartyState extends State<EditParty> {
   Widget build(BuildContext context) {
     _animal == null ? _animal = widget.party.animals : _animal = _animal;
     _name == null ? _name = widget.party.name : _name = _name;
-    _number == null ? _number = widget.party.number.toString() : _number = _number;
+    _number == null
+        ? _number = widget.party.number.toString()
+        : _number = _number;
     _theme == null ? _theme = widget.party.theme : _theme = _theme;
     _smoke == null ? _smoke = widget.party.smoke : _smoke = _smoke;
     _desc == null ? _desc = widget.party.desc : _desc = _desc;
@@ -1527,7 +1531,7 @@ class _EditPartyState extends State<EditParty> {
     );
   }
 
-  Widget dropdownAnimals(String text, bool? animal) {
+  Widget dropdownAnimals(String text, AnimalState? animal) {
     String? val;
     return Stack(
       children: [
@@ -1549,7 +1553,7 @@ class _EditPartyState extends State<EditParty> {
               );
             }).toList(),
             hint: Text(
-              animal == true ? "Oui" : "Non",
+              animal == AnimalState.allowed ? "Oui" : "Non",
             ),
             elevation: 0,
             decoration: InputDecoration(
@@ -1561,7 +1565,7 @@ class _EditPartyState extends State<EditParty> {
             onChanged: (String? value) {
               setState(() {
                 val = value;
-                val == "Oui" ? _animal = true : _animal = false;
+                val == "Oui" ? _animal = AnimalState.allowed : _animal = AnimalState.notAllowed;
               });
             },
             alignment: Alignment.bottomLeft,
@@ -1571,7 +1575,7 @@ class _EditPartyState extends State<EditParty> {
     );
   }
 
-  Widget dropdownSmoke(String text, bool? smoke) {
+  Widget dropdownSmoke(String text, SmokeState? smoke) {
     String? val;
     return Stack(
       children: [
@@ -1593,7 +1597,7 @@ class _EditPartyState extends State<EditParty> {
               );
             }).toList(),
             hint: Text(
-              smoke == true ? "Oui" : "Non",
+              Party.getTitleByState(smoke!),
             ),
             elevation: 0,
             decoration: InputDecoration(
@@ -1605,7 +1609,7 @@ class _EditPartyState extends State<EditParty> {
             onChanged: (String? value) {
               setState(() {
                 val = value;
-                val == "Oui" ? _smoke = true : _smoke = false;
+                // val == "Oui" ?  = true : _smoke = false;
               });
             },
             alignment: Alignment.bottomLeft,
