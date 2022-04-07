@@ -13,6 +13,11 @@ class SearchCubit extends AppBaseCubit<SearchState> {
   Future fetchResults(String? search) async {
     emit(state.setRequestInProgress() as SearchState);
     if (search != null) await applicationBloc.searchPlaces(search);
-    emit(SearchState.dataLoaded(applicationBloc.searchResults));
+    emit(SearchState.resultsLoaded(
+        applicationBloc.searchResults, state.destination, state.last));
+  }
+
+  void updateDestination({String? destination, String? last}) async {
+    emit(SearchState.destinationChanged(state.results, destination, last));
   }
 }

@@ -5,7 +5,7 @@ class Party {
   String id;
   String name;
   String? theme;
-  String? number;
+  int? number;
   DateTime date;
   DateTime? startTime;
   DateTime? endTime;
@@ -134,7 +134,7 @@ class Party {
     var date = data['date'].toDate();
     var startTime = data['startTime'].toDate();
     var endTime = data['endTime'].toDate();
-    double? price = data['price'];
+    double? price = (data['price'] as int).toDouble();
     var desc = data['desc'];
     var address = data['address'];
     var city = data['city'];

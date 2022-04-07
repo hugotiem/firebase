@@ -76,7 +76,7 @@ class _GeolocationWidgetState extends State<GeolocationWidget> {
                 return PageView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: state.parties!.length,
-                  controller: PageController(viewportFraction: 0.85),
+                  controller: PageController(),
                   onPageChanged: (int index) => setState(() => _index = index),
                   itemBuilder: (
                     BuildContext context,

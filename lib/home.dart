@@ -7,12 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:pts/blocs/parties/parties_cubit.dart';
+import 'package:pts/components/components_export.dart';
 import 'package:pts/const.dart';
 import 'package:pts/pages/creation/creation_page.dart';
 import 'package:pts/pages/login/connect.dart';
 import 'package:pts/pages/login/id_form_screen.dart';
 import 'package:pts/blocs/user/user_cubit.dart';
-import 'package:pts/components/custom_text.dart';
 import 'package:pts/pages/messaging/message_list.dart';
 import 'package:uni_links/uni_links.dart';
 import 'pages/Planning/calendar_page.dart';
@@ -336,7 +336,7 @@ class CheckIdPopup extends StatelessWidget {
                     ),
                     Text(
                       "Identité non vérifié",
-                      style: TextStyle(
+                      style: AppTextStyle(
                         color: Colors.orange,
                         fontSize: 15,
                       ),
@@ -360,7 +360,7 @@ class CheckIdPopup extends StatelessWidget {
                     Container(
                       child: Text(
                         "Hey ! ton compte n'est pas encore vérifié. Fait le maintenant !",
-                        style: TextStyle(
+                        style: AppTextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
                         ),
@@ -370,7 +370,7 @@ class CheckIdPopup extends StatelessWidget {
                       margin: EdgeInsets.only(top: 10),
                       child: Text(
                         "Envoie nous une photo d'une carte d'identité ou d'un passeport afin qu'on puisse vérifier ton identité !",
-                        style: TextStyle(fontSize: 15),
+                        style: AppTextStyle(fontSize: 15),
                       ),
                     ),
                     Container(
@@ -437,7 +437,7 @@ class Banned extends StatelessWidget {
         children: [
           Text(
             'Vous êtes bannis'.toUpperCase(),
-            style: TextStyle(
+            style: AppTextStyle(
               color: Colors.red,
               fontSize: 30,
               fontWeight: FontWeight.bold,
@@ -450,7 +450,7 @@ class Banned extends StatelessWidget {
               opacity: 0.75,
               child: Text(
                 "Lors de la vérification de votre compte, nous avons constasté que les informations que vous nous avez fournies lors de votre inscription ne correspondent pas avec celle de votre carte d'identité.",
-                style: TextStyle(color: SECONDARY_COLOR, fontSize: 16),
+                style: AppTextStyle(color: SECONDARY_COLOR, fontSize: 16),
               ),
             ),
           ),
@@ -468,7 +468,7 @@ class Banned extends StatelessWidget {
                 child: Center(
                   child: Text(
                     "Supprimer son compte",
-                    style: TextStyle(
+                    style: AppTextStyle(
                         color: PRIMARY_COLOR,
                         fontSize: 22,
                         fontWeight: FontWeight.bold),
