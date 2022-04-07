@@ -5,6 +5,7 @@ import 'package:pts/blocs/user/user_cubit.dart';
 import 'package:pts/components/form/background_form.dart';
 import 'package:pts/components/form/custom_text_form.dart';
 import 'package:pts/const.dart';
+import 'package:pts/models/party.dart';
 import 'package:pts/pages/creation/end_page.dart';
 import 'package:pts/services/firestore_service.dart';
 import 'package:pts/blocs/parties/build_parties_cubit.dart';
@@ -19,20 +20,14 @@ class DescriptionPage extends StatefulWidget {
 }
 
 class _DescriptionPageState extends State<DescriptionPage> {
-  String? _smoke;
-  String? _animals;
+  SmokeState? _smoke;
+  AnimalState? _animals;
   String _description = "";
   final db = FireStoreServices("party");
   final databaseReference = FirebaseFirestore.instance;
 
-  List<Map<String, dynamic>> fumer = [
-    {'title': "Oui, à l'intérieur"},
-    {'title': "Oui, à l'extérieur"},
-    {'title': "Non"},
-  ];
-
-  Widget _selectItemSmoke(BuildContext context, Map<String, dynamic> data) {
-    bool _selected = _smoke == data['title'];
+  Widget _selectItemSmoke(BuildContext context, SmokeState data) {
+    bool _selected = _smoke == data;
     return GestureDetector(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -48,7 +43,7 @@ class _DescriptionPageState extends State<DescriptionPage> {
             ),
             child: Center(
               child: Text(
-                data['title'],
+                Party.getTitleByState(data),
                 style: TextStyle(
                   color: _selected ? PRIMARY_COLOR : ICONCOLOR,
                   fontWeight: FontWeight.w300,
@@ -60,18 +55,13 @@ class _DescriptionPageState extends State<DescriptionPage> {
         ),
       ),
       onTap: (() => setState(() {
-            _smoke = data['title'];
+            _smoke = data;
           })),
     );
   }
 
-  List<Map<String, dynamic>> animaux = [
-    {'title': "Oui"},
-    {'title': "Non"},
-  ];
-
-  Widget _selectItemAnimal(BuildContext context, Map<String, dynamic> data) {
-    bool _selected = _animals == data['title'];
+  Widget _selectItemAnimal(BuildContext context, AnimalState data) {
+    bool _selected = _animals == data;
     return GestureDetector(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -88,7 +78,7 @@ class _DescriptionPageState extends State<DescriptionPage> {
             ),
             child: Center(
               child: Text(
-                data['title'],
+                data == AnimalState.allowed ? "Oui" : "Non",
                 style: TextStyle(
                   color: _selected ? PRIMARY_COLOR : ICONCOLOR,
                   fontWeight: FontWeight.w300,
@@ -100,7 +90,7 @@ class _DescriptionPageState extends State<DescriptionPage> {
         ),
       ),
       onTap: (() => setState(() {
-            _animals = data['title'];
+            _animals = data;
           })),
     );
   }
@@ -139,20 +129,19 @@ class _DescriptionPageState extends State<DescriptionPage> {
               HeaderText2Form("PEUT-ON FUMER ?"),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      _selectItemSmoke(context, fumer[0]),
-                      _selectItemSmoke(context, fumer[1])
-                    ],
-                  ),
+                child: Row(
+                  children: [
+                    Expanded(
+                        child: _selectItemSmoke(context, SmokeState.outside)),
+                    Expanded(
+                        child: _selectItemSmoke(context, SmokeState.inside))
+                  ],
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(
                     left: 24, right: 24, top: 16, bottom: 30),
-                child: _selectItemSmoke(context, fumer[2]),
+                child: _selectItemSmoke(context, SmokeState.notAllowed),
               ),
               HeaderText2Form("Y'A-T-IL DES ANIMAUX CHEZ TOI ?"),
               Padding(
@@ -160,10 +149,9 @@ class _DescriptionPageState extends State<DescriptionPage> {
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
-                    children: [
-                      _selectItemAnimal(context, animaux[0]),
-                      _selectItemAnimal(context, animaux[1])
-                    ],
+                    children: AnimalState.values
+                        .map<Widget>((e) => _selectItemAnimal(context, e))
+                        .toList(),
                   ),
                 ),
               ),

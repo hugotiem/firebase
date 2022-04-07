@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pts/components/app_text_style.dart';
 import 'package:pts/const.dart';
 
 class CText extends StatelessWidget {
@@ -18,8 +19,7 @@ class CText extends StatelessWidget {
     return Text(
       text!,
       textAlign: textAlign == null ? TextAlign.left : textAlign,
-      style: TextStyle(
-        fontFamily: PRIMARY_FONT,
+      style: AppTextStyle(
         fontSize: fontSize == null ? 14 : fontSize,
         color: color == null ? SECONDARY_COLOR : color,
         fontWeight: fontWeight == null ? FontWeight.w400 : fontWeight,
@@ -41,7 +41,7 @@ class BoldText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       this.text!,
-      style: TextStyle(
+      style: AppTextStyle(
         fontWeight: FontWeight.w900,
         fontSize: this.fontSize,
         color: SECONDARY_COLOR,
@@ -102,7 +102,7 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget> {
                   padding: const EdgeInsets.only(top: 6),
                   child: InkWell(
                     child: Text(flag ? "Afficher" : "Réduire",
-                        style: TextStyle(color: Colors.blue, fontSize: 16)),
+                        style: AppTextStyle(color: Colors.blue, fontSize: 16)),
                     onTap: () {
                       setState(() {
                         flag = !flag;

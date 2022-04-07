@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:pts/components/app_datetime.dart';
 
 class FireStoreServices {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -66,6 +67,17 @@ class FireStoreServices {
     return this._firestore.collection(collection).doc(id).get();
   }
 
+  Future<int> getCountOf(String key, dynamic value) async {
+    var data = await this
+        ._firestore
+        .collection(collection)
+        .where(key, isEqualTo: value)
+        .where('isActive', isEqualTo: true)
+        .get();
+
+    return data.docs.length;
+  }
+
   Future<QuerySnapshot<Map<String, dynamic>>> getDataWithMultipleWhereIsEqualTo(
       Map<String, dynamic> conditions) async {
     Query<Map<String, dynamic>> query = this._firestore.collection(collection);
@@ -92,6 +104,18 @@ class FireStoreServices {
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>>
+      getDataBeforeDateWithWhereIsEqualTo(
+          String key, String? data, DateTime date) async {
+    return this
+        ._firestore
+        .collection(collection)
+        .where(key, isEqualTo: data)
+        .where("date", isEqualTo: date)
+        .where("isActive", isEqualTo: true)
+        .get();
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>>
       getDataWithWhereIsEqualToAndIsActive(String key, String? data) async {
     return this
         ._firestore
@@ -101,12 +125,50 @@ class FireStoreServices {
         .get();
   }
 
+  Future<QuerySnapshot<Map<String, dynamic>>>
+      getDataByDateWithWhereEqualsToAndIsActive(
+          String key, dynamic value, DateTime date) {
+    return this
+        ._firestore
+        .collection(collection)
+        .where(key, isEqualTo: value)
+        .where("date", isGreaterThanOrEqualTo: date)
+        .where("date", isLessThan: AppDateTime.from(date).addTime(month: 1))
+        .where("isActive", isEqualTo: true)
+        .get();
+  }
+
+  // Future<QuerySnapshot<Map<String, dynamic>>>
+  //     getDataByMonthRangeWithWhereEqualsToAndIsActive(
+  //         String key, dynamic value, List<DateTime> dates) {
+  //   Query<Map<String, dynamic>> query = this
+  //       ._firestore
+  //       .collection(collection)
+  //       .where(key, isEqualTo: value)
+  //       .where("isActive", isEqualTo: true);
+  //   for (DateTime date in dates) {
+  //     query = query
+  //         .where("date", isGreaterThanOrEqualTo: date)
+  //         .where("date", isLessThan: AppDateTime.from(date).addTime(month: 1));
+  //   }
+  //   return query.get();
+  // }
+
   Future<QuerySnapshot<Map<String, dynamic>>> getDataWithWhereMapContains(
       String field, String? uid) async {
     return this
         ._firestore
         .collection(collection)
         .where(field, arrayContains: uid)
+        .get();
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getDataWhereIn(
+      String field, List<dynamic> data) {
+    return this
+        ._firestore
+        .collection(collection)
+        .where(field, whereIn: data)
         .get();
   }
 

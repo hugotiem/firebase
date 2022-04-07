@@ -5,12 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:lottie/lottie.dart';
+import 'package:pts/components/components_export.dart';
 import 'package:pts/blocs/parties/parties_cubit.dart';
-import 'package:pts/components/appbar.dart';
-import 'package:pts/components/custom_container.dart';
 import 'package:pts/components/form/custom_text_form.dart';
-import 'package:pts/components/profile_photo.dart';
-import 'package:pts/components/showModalBottomSheet.dart';
 import 'package:pts/models/capitalize.dart';
 import 'package:pts/models/party.dart';
 import 'package:pts/services/firestore_service.dart';
@@ -22,7 +19,6 @@ import 'package:pts/pages/login/connect.dart';
 import 'package:pts/pages/messaging/subpage/chatpage.dart';
 import 'package:pts/pages/search/sliver/custom_sliver.dart';
 import 'package:pts/const.dart';
-import 'custom_text.dart';
 import 'horizontal_separator.dart';
 import 'piechart.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -198,55 +194,58 @@ class PartyCard extends StatelessWidget {
                   closedColor: Colors.white,
                   openColor: Colors.white,
                   closedBuilder: (context, returnValue) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: Stack(
-                            children: [
-                              Container(
-                                width: double.infinity,
-                                color: color,
-                                child: Image.asset(image!),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(10),
-                                child: BlurryContainer(
-                                  height: 85,
-                                  bgColor: color == SECONDARY_COLOR
-                                      ? Colors.blueGrey
-                                      : Colors.yellow.shade100,
-                                  child: Column(
-                                    children: [
-                                      Text(
-                                        DateFormat.MMM('fr').format(party.date),
-                                        style: TextStyle(
-                                          color: textColor,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 16,
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 4),
-                                        child: Text(
-                                          DateFormat.d('fr').format(party.date),
+                    return SizedBox(
+                      height: 250,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Stack(
+                              children: [
+                                Container(
+                                  width: double.infinity,
+                                  color: color,
+                                  child: Image.asset(image!),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(10),
+                                  child: BlurryContainer(
+                                    height: 85,
+                                    bgColor: color == SECONDARY_COLOR
+                                        ? Colors.blueGrey
+                                        : Colors.yellow.shade100,
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          DateFormat.MMM('fr')
+                                              .format(party.date),
                                           style: TextStyle(
                                             color: textColor,
                                             fontWeight: FontWeight.w500,
-                                            fontSize: 22,
+                                            fontSize: 16,
                                           ),
                                         ),
-                                      )
-                                    ],
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 4),
+                                          child: Text(
+                                            DateFormat.d('fr')
+                                                .format(party.date),
+                                            style: TextStyle(
+                                              color: textColor,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 22,
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              )
-                            ],
+                                )
+                              ],
+                            ),
                           ),
-                        ),
-                        Expanded(
-                          flex: 0,
-                          child: Container(
+                          Container(
                             padding: const EdgeInsets.symmetric(
                                 vertical: 8, horizontal: 12),
                             child: Column(
@@ -292,8 +291,8 @@ class PartyCard extends StatelessWidget {
                               ],
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     );
                   },
                   openBuilder: (context, returnValue) {
@@ -326,7 +325,7 @@ class PartyCard extends StatelessWidget {
                                 child: SingleChildScrollView(
                                   child: CardBody(
                                     user: connectUserState.user,
-                                    nombre: party.number,
+                                    nombre: party.number?.toString(),
                                     desc: party.desc != null ? party.desc : '',
                                     nomOrganisateur:
                                         "${user!.name} ${user.surname}",
@@ -508,7 +507,7 @@ class PartyCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: buildPartyCard(context, party));
+    return buildPartyCard(context, party);
   }
 }
 
@@ -961,7 +960,8 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
 }
 
 class CardBody extends StatefulWidget {
-  final bool? animal, smoke;
+  final AnimalState? animal;
+  final SmokeState? smoke;
   final String? desc, nomOrganisateur, nombre, photoUserProfile;
   final List? nameList, list, gender;
   final void Function()? contacter;
@@ -991,15 +991,15 @@ class CardBody extends StatefulWidget {
 }
 
 class _CardBodyState extends State<CardBody> {
+  dynamic countMale = 0;
+  dynamic countFemale = 0;
+  dynamic countOther = 0;
+  int i = 0;
+  int countComment = 0;
+  double countNote = 0;
+
   @override
   Widget build(BuildContext context) {
-    dynamic countMale = 0;
-    dynamic countFemale = 0;
-    dynamic countOther = 0;
-    int i = 0;
-    int countComment = 0;
-    double countNote = 0;
-
     // ignore: unused_local_variable
     for (var test in widget.partyOwner!) {
       if (widget.partyOwner![i].commentIdList!.isNotEmpty) {
@@ -1137,7 +1137,7 @@ class _CardBodyState extends State<CardBody> {
                 padding: const EdgeInsets.only(bottom: 15),
                 child: Row(
                   children: [
-                    this.widget.animal == true
+                    this.widget.animal == "Oui"
                         ? Padding(
                             padding: const EdgeInsets.only(right: 22),
                             child: Icon(Ionicons.paw),
@@ -1160,7 +1160,7 @@ class _CardBodyState extends State<CardBody> {
                               ],
                             ),
                           ),
-                    this.widget.animal == true
+                    this.widget.animal == "Non"
                         ? CText(
                             "Le propriétaire possède un ou des animaux",
                             fontSize: 17,
@@ -1200,7 +1200,7 @@ class _CardBodyState extends State<CardBody> {
                             )
                           ],
                         ),
-                  this.widget.smoke == true
+                  this.widget.smoke == SmokeState.inside
                       ? CText(
                           "Vous pouvez fumer à l'intérieur",
                           fontSize: 17,
@@ -1367,8 +1367,8 @@ class _EditPartyState extends State<EditParty> {
   String? _name;
   String? _theme;
   String? _number;
-  bool? _animal;
-  bool? _smoke;
+  AnimalState? _animal;
+  SmokeState? _smoke;
   String? _desc;
 
   TextEditingController? _nameController;
@@ -1381,10 +1381,11 @@ class _EditPartyState extends State<EditParty> {
       ..addListener(() {
         _name = _nameController!.text;
       });
-    _numberController = TextEditingController(text: widget.party.number)
-      ..addListener(() {
-        _number = _numberController!.text;
-      });
+    _numberController =
+        TextEditingController(text: widget.party.number.toString())
+          ..addListener(() {
+            _number = _numberController!.text;
+          });
     _descController = TextEditingController(text: widget.party.desc)
       ..addListener(() {
         _desc = _descController!.text;
@@ -1396,7 +1397,9 @@ class _EditPartyState extends State<EditParty> {
   Widget build(BuildContext context) {
     _animal == null ? _animal = widget.party.animals : _animal = _animal;
     _name == null ? _name = widget.party.name : _name = _name;
-    _number == null ? _number = widget.party.number : _number = _number;
+    _number == null
+        ? _number = widget.party.number.toString()
+        : _number = _number;
     _theme == null ? _theme = widget.party.theme : _theme = _theme;
     _smoke == null ? _smoke = widget.party.smoke : _smoke = _smoke;
     _desc == null ? _desc = widget.party.desc : _desc = _desc;
@@ -1528,7 +1531,7 @@ class _EditPartyState extends State<EditParty> {
     );
   }
 
-  Widget dropdownAnimals(String text, bool? animal) {
+  Widget dropdownAnimals(String text, AnimalState? animal) {
     String? val;
     return Stack(
       children: [
@@ -1550,7 +1553,7 @@ class _EditPartyState extends State<EditParty> {
               );
             }).toList(),
             hint: Text(
-              animal == true ? "Oui" : "Non",
+              animal == AnimalState.allowed ? "Oui" : "Non",
             ),
             elevation: 0,
             decoration: InputDecoration(
@@ -1562,7 +1565,7 @@ class _EditPartyState extends State<EditParty> {
             onChanged: (String? value) {
               setState(() {
                 val = value;
-                val == "Oui" ? _animal = true : _animal = false;
+                val == "Oui" ? _animal = AnimalState.allowed : _animal = AnimalState.notAllowed;
               });
             },
             alignment: Alignment.bottomLeft,
@@ -1572,7 +1575,7 @@ class _EditPartyState extends State<EditParty> {
     );
   }
 
-  Widget dropdownSmoke(String text, bool? smoke) {
+  Widget dropdownSmoke(String text, SmokeState? smoke) {
     String? val;
     return Stack(
       children: [
@@ -1594,7 +1597,7 @@ class _EditPartyState extends State<EditParty> {
               );
             }).toList(),
             hint: Text(
-              smoke == true ? "Oui" : "Non",
+              Party.getTitleByState(smoke!),
             ),
             elevation: 0,
             decoration: InputDecoration(
@@ -1606,7 +1609,7 @@ class _EditPartyState extends State<EditParty> {
             onChanged: (String? value) {
               setState(() {
                 val = value;
-                val == "Oui" ? _smoke = true : _smoke = false;
+                // val == "Oui" ?  = true : _smoke = false;
               });
             },
             alignment: Alignment.bottomLeft,
