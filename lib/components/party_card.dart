@@ -999,32 +999,29 @@ class _CardBodyState extends State<CardBody> {
   double countNote = 0;
 
   @override
-  Widget build(BuildContext context) {
-    // ignore: unused_local_variable
-    for (var test in widget.partyOwner!) {
-      if (widget.partyOwner![i].commentIdList!.isNotEmpty) {
+  void initState() {
+    super.initState();
+    print(widget.partyOwner?.length);
+    for (var party in widget.partyOwner!) {
+      if (party.commentIdList!.isNotEmpty) {
         setState(() {
-          countComment += widget.partyOwner![i].commentIdList!.length;
+          countComment += party.commentIdList!.length;
         });
       }
-      i++;
     }
 
-    i = 0;
-    // ignore: unused_local_variable
-    for (var test in widget.partyOwner!) {
-      if (widget.partyOwner![i].commentIdList!.isNotEmpty) {
-        List nameList = widget.partyOwner![i].commentIdList!;
-        // ignore: unused_local_variable
-        List list = nameList.map((doc) {
-          Map info = widget.partyOwner![i].comment![doc];
-          setState(() {
-            countNote += double.parse(info["note"].toString());
-          });
+    double _counter = 0;
+
+    for (var party in widget.partyOwner!) {
+      if (party.commentIdList!.isNotEmpty) {
+        List nameList = party.commentIdList!;
+        nameList.map((doc) {
+          Map info = party.comment![doc];
+          _counter += double.parse(info["note"].toString());
         }).toList();
       }
-      i++;
     }
+    setState(() => countNote = _counter);
     countNote /= countComment;
 
     if (widget.gender!.contains("Homme")) {
@@ -1040,6 +1037,10 @@ class _CardBodyState extends State<CardBody> {
     countMale = (countMale / widget.gender!.length) * 100;
     countFemale = (countFemale / widget.gender!.length) * 100;
     countOther = (countOther / widget.gender!.length) * 100;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       children: [
         SizedBox(
@@ -1137,7 +1138,7 @@ class _CardBodyState extends State<CardBody> {
                 padding: const EdgeInsets.only(bottom: 15),
                 child: Row(
                   children: [
-                    this.widget.animal == "Oui"
+                    this.widget.animal == AnimalState.allowed
                         ? Padding(
                             padding: const EdgeInsets.only(right: 22),
                             child: Icon(Ionicons.paw),
@@ -1160,7 +1161,7 @@ class _CardBodyState extends State<CardBody> {
                               ],
                             ),
                           ),
-                    this.widget.animal == "Non"
+                    this.widget.animal == AnimalState.notAllowed
                         ? CText(
                             "Le propriétaire possède un ou des animaux",
                             fontSize: 17,
@@ -1565,7 +1566,9 @@ class _EditPartyState extends State<EditParty> {
             onChanged: (String? value) {
               setState(() {
                 val = value;
-                val == "Oui" ? _animal = AnimalState.allowed : _animal = AnimalState.notAllowed;
+                val == "Oui"
+                    ? _animal = AnimalState.allowed
+                    : _animal = AnimalState.notAllowed;
               });
             },
             alignment: Alignment.bottomLeft,

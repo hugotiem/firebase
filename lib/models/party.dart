@@ -152,8 +152,8 @@ class Party {
     var address = data['address'];
     var city = data['city'];
     var postalCode = data['postal code'];
-    var smoke = data['smoke'];
-    var animals = data['animals'];
+    var smoke = SmokeState.values[data['smoke']];
+    var animals = AnimalState.values[data['animals']];
     var ownerId = data['party owner'];
     var validatedList = data['validatedList'];
     var validatedListInfo =
