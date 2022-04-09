@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pts/components/components_export.dart';
 import 'package:pts/const.dart';
 
 class EndPage extends StatelessWidget {
@@ -7,34 +8,66 @@ class EndPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: SECONDARY_COLOR,
       floatingActionButton: FloatingActionButton.extended(
-        heroTag: 'end-form',
-        onPressed: () {
-          Navigator.of(context).popUntil((route) => route.isFirst);
-        },
+        heroTag: "fin",
         backgroundColor: ICONCOLOR,
         elevation: 0,
-        label: Text(
-          'OK',
-          style: TextStyle(fontSize: 15),
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 16, right: 16),
+        label: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
           child: Text(
-            'Vous venez de publier votre soirée ! Vous pouvez dès maintenant recevoir des demandes.',
-            style: TextStyle(
-                fontSize: 25,
-                fontWeight: FontWeight.bold,
-                height: 1.4,
-                color: Colors.white),
-            textAlign: TextAlign.center,
+            "FIN",
+            style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
           ),
         ),
-      ]),
+        onPressed: () =>  Navigator.of(context).popUntil((route) => route.isFirst),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      body: Stack(
+        children: [
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [SECONDARY_COLOR, ICONCOLOR],
+              ),
+            ),
+          ),
+          Center(
+            child: BlurryContainer(
+              width: MediaQuery.of(context).size.width * 0.8,
+              padding: EdgeInsets.all(20),
+              bgColor: Colors.blueGrey[50],
+              blur: 5,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  BlurryContainer(
+                    kBorderRadius: BorderRadius.circular(20),
+                    bgColor: Colors.blueGrey[50],
+                    child: Text(
+                      "VOUS VENEZ DE PUBLIER VOTRE SOIRÉE !",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: PRIMARY_COLOR,
+                        fontSize: 26,
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    "Vous pouvez dès maintenant recevoir des demandes.",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: PRIMARY_COLOR, fontSize: 22, fontWeight: FontWeight.w600),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

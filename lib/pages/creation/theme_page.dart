@@ -51,6 +51,7 @@ class _ThemePageState extends State<ThemePage> {
           children: [
             Center(
               child: AnimatedContainer(
+                curve: Curves.ease,
                 duration: Duration(milliseconds: 200),
                 margin: EdgeInsets.all(_selected ? 10 : 30),
                 decoration: BoxDecoration(
@@ -64,6 +65,7 @@ class _ThemePageState extends State<ThemePage> {
               ),
             ),
             AnimatedContainer(
+              curve: Curves.ease,
               duration: const Duration(milliseconds: 200),
               margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               decoration: BoxDecoration(

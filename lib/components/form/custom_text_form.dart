@@ -76,12 +76,13 @@ class HintText extends StatelessWidget {
 
 class HeaderText1Form extends StatelessWidget {
   final String text;
-  const HeaderText1Form({required this.text, Key? key}) : super(key: key);
+  final EdgeInsetsGeometry? padding;
+  const HeaderText1Form({required this.text, this.padding, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 34, vertical: 60),
+      padding: padding ?? const EdgeInsets.symmetric(horizontal: 34, vertical: 60),
       child: Text(
         this.text,
         style: TextStyle(
