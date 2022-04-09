@@ -16,7 +16,7 @@ class GuestNumber extends StatefulWidget {
 }
 
 class _GuestNumberState extends State<GuestNumber> {
-  int? prix;
+  double? prix;
   int number = 0;
 
   bool isCustomPrice = false;
@@ -164,7 +164,7 @@ class _GuestNumberState extends State<GuestNumber> {
                         children: [
                           TFFNumber(
                             onChanged: (value) {
-                              prix = int.parse(value);
+                              prix = double.parse(value);
                             },
                           ),
                           Padding(

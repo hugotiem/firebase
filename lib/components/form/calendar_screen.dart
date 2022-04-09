@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:pts/components/app_datetime.dart';
 import 'package:pts/const.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -24,8 +25,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   @override
   void initState() {
-    _currentDay = widget.currentDay ?? DateTime.now();
-    _focusedDay = widget.focusedDay ?? DateTime.now();
+    _currentDay = widget.currentDay ?? AppDateTime.now().yMd();
+    _focusedDay = widget.focusedDay ?? AppDateTime.now().yMd();
     super.initState();
   }
 

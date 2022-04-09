@@ -63,7 +63,9 @@ class _SearchFormPageState extends State<SearchFormPage> {
                 icon: Image.asset("assets/back-btn.png"),
                 onPressed: () {
                   if (_panelController.isPanelClosed) {
-                    _panelController.open();
+                    _panelController.animatePanelToPosition(1,
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeInOut);
                   } else {
                     Navigator.of(context).pop();
                   }
@@ -152,9 +154,11 @@ class _SearchFormPageState extends State<SearchFormPage> {
                                       destination: value,
                                       last: _textEditingController.text);
                               await Future.delayed(const Duration(
-                                milliseconds: 200,
+                                milliseconds: 100,
                               ));
-                              _panelController.close();
+                              _panelController.animatePanelToPosition(0,
+                                  duration: const Duration(milliseconds: 300),
+                                  curve: Curves.easeInOut);
                             }
                           },
                         );
@@ -338,146 +342,150 @@ class _CalendarContentState extends State<CalendarContent>
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (widget.destination != null)
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: RichText(
-              text: TextSpan(
-                text: "Destination: ",
+    return SafeArea(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (widget.destination != null)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: RichText(
+                text: TextSpan(
+                  text: "Destination: ",
+                  style: AppTextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
+                  children: [
+                    TextSpan(
+                      text: '${widget.destination}',
+                      style: AppTextStyle(fontWeight: FontWeight.normal),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          if (widget.destination != null)
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Text(
+                "Sélectionne tes dates",
                 style: AppTextStyle(
+                  fontSize: 25,
                   fontWeight: FontWeight.bold,
-                  fontSize: 20,
+                  color: Colors.white,
                 ),
-                children: [
-                  TextSpan(
-                    text: '${widget.destination}',
-                    style: AppTextStyle(fontWeight: FontWeight.normal),
+              ),
+            ),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 20),
+            decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.3),
+                borderRadius: BorderRadius.circular(30),
+                border: Border.all(color: Colors.white.withOpacity(0.1))),
+            child: TabBar(
+              padding: EdgeInsets.all(6),
+              labelStyle: AppTextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: widget.textColor ?? Colors.white),
+              unselectedLabelStyle: AppTextStyle(
+                fontWeight: FontWeight.normal,
+                color: widget.textColor ?? Colors.white,
+              ),
+              controller: _tabController,
+              tabs: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  child: FittedBox(
+                    fit: BoxFit.fitWidth,
+                    child: Text(
+                      "Calendrier",
+                      style: AppTextStyle(color: widget.textColor),
+                    ),
                   ),
-                ],
-              ),
-            ),
-          ),
-        if (widget.destination != null)
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: Text(
-              "Sélectionne tes dates",
-              style: AppTextStyle(
-                fontSize: 25,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-          ),
-        Container(
-          margin: EdgeInsets.symmetric(horizontal: 20),
-          decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.3),
-              borderRadius: BorderRadius.circular(30),
-              border: Border.all(color: Colors.white.withOpacity(0.1))),
-          child: TabBar(
-            padding: EdgeInsets.all(6),
-            labelStyle: AppTextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: widget.textColor ?? Colors.white),
-            unselectedLabelStyle: AppTextStyle(
-              fontWeight: FontWeight.normal,
-              color: widget.textColor ?? Colors.white,
-            ),
-            controller: _tabController,
-            tabs: [
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 14),
-                child: FittedBox(
+                ),
+                FittedBox(
                   fit: BoxFit.fitWidth,
-                  child: Text(
-                    "Calendrier",
-                    style: AppTextStyle(color: widget.textColor),
-                  ),
+                  child: Text("Je suis flexible",
+                      style: AppTextStyle(color: widget.textColor)),
                 ),
+              ],
+              indicator: BoxDecoration(
+                color: Colors.white.withOpacity(0.3),
+                borderRadius: BorderRadius.circular(30),
               ),
-              FittedBox(
-                fit: BoxFit.fitWidth,
-                child: Text("Je suis flexible",
-                    style: AppTextStyle(color: widget.textColor)),
-              ),
-            ],
-            indicator: BoxDecoration(
-              color: Colors.white.withOpacity(0.3),
-              borderRadius: BorderRadius.circular(30),
             ),
           ),
-        ),
-        Expanded(
-          child: TabBarView(
-            controller: _tabController,
-            children: [
-              SingleChildScrollView(
-                clipBehavior: Clip.none,
-                child: CalendarWidget(
-                  onSelectedDay: (selected) => date = selected,
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: [
+                SingleChildScrollView(
+                  clipBehavior: Clip.none,
+                  child: CalendarWidget(
+                    onSelectedDay: (selected) => date = selected,
+                    themeColor: widget.textColor,
+                  ),
+                ),
+                IamFlexibleWidget(
+                  onMonthSelected: (selected) => months = selected,
                   themeColor: widget.textColor,
                 ),
-              ),
-              IamFlexibleWidget(
-                onMonthSelected: (selected) => months = selected,
-                themeColor: widget.textColor,
-              ),
-            ],
-          ),
-        ),
-        Container(
-          padding: EdgeInsets.only(bottom: 140),
-          margin: EdgeInsets.symmetric(horizontal: 20),
-          child: Align(
-            alignment: Alignment.centerRight,
-            child: GestureDetector(
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 40),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(40),
-                    color: Colors.white.withOpacity(0.3)),
-                child: Text(
-                  "Suivant".toUpperCase(),
-                  style: AppTextStyle(
-                    color: widget.textColor ?? Colors.white,
-                    fontWeight: FontWeight.w900,
-                    fontSize: 18,
-                  ),
-                ),
-              ),
-              onTap: () {
-                MapViewPage? page;
-                if (_tabController.index == 0 && date != null) {
-                  page = MapViewPage(
-                    hasDate: true,
-                    date: date,
-                  );
-                } else if (_tabController.index == 1 && months != null) {
-                  page = MapViewPage(
-                    hasDate: true,
-                    months: months,
-                  );
-                } else {
-                  print("Aucune date séléctionné");
-                }
-                if (page != null) {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => page!,
-                      fullscreenDialog: true,
-                    ),
-                  );
-                }
-              },
+              ],
             ),
           ),
-        ),
-      ],
+          Container(
+            padding:
+                EdgeInsets.only(bottom: widget.textColor != null ? 0 : 120),
+            margin: EdgeInsets.symmetric(horizontal: 20),
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: GestureDetector(
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 40),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(40),
+                      color: Colors.white.withOpacity(0.3)),
+                  child: Text(
+                    "Suivant".toUpperCase(),
+                    style: AppTextStyle(
+                      color: widget.textColor ?? Colors.white,
+                      fontWeight: FontWeight.w900,
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+                onTap: () {
+                  print(date);
+                  MapViewPage? page;
+                  if (_tabController.index == 0 && date != null) {
+                    page = MapViewPage(
+                      hasDate: true,
+                      date: date,
+                    );
+                  } else if (_tabController.index == 1 && months != null) {
+                    page = MapViewPage(
+                      hasDate: true,
+                      months: months,
+                    );
+                  } else {
+                    print("Aucune date séléctionné");
+                  }
+                  if (page != null) {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => page!,
+                        fullscreenDialog: true,
+                      ),
+                    );
+                  }
+                },
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -618,8 +626,9 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                 outsideDaysVisible: false,
                 weekendTextStyle:
                     AppTextStyle(color: widget.themeColor ?? Colors.white),
-                disabledTextStyle:
-                    AppTextStyle(color: Colors.white.withOpacity(0.3)),
+                disabledTextStyle: AppTextStyle(
+                    color: widget.themeColor?.withOpacity(0.6) ??
+                        Colors.white.withOpacity(0.3)),
                 todayDecoration: BoxDecoration(
                     color: Colors.white.withOpacity(0.3),
                     shape: BoxShape.circle),
@@ -753,7 +762,8 @@ class _IamFlexibleWidgetState extends State<IamFlexibleWidget> {
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 30),
                   decoration: BoxDecoration(
-                    border: Border.all(color: Colors.white, width: 2),
+                    border: Border.all(
+                        color: widget.themeColor ?? Colors.white, width: 2),
                     borderRadius: BorderRadius.circular(20),
                     color: _isSelected ? Colors.white.withOpacity(0.3) : null,
                   ),
@@ -762,13 +772,14 @@ class _IamFlexibleWidgetState extends State<IamFlexibleWidget> {
                       Text(
                         DateFormat.MMMM('fr').format(_current),
                         style: AppTextStyle(
-                            color: Colors.white,
+                            color: widget.themeColor ?? Colors.white,
                             fontWeight: FontWeight.bold,
                             fontSize: 20),
                       ),
                       Text(
                         DateFormat.y('fr').format(_current),
-                        style: AppTextStyle(color: Colors.white),
+                        style: AppTextStyle(
+                            color: widget.themeColor ?? Colors.white),
                       ),
                     ],
                   ),

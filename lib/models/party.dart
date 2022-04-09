@@ -71,44 +71,44 @@ class Party {
     }
   }
 
+
+   /// generate number between -0.001 and 0.001
   static double random() {
-    // generate number between -0.001 and 0.001
     double rand = ((math.Random().nextDouble() * 2) - 1) * 0.001;
     return rand;
   }
 
-  factory Party.fromDocument(DocumentSnapshot<Map<String, dynamic>> snapshots) {
-    var id = snapshots.id;
-    var data = snapshots.data();
-    var name = data?['name'];
-    var theme = data?['theme'];
-    var number = data?['number'];
-    var date = data?['date'].toDate();
-    var startTime = data?['startTime'].toDate();
-    var endTime = data?['endTime'].toDate();
-    double? price = data?['price'];
-    var desc = data?['desc'];
-    var address = data?['address'];
-    var city = data?['city'];
-    var postalCode = data?['postal code'];
-    var smoke = SmokeState.values[data?['smoke']];
-    var animals = AnimalState.values[data?['animals']];
-    var ownerId = data?['party owner'];
-    var validatedList = data?['validatedList'];
+  factory Party.fromJson(Map<String, dynamic>? json) {
+    var id = json?["id"];
+    var name = json?['name'];
+    var theme = json?['theme'];
+    var number = json?['number'];
+    var date = json?['date'].toDate();
+    var startTime = json?['startTime'].toDate();
+    var endTime = json?['endTime'].toDate();
+    double? price = json?['price'];
+    var desc = json?['desc'];
+    var address = json?['address'];
+    var city = json?['city'];
+    var postalCode = json?['postal code'];
+    var smoke = SmokeState.values[json?['smoke']];
+    var animals = AnimalState.values[json?['animals']];
+    var ownerId = json?['party owner'];
+    var validatedList = json?['validatedList'];
     var validatedListInfo =
-        (data?['validatedListInfo'] as Map?)?.cast<String, dynamic>() ??
+        (json?['validatedListInfo'] as Map?)?.cast<String, dynamic>() ??
             <String, dynamic>{};
     var coordinates =
-        ((data?['coordinates'] ?? []) as List<dynamic>).cast<double>();
+        ((json?['coordinates'] ?? []) as List<dynamic>).cast<double>();
     var approximativeCoordinates =
         coordinates.map((e) => e + random()).toList();
-    var waitList = data?["waitList"];
+    var waitList = json?["waitList"];
     var waitListInfo =
-        (data?["waitListInfo"] as Map?)?.cast<String, dynamic>() ??
+        (json?["waitListInfo"] as Map?)?.cast<String, dynamic>() ??
             <String, dynamic>{};
-    var isActive = data?['isActive'];
-    var comment = data?['comment'];
-    var commentIdList = data?['commentIdList'];
+    var isActive = json?['isActive'];
+    var comment = json?['comment'];
+    var commentIdList = json?['commentIdList'];
 
     return Party(
         id,
@@ -141,60 +141,14 @@ class Party {
       QueryDocumentSnapshot<Map<String, dynamic>> snapshots) {
     var id = snapshots.id;
     var data = snapshots.data();
-    var name = data['name'];
-    var theme = data['theme'];
-    var number = data['number'];
-    var date = data['date'].toDate();
-    var startTime = data['startTime'].toDate();
-    var endTime = data['endTime'].toDate();
-    double? price = (data['price'] as int).toDouble();
-    var desc = data['desc'];
-    var address = data['address'];
-    var city = data['city'];
-    var postalCode = data['postal code'];
-    var smoke = data['smoke'];
-    var animals = data['animals'];
-    var ownerId = data['party owner'];
-    var validatedList = data['validatedList'];
-    var validatedListInfo =
-        (data['validatedListInfo'] as Map?)?.cast<String, dynamic>() ??
-            <String, dynamic>{};
-    var coordinates =
-        ((data['coordinates'] ?? []) as List<dynamic>).cast<double>();
-    var approximativeCoordinates =
-        coordinates.map((e) => e + random()).toList();
-    var waitList = data["waitList"];
-    var waitListInfo =
-        (data["waitListInfo"] as Map?)?.cast<String, dynamic>() ??
-            <String, dynamic>{};
-    var isActive = data['isActive'];
-    var comment = data['comment'];
-    var commentIdList = data['commentIdList'];
+    data["id"] = id;
+    return Party.fromJson(data);
+  }
 
-    return Party(
-        id,
-        name,
-        theme,
-        number,
-        date,
-        startTime,
-        endTime,
-        price,
-        desc,
-        address,
-        city,
-        postalCode,
-        smoke,
-        animals,
-        ownerId,
-        validatedList,
-        validatedListInfo,
-        coordinates,
-        approximativeCoordinates,
-        waitList,
-        waitListInfo,
-        isActive,
-        comment,
-        commentIdList);
+  factory Party.fromDocument(DocumentSnapshot<Map<String, dynamic>> snapshots) {
+    var id = snapshots.id;
+    var data = snapshots.data();
+    data?["id"] = id;
+    return Party.fromJson(data);
   }
 }
