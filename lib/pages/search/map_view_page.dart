@@ -48,8 +48,14 @@ class _MapViewPageState extends State<MapViewPage> {
   bool _loadingScreen = true;
   bool _hasOpacity = true;
 
+  late DateTime? _date;
+  late List<DateTime>? _months;
+
   @override
   void initState() {
+    _date = widget.date;
+    _months = widget.months;
+
     _destination = BlocProvider.of<SearchCubit>(context).state.destination;
     _getCoordinates(_destination);
 
@@ -101,7 +107,7 @@ class _MapViewPageState extends State<MapViewPage> {
             body: Stack(
               children: [
                 SlidingUpPanel(
-                  borderRadius: BorderRadius.circular(40),
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(40)),
                   snapPoint: 0.5,
                   maxHeight: MediaQuery.of(context).size.height -
                       (_searchContainerHeight ?? 0) +
@@ -132,8 +138,22 @@ class _MapViewPageState extends State<MapViewPage> {
                         right: 0,
                         child: SearchInfoContent(
                           result: _destination,
-                          date: widget.date,
-                          months: widget.months,
+                          date: _date,
+                          months: _months,
+                          onDateChanged: (date, months) {
+                            print(date);
+                            if (date != null) {
+                              setState(() {
+                                _date = date;
+                                _months = null;
+                              });
+                            } else {
+                              setState(() {
+                                _months = months;
+                                _date = null;
+                              });
+                            }
+                          },
                         ),
                       ),
                     ],
@@ -180,7 +200,9 @@ class _MapViewPageState extends State<MapViewPage> {
 }
 
 Future<void> showCalendar(BuildContext context,
-    {DateTime? date, List<DateTime>? months}) async {
+    {DateTime? date,
+    List<DateTime>? months,
+    void Function(String, dynamic)? onDateChanged}) async {
   showModalBottomSheet(
       isScrollControlled: true,
       constraints:
@@ -194,11 +216,33 @@ Future<void> showCalendar(BuildContext context,
       context: context,
       builder: (context) {
         return Scaffold(
-          body: CalendarContent(
-            textColor: ICONCOLOR,
+          body: Column(
+            children: [
+              Container(
+                height: 8,
+                width: 50,
+                margin: EdgeInsets.symmetric(vertical: 10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: SECONDARY_COLOR,
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: CalendarContent(
+                    textColor: ICONCOLOR,
+                  ),
+                ),
+              ),
+            ],
           ),
         );
-      });
+      }).then((value) {
+    if (onDateChanged != null) {
+      onDateChanged(value["type"], value["value"]);
+    }
+  });
 }
 
 class LoadingScreen extends StatelessWidget {
@@ -234,7 +278,9 @@ class SearchInfoContent extends StatelessWidget {
   final String? result;
   final DateTime? date;
   final List<DateTime>? months;
-  const SearchInfoContent({Key? key, this.result, this.date, this.months})
+  final void Function(DateTime?, List<DateTime>?)? onDateChanged;
+  const SearchInfoContent(
+      {Key? key, this.result, this.date, this.months, this.onDateChanged})
       : super(key: key);
 
   @override
@@ -257,10 +303,7 @@ class SearchInfoContent extends StatelessWidget {
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                 child: Text(
                   result ?? "Saisir une ville",
-                  style: AppTextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20),
+                  style: AppTextStyle(color: Colors.white, fontSize: 20),
                 ),
               ),
               onTap: () {
@@ -302,15 +345,27 @@ class SearchInfoContent extends StatelessWidget {
                         _date,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.center,
-                        style: AppTextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20),
+                        style: AppTextStyle(color: Colors.white, fontSize: 20),
                       );
                     }),
                   ),
-                  onTap: () => showCalendar(context),
+                  onTap: () =>
+                      showCalendar(context, onDateChanged: (type, value) {
+                    var bloc = BlocProvider.of<PartiesCubit>(context);
+                    if (type == "date") {
+                      bloc.fetchPartiesByDateWithWhereIsEqualTo(
+                          "city", result, value);
+                      if (onDateChanged != null) {
+                        onDateChanged!(value, null);
+                      }
+                    } else {
+                      bloc.fetchPartiesByMonthsWithWhereIsEqualTo(
+                          "city", result, value);
+                      if (onDateChanged != null) {
+                        onDateChanged!(null, value);
+                      }
+                    }
+                  }),
                 ),
               ),
               Expanded(
@@ -322,10 +377,7 @@ class SearchInfoContent extends StatelessWidget {
                     children: [
                       Text(
                         "Filtre",
-                        style: AppTextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20),
+                        style: AppTextStyle(color: Colors.white, fontSize: 20),
                       ),
                       Icon(
                         Icons.sort,

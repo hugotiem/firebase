@@ -20,13 +20,13 @@ class CalendarScreen extends StatefulWidget {
 }
 
 class _CalendarScreenState extends State<CalendarScreen> {
-  late DateTime _currentDay;
-  late DateTime _focusedDay;
+  late AppDateTime _currentDay;
+  late AppDateTime _focusedDay;
 
   @override
   void initState() {
-    _currentDay = widget.currentDay ?? AppDateTime.now().yMd();
-    _focusedDay = widget.focusedDay ?? AppDateTime.now().yMd();
+    _currentDay = AppDateTime.from(widget.currentDay).yMd();
+    _focusedDay = AppDateTime.from(widget.focusedDay).yMd();
     super.initState();
   }
 
@@ -74,8 +74,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
             },
             onDaySelected: (DateTime selectedDay, DateTime focusedDay) {
               setState(() {
-                _currentDay = selectedDay;
-                _focusedDay = focusedDay;
+                _currentDay = AppDateTime.from(selectedDay).yMd();
+                _focusedDay = AppDateTime.from(focusedDay).yMd();
               });
             },
           ),

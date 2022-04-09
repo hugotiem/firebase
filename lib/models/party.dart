@@ -71,8 +71,7 @@ class Party {
     }
   }
 
-
-   /// generate number between -0.001 and 0.001
+  /// generate number between -0.001 and 0.001
   static double random() {
     double rand = ((math.Random().nextDouble() * 2) - 1) * 0.001;
     return rand;
@@ -83,6 +82,7 @@ class Party {
     var name = json?['name'];
     var theme = json?['theme'];
     var number = json?['number'];
+    print("date: ${json?['date']}");
     var date = json?['date'].toDate();
     var startTime = json?['startTime'].toDate();
     var endTime = json?['endTime'].toDate();

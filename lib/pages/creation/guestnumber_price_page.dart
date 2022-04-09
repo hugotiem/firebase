@@ -57,7 +57,7 @@ class _GuestNumberState extends State<GuestNumber> {
           ),
         ),
         onTap: () => setState(() {
-              prix = data['id'];
+              prix = (data['id'] as int).toDouble();
             }));
   }
 
