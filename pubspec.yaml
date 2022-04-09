@@ -61,7 +61,7 @@ dependencies:
   ionicons: ^0.1.2
   table_calendar: ^3.0.3
   flutter_email_sender: ^5.0.2
-  qr_flutter: ^4.0.0
+  qr_flutter: ^4.0.0  
   firebase_dynamic_links: ^4.0.4
   uni_links: ^0.5.1
   flutter_stripe: ^2.1.1
@@ -108,9 +108,15 @@ flutter:
   fonts: 
     - family: Outfit
       fonts: 
-        - asset: fonts/Outfit-VariableFont_wght.ttf
-        # - asset: fonts/MerriweatherSans-Italic-VariableFont_wght.ttf
-        # - asset: fonts/MerriweatherSans-VariableFont_wght.ttf
+        - asset: fonts/static/Outfit-Thin.ttf
+        - asset: fonts/static/Outfit-ExtraLight.ttf
+        - asset: fonts/static/Outfit-Light.ttf
+        - asset: fonts/static/Outfit-Regular.ttf
+        - asset: fonts/static/Outfit-Medium.ttf
+        - asset: fonts/static/Outfit-SemiBold.ttf
+        - asset: fonts/static/Outfit-Bold.ttf
+        - asset: fonts/static/Outfit-ExtraBold.ttf
+        - asset: fonts/static/Outfit-Black.ttf
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
