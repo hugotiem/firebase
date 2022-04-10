@@ -1,4 +1,3 @@
-import 'dart:collection';
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -6,12 +5,10 @@ import 'package:pts/components/app_datetime.dart';
 import 'package:pts/models/city.dart';
 import 'package:pts/models/party.dart';
 import 'package:pts/services/auth_service.dart';
-// import 'package:pts/models/services/dynamic_links_services.dart';
 import 'package:pts/services/firestore_service.dart';
 import 'package:pts/blocs/base/app_base_cubit.dart';
 import 'package:pts/blocs/base/app_base_state.dart';
 import 'package:pts/models/user.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 part 'parties_state.dart';
 
@@ -81,7 +78,7 @@ class PartiesCubit extends AppBaseCubit<PartiesState> {
   // }
 
   Future fetchPartiesWithWhereIsEqualTo(var key, String? data,
-      {isWithDate = false}) async {
+      {bool isActive = false}) async {
     if (data == null) {
       return;
     }
@@ -89,34 +86,22 @@ class PartiesCubit extends AppBaseCubit<PartiesState> {
       data = await auth.getToken();
     }
     emit(state.setRequestInProgress() as PartiesState);
-    var partiesSnapShots = await services.getDataWithWhereIsEqualTo(key, data);
+    QuerySnapshot<Map<String, dynamic>> partiesSnapShots;
+    if (isActive) {
+      partiesSnapShots =
+          await services.getDataWithWhereIsEqualToAndIsActive(key, data);
+    } else {
+      partiesSnapShots = await services.getDataWithWhereIsEqualTo(key, data);
+    }
+
     List<Party> parties =
         partiesSnapShots.docs.map((e) => Party.fromSnapShots(e)).toList();
-    if (!isWithDate) {
-      emit(PartiesState.loaded(parties, state.filters));
-    } else {
-      return parties;
-    }
+    emit(PartiesState.loaded(parties, state.filters));
   }
 
-  Future fetchPartiesWithWhereIsEqualToAndIsActive(var key, String? data,
-      {isWithDate = false, bool returnValue = false}) async {
-    if (data == null) {
-      return;
-    }
-    if (data == 'uid') {
-      data = await auth.getToken();
-    }
-    emit(state.setRequestInProgress() as PartiesState);
-    var partiesSnapShots =
-        await services.getDataWithWhereIsEqualToAndIsActive(key, data);
-    List<Party> parties =
-        partiesSnapShots.docs.map((e) => Party.fromSnapShots(e)).toList();
-    if (!isWithDate && !returnValue) {
-      emit(PartiesState.loaded(parties, state.filters));
-    } else {
-      return parties;
-    }
+  Future fetchPartiesWithWhereIsEqualToAndIsActive(
+      var key, String? data) async {
+    fetchPartiesWithWhereIsEqualTo(key, data, isActive: true);
   }
 
   Future<List<City>> fetchCitiesByPartiesNumber() async {
@@ -148,26 +133,6 @@ class PartiesCubit extends AppBaseCubit<PartiesState> {
     return entries.map((e) => City(e.key, e.value)).toList();
   }
 
-  // Future fetchPartiesWithWhereIsEqualTo2(
-  //     {var key1, dynamic data1, var key2, dynamic data2}) async {
-  //   print("DATA 2 : $data2");
-  //   if (data1 == null || data2 == null) {
-  //     return;
-  //   }
-  //   if (data1 == 'uid') {
-  //     data1 = await auth.getToken();
-  //   }
-  //   if (data2 == 'uid') {
-  //     data2 = await auth.getToken();
-  //   }
-  //   emit(state.setRequestInProgress() as PartiesState);
-  //   var partiesSnapShots =
-  //       await services.getDataWithWhereIsEqualTo2(key1, data1, key2, data2);
-  //   List<Party> parties =
-  //       partiesSnapShots.docs.map((e) => Party.fromSnapShots(e)).toList();
-  //   emit(PartiesState.loaded(parties, state.filters));
-  // }
-
   Future<void> fetchPartiesByDateWithWhereIsEqualTo(
       var key, String? data, DateTime date) async {
     var snapshots = await services.getDataBeforeDateWithWhereIsEqualTo(
@@ -190,7 +155,6 @@ class PartiesCubit extends AppBaseCubit<PartiesState> {
       parties.addAll(snapshot.docs.map((e) => Party.fromSnapShots(e)).toList());
     }
     emit(PartiesState.loaded(parties, state.filters));
-
   }
 
   Future<void> applyFilters(Map<String, dynamic> filters,
@@ -200,15 +164,6 @@ class PartiesCubit extends AppBaseCubit<PartiesState> {
     }
     var filteredParties =
         await services.getDataWithMultipleWhereIsEqualTo(filters);
-
-    //  List<Party>.from(parties?.where((e) {
-    //       print(e.theme);
-    //       if ((filters['themes'] as List).contains(e.theme)) {
-    //         return true;
-    //       }
-    //       return false;
-    //     }).toList() ??
-    //     []);
 
     var parties =
         filteredParties.docs.map<Party>((e) => Party.fromSnapShots(e)).toList();
