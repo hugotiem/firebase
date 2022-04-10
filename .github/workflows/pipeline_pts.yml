@@ -3,89 +3,89 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: PTS pipeline
+# name: PTS pipeline
 
-on:
-  push:
-    branches:  
-    - master
-  pull_request:
-    branches: 
-    - master 
+# on:
+#   push:
+#     branches:  
+#     - master
+#   pull_request:
+#     branches: 
+#     - master 
 
-jobs:
+# jobs:
     
-  build_ios:
-    runs-on: macos-latest
+#   build_ios:
+#     runs-on: macos-latest
     
-    steps:
-      - uses: actions/checkout@v2
+#     steps:
+#       - uses: actions/checkout@v2
 
-      - uses: subosito/flutter-action@v1.5.3
-        with:
-          channel: 'stable'
+#       - uses: subosito/flutter-action@v1.5.3
+#         with:
+#           channel: 'stable'
           
-      - name: Clean and Setup workspace
-        run: flutter clean && flutter pub get
+#       - name: Clean and Setup workspace
+#         run: flutter clean && flutter pub get
       
-      - name: Analyze Dart/Flutter code
-        uses: zgosalvez/github-actions-analyze-dart@v1.6.1
+#       - name: Analyze Dart/Flutter code
+#         uses: zgosalvez/github-actions-analyze-dart@v1.6.1
         
-      - name: Analyze Flutter code
-        run: flutter analyze
+#       - name: Analyze Flutter code
+#         run: flutter analyze
         
-      - name: Launching tests
-        run: flutter test
+#       - name: Launching tests
+#         run: flutter test
           
-      - name: Build ios app
-        run: echo "iOS app can't be built without apple developper licence"
+#       - name: Build ios app
+#         run: echo "iOS app can't be built without apple developper licence"
         
-  build_android:
-    runs-on: macos-latest
+#   build_android:
+#     runs-on: macos-latest
     
-    steps:
-      - uses: actions/checkout@v2
+#     steps:
+#       - uses: actions/checkout@v2
 
-      - uses: subosito/flutter-action@v1.5.3
-        with:
-          channel: 'stable'
+#       - uses: subosito/flutter-action@v1.5.3
+#         with:
+#           channel: 'stable'
           
-      - name: Clean and Setup workspace
-        run: flutter clean && flutter pub get
+#       - name: Clean and Setup workspace
+#         run: flutter clean && flutter pub get
       
-     # - name: Analyze Dart/Flutter code
-      #  run: flutter analyze
-      #  uses: zgosalvez/github-actions-analyze-dart@v1.6.1
+#      # - name: Analyze Dart/Flutter code
+#       #  run: flutter analyze
+#       #  uses: zgosalvez/github-actions-analyze-dart@v1.6.1
         
-     # - name: Analyze Dart/Flutter code
-      #  uses: axel-op/dart-package-analyzer@v3
+#      # - name: Analyze Dart/Flutter code
+#       #  uses: axel-op/dart-package-analyzer@v3
         
-      - name: Launching tests
-        run: flutter test
+#       - name: Launching tests
+#         run: flutter test
           
-      - name: Build android app
-        run: flutter build apk
+#       - name: Build android app
+#         run: flutter build apk
         
-  Deploy_android:
-    runs-on: macos-latest
-    needs: build_android
+#   Deploy_android:
+#     runs-on: macos-latest
+#     needs: build_android
         
-    steps:
-      - uses: actions/checkout@v2
+#     steps:
+#       - uses: actions/checkout@v2
 
-      - uses: subosito/flutter-action@v1.5.3
-        with:
-          channel: 'stable'
+#       - uses: subosito/flutter-action@v1.5.3
+#         with:
+#           channel: 'stable'
           
-      - name: Clean and Setup workspace
-        run: flutter clean && flutter pub get
+#       - name: Clean and Setup workspace
+#         run: flutter clean && flutter pub get
       
-      - name: Build android app
-        run: flutter build apk
+#       - name: Build android app
+#         run: flutter build apk
         
-      - name: upload artifact to Firebase App Distribution
-        uses: hasretsariyer/firebase-app-distribution-github-action@v1.0
-        with:
-          app_id: ${{secrets.FIREBASE_APP_ID}}
-          firebase_token: ${{secrets.FIREBASE_TOKEN}}
-          app_file: app/build/outputs/apk/release/app-release.apk
+#       - name: upload artifact to Firebase App Distribution
+#         uses: hasretsariyer/firebase-app-distribution-github-action@v1.0
+#         with:
+#           app_id: ${{secrets.FIREBASE_APP_ID}}
+#           firebase_token: ${{secrets.FIREBASE_TOKEN}}
+#           app_file: app/build/outputs/apk/release/app-release.apk

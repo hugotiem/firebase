@@ -314,8 +314,18 @@ class SearchInfoContent extends StatelessWidget {
                         fullscreenDialog: true))
                     .then((value) {
                   if (value != null) {
-                    BlocProvider.of<PartiesCubit>(context)
-                        .fetchPartiesWithWhereIsEqualTo("city", result);
+                    if (date != null) {
+                      return PartiesCubit()
+                        ..fetchPartiesByDateWithWhereIsEqualTo(
+                            "city", value, date!);
+                    } else if (months != null) {
+                      return PartiesCubit()
+                        ..fetchPartiesByMonthsWithWhereIsEqualTo(
+                            "city", value, months!);
+                    } else {
+                      BlocProvider.of<PartiesCubit>(context)
+                          .fetchPartiesWithWhereIsEqualTo("city", value);
+                    }
                   }
                 });
               }),
