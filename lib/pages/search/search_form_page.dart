@@ -657,8 +657,9 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                           spreadRadius: 1,
                           blurRadius: 10,
                         )
-                      : BoxShadow()
-                ]),
+                      : BoxShadow(color: Colors.transparent)
+                ] ,
+                ),
             clipBehavior: Clip.antiAlias,
             child: TableCalendar(
               currentDay: _selectedDay,
@@ -673,7 +674,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                             spreadRadius: 7,
                             blurRadius: 15,
                           )
-                        : BoxShadow()
+                        : BoxShadow(color: Colors.transparent)
                   ],
                 ),
                 defaultTextStyle:
