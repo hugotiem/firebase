@@ -33,35 +33,32 @@ class _GuestNumberState extends State<GuestNumber> {
   Widget _buildPriceSelector(BuildContext context, Map<String, dynamic> data) {
     bool _selected = prix == data['id'];
     return GestureDetector(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: Opacity(
-          opacity: _selected ? 1 : 0.6,
-          child: AnimatedContainer(
-            padding: EdgeInsets.all(12),
-            duration: Duration(milliseconds: 100),
-            decoration: BoxDecoration(
-              color: _selected ? ICONCOLOR : PRIMARY_COLOR,
-              border: Border.all(width: 1, color: ICONCOLOR),
-              borderRadius: BorderRadius.circular(15),
-            ),
-            child: Text(
-              data['title'],
-              style: TextStyle(
-                color: _selected ? PRIMARY_COLOR : ICONCOLOR,
-                fontWeight: FontWeight.w300,
-                fontSize: 26,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Opacity(
+            opacity: _selected ? 1 : 0.6,
+            child: AnimatedContainer(
+              padding: EdgeInsets.all(12),
+              duration: Duration(milliseconds: 100),
+              decoration: BoxDecoration(
+                color: _selected ? ICONCOLOR : PRIMARY_COLOR,
+                border: Border.all(width: 1, color: ICONCOLOR),
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Text(
+                data['title'],
+                style: TextStyle(
+                  color: _selected ? PRIMARY_COLOR : ICONCOLOR,
+                  fontWeight: FontWeight.w300,
+                  fontSize: 26,
+                ),
               ),
             ),
           ),
         ),
-      ),
-      onTap: () => setState(
-        () {
-          prix = data["id"].toDouble();
-        },
-      ),
-    );
+        onTap: () => setState(() {
+              prix = (data['id'] as int).toDouble();
+            }));
   }
 
   @override

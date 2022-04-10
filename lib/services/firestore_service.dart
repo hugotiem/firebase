@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pts/components/app_datetime.dart';
 
@@ -106,6 +108,7 @@ class FireStoreServices {
   Future<QuerySnapshot<Map<String, dynamic>>>
       getDataBeforeDateWithWhereIsEqualTo(
           String key, String? data, DateTime date) async {
+    log(Timestamp.fromDate(date).toString());
     return this
         ._firestore
         .collection(collection)

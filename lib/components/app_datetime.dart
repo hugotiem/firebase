@@ -42,7 +42,8 @@ class AppDateTime extends DateTime {
   AppDateTime.fromMicrosecondsSinceEpoch(int microsecondsSinceEpoch)
       : super.fromMicrosecondsSinceEpoch(microsecondsSinceEpoch);
 
-  static AppDateTime from(DateTime dateTime) {
+  static AppDateTime from(DateTime? dateTime) {
+    if (dateTime == null) return AppDateTime.now();
     return AppDateTime(
       dateTime.year,
       dateTime.month,

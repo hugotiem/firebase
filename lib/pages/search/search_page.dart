@@ -169,13 +169,13 @@ class _SearchState extends State<Search> {
         child: Hero(
           tag: 'search-widget',
           child: SearchBar(
-            hintText: 'Sélectionne ta ville',
+              hintText: 'Sélectionne ta ville',
               backgroundColor: Colors.white.withOpacity(0.8),
               readOnly: true,
               onTap: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => SearchFormPage(),
+                    builder: (context) => SearchFormPageLauncher(),
                     fullscreenDialog: true,
                   ),
                 );
@@ -321,7 +321,6 @@ class TitleText extends StatelessWidget {
         this.text,
         fontWeight: FontWeight.w900,
         fontSize: 20,
-      
       ),
     );
   }

@@ -14,9 +14,29 @@ import 'package:pts/pages/search/sliver/searchbar.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+class SearchFormPageLauncher extends StatelessWidget {
+  const SearchFormPageLauncher({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) {
+        return SearchCubit();
+      },
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: SearchFormPage(
+          onPop: () => Navigator.of(context).pop(),
+        ),
+      ),
+    );
+  }
+}
+
 class SearchFormPage extends StatefulWidget {
   final String? last;
-  SearchFormPage({Key? key, this.last}) : super(key: key);
+  final void Function()? onPop;
+  SearchFormPage({Key? key, this.last, this.onPop}) : super(key: key);
 
   @override
   State<SearchFormPage> createState() => _SearchFormPageState();
@@ -34,6 +54,9 @@ class _SearchFormPageState extends State<SearchFormPage> {
 
   @override
   void initState() {
+    if (widget.last != null) {
+      BlocProvider.of<SearchCubit>(context).fetchResults(widget.last);
+    }
     _textEditingController = TextEditingController(text: widget.last);
     _panelController = PanelController();
     Future.delayed(const Duration(milliseconds: 300))
@@ -43,132 +66,123 @@ class _SearchFormPageState extends State<SearchFormPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) {
-        if (widget.last != null) {
-          return SearchCubit()..fetchResults(widget.last);
-        }
-        return SearchCubit();
-      },
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            leadingWidth: 70,
-            leading: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: IconButton(
-                icon: Image.asset("assets/back-btn.png"),
-                onPressed: () {
-                  if (_panelController.isPanelClosed) {
-                    _panelController.animatePanelToPosition(1,
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeInOut);
-                  } else {
-                    Navigator.of(context).pop();
-                  }
-                },
-              ),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leadingWidth: 70,
+        leading: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: IconButton(
+            icon: Image.asset("assets/back-btn.png"),
+            onPressed: () {
+              if (_panelController.isPanelClosed) {
+                _panelController.animatePanelToPosition(1,
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut);
+              } else {
+                if (widget.onPop != null) {
+                  widget.onPop!();
+                } else {
+                  Navigator.of(context).pop();
+                }
+              }
+            },
+          ),
+        ),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                SECONDARY_COLOR,
+                ICONCOLOR,
+              ],
+              begin: const FractionalOffset(0.0, 0.0),
+              end: const FractionalOffset(1.0, 0.0),
+              stops: const [0.0, 1.0],
             ),
-            flexibleSpace: Container(
+          ),
+        ),
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              SECONDARY_COLOR,
+              ICONCOLOR,
+            ],
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            stops: [0.0, 1.0],
+          ),
+        ),
+        child: SlidingUpPanel(
+          panelSnapping: false,
+          borderRadius: BorderRadius.circular(40),
+          body: Padding(
+            padding: EdgeInsets.only(top: 50 * _hiddenPaddingFactor),
+            child: CalendarContent(destination: destination),
+          ),
+          maxHeight: MediaQuery.of(context).size.height,
+          margin: EdgeInsets.only(top: 20),
+          minHeight: 0,
+          defaultPanelState: PanelState.OPEN,
+          controller: _panelController,
+          isDraggable: false,
+          onPanelSlide: (value) {
+            setState(() {
+              _hiddenPaddingFactor = value;
+            });
+          },
+          panelBuilder: (sc) {
+            return Container(
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    SECONDARY_COLOR,
-                    ICONCOLOR,
-                  ],
-                  begin: const FractionalOffset(0.0, 0.0),
-                  end: const FractionalOffset(1.0, 0.0),
-                  stops: const [0.0, 1.0],
-                ),
+                color: Colors.white,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(40)),
               ),
-            ),
-          ),
-          body: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  SECONDARY_COLOR,
-                  ICONCOLOR,
-                ],
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-                stops: [0.0, 1.0],
-              ),
-            ),
-            child: SlidingUpPanel(
-              panelSnapping: false,
-              borderRadius: BorderRadius.circular(40),
-              body: Padding(
-                padding: EdgeInsets.only(top: 50 * _hiddenPaddingFactor),
-                child: CalendarContent(destination: destination),
-              ),
-              maxHeight: MediaQuery.of(context).size.height,
+              padding: EdgeInsets.symmetric(horizontal: 20),
               margin: EdgeInsets.only(top: 20),
-              minHeight: 0,
-              defaultPanelState: PanelState.OPEN,
-              controller: _panelController,
-              isDraggable: false,
-              onPanelSlide: (value) {
-                setState(() {
-                  _hiddenPaddingFactor = value;
-                });
-              },
-              panelBuilder: (sc) {
-                return Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(40)),
+              clipBehavior: Clip.antiAlias,
+              child: Column(
+                children: [
+                  SearchBarContent(
+                    focusNode: _focusNode,
+                    controller: _textEditingController,
                   ),
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  margin: EdgeInsets.only(top: 20),
-                  clipBehavior: Clip.antiAlias,
-                  child: Column(
-                    children: [
-                      SearchBarContent(
-                        focusNode: _focusNode,
-                        controller: _textEditingController,
-                      ),
-                      BlocBuilder<SearchCubit, SearchState>(
-                          builder: (context, state) {
-                        var results = state.results;
-                        if (results == null || results.isEmpty) {
-                          return NoResultContent();
+                  BlocBuilder<SearchCubit, SearchState>(
+                      builder: (context, state) {
+                    var results = state.results;
+                    if (results == null || results.isEmpty) {
+                      return NoResultContent();
+                    }
+                    return ResultsContent(
+                      results: results,
+                      onTileTapped: (value) async {
+                        if (widget.last != null) {
+                          Navigator.of(context).pop({'newResult': destination});
+                        } else {
+                          _focusNode.unfocus();
+                          setState(() {
+                            destination = value;
+                          });
+                          BlocProvider.of<SearchCubit>(context)
+                              .updateDestination(
+                                  destination: value,
+                                  last: _textEditingController.text);
+                          await Future.delayed(const Duration(
+                            milliseconds: 100,
+                          ));
+                          _panelController.animatePanelToPosition(0,
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeInOut);
                         }
-                        return ResultsContent(
-                          results: results,
-                          onTileTapped: (value) async {
-                            if (widget.last != null) {
-                              Navigator.of(context)
-                                  .pop({'newResult': destination});
-                            } else {
-                              _focusNode.unfocus();
-                              setState(() {
-                                destination = value;
-                              });
-                              BlocProvider.of<SearchCubit>(context)
-                                  .updateDestination(
-                                      destination: value,
-                                      last: _textEditingController.text);
-                              await Future.delayed(const Duration(
-                                milliseconds: 100,
-                              ));
-                              _panelController.animatePanelToPosition(0,
-                                  duration: const Duration(milliseconds: 300),
-                                  curve: Curves.easeInOut);
-                            }
-                          },
-                        );
-                      }),
-                    ],
-                  ),
-                );
-              },
-            ),
-          ),
+                      },
+                    );
+                  }),
+                ],
+              ),
+            );
+          },
         ),
       ),
     );
@@ -319,8 +333,13 @@ class CalendarContent extends StatefulWidget {
   final String? destination;
   final Color? textColor;
   final TextStyle? calendarTextStyle;
+  final bool months;
   CalendarContent(
-      {Key? key, this.destination, this.textColor, this.calendarTextStyle})
+      {Key? key,
+      this.destination,
+      this.textColor,
+      this.calendarTextStyle,
+      this.months = true})
       : super(key: key);
 
   @override
@@ -336,7 +355,7 @@ class _CalendarContentState extends State<CalendarContent>
 
   @override
   void initState() {
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: widget.months ? 2 : 1, vsync: this);
     super.initState();
   }
 
@@ -377,46 +396,48 @@ class _CalendarContentState extends State<CalendarContent>
                 ),
               ),
             ),
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 20),
-            decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.3),
-                borderRadius: BorderRadius.circular(30),
-                border: Border.all(color: Colors.white.withOpacity(0.1))),
-            child: TabBar(
-              padding: EdgeInsets.all(6),
-              labelStyle: AppTextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: widget.textColor ?? Colors.white),
-              unselectedLabelStyle: AppTextStyle(
-                fontWeight: FontWeight.normal,
-                color: widget.textColor ?? Colors.white,
-              ),
-              controller: _tabController,
-              tabs: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  child: FittedBox(
-                    fit: BoxFit.fitWidth,
-                    child: Text(
-                      "Calendrier",
-                      style: AppTextStyle(color: widget.textColor),
+          if (widget.months)
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 20),
+              decoration: BoxDecoration(
+                  color: widget.textColor?.withOpacity(.1) ??
+                      Colors.white.withOpacity(0.3),
+                  borderRadius: BorderRadius.circular(30),
+                  border: Border.all(color: Colors.white.withOpacity(0.1))),
+              child: TabBar(
+                padding: EdgeInsets.all(6),
+                labelStyle: AppTextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: widget.textColor ?? Colors.white),
+                unselectedLabelStyle: AppTextStyle(
+                  fontWeight: FontWeight.normal,
+                  color: widget.textColor ?? Colors.white,
+                ),
+                controller: _tabController,
+                tabs: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    child: FittedBox(
+                      fit: BoxFit.fitWidth,
+                      child: Text(
+                        "Calendrier",
+                        style: AppTextStyle(color: widget.textColor),
+                      ),
                     ),
                   ),
+                  FittedBox(
+                    fit: BoxFit.fitWidth,
+                    child: Text("Je suis flexible",
+                        style: AppTextStyle(color: widget.textColor)),
+                  ),
+                ],
+                indicator: BoxDecoration(
+                  color: Colors.white.withOpacity(0.3),
+                  borderRadius: BorderRadius.circular(30),
                 ),
-                FittedBox(
-                  fit: BoxFit.fitWidth,
-                  child: Text("Je suis flexible",
-                      style: AppTextStyle(color: widget.textColor)),
-                ),
-              ],
-              indicator: BoxDecoration(
-                color: Colors.white.withOpacity(0.3),
-                borderRadius: BorderRadius.circular(30),
               ),
             ),
-          ),
           Expanded(
             child: TabBarView(
               controller: _tabController,
@@ -428,10 +449,11 @@ class _CalendarContentState extends State<CalendarContent>
                     themeColor: widget.textColor,
                   ),
                 ),
-                IamFlexibleWidget(
-                  onMonthSelected: (selected) => months = selected,
-                  themeColor: widget.textColor,
-                ),
+                if (widget.months)
+                  IamFlexibleWidget(
+                    onMonthSelected: (selected) => months = selected,
+                    themeColor: widget.textColor,
+                  ),
               ],
             ),
           ),
@@ -457,7 +479,6 @@ class _CalendarContentState extends State<CalendarContent>
                   ),
                 ),
                 onTap: () {
-                  print(date);
                   MapViewPage? page;
                   if (_tabController.index == 0 && date != null) {
                     page = MapViewPage(
@@ -473,12 +494,19 @@ class _CalendarContentState extends State<CalendarContent>
                     print("Aucune date séléctionné");
                   }
                   if (page != null) {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => page!,
-                        fullscreenDialog: true,
-                      ),
-                    );
+                    if (widget.destination == null) {
+                      Navigator.of(context).pop({
+                        "type": date != null ? "date" : "months",
+                        "value": date != null ? date : months
+                      });
+                    } else {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => page!,
+                          fullscreenDialog: true,
+                        ),
+                      );
+                    }
                   }
                 },
               ),
@@ -714,7 +742,10 @@ class _IamFlexibleWidgetState extends State<IamFlexibleWidget> {
                     border: Border.all(
                         color: widget.themeColor ?? Colors.white, width: 2),
                     borderRadius: BorderRadius.circular(20),
-                    color: _isSelected ? Colors.white.withOpacity(0.3) : null,
+                    color: _isSelected
+                        ? widget.themeColor?.withOpacity(.2) ??
+                            Colors.white.withOpacity(0.3)
+                        : null,
                   ),
                   child: Column(
                     children: [
