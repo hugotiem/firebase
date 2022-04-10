@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:pts/components/circular_slider/double_slider_paint.dart';
@@ -28,7 +30,10 @@ class _HourPageState extends State<HourPage> {
         widget.onNext!();
       },
       children: [
-        HeaderText1Form(text: "Horaires"),
+        HeaderText1Form(
+          text: "Horaires",
+          padding: EdgeInsets.only(left: 34, right: 34, top: 60, bottom: 20),
+        ),
         Center(
           child: DoubleCircularSlider(
             288,
@@ -51,14 +56,25 @@ class _HourPageState extends State<HourPage> {
             child: Container(
               margin: EdgeInsets.all(55),
               decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: PRIMARY_COLOR,
                 image: DecorationImage(
                   image: AssetImage("assets/clock.png"),
                   fit: BoxFit.contain,
                 ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 3,
+                    blurRadius: 10,
+                    offset: Offset(0, 3),
+                  )
+                ],
               ),
             ),
           ),
         ),
+        SizedBox(height: 20),
         Center(
           child: Container(
             padding: EdgeInsets.symmetric(vertical: 6, horizontal: 20),
@@ -74,14 +90,14 @@ class _HourPageState extends State<HourPage> {
                 Icon(
                   Ionicons.caret_down,
                   color: ICONCOLOR,
-                  size: 30,
+                  size: 40,
                 ),
                 text(_formatTime(endTime)),
               ],
             ),
           ),
         ),
-        SizedBox(height: 70)
+        SizedBox(height: 100)
       ],
     );
   }
@@ -92,7 +108,7 @@ class _HourPageState extends State<HourPage> {
       style: TextStyle(
         color: SECONDARY_COLOR,
         fontWeight: FontWeight.w900,
-        fontSize: 40,
+        fontSize: 50,
       ),
     );
   }

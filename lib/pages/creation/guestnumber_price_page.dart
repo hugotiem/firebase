@@ -23,11 +23,11 @@ class _GuestNumberState extends State<GuestNumber> {
   bool isFree = false;
 
   List<Map<String, dynamic>> prices = [
-    {'title': 'Gratuit', 'id': 0},
-    {'title': '5€', 'id': 5},
-    {'title': '10€', 'id': 10},
-    {'title': '20€', 'id': 20},
-    {'title': 'Personnaliser', 'id': 21}
+    {'title': 'Gratuit', 'id': 0.0},
+    {'title': '5€', 'id': 5.0},
+    {'title': '10€', 'id': 10.0},
+    {'title': '20€', 'id': 20.0},
+    {'title': 'Personnaliser', 'id': 21.0}
   ];
 
   Widget _buildPriceSelector(BuildContext context, Map<String, dynamic> data) {
@@ -69,7 +69,7 @@ class _GuestNumberState extends State<GuestNumber> {
       onPressedFAB: () {
         if (prix == null) return;
         BlocProvider.of<BuildPartiesCubit>(context)
-           ..addItem("number", number)
+          ..addItem("number", number)
           ..addItem("price", prix);
 
         widget.onNext!();
@@ -98,11 +98,10 @@ class _GuestNumberState extends State<GuestNumber> {
               child: Text(
                 "invités",
                 style: TextStyle(
-                  fontSize: 60,
-                  color: ICONCOLOR,
-                  fontWeight: FontWeight.w900,
-                  overflow: TextOverflow.ellipsis
-                ),
+                    fontSize: 60,
+                    color: ICONCOLOR,
+                    fontWeight: FontWeight.w900,
+                    overflow: TextOverflow.ellipsis),
               ),
             ),
             Container(

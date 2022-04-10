@@ -104,7 +104,6 @@ const kDemoText = Center(
 const double kBlur = 1.0;
 const EdgeInsetsGeometry kDefaultPadding = EdgeInsets.all(16);
 const Color kDefaultColor = Colors.transparent;
-const BorderRadius kBorderRadius = BorderRadius.all(Radius.circular(20));
 const double kColorOpacity = 0.0;
 
 class BlurryContainer extends StatelessWidget {
@@ -113,8 +112,7 @@ class BlurryContainer extends StatelessWidget {
   final double? height, width;
   final EdgeInsetsGeometry padding;
   final Color? bgColor;
-
-  final BorderRadius borderRadius;
+  final BorderRadius? kBorderRadius;
 
   //final double colorOpacity;
 
@@ -125,14 +123,14 @@ class BlurryContainer extends StatelessWidget {
     this.width,
     this.padding = kDefaultPadding,
     this.bgColor = kDefaultColor,
-    this.borderRadius = kBorderRadius,
+    this.kBorderRadius,
     //this.colorOpacity = kColorOpacity,
   });
 
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: borderRadius,
+      borderRadius: kBorderRadius ?? BorderRadius.circular(30),
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: blur, sigmaY: blur),
         child: Container(
@@ -141,7 +139,7 @@ class BlurryContainer extends StatelessWidget {
           padding: padding,
           color: bgColor == Colors.transparent
               ? bgColor
-              : bgColor!.withOpacity(0.5),
+              : bgColor!.withOpacity(0.2),
           child: child,
         ),
       ),
