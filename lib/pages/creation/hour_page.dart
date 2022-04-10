@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:pts/components/circular_slider/double_slider_paint.dart';
