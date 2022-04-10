@@ -1,16 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
-import 'package:pts/blocs/parties/build_parties_cubit.dart';
-import 'package:pts/components/appbar.dart';
 import 'package:pts/components/form/background_form.dart';
-import 'package:pts/components/form/calendar_screen.dart';
 import 'package:pts/components/form/custom_text_form.dart';
-import 'package:pts/components/form/custom_ttf_form.dart';
-import 'package:pts/components/form/date_hour_picker.dart';
-import 'package:pts/components/form/fab_form.dart';
 
 import 'package:pts/const.dart';
+import 'package:pts/pages/search/search_form_page.dart';
 
 class DatePage extends StatefulWidget {
   final void Function()? onNext;
@@ -22,15 +15,7 @@ class DatePage extends StatefulWidget {
 }
 
 class _DateHourPageState extends State<DatePage> {
-  late DateTime _date;
-  var _heuredebut;
-  var _heurefin;
-  TextEditingController heurefinctl = TextEditingController();
-  TextEditingController heuredebutctl = TextEditingController();
-  TextEditingController dateCtl = TextEditingController();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  DateTime? datedebut;
-  DateTime? datefin;
+  late DateTime date;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +26,18 @@ class _DateHourPageState extends State<DatePage> {
         widget.onNext!();
       },
       children: [
-        HeaderText1Form(text: "Quand est-ce que la soirée aura-t-elle lieu ?")
+        HeaderText1Form(
+          text: "Quand est-ce que la soirée aura-t-elle lieu ?",
+          padding: EdgeInsets.only(left: 34, right: 34, top: 60, bottom: 20),
+        ),
+        CalendarWidget(
+          onSelectedDay: (selected) => date = selected,
+          themeColor: ICONCOLOR,
+          backgroundColor: PRIMARY_COLOR,
+          shadow: true,
+          padding: EdgeInsets.zero,
+        ),
+        SizedBox(height: 75)
       ],
     );
     // return Scaffold(

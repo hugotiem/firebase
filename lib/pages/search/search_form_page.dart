@@ -521,7 +521,16 @@ class _CalendarContentState extends State<CalendarContent>
 class CalendarWidget extends StatefulWidget {
   final void Function(DateTime) onSelectedDay;
   final Color? themeColor;
-  CalendarWidget({Key? key, required this.onSelectedDay, this.themeColor})
+  final Color? backgroundColor;
+  final bool? shadow;
+  final EdgeInsetsGeometry? padding;
+  CalendarWidget(
+      {Key? key,
+      required this.onSelectedDay,
+      this.themeColor,
+      this.backgroundColor,
+      this.shadow = false, 
+      this.padding})
       : super(key: key);
 
   @override
@@ -561,7 +570,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
       child: Column(
         children: [
           Container(
-            padding: const EdgeInsets.only(top: 20),
+            padding: widget.padding ?? const EdgeInsets.only(top: 20),
             margin: EdgeInsets.symmetric(horizontal: 20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -637,18 +646,36 @@ class _CalendarWidgetState extends State<CalendarWidget> {
             padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
             margin: EdgeInsets.symmetric(horizontal: 20),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30),
-              border:
-                  Border.all(width: 2, color: Colors.white.withOpacity(0.1)),
-              color: Colors.white.withOpacity(0.2),
-            ),
+                borderRadius: BorderRadius.circular(30),
+                border:
+                    Border.all(width: 2, color: Colors.white.withOpacity(0.1)),
+                color: widget.backgroundColor ?? Colors.white.withOpacity(0.2),
+                boxShadow: [
+                  widget.shadow == true
+                      ? BoxShadow(
+                          color: Colors.grey.withOpacity(0.4),
+                          spreadRadius: 1,
+                          blurRadius: 10,
+                        )
+                      : BoxShadow()
+                ]),
             clipBehavior: Clip.antiAlias,
             child: TableCalendar(
               currentDay: _selectedDay,
               calendarStyle: CalendarStyle(
                 selectedDecoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.3),
-                    shape: BoxShape.circle),
+                  color: widget.backgroundColor ?? Colors.white.withOpacity(0.3),
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    widget.shadow == true
+                        ? BoxShadow(
+                            color: ICONCOLOR.withOpacity(0.5),
+                            spreadRadius: 7,
+                            blurRadius: 15,
+                          )
+                        : BoxShadow()
+                  ],
+                ),
                 defaultTextStyle:
                     AppTextStyle(color: widget.themeColor ?? Colors.white),
                 outsideDaysVisible: false,
