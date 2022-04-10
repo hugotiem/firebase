@@ -333,8 +333,13 @@ class CalendarContent extends StatefulWidget {
   final String? destination;
   final Color? textColor;
   final TextStyle? calendarTextStyle;
+  final bool months;
   CalendarContent(
-      {Key? key, this.destination, this.textColor, this.calendarTextStyle})
+      {Key? key,
+      this.destination,
+      this.textColor,
+      this.calendarTextStyle,
+      this.months = true})
       : super(key: key);
 
   @override
@@ -350,7 +355,7 @@ class _CalendarContentState extends State<CalendarContent>
 
   @override
   void initState() {
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: widget.months ? 2 : 1, vsync: this);
     super.initState();
   }
 
@@ -391,47 +396,48 @@ class _CalendarContentState extends State<CalendarContent>
                 ),
               ),
             ),
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 20),
-            decoration: BoxDecoration(
-                color: widget.textColor?.withOpacity(.1) ??
-                    Colors.white.withOpacity(0.3),
-                borderRadius: BorderRadius.circular(30),
-                border: Border.all(color: Colors.white.withOpacity(0.1))),
-            child: TabBar(
-              padding: EdgeInsets.all(6),
-              labelStyle: AppTextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: widget.textColor ?? Colors.white),
-              unselectedLabelStyle: AppTextStyle(
-                fontWeight: FontWeight.normal,
-                color: widget.textColor ?? Colors.white,
-              ),
-              controller: _tabController,
-              tabs: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  child: FittedBox(
-                    fit: BoxFit.fitWidth,
-                    child: Text(
-                      "Calendrier",
-                      style: AppTextStyle(color: widget.textColor),
+          if (widget.months)
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 20),
+              decoration: BoxDecoration(
+                  color: widget.textColor?.withOpacity(.1) ??
+                      Colors.white.withOpacity(0.3),
+                  borderRadius: BorderRadius.circular(30),
+                  border: Border.all(color: Colors.white.withOpacity(0.1))),
+              child: TabBar(
+                padding: EdgeInsets.all(6),
+                labelStyle: AppTextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: widget.textColor ?? Colors.white),
+                unselectedLabelStyle: AppTextStyle(
+                  fontWeight: FontWeight.normal,
+                  color: widget.textColor ?? Colors.white,
+                ),
+                controller: _tabController,
+                tabs: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    child: FittedBox(
+                      fit: BoxFit.fitWidth,
+                      child: Text(
+                        "Calendrier",
+                        style: AppTextStyle(color: widget.textColor),
+                      ),
                     ),
                   ),
+                  FittedBox(
+                    fit: BoxFit.fitWidth,
+                    child: Text("Je suis flexible",
+                        style: AppTextStyle(color: widget.textColor)),
+                  ),
+                ],
+                indicator: BoxDecoration(
+                  color: Colors.white.withOpacity(0.3),
+                  borderRadius: BorderRadius.circular(30),
                 ),
-                FittedBox(
-                  fit: BoxFit.fitWidth,
-                  child: Text("Je suis flexible",
-                      style: AppTextStyle(color: widget.textColor)),
-                ),
-              ],
-              indicator: BoxDecoration(
-                color: Colors.white.withOpacity(0.3),
-                borderRadius: BorderRadius.circular(30),
               ),
             ),
-          ),
           Expanded(
             child: TabBarView(
               controller: _tabController,
@@ -443,10 +449,11 @@ class _CalendarContentState extends State<CalendarContent>
                     themeColor: widget.textColor,
                   ),
                 ),
-                IamFlexibleWidget(
-                  onMonthSelected: (selected) => months = selected,
-                  themeColor: widget.textColor,
-                ),
+                if (widget.months)
+                  IamFlexibleWidget(
+                    onMonthSelected: (selected) => months = selected,
+                    themeColor: widget.textColor,
+                  ),
               ],
             ),
           ),

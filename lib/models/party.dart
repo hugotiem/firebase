@@ -82,7 +82,7 @@ class Party {
     var name = json?['name'];
     var theme = json?['theme'];
     var number = json?['number'];
-    print("date: ${json?['date']}");
+    print("date: ${json}");
     var date = json?['date'].toDate();
     var startTime = json?['startTime'].toDate();
     var endTime = json?['endTime'].toDate();

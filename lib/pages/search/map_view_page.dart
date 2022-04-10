@@ -239,7 +239,7 @@ Future<void> showCalendar(BuildContext context,
           ),
         );
       }).then((value) {
-    if (onDateChanged != null) {
+    if (onDateChanged != null && value != null) {
       onDateChanged(value["type"], value["value"]);
     }
   });

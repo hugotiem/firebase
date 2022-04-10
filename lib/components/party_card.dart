@@ -545,7 +545,6 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
 
   @override
   void initState() {
-    setState(() {
       _size = 300;
       _toolbarColor = Colors.transparent;
       _barSizeWidth = 350;
@@ -554,7 +553,6 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
       _headerLocation = true;
       _headerDate = true;
       _opacity = 1;
-    });
     super.initState();
   }
 
@@ -1001,12 +999,12 @@ class _CardBodyState extends State<CardBody> {
   @override
   void initState() {
     super.initState();
-    print(widget.partyOwner?.length);
+
     for (var party in widget.partyOwner!) {
       if (party.commentIdList!.isNotEmpty) {
-        setState(() {
+        
           countComment += party.commentIdList!.length;
-        });
+        
       }
     }
 
@@ -1021,7 +1019,7 @@ class _CardBodyState extends State<CardBody> {
         }).toList();
       }
     }
-    setState(() => countNote = _counter);
+    countNote = _counter;
     countNote /= countComment;
 
     if (widget.gender!.contains("Homme")) {
