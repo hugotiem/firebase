@@ -158,6 +158,9 @@ class _SearchFormPageState extends State<SearchFormPage> {
                     return ResultsContent(
                       results: results,
                       onTileTapped: (value) async {
+                        BlocProvider.of<SearchCubit>(context).updateDestination(
+                            destination: value,
+                            last: _textEditingController.text);
                         if (widget.last != null) {
                           Navigator.of(context).pop({'newResult': destination});
                         } else {
@@ -165,10 +168,7 @@ class _SearchFormPageState extends State<SearchFormPage> {
                           setState(() {
                             destination = value;
                           });
-                          BlocProvider.of<SearchCubit>(context)
-                              .updateDestination(
-                                  destination: value,
-                                  last: _textEditingController.text);
+
                           await Future.delayed(const Duration(
                             milliseconds: 100,
                           ));
