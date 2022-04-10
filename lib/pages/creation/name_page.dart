@@ -21,8 +21,7 @@ class NamePage extends StatelessWidget {
       formkey: _formKey,
       onPressedFAB: () {
         if (!_formKey.currentState!.validate()) return;
-        BlocProvider.of<BuildPartiesCubit>(context)
-          ..addItem("name", _name.trim().inCaps);
+        BlocProvider.of<BuildPartiesCubit>(context).setName(_name.inCaps);
         onNext!();
       },
       children: [

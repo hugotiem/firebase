@@ -6,7 +6,7 @@ enum AnimalState { allowed, notAllowed }
 
 class Party {
   String id;
-  String name;
+  String? name;
   String? theme;
   int? number;
   DateTime date;
@@ -21,12 +21,12 @@ class Party {
   AnimalState? animals;
   var ownerId;
   List<dynamic>? validatedList;
-  final Map<String, dynamic> validatedListInfo;
+  Map<String, dynamic> validatedListInfo;
   int? distance;
   List<double> coordinates;
   List<double> approximativeCoordinates;
   List? waitList;
-  final Map<String, dynamic> waitListInfo;
+  Map<String, dynamic> waitListInfo;
   bool? isActive;
   String? userLink;
   List<dynamic>? commentIdList;
@@ -75,6 +75,36 @@ class Party {
   static double random() {
     double rand = ((math.Random().nextDouble() * 2) - 1) * 0.001;
     return rand;
+  }
+
+  Map<String, dynamic> toJson() {
+    var json = <String, dynamic>{
+      "id": id,
+      "name": name,
+      "theme": theme,
+      "number": number,
+      "date": date,
+      "startTime": startTime,
+      "endTime": endTime,
+      "price": price,
+      "desc": desc,
+      "address": address,
+      "city": city,
+      "postalCode": postalCode,
+      "smoke": smoke?.index,
+      "animals": animals?.index,
+      "ownerId": ownerId,
+      "validatedList": validatedList,
+      "validatedListInfo": validatedListInfo,
+      "coordinates": coordinates,
+      "approximativeCoordinates": approximativeCoordinates,
+      "waitList": waitList,
+      "waitListInfo": waitListInfo,
+      "isActive": isActive,
+      "comment": comment,
+      "commentIdList": commentIdList,
+    };
+    return json;
   }
 
   factory Party.fromJson(Map<String, dynamic>? json) {

@@ -1,4 +1,5 @@
 import 'package:pts/models/address.dart';
+import 'package:pts/models/party.dart';
 import 'package:pts/services/firestore_service.dart';
 import 'package:pts/blocs/base/app_base_cubit.dart';
 import 'package:pts/blocs/base/app_base_state.dart';
@@ -13,12 +14,22 @@ class BuildPartiesCubit extends AppBaseCubit<BuildPartiesState> {
 
   FireStoreServices services = FireStoreServices("parties");
 
-  void addItem(String key, dynamic item) {
-    var parties = state.parties ?? Map<String, dynamic>();
-    emit(BuildPartiesState.adding());
-    parties[key] = item;
-    emit(BuildPartiesState.added(parties));
+  void setName(String? name) {
+    var party = state.party?..name = name;
+    emit(BuildPartiesState.loaded(party));
   }
+
+  void setTheme(String? theme) {
+    var party = state.party?..theme = theme;
+    emit(BuildPartiesState.loaded(party));
+  }
+
+  void setDate(DateTime date) {
+    var party = state.party?..date = date;
+    emit(BuildPartiesState.loaded(party));
+  }
+
+  // var set
 
   Future<List<Address>> searchAddress(String address) async {
     Uri url = Uri.parse(
@@ -37,8 +48,8 @@ class BuildPartiesCubit extends AppBaseCubit<BuildPartiesState> {
 
   Future<void> addToFireStore() async {
     emit(state.setRequestInProgress() as BuildPartiesState);
-    await services.add(data: state.parties!).then(
-          (_) => emit(BuildPartiesState.loaded(state.parties)),
+    await services.add(data: state.party?.toJson()).then(
+          (_) => emit(BuildPartiesState.loaded(state.party)),
         );
   }
 }

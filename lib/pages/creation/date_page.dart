@@ -5,26 +5,19 @@ import 'package:pts/components/form/custom_text_form.dart';
 import 'package:pts/const.dart';
 import 'package:pts/pages/search/search_form_page.dart';
 
-class DatePage extends StatefulWidget {
+class DatePage extends StatelessWidget {
   final void Function()? onNext;
   final void Function()? onPrevious;
-
   const DatePage({Key? key, this.onNext, this.onPrevious}) : super(key: key);
-  @override
-  _DateHourPageState createState() => _DateHourPageState();
-}
-
-class _DateHourPageState extends State<DatePage> {
-  late DateTime date;
 
   @override
   Widget build(BuildContext context) {
+    DateTime? date;
+
     return BackgroundForm(
       heroTag: "date",
-      onPrevious: () => widget.onPrevious!(),
-      onPressedFAB: () {
-        widget.onNext!();
-      },
+      onPrevious: () => onPrevious!(),
+      onPressedFAB: () => onNext!(),
       children: [
         HeaderText1Form(
           text: "Quand est-ce que la soirée aura-t-elle lieu ?",
@@ -40,6 +33,44 @@ class _DateHourPageState extends State<DatePage> {
         SizedBox(height: 75)
       ],
     );
+  }
+}
+
+// class DatePage extends StatefulWidget {
+//   final void Function()? onNext;
+//   final void Function()? onPrevious;
+
+//   const DatePage({Key? key, this.onNext, this.onPrevious}) : super(key: key);
+//   @override
+//   _DateHourPageState createState() => _DateHourPageState();
+// }
+
+// class _DateHourPageState extends State<DatePage> {
+//   late DateTime date;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return BackgroundForm(
+//       heroTag: "date",
+//       onPrevious: () => widget.onPrevious!(),
+//       onPressedFAB: () {
+//         widget.onNext!();
+//       },
+//       children: [
+//         HeaderText1Form(
+//           text: "Quand est-ce que la soirée aura-t-elle lieu ?",
+//           padding: EdgeInsets.only(left: 34, right: 34, top: 60, bottom: 20),
+//         ),
+//         CalendarWidget(
+//           onSelectedDay: (selected) => date = selected,
+//           themeColor: ICONCOLOR,
+//           backgroundColor: PRIMARY_COLOR,
+//           shadow: true,
+//           padding: EdgeInsets.zero,
+//         ),
+//         SizedBox(height: 75)
+//       ],
+//     );
     // return Scaffold(
     //   backgroundColor: FORMBACKGROUNDCOLOR,
     //   appBar: PreferredSize(
@@ -171,7 +202,7 @@ class _DateHourPageState extends State<DatePage> {
     //     ),
     //   ),
     // );
-  }
+  // }
 
   // Future<Null> _selectionHeureArrivee() async {
   //   TimeOfDay? _heureChoisieArrivee = await showTimePicker(
@@ -212,4 +243,4 @@ class _DateHourPageState extends State<DatePage> {
   //     });
   //   }
   // }
-}
+// }

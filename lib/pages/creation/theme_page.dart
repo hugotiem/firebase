@@ -93,8 +93,7 @@ class _ThemePageState extends State<ThemePage> {
       onPrevious: () => widget.onPrevious!(),
       onPressedFAB: () {
         if (_theme == null) return;
-
-        BlocProvider.of<BuildPartiesCubit>(context).addItem("theme", _theme);
+        BlocProvider.of<BuildPartiesCubit>(context).setTheme(_theme);
         widget.onNext!();
       },
       children: [
