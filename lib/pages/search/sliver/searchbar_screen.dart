@@ -90,10 +90,10 @@ class _SearchBarScreenState extends State<SearchBarScreen>
     return Set.from(
       parties?.map(
             (e) => Marker(
-              markerId: MarkerId(e.id),
+              markerId: MarkerId(e.id!),
               infoWindow: InfoWindow(title: e.name, snippet: e.desc),
-              position: LatLng(
-                  e.approximativeCoordinates[1], e.approximativeCoordinates[0]),
+              position: LatLng(e.approximativeCoordinates?[1] ?? 0,
+                  e.approximativeCoordinates?[0] ?? 0),
             ),
           ) ??
           [],

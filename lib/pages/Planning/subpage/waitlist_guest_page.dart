@@ -67,7 +67,7 @@ Widget buildValidationCard(
   List? idList = party.waitList;
 
   List list = idList!.map((doc) {
-    var infos = party.waitListInfo[doc];
+    var infos = party.waitListInfo?[doc];
     return Padding(
       padding: const EdgeInsets.only(left: 8, right: 8),
       child: Row(
@@ -76,9 +76,11 @@ Widget buildValidationCard(
           Row(
             children: [
               Padding(
-                padding: const EdgeInsets.only(left: 8.0, right: 22),
-                child: ProfilePhoto(infos['photo'], radius: 20,)
-              ),
+                  padding: const EdgeInsets.only(left: 8.0, right: 22),
+                  child: ProfilePhoto(
+                    infos['photo'],
+                    radius: 20,
+                  )),
               Container(
                 height: 70,
                 child: Center(

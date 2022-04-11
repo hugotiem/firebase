@@ -68,9 +68,14 @@ class _GuestNumberState extends State<GuestNumber> {
       onPrevious: () => widget.onPrevious!(),
       onPressedFAB: () {
         if (prix == null) return;
+
         BlocProvider.of<BuildPartiesCubit>(context)
-          ..addItem("number", number)
-          ..addItem("price", prix);
+          ..setPrice(prix!)
+          ..setNumber(number);
+
+        // BlocProvider.of<BuildPartiesCubit>(context)
+        //   ..addItem("number", number)
+        //   ..addItem("price", prix);
 
         widget.onNext!();
       },

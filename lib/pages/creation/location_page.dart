@@ -35,11 +35,17 @@ class _LocationPageState extends State<LocationPage> {
         if (!_formKey.currentState!.validate()) return;
 
         BlocProvider.of<BuildPartiesCubit>(context)
-          ..addItem(
-              "address", _addressController.text.trimRight().trimLeft().inCaps)
-          ..addItem("city", _cityController.text.trimRight().trimLeft().inCaps)
-          ..addItem("postal code", _postCodeController.text)
-          ..addItem("coordinates", [address?.longitude, address?.latitude]);
+          ..setCity(_cityController.text.trim().inCaps)
+          ..setAdress(_addressController.text.trim().inCaps)
+          ..setPostalCode(_postCodeController.text)
+          ..setCoordinates([address?.longitude, address?.latitude]);
+
+        // BlocProvider.of<BuildPartiesCubit>(context)
+        //   ..addItem(
+        //       "address", _addressController.text.trimRight().trimLeft().inCaps)
+        //   ..addItem("city", _cityController.text.trimRight().trimLeft().inCaps)
+        //   ..addItem("postal code", _postCodeController.text)
+        //   ..addItem("coordinates", [address?.longitude, address?.latitude]);
 
         widget.onNext!();
       },

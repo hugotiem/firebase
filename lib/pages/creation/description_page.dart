@@ -105,18 +105,31 @@ class _DescriptionPageState extends State<DescriptionPage> {
             heroTag: "description",
             onPrevious: () => widget.onPrevious!(),
             onPressedFAB: () async {
+              
               BlocProvider.of<BuildPartiesCubit>(context)
-                // ..addItem('uid', AuthService.currentUser.uid)
-                // ..addItem('owner', AuthService.currentUser.displayName)
-                ..addItem('timeStamp', DateTime.now())
-                ..addItem("animals", _animals?.index)
-                ..addItem("smoke", _smoke?.index)
-                ..addItem("desc", _description)
-                ..addItem("waitList", [])
-                ..addItem("isActive", true)
-                ..addItem("party owner", state.user!.id)
-                ..addItem("commentIdList", [])
-                ..addItem("comment", {});
+                  ..setAnimals(_animals!)
+                  ..setSmoke(_smoke!)
+                  ..setDesc(_description)
+                  ..setOwnerId(state.user!.id)
+                  ..setWaitList()
+                  ..setisActive()
+                  ..setComment()
+                  ..setComment();
+              
+              // BlocProvider.of<BuildPartiesCubit>(context)
+              // ..addItem('uid', AuthService.currentUser.uid)
+              // ..addItem('owner', AuthService.currentUser.displayName)
+              // ..addItem('timeStamp', DateTime.now())
+              // ..addItem("animals", _animals?.index)
+              // ..addItem("smoke", _smoke?.index)
+              // ..addItem("desc", _description)
+              // ..addItem("waitList", [])
+              // ..addItem("isActive", true)
+              // ..addItem("party owner", state.user!.id)
+              // ..addItem("commentIdList", [])
+              // ..addItem("comment", {});
+
+
 
               await BlocProvider.of<BuildPartiesCubit>(context)
                   .addToFireStore();

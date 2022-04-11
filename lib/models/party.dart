@@ -5,11 +5,11 @@ enum SmokeState { outside, inside, notAllowed }
 enum AnimalState { allowed, notAllowed }
 
 class Party {
-  String id;
+  String? id;
   String? name;
   String? theme;
   int? number;
-  DateTime date;
+  DateTime? date;
   DateTime? startTime;
   DateTime? endTime;
   double? price;
@@ -21,19 +21,19 @@ class Party {
   AnimalState? animals;
   var ownerId;
   List<dynamic>? validatedList;
-  Map<String, dynamic> validatedListInfo;
+  Map<String, dynamic>? validatedListInfo;
   int? distance;
-  List<double> coordinates;
-  List<double> approximativeCoordinates;
+  List<double?>? coordinates;
+  List<double>? approximativeCoordinates;
   List? waitList;
-  Map<String, dynamic> waitListInfo;
+  Map<String, dynamic>? waitListInfo;
   bool? isActive;
   String? userLink;
   List<dynamic>? commentIdList;
   Map<String, dynamic>? comment;
 
   Party(
-      this.id,
+      {this.id,
       this.name,
       this.theme,
       this.number,
@@ -57,7 +57,7 @@ class Party {
       this.isActive,
       this.comment,
       this.commentIdList,
-      {this.distance,
+      this.distance,
       this.userLink});
 
   static String getTitleByState(SmokeState state) {
@@ -112,7 +112,6 @@ class Party {
     var name = json?['name'];
     var theme = json?['theme'];
     var number = json?['number'];
-    print("date: ${json}");
     var date = json?['date'].toDate();
     var startTime = json?['startTime'].toDate();
     var endTime = json?['endTime'].toDate();
@@ -141,30 +140,30 @@ class Party {
     var commentIdList = json?['commentIdList'];
 
     return Party(
-        id,
-        name,
-        theme,
-        number,
-        date,
-        startTime,
-        endTime,
-        price,
-        desc,
-        address,
-        city,
-        postalCode,
-        smoke,
-        animals,
-        ownerId,
-        validatedList,
-        validatedListInfo,
-        coordinates,
-        approximativeCoordinates,
-        waitList,
-        waitListInfo,
-        isActive,
-        comment,
-        commentIdList);
+        id: id,
+        name: name,
+        theme: theme,
+        number: number,
+        date: date,
+        startTime: startTime,
+        endTime: endTime,
+        price: price,
+        desc: desc,
+        address: address,
+        city: city,
+        postalCode: postalCode,
+        smoke: smoke,
+        animals: animals,
+        ownerId: ownerId,
+        validatedList: validatedList,
+        validatedListInfo: validatedListInfo,
+        coordinates: coordinates,
+        approximativeCoordinates: approximativeCoordinates,
+        waitList: waitList,
+        waitListInfo: waitListInfo,
+        isActive: isActive,
+        comment: comment,
+        commentIdList: commentIdList);
   }
 
   factory Party.fromSnapShots(
@@ -181,4 +180,59 @@ class Party {
     data?["id"] = id;
     return Party.fromJson(data);
   }
+
+  Party copyWith(
+          {String? id,
+          String? name,
+          String? theme,
+          int? number,
+          DateTime? date,
+          DateTime? startTime,
+          DateTime? endTime,
+          double? price,
+          String? desc,
+          String? address,
+          String? city,
+          String? postalCode,
+          SmokeState? smoke,
+          AnimalState? animals,
+          var ownerId,
+          List<dynamic>? validatedList,
+          Map<String, dynamic>? validatedListInfo,
+          int? distance,
+          List<double?>? coordinates,
+          List<double>? approximativeCoordinates,
+          List? waitList,
+          Map<String, dynamic>? waitListInfo,
+          bool? isActive,
+          String? userLink,
+          List<dynamic>? commentIdList,
+          Map<String, dynamic>? comment}) =>
+      Party(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        theme: theme ?? this.theme,
+        number: number ?? this.number,
+        date: date ?? this.date,
+        startTime: startTime ?? this.startTime,
+        endTime: endTime ?? this.endTime,
+        price: price ?? this.price,
+        desc: desc ?? this.desc,
+        address: address ?? this.address,
+        city: city ?? this.city,
+        postalCode: postalCode ?? this.postalCode,
+        smoke: smoke ?? this.smoke,
+        animals: animals ?? this.animals,
+        ownerId: ownerId ?? this.ownerId,
+        validatedList: validatedList ?? this.validatedList,
+        validatedListInfo: validatedListInfo ?? this.validatedListInfo,
+        coordinates: coordinates ?? this.coordinates,
+        approximativeCoordinates:
+            approximativeCoordinates ?? this.approximativeCoordinates,
+        waitList: waitList ?? this.waitList,
+        waitListInfo: waitListInfo ?? this.waitListInfo,
+        isActive: isActive ?? this.isActive,
+        comment: comment ?? this.comment,
+        commentIdList: commentIdList ?? this.commentIdList,
+      );
 }

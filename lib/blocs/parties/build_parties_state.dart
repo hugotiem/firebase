@@ -17,7 +17,8 @@ class BuildPartiesState extends AppBaseState<BuildPartiesStatus> {
             requestFailureMessage: requestFailureMessage);
 
   const BuildPartiesState.initial() : this(BuildPartiesStatus.initial);
-  const BuildPartiesState.adding() : this(BuildPartiesStatus.adding);
+  const BuildPartiesState.adding(Party? party)
+      : this(BuildPartiesStatus.adding, party: party);
   const BuildPartiesState.loading()
       : this(BuildPartiesStatus.loading, requestInProgress: true);
   const BuildPartiesState.added(parties)

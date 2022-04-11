@@ -21,8 +21,7 @@ class QrCodePage extends StatelessWidget {
             }
             return BlocProvider(
               create: (context) => PartiesCubit()
-                ..fetchPartiesWithWhereArrayContains(
-                    "validatedList", token,
+                ..fetchPartiesWithWhereArrayContains("validatedList", token,
                     userLink: true),
               child: BlocBuilder<PartiesCubit, PartiesState>(
                   builder: (context, state) {
@@ -43,18 +42,17 @@ class QrCodePage extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: Center(
                           child: OpenContainer(
-                            closedBuilder: (context, returnValue) {
-                              return Container(
-                                padding: EdgeInsets.symmetric(vertical: 8),
-                                width: MediaQuery.of(context).size.width * 0.85,
-                                child: Text(e.name),
-                              );
-                            }, 
-                            openBuilder: (context, returnValue) {
-                              return Container();
-                            }),
+                              closedBuilder: (context, returnValue) {
+                            return Container(
+                              padding: EdgeInsets.symmetric(vertical: 8),
+                              width: MediaQuery.of(context).size.width * 0.85,
+                              child: Text(e.name ?? ""),
+                            );
+                          }, openBuilder: (context, returnValue) {
+                            return Container();
+                          }),
                         ),
-                      );//QrImage(data: e.userLink!);
+                      ); //QrImage(data: e.userLink!);
                     }).toList(),
                   ),
                 );

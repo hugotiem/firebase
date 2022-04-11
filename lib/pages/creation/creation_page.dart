@@ -20,25 +20,9 @@ class CreationPage extends StatefulWidget {
 class _CreationPageState extends State<CreationPage> {
   PageController? _controller;
 
-  late List<Widget> _children;
-
   @override
   void initState() {
     _controller = PageController();
-    _children = [
-      KeepPageAlive(child: NamePage(onNext: onNext)),
-      KeepPageAlive(child: ThemePage(onNext: onNext, onPrevious: onPrevious)),
-      KeepPageAlive(child: DatePage(onNext: onNext, onPrevious: onPrevious)),
-      KeepPageAlive(
-        child: HourPage(onNext: onNext, onPrevious: onPrevious),
-      ),
-      KeepPageAlive(
-          child: LocationPage(onNext: onNext, onPrevious: onPrevious)),
-      KeepPageAlive(child: GuestNumber(onNext: onNext, onPrevious: onPrevious)),
-      KeepPageAlive(
-          child: DescriptionPage(onNext: onNext, onPrevious: onPrevious)),
-      EndPage(),
-    ];
     super.initState();
   }
 
@@ -62,19 +46,40 @@ class _CreationPageState extends State<CreationPage> {
       create: (context) => BuildPartiesCubit(),
       child: BlocListener<BuildPartiesCubit, BuildPartiesState>(
         listener: (BuildContext context, state) {
-          if (state.status == BuildPartiesStatus.loaded) {
-            _controller!.animateToPage(
-              _children.length - 1,
-              duration: const Duration(milliseconds: 200),
-              curve: Curves.easeIn,
-            );
-          }
+          // if (state.status == BuildPartiesStatus.loaded) {
+          //   _controller!.animateToPage(
+          //     _children.length - 1,
+          //     duration: const Duration(milliseconds: 200),
+          //     curve: Curves.easeIn,
+          //   );
+          // }
         },
         child: BlocBuilder<BuildPartiesCubit, BuildPartiesState>(
             builder: (context, state) {
           return PageView(
             controller: _controller,
-            children: _children,
+            children: [
+              KeepPageAlive(child: NamePage(onNext: onNext)),
+              KeepPageAlive(
+                  child: ThemePage(
+                onNext: onNext,
+                onPrevious: onPrevious,
+                party: state.party,
+              )),
+              KeepPageAlive(
+                  child: DatePage(onNext: onNext, onPrevious: onPrevious)),
+              KeepPageAlive(
+                child: HourPage(onNext: onNext, onPrevious: onPrevious, party: state.party),
+              ),
+              KeepPageAlive(
+                  child: LocationPage(onNext: onNext, onPrevious: onPrevious)),
+              KeepPageAlive(
+                  child: GuestNumber(onNext: onNext, onPrevious: onPrevious)),
+              KeepPageAlive(
+                  child:
+                      DescriptionPage(onNext: onNext, onPrevious: onPrevious)),
+              EndPage(),
+            ],
             physics: NeverScrollableScrollPhysics(),
           );
         }),

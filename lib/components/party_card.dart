@@ -34,7 +34,7 @@ class PartyCard extends StatelessWidget {
     List nameList = party.validatedList ?? [];
 
     List list = nameList.map((doc) {
-      Map infos = party.validatedListInfo[doc];
+      Map infos = party.validatedListInfo?[doc];
       return Padding(
         padding: const EdgeInsets.only(left: 24, right: 24, bottom: 16),
         child: Column(
@@ -73,7 +73,7 @@ class PartyCard extends StatelessWidget {
     }).toList();
 
     List gender = nameList.map((e) {
-      Map infos = party.validatedListInfo[e];
+      Map infos = party.validatedListInfo?[e];
       return infos['gender'];
     }).toList();
 
@@ -217,8 +217,8 @@ class PartyCard extends StatelessWidget {
                                     child: Column(
                                       children: [
                                         Text(
-                                          DateFormat.MMM('fr')
-                                              .format(party.date),
+                                          DateFormat.MMM('fr').format(
+                                              party.date ?? DateTime.now()),
                                           style: TextStyle(
                                             color: textColor,
                                             fontWeight: FontWeight.w500,
@@ -229,8 +229,8 @@ class PartyCard extends StatelessWidget {
                                           padding:
                                               const EdgeInsets.only(top: 4),
                                           child: Text(
-                                            DateFormat.d('fr')
-                                                .format(party.date),
+                                            DateFormat.d('fr').format(
+                                                party.date ?? DateTime.now()),
                                             style: TextStyle(
                                               color: textColor,
                                               fontWeight: FontWeight.w500,
@@ -545,14 +545,14 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
 
   @override
   void initState() {
-      _size = 300;
-      _toolbarColor = Colors.transparent;
-      _barSizeWidth = 350;
-      _barSizeHeight = 150;
-      _headerName = true;
-      _headerLocation = true;
-      _headerDate = true;
-      _opacity = 1;
+    _size = 300;
+    _toolbarColor = Colors.transparent;
+    _barSizeWidth = 350;
+    _barSizeHeight = 150;
+    _headerName = true;
+    _headerLocation = true;
+    _headerDate = true;
+    _opacity = 1;
     super.initState();
   }
 
@@ -1002,9 +1002,7 @@ class _CardBodyState extends State<CardBody> {
 
     for (var party in widget.partyOwner!) {
       if (party.commentIdList!.isNotEmpty) {
-        
-          countComment += party.commentIdList!.length;
-        
+        countComment += party.commentIdList!.length;
       }
     }
 
@@ -1408,7 +1406,7 @@ class _EditPartyState extends State<EditParty> {
         child: BackAppBar(actions: [
           TextButton(
             onPressed: () async {
-              saveData(widget.party.id, {
+              saveData(widget.party.id!, {
                 "name": _name,
                 "theme": _theme,
                 "number": _number,

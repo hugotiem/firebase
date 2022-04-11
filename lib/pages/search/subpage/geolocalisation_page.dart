@@ -124,8 +124,8 @@ class _GeolocationWidgetState extends State<GeolocationWidget> {
   }
 
   Future<int> _getDistances(Party party) async {
-    double longitude = party.coordinates[0];
-    double latitude = party.coordinates[1];
+    double longitude = party.coordinates?[0] ?? 0;
+    double latitude = party.coordinates?[1] ?? 0;
 
     // calculer la distance entre notre position et celle de la soirée
     double distanceBetweenCoordinates = Geolocator.distanceBetween(

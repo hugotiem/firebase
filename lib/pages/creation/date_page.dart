@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pts/blocs/parties/build_parties_cubit.dart';
 import 'package:pts/components/form/background_form.dart';
 import 'package:pts/components/form/custom_text_form.dart';
 
@@ -17,7 +19,11 @@ class DatePage extends StatelessWidget {
     return BackgroundForm(
       heroTag: "date",
       onPrevious: () => onPrevious!(),
-      onPressedFAB: () => onNext!(),
+      onPressedFAB: () {
+        if (date == null) return;
+        BlocProvider.of<BuildPartiesCubit>(context).setDate(date!);
+        onNext!();
+      },
       children: [
         HeaderText1Form(
           text: "Quand est-ce que la soirée aura-t-elle lieu ?",

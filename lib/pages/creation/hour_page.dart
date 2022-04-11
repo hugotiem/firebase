@@ -4,11 +4,13 @@ import 'package:pts/components/circular_slider/double_slider_paint.dart';
 import 'package:pts/components/form/background_form.dart';
 import 'package:pts/components/form/custom_text_form.dart';
 import 'package:pts/const.dart';
+import 'package:pts/models/party.dart';
 
 class HourPage extends StatefulWidget {
   final void Function()? onNext;
   final void Function()? onPrevious;
-  const HourPage({Key? key, this.onNext, this.onPrevious}) : super(key: key);
+  final Party? party;
+  const HourPage({Key? key, this.onNext, this.onPrevious, this.party}) : super(key: key);
 
   @override
   State<HourPage> createState() => _HourPageState();
@@ -25,6 +27,7 @@ class _HourPageState extends State<HourPage> {
       heroTag: " hour",
       onPrevious: () => widget.onPrevious!(),
       onPressedFAB: () {
+        print(widget.party?.date);
         widget.onNext!();
       },
       children: [

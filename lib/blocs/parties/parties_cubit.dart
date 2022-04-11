@@ -237,7 +237,7 @@ class PartiesCubit extends AppBaseCubit<PartiesState> {
     await services.setWithId(party.id,
         data: {
           "token":
-              "${party.name.replaceAll(" ", "_").substring(0, party.name.length < 5 ? party.name.length : 5)}${getRandomString(5)}",
+              "${party.name!.replaceAll(" ", "_").substring(0, party.name!.length < 5 ? party.name!.length : 5)}${getRandomString(5)}",
           "name": infos['name'],
           "surname": infos['surname'],
           "photo": infos['photo'],
@@ -255,7 +255,7 @@ class PartiesCubit extends AppBaseCubit<PartiesState> {
       'waitList': FieldValue.arrayRemove([userId])
     });
 
-    await services.deleteValue(party.id, "waitListInfo.$userId");
+    await services.deleteValue(party.id!, "waitListInfo.$userId");
     emit(PartiesState.loaded(state.parties, state.filters));
     // Map<String, dynamic> map = party.waitListInfo..remove(userId);
     // await services.setWithId(party.id, data: {
