@@ -27,89 +27,70 @@ class BuildPartiesCubit extends AppBaseCubit<BuildPartiesState> {
   }
 
   void setDate(DateTime date) {
-    var party = (state.party ?? Party().copyWith(date: date));
+    var party = (state.party ?? Party()).copyWith(date: date);
     print(party.date);
     emit(BuildPartiesState.added(party));
   }
 
   void setStartTime(DateTime startTime) {
-    var party = (state.party ?? Party().copyWith(startTime: startTime));
+    var party = (state.party ?? Party()).copyWith(startTime: startTime);
     emit(BuildPartiesState.added(party));
   }
 
   void setEndTime(DateTime endTime) {
-    var party = (state.party ?? Party().copyWith(endTime: endTime));
+    var party = (state.party ?? Party()).copyWith(endTime: endTime);
     emit(BuildPartiesState.added(party));
   }
 
-  void setAdress(String address) {
-    var party = (state.party ?? Party().copyWith(address: address));
-    emit(BuildPartiesState.added(party));
-  }
-
-  void setPostalCode(String postalCode) {
-    var party = (state.party ?? Party().copyWith(postalCode: postalCode));
-    emit(BuildPartiesState.added(party));
-  }
-
-  void setCity(String city) {
-    var party = (state.party ?? Party().copyWith(city: city));
-    emit(BuildPartiesState.added(party));
-  }
-
-  void setCoordinates(List<double?>? coordinates) {
-    var party = (state.party ?? Party().copyWith(coordinates: coordinates));
+  void setAddress(String address, String postalCode, String city, List<double?>? coordinates) {
+    var party = (state.party ?? Party())
+        .copyWith(address: address, postalCode: postalCode, city: city, coordinates: coordinates);
     emit(BuildPartiesState.added(party));
   }
 
   void setNumber(int number) {
-    var party = (state.party ?? Party().copyWith(number: number));
+    var party = (state.party ?? Party()).copyWith(number: number);
     emit(BuildPartiesState.added(party));
   }
 
   void setPrice(double price) {
-    var party = (state.party ?? Party().copyWith(price: price));
+    var party = (state.party ?? Party()).copyWith(price: price);
     emit(BuildPartiesState.added(party));
   }
 
   void setAnimals(AnimalState animal) {
-    var party = (state.party ?? Party().copyWith(animals: animal));
-     emit(BuildPartiesState.added(party));
+    var party = (state.party ?? Party()).copyWith(animals: animal);
+    emit(BuildPartiesState.added(party));
   }
 
   void setSmoke(SmokeState smoke) {
-    var party = (state.party ?? Party().copyWith(smoke: smoke));
-     emit(BuildPartiesState.added(party));
+    var party = (state.party ?? Party()).copyWith(smoke: smoke);
+    emit(BuildPartiesState.added(party));
   }
 
   void setDesc(String desc) {
-    var party = (state.party ?? Party().copyWith(desc: desc));
-     emit(BuildPartiesState.added(party));
+    var party = (state.party ?? Party()).copyWith(desc: desc);
+    emit(BuildPartiesState.added(party));
   }
 
   void setOwnerId(String? id) {
-    var party = (state.party ?? Party().copyWith(ownerId: id));
-     emit(BuildPartiesState.added(party));
+    var party = (state.party ?? Party()).copyWith(ownerId: id);
+    emit(BuildPartiesState.added(party));
   }
 
   void setWaitList() {
-    var party = (state.party ?? Party().copyWith(waitList: []));
-     emit(BuildPartiesState.added(party));
+    var party = (state.party ?? Party()).copyWith(waitList: []);
+    emit(BuildPartiesState.added(party));
   }
 
   void setisActive() {
-    var party = (state.party ?? Party().copyWith(isActive: true));
-     emit(BuildPartiesState.added(party));
-  }
-
-  void setCommentIdList() {
-    var party = (state.party ?? Party().copyWith(commentIdList: []));
-     emit(BuildPartiesState.added(party));
+    var party = (state.party ?? Party()).copyWith(isActive: true);
+    emit(BuildPartiesState.added(party));
   }
 
   void setComment() {
-    var party = (state.party ?? Party().copyWith(comment: {}));
-     emit(BuildPartiesState.added(party));
+    var party = (state.party ?? Party()).copyWith(commentIdList: [], comment: {});
+    emit(BuildPartiesState.added(party));
   }
 
   // var set

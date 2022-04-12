@@ -34,11 +34,11 @@ class _LocationPageState extends State<LocationPage> {
       onPressedFAB: () {
         if (!_formKey.currentState!.validate()) return;
 
-        BlocProvider.of<BuildPartiesCubit>(context)
-          ..setCity(_cityController.text.trim().inCaps)
-          ..setAdress(_addressController.text.trim().inCaps)
-          ..setPostalCode(_postCodeController.text)
-          ..setCoordinates([address?.longitude, address?.latitude]);
+        BlocProvider.of<BuildPartiesCubit>(context).setAddress(
+            _addressController.text.trim().inCaps,
+            _postCodeController.text,
+            _cityController.text.trim().inCaps,
+            [address?.longitude, address?.latitude]);
 
         // BlocProvider.of<BuildPartiesCubit>(context)
         //   ..addItem(

@@ -113,7 +113,6 @@ class _DescriptionPageState extends State<DescriptionPage> {
                   ..setOwnerId(state.user!.id)
                   ..setWaitList()
                   ..setisActive()
-                  ..setComment()
                   ..setComment();
               
               // BlocProvider.of<BuildPartiesCubit>(context)

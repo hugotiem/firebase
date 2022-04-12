@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:pts/components/circular_slider/double_slider_paint.dart';
 import 'package:pts/components/form/background_form.dart';
@@ -10,7 +11,8 @@ class HourPage extends StatefulWidget {
   final void Function()? onNext;
   final void Function()? onPrevious;
   final Party? party;
-  const HourPage({Key? key, this.onNext, this.onPrevious, this.party}) : super(key: key);
+  const HourPage({Key? key, this.onNext, this.onPrevious, this.party})
+      : super(key: key);
 
   @override
   State<HourPage> createState() => _HourPageState();
@@ -27,8 +29,17 @@ class _HourPageState extends State<HourPage> {
       heroTag: " hour",
       onPrevious: () => widget.onPrevious!(),
       onPressedFAB: () {
-        print(widget.party?.date);
-        widget.onNext!();
+        late DateTime? date = widget.party?.date;
+        print(date);
+        DateTime heureDebut = DateFormat('h : m').parse(_formatTime(initTime));
+        DateTime heureFin = DateFormat('h : m').parse(_formatTime(endTime));
+        print(heureDebut);
+        print(heureFin);
+        // DateTime dateDebut = DateTime(date!.year, date.month, date.day, heureDebut.hour, heureDebut.minute);
+        // DateTime dateFin = DateTime(date.year, date.month, date.day, heureFin.hour, heureFin.minute);
+        // print(dateDebut);
+        // print(dateFin);
+        // widget.onNext!();
       },
       children: [
         HeaderText1Form(
