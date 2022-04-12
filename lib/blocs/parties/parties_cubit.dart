@@ -135,7 +135,9 @@ class PartiesCubit extends AppBaseCubit<PartiesState> {
 
   Future<void> fetchPartiesByDateWithWhereIsEqualTo(
       var key, String? data, DateTime date) async {
-    var snapshots = await services.getDataBeforeDateWithWhereIsEqualTo(
+    emit(state.setRequestInProgress() as PartiesState);
+
+    var snapshots = await services.getDataByDateWithWhereIsEqualTo(
         key, data, AppDateTime.from(date).yMd());
 
     var parties = snapshots.docs.map((e) => Party.fromSnapShots(e)).toList();
@@ -149,9 +151,12 @@ class PartiesCubit extends AppBaseCubit<PartiesState> {
   Future<void> fetchPartiesByMonthsWithWhereIsEqualTo(
       var key, String? data, List<DateTime> dates) async {
     List<Party> parties = [];
+
+    emit(state.setRequestInProgress() as PartiesState);
+
     for (var date in dates) {
       var snapshot = await services.getDataByDateWithWhereEqualsToAndIsActive(
-          key, data?.split(",")[0], AppDateTime.from(date).yM());
+          key, data?.split(",")[0], date);
       parties.addAll(snapshot.docs.map((e) => Party.fromSnapShots(e)).toList());
     }
     emit(PartiesState.loaded(parties, state.filters));

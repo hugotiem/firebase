@@ -106,7 +106,7 @@ class FireStoreServices {
   }
 
   Future<QuerySnapshot<Map<String, dynamic>>>
-      getDataBeforeDateWithWhereIsEqualTo(
+      getDataByDateWithWhereIsEqualTo(
           String key, String? data, DateTime date) async {
     log(Timestamp.fromDate(date).toString());
     return this
@@ -136,7 +136,7 @@ class FireStoreServices {
         .collection(collection)
         .where(key, isEqualTo: value)
         .where("date", isGreaterThanOrEqualTo: date)
-        .where("date", isLessThan: AppDateTime.from(date).addTime(month: 1))
+        .where("date", isLessThan: AppDateTime.from(date).yM().addTime(month: 1))
         .where("isActive", isEqualTo: true)
         .get();
   }
