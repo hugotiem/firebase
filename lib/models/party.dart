@@ -60,7 +60,7 @@ class Party {
       this.distance,
       this.userLink});
 
-  static String getTitleByState(SmokeState state) {
+  static String getTitleByState(SmokeState? state) {
     switch (state) {
       case SmokeState.outside:
         return "Oui, à l'exterieur";

@@ -77,9 +77,11 @@ class _SearchFormPageState extends State<SearchFormPage> {
             icon: Image.asset("assets/back-btn.png"),
             onPressed: () {
               if (_panelController.isPanelClosed) {
-                _panelController.animatePanelToPosition(1,
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeInOut);
+                _panelController
+                    .animatePanelToPosition(1,
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeInOut)
+                    .whenComplete(() => _focusNode.requestFocus());
               } else {
                 if (widget.onPop != null) {
                   widget.onPop!();
@@ -162,7 +164,7 @@ class _SearchFormPageState extends State<SearchFormPage> {
                             destination: value,
                             last: _textEditingController.text);
                         if (widget.last != null) {
-                          Navigator.of(context).pop({'newResult': destination});
+                          Navigator.of(context).pop({'newResult': value});
                         } else {
                           _focusNode.unfocus();
                           setState(() {
@@ -529,7 +531,7 @@ class CalendarWidget extends StatefulWidget {
       required this.onSelectedDay,
       this.themeColor,
       this.backgroundColor,
-      this.shadow = false, 
+      this.shadow = false,
       this.padding})
       : super(key: key);
 
@@ -646,26 +648,27 @@ class _CalendarWidgetState extends State<CalendarWidget> {
             padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
             margin: EdgeInsets.symmetric(horizontal: 20),
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
-                border:
-                    Border.all(width: 2, color: Colors.white.withOpacity(0.1)),
-                color: widget.backgroundColor ?? Colors.white.withOpacity(0.2),
-                boxShadow: [
-                  widget.shadow == true
-                      ? BoxShadow(
-                          color: Colors.grey.withOpacity(0.4),
-                          spreadRadius: 1,
-                          blurRadius: 10,
-                        )
-                      : BoxShadow(color: Colors.transparent)
-                ] ,
-                ),
+              borderRadius: BorderRadius.circular(30),
+              border:
+                  Border.all(width: 2, color: Colors.white.withOpacity(0.1)),
+              color: widget.backgroundColor ?? Colors.white.withOpacity(0.2),
+              boxShadow: [
+                widget.shadow == true
+                    ? BoxShadow(
+                        color: Colors.grey.withOpacity(0.4),
+                        spreadRadius: 1,
+                        blurRadius: 10,
+                      )
+                    : BoxShadow(color: Colors.transparent)
+              ],
+            ),
             clipBehavior: Clip.antiAlias,
             child: TableCalendar(
               currentDay: _selectedDay,
               calendarStyle: CalendarStyle(
                 selectedDecoration: BoxDecoration(
-                  color: widget.backgroundColor ?? Colors.white.withOpacity(0.3),
+                  color:
+                      widget.backgroundColor ?? Colors.white.withOpacity(0.3),
                   shape: BoxShape.circle,
                   boxShadow: [
                     widget.shadow == true

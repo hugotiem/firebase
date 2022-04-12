@@ -1157,23 +1157,21 @@ class _CardBodyState extends State<CardBody> {
                               ],
                             ),
                           ),
-                    this.widget.animal == AnimalState.notAllowed
-                        ? CText(
-                            "Le propriétaire possède un ou des animaux",
-                            fontSize: 17,
-                            color: SECONDARY_COLOR,
-                          )
-                        : CText(
-                            "Aucun animal n'est présent sur place",
-                            fontSize: 17,
-                            color: SECONDARY_COLOR,
-                          )
+                    Expanded(
+                      child: CText(
+                        this.widget.animal == AnimalState.allowed
+                            ? "Le propriétaire possède un ou des animaux"
+                            : "Aucun animal n'est présent sur place",
+                        fontSize: 17,
+                        color: SECONDARY_COLOR,
+                      ),
+                    )
                   ],
                 ),
               ),
               Row(
                 children: [
-                  this.widget.smoke == true
+                  widget.smoke != SmokeState.notAllowed
                       ? Padding(
                           padding: const EdgeInsets.only(right: 22),
                           child: (Icon(Icons.smoking_rooms_outlined)),
@@ -1197,17 +1195,11 @@ class _CardBodyState extends State<CardBody> {
                             )
                           ],
                         ),
-                  this.widget.smoke == SmokeState.inside
-                      ? CText(
-                          "Vous pouvez fumer à l'intérieur",
-                          fontSize: 17,
-                          color: SECONDARY_COLOR,
-                        )
-                      : CText(
-                          "Vous devez fumer dehors",
-                          fontSize: 17,
-                          color: SECONDARY_COLOR,
-                        ),
+                  CText(
+                    Party.getTitleByState(widget.smoke),
+                    fontSize: 17,
+                    color: SECONDARY_COLOR,
+                  ),
                 ],
               ),
             ],

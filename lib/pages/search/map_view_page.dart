@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -314,17 +315,19 @@ class SearchInfoContent extends StatelessWidget {
                         fullscreenDialog: true))
                     .then((value) {
                   if (value != null) {
+                    var _newDestination = value['newResult'];
                     if (date != null) {
-                      return PartiesCubit()
-                        ..fetchPartiesByDateWithWhereIsEqualTo(
-                            "city", value, date!);
+                      BlocProvider.of<PartiesCubit>(context)
+                          .fetchPartiesByDateWithWhereIsEqualTo(
+                              "city", _newDestination, date!);
                     } else if (months != null) {
-                      return PartiesCubit()
-                        ..fetchPartiesByMonthsWithWhereIsEqualTo(
-                            "city", value, months!);
+                      BlocProvider.of<PartiesCubit>(context)
+                          .fetchPartiesByMonthsWithWhereIsEqualTo(
+                              "city", _newDestination, months!);
                     } else {
                       BlocProvider.of<PartiesCubit>(context)
-                          .fetchPartiesWithWhereIsEqualTo("city", value);
+                          .fetchPartiesWithWhereIsEqualTo(
+                              "city", _newDestination);
                     }
                   }
                 });
