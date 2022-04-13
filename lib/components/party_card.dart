@@ -186,8 +186,9 @@ class PartyCard extends StatelessWidget {
                   color: PRIMARY_COLOR,
                 ),
                 child: OpenContainer(
+                  openElevation: 0,
                   closedElevation: 0,
-                  transitionDuration: Duration(milliseconds: 200),
+                  // transitionDuration: Duration(milliseconds: 200),
                   closedShape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
