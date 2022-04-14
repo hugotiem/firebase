@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:intro_slider/intro_slider.dart';
-import 'package:intro_slider/slide_object.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:pts/components/app_text_style.dart';
 import 'package:pts/const.dart';
+import 'package:pts/models/slide.dart';
 
 class IntroScreen extends StatefulWidget {
   IntroScreen({Key? key}) : super(key: key);
@@ -12,7 +12,8 @@ class IntroScreen extends StatefulWidget {
 }
 
 class IntroScreenState extends State<IntroScreen> {
-  // ignore: deprecated_member_use
+  late PageController _controller = PageController();
+
   List<Slide> slides = [];
 
   @override
@@ -20,54 +21,37 @@ class IntroScreenState extends State<IntroScreen> {
     super.initState();
 
     slides.add(
-      new Slide(
-        styleTitle: TextStyle(fontSize: 60, color: PRIMARY_COLOR),
-        styleDescription: TextStyle(fontSize: 20, color: PRIMARY_COLOR),
+      Slide(
         title: "BIENVENUE",
-        description:
+        desc:
             "Merci d’avoir rejoint notre application PTS, nous allons te la présenter.",
-        pathImage: "assets/hf_head.png",
-        backgroundColor: SECONDARY_COLOR,
+        image: "assets/hf_head.png",
       ),
     );
     slides.add(
-      new Slide(
-        styleTitle: TextStyle(fontSize: 60, color: PRIMARY_COLOR),
-        styleDescription: TextStyle(fontSize: 20, color: PRIMARY_COLOR),
+      Slide(
         title: "REJOINS",
-        description:
-            "Cette application va te permettre de rejoindre des soirées proches de chez toi.\n\n Les soirées proposées sont suivant différents thèmes: (Festive, Gaming, À thème et Jeux de Société).\n\n D’autres informations sont présentes comme l’heure d’entrée, le nombre de personnes …",
-        pathImage: "assets/join_party.png",
-        widthImage: double.infinity,
-        backgroundColor: SECONDARY_COLOR,
+        desc:
+            "Cette application va te permettre de rejoindre des soirées proches de chez toi.\n\n Les soirées proposées sont suivant différents thèmes: (Festive, Gaming, À thème et Jeux de Société).",
+        image: "assets/join_party.png",
       ),
     );
     slides.add(
-      new Slide(
-        styleTitle: TextStyle(fontSize: 60, color: PRIMARY_COLOR),
-        styleDescription: TextStyle(fontSize: 20, color: PRIMARY_COLOR),
+      Slide(
         title: "ORGANISE",
-        description:
+        desc:
             "C’est à toi de définir tous les critères d’entrées Pour Ta Soirée (le titre, gratuit ou payant…).\n\n Maintenant tu n’as plus qu’à décider qui viendra Pour Ta Soirée!",
-        pathImage: "assets/create_party.png",
-        backgroundColor: SECONDARY_COLOR,
+        image: "assets/create_party.png",
       ),
     );
     slides.add(
-      new Slide(
-        styleTitle: TextStyle(
-            fontSize: 60, color: PRIMARY_COLOR, overflow: TextOverflow.visible),
-        styleDescription: TextStyle(fontSize: 20, color: PRIMARY_COLOR),
-        title: "BONNE SOIREE",
-        description:
+      Slide(
+        title: "Bonne soirée",
+        desc:
             "PTS te souhaite sincèrement de faire de superbes rencontres lors de tes soirées.",
-        pathImage: "assets/onboarding_img.png",
-        backgroundColor: SECONDARY_COLOR,
+        image: "assets/onboarding_img.png",
       ),
     );
-    slides.add(new Slide(
-      backgroundColor: SECONDARY_COLOR,
-    ));
   }
 
   void onDonePress() {}
@@ -80,43 +64,94 @@ class IntroScreenState extends State<IntroScreen> {
     );
   }
 
-  Widget renderDoneBtn() {
-    return Icon(
-      Ionicons.checkmark_outline,
-      color: ICONCOLOR,
-    );
-  }
-
-  Widget renderSkipBtn() {
-    return Icon(
-      Ionicons.play_skip_forward_outline,
-      color: ICONCOLOR,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.transparent,
+        toolbarHeight: 0,
+        elevation: 0,
+      ),
+      extendBodyBehindAppBar: true,
       backgroundColor: SECONDARY_COLOR,
-      body: new IntroSlider(
-        // List slides
-        slides: this.slides,
-
-        // Skip button
-        renderSkipBtn: this.renderSkipBtn(),
-
-        // Next button
-        renderNextBtn: this.renderNextBtn(),
-
-        // Done button
-        renderDoneBtn: this.renderDoneBtn(),
-        onDonePress: this.onDonePress,
-
-        colorDot: ICONCOLOR,
-
-        hideStatusBar: true,
-
-        sizeDot: 8.0,
+      body: SafeArea(
+        bottom: false,
+        child: Stack(
+          children: [
+            PageView.builder(
+              padEnds: false,
+              itemCount: slides.length,
+              controller: _controller,
+              itemBuilder: (context, index) {
+                var slide = slides[index];
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      slide.title?.toUpperCase() ?? "",
+                      style: AppTextStyle(
+                          color: Colors.white,
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      child: Text(
+                        slide.desc ?? "",
+                        textAlign: TextAlign.center,
+                        style: AppTextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                    Stack(
+                      children: [
+                        Image.asset(slide.image ?? ""),
+                        Container(
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                            colors: [
+                              SECONDARY_COLOR,
+                              SECONDARY_COLOR.withOpacity(0),
+                            ],
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                          )),
+                          height: 70,
+                        )
+                      ],
+                    ),
+                  ],
+                );
+              },
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                  onPressed: () => _controller.animateToPage(slides.length - 1,
+                      duration: const Duration(milliseconds: 200),
+                      curve: Curves.easeInOut),
+                  icon: Icon(
+                    Icons.skip_next_rounded,
+                    color: Colors.white,
+                  ),
+                ),
+                IconButton(
+                  onPressed: () => _controller.nextPage(
+                      duration: const Duration(milliseconds: 200),
+                      curve: Curves.easeInOut),
+                  icon: Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -5,6 +5,7 @@ import 'dart:math' as math;
 enum SmokeState { outside, inside, notAllowed }
 enum AnimalState { allowed, notAllowed }
 
+// ignore: must_be_immutable
 class Party extends Equatable {
   String? id;
   String? name;
