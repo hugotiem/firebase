@@ -104,8 +104,9 @@ class ThemeBox extends StatelessWidget {
                     return Center(child: const CircularProgressIndicator());
                   return ListView.builder(
                     itemCount: state.parties!.length,
-                    itemBuilder: (BuildContext context, int index) =>
-                        SizedBox(height: 270, child: Padding(
+                    itemBuilder: (BuildContext context, int index) => SizedBox(
+                        height: 270,
+                        child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           child: PartyCard(party: state.parties![index]),
                         )),
@@ -118,10 +119,4 @@ class ThemeBox extends StatelessWidget {
       ),
     );
   }
-  // Stream<QuerySnapshot> getPartyStreamSnapshot(BuildContext context) async* {
-  //   yield* FirebaseFirestore.instance
-  //   .collection('party')
-  //   .where('Theme', isEqualTo: this.text)
-  //   .snapshots();
-  // }
 }
