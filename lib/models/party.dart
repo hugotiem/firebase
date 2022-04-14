@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:equatable/equatable.dart';
 import 'dart:math' as math;
 
 enum SmokeState { outside, inside, notAllowed }
 enum AnimalState { allowed, notAllowed }
 
-class Party {
+class Party extends Equatable {
   String? id;
   String? name;
   String? theme;
@@ -235,4 +236,32 @@ class Party {
         comment: comment ?? this.comment,
         commentIdList: commentIdList ?? this.commentIdList,
       );
+
+  @override
+  List<Object?> get props => [
+        id,
+        name,
+        theme,
+        number,
+        date,
+        startTime,
+        endTime,
+        price,
+        desc,
+        address,
+        city,
+        postalCode,
+        smoke,
+        animals,
+        ownerId,
+        validatedList,
+        validatedListInfo,
+        coordinates,
+        approximativeCoordinates,
+        waitList,
+        waitListInfo,
+        isActive,
+        comment,
+        commentIdList
+      ];
 }

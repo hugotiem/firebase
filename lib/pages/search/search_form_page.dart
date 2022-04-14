@@ -223,6 +223,16 @@ class SearchBarContent extends StatelessWidget {
 class NoResultContent extends StatelessWidget {
   NoResultContent({Key? key}) : super(key: key);
 
+  final LinearGradient _linearGradient = LinearGradient(
+    colors: <Color>[
+      SECONDARY_COLOR,
+      ICONCOLOR,
+    ],
+    begin: Alignment.centerLeft,
+    end: Alignment.centerRight,
+    stops: [0.0, 0.4],
+  );
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -238,26 +248,37 @@ class NoResultContent extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 40),
             child: TextButton(
               style: TextButton.styleFrom(
+                primary: ICONCOLOR,
                 elevation: 4,
                 shadowColor: Colors.grey.withOpacity(0.3),
                 backgroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(40),
                 ),
-                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Explorer",
-                    style: AppTextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+              child: ShaderMask(
+                shaderCallback: (Rect rect) {
+                  return _linearGradient.createShader(rect);
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Explorer",
+                      style: AppTextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
-                  Icon(Icons.arrow_forward_ios_rounded),
-                ],
+                    Icon(
+                      Icons.arrow_forward_ios_rounded,
+                      color: Colors.white,
+                      size: 25,
+                    ),
+                  ],
+                ),
               ),
               onPressed: () {},
             ),

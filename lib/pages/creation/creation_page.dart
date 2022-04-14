@@ -42,47 +42,60 @@ class _CreationPageState extends State<CreationPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => BuildPartiesCubit(),
-      child: BlocListener<BuildPartiesCubit, BuildPartiesState>(
-        listener: (BuildContext context, state) {
-          // if (state.status == BuildPartiesStatus.loaded) {
-          //   _controller!.animateToPage(
-          //     _children.length - 1,
-          //     duration: const Duration(milliseconds: 200),
-          //     curve: Curves.easeIn,
-          //   );
-          // }
-        },
-        child: BlocBuilder<BuildPartiesCubit, BuildPartiesState>(
-            builder: (context, state) {
-          return PageView(
-            controller: _controller,
-            children: [
-              KeepPageAlive(child: NamePage(onNext: onNext)),
-              KeepPageAlive(
-                  child: ThemePage(
-                onNext: onNext,
-                onPrevious: onPrevious,
-                party: state.party,
-              )),
-              KeepPageAlive(
-                  child: DatePage(onNext: onNext, onPrevious: onPrevious)),
-              KeepPageAlive(
-                child: HourPage(onNext: onNext, onPrevious: onPrevious, party: state.party),
-              ),
-              KeepPageAlive(
-                  child: LocationPage(onNext: onNext, onPrevious: onPrevious)),
-              KeepPageAlive(
-                  child: GuestNumber(onNext: onNext, onPrevious: onPrevious)),
-              KeepPageAlive(
-                  child:
-                      DescriptionPage(onNext: onNext, onPrevious: onPrevious)),
-              EndPage(),
-            ],
-            physics: NeverScrollableScrollPhysics(),
-          );
-        }),
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        toolbarHeight: 0,
+      ),
+      extendBodyBehindAppBar: true,
+      body: BlocProvider(
+        create: (context) => BuildPartiesCubit(),
+        child: BlocListener<BuildPartiesCubit, BuildPartiesState>(
+          listener: (BuildContext context, state) {
+            // if (state.status == BuildPartiesStatus.loaded) {
+            //   _controller!.animateToPage(
+            //     _children.length - 1,
+            //     duration: const Duration(milliseconds: 200),
+            //     curve: Curves.easeIn,
+            //   );
+            // }
+          },
+          child: BlocBuilder<BuildPartiesCubit, BuildPartiesState>(
+              builder: (context, state) {
+            return PageView(
+              controller: _controller,
+              children: [
+                KeepPageAlive(child: NamePage(onNext: onNext)),
+                KeepPageAlive(
+                    child: ThemePage(
+                  onNext: onNext,
+                  onPrevious: onPrevious,
+                  party: state.party,
+                )),
+                KeepPageAlive(
+                    child: DatePage(onNext: onNext, onPrevious: onPrevious)),
+                KeepPageAlive(
+                  child: HourPage(
+                      onNext: onNext,
+                      onPrevious: onPrevious,
+                      party: state.party),
+                ),
+                KeepPageAlive(
+                    child:
+                        LocationPage(onNext: onNext, onPrevious: onPrevious)),
+                KeepPageAlive(
+                    child: GuestNumber(onNext: onNext, onPrevious: onPrevious)),
+                KeepPageAlive(
+                    child: DescriptionPage(
+                        onNext: onNext, onPrevious: onPrevious)),
+                EndPage(),
+              ],
+              physics: NeverScrollableScrollPhysics(),
+            );
+          }),
+        ),
       ),
     );
   }

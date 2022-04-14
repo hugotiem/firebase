@@ -21,7 +21,6 @@ class BuildPartiesCubit extends AppBaseCubit<BuildPartiesState> {
 
   void setTheme(String? theme) {
     var party = (state.party ?? Party());
-    emit(BuildPartiesState.adding(party));
     party = party.copyWith(theme: theme);
     emit(BuildPartiesState.added(party));
   }

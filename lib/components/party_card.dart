@@ -180,7 +180,6 @@ class PartyCard extends StatelessWidget {
           return Stack(children: [
             Center(
               child: Container(
-                //height: 270,
                 width: MediaQuery.of(context).size.width * 0.85,
                 decoration: BoxDecoration(
                   color: PRIMARY_COLOR,

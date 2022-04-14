@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -117,6 +116,12 @@ class _MapViewPageState extends State<MapViewPage> {
                     children: [
                       if (_longitude != null && _latitude != null)
                         GoogleMap(
+                          onCameraMove: (position) {
+                            print(position.target);
+
+                            print(position.zoom);
+                          },
+                          // onCameraIdle: ,
                           myLocationButtonEnabled: false,
                           initialCameraPosition: CameraPosition(
                               target: LatLng(_latitude!, _longitude!),

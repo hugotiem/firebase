@@ -37,4 +37,7 @@ class BuildPartiesState extends AppBaseState<BuildPartiesStatus> {
           requestInProgress: requestInProgress,
           requestFailureCode: requestFailureCode,
           requestFailureMessage: requestFailureMessage);
+
+  @override
+  List<Object?> get props => super.props..add(party);
 }
