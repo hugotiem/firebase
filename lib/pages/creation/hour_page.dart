@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:pts/components/app_datetime.dart';
 import 'package:pts/components/circular_slider/double_slider_paint.dart';
 import 'package:pts/components/form/background_form.dart';
 import 'package:pts/components/form/custom_text_form.dart';
@@ -30,15 +31,19 @@ class _HourPageState extends State<HourPage> {
       onPrevious: () => widget.onPrevious!(),
       onPressedFAB: () {
         late DateTime? date = widget.party?.date;
-        print(date);
-        DateTime heureDebut = DateFormat('h : m').parse(_formatTime(initTime));
-        DateTime heureFin = DateFormat('h : m').parse(_formatTime(endTime));
-        print(heureDebut);
-        print(heureFin);
-        // DateTime dateDebut = DateTime(date!.year, date.month, date.day, heureDebut.hour, heureDebut.minute);
-        // DateTime dateFin = DateTime(date.year, date.month, date.day, heureFin.hour, heureFin.minute);
-        // print(dateDebut);
-        // print(dateFin);
+        DateTime heureDebut = AppDateTime.from(date).copyWith(
+            hour: _formatTime(initTime)[0], minute: _formatTime(initTime)[1]);
+        DateTime heureFin = AppDateTime.from(date).copyWith(
+            hour: _formatTime(endTime)[0], minute: _formatTime(endTime)[1]);
+        DateTime dateDebut = DateTime(date!.year, date.month, date.day,
+            heureDebut.hour, heureDebut.minute);
+        DateTime dateFin = DateTime(
+            date.year, date.month, date.day, heureFin.hour, heureFin.minute);
+        if (dateFin.isBefore(dateDebut)) {
+          dateFin.add(Duration(days: 1));
+        }
+        print(dateDebut);
+        print(dateFin);
         // widget.onNext!();
       },
       children: [
@@ -98,13 +103,15 @@ class _HourPageState extends State<HourPage> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                text(_formatTime(initTime)),
+                text(
+                    "${_formatTime(initTime)[0].toString()} : ${_formatTime(initTime)[1].toString()}"),
                 Icon(
                   Ionicons.caret_down,
                   color: ICONCOLOR,
                   size: 40,
                 ),
-                text(_formatTime(endTime)),
+                text(
+                    "${_formatTime(endTime)[0].toString()} : ${_formatTime(endTime)[1].toString()}"),
               ],
             ),
           ),
@@ -125,21 +132,22 @@ class _HourPageState extends State<HourPage> {
     );
   }
 
-  String _formatTime(int? time) {
-    late String hoursstr;
-    late String minutesstr;
-    if (time == 0 || time == null) return '00 : 00';
+  List<int> _formatTime(int? time) {
+    final List<int> listTime = [];
+    if (time == 0 || time == null) {
+      return [0, 0];
+    }
 
-    int hours = time ~/ 12;
-    int minutes = (time % 12) * 5;
+    listTime.addAll([time ~/ 12, (time % 12) * 5]);
 
-    if (hours == 24) return "00 : 00";
+    if (listTime[0] == 24 && listTime[1] == 24) return [0, 0];
 
-    hoursstr = hours.toString();
-    minutesstr = minutes.toString();
+    return [listTime[0], listTime[1]];
+  }
 
-    if (hours < 10) hoursstr = "0" + hours.toString();
-    if (minutes < 10) minutesstr = "0" + minutes.toString();
-    return "$hoursstr : $minutesstr";
+  String intToDate(int value) {
+    String time = value.toString();
+    if (value < 10) return "0$time";
+    return time;
   }
 }
