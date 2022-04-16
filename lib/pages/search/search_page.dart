@@ -50,50 +50,14 @@ class _SearchState extends State<Search> {
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
             image: DecorationImage(
-              // opacity: _opacity,
               fit: BoxFit.cover,
               image: AssetImage('assets/map.png'),
             ),
-            // opacity: _opacity,
             borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(36),
               bottomRight: Radius.circular(36),
             ),
           ),
-          // child: Container(
-          //   child: Stack(
-          //     children: [
-          //       Positioned(
-          //         top: (_size! - 100) / 2,
-          //         right: 75,
-          //         width: MediaQuery.of(context).size.width,
-          //         child: Opacity(
-          //           opacity: _opacity,
-          //           child: Center(
-          //             child: Icon(
-          //               // BackGroundtitle(),
-          //               Icons.location_on_outlined,
-          //               size: 50,
-          //               color: ICONCOLOR,
-          //             ),
-          //           ),
-          //         ),
-          //       ),
-          //       Positioned(
-          //         top: (_size! - 100) / 2,
-          //         left: 90,
-          //         bottom: 29,
-          //         width: MediaQuery.of(context).size.width,
-          //         child: Opacity(
-          //           opacity: _opacity,
-          //           child: Center(
-          //               child: Icon(Icons.location_on_outlined,
-          //                   size: 50, color: ICONCOLOR)),
-          //         ),
-          //       ),
-          //     ],
-          //   ),
-          // ),
         ),
       ),
       body: SizedBox.expand(
@@ -181,62 +145,6 @@ class _SearchState extends State<Search> {
               }),
         ),
       ),
-
-      //  Column(
-      //   children: [
-      //     SizedBox(
-      //       height: (_size! - 80) > 50 ? _size! - 80 : 50,
-      //     ),
-      //     Center(
-      //       child: OpenContainer(
-      //         tappable: true,
-      //         transitionDuration: Duration(milliseconds: 400),
-      //         closedColor: Colors.white,
-      //         openColor: Colors.white,
-      //         closedElevation: 0,
-      //         closedShape: RoundedRectangleBorder(
-      //           borderRadius: BorderRadius.circular(29.5),
-      //         ),
-      //         closedBuilder: (context, returnValue) {
-      //           return Container(
-      //             width: _barSizeWidth,
-      //             height: _barSizeHeight,
-      //             decoration: BoxDecoration(
-      //               color: Colors.white,
-      //             ),
-      //             child: Container(
-      //               child: Row(
-      //                 children: <Widget>[
-      //                   Padding(
-      //                     padding: const EdgeInsets.only(left: 20),
-      //                     child: Icon(
-      //                       Ionicons.search_outline,
-      //                       size: 20,
-      //                       color: ICONCOLOR,
-      //                     ),
-      //                   ),
-      //                   Opacity(
-      //                     opacity: 0.7,
-      //                     child: Container(
-      //                       padding: EdgeInsets.only(left: 20),
-      //                       child: CText(
-      //                         "Rechercher",
-      //                         fontSize: 18,
-      //                       ),
-      //                     ),
-      //                   ),
-      //                 ],
-      //               ),
-      //             ),
-      //           );
-      //         },
-      //         openBuilder: (context, returnValue) {
-      //           return SearchBarScreen();
-      //         },
-      //       ),
-      //     ),
-      //   ],
-      // ),
     );
   }
 }
