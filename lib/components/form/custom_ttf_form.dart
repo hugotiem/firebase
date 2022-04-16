@@ -152,7 +152,7 @@ class TypeAheadTFFText extends StatelessWidget {
                   hintText: this.hintText,
                   border: InputBorder.none,
                   counterText: '',
-                  errorStyle: TextStyle(height: 0),
+                  errorStyle: TextStyle(height: 0.045),
                 ),
                 maxLength: this.maxLength,
                 inputFormatters: this.inputFormatters,
@@ -243,7 +243,7 @@ class TFFForm extends StatelessWidget {
                   hintStyle: TextStyle(
                       color: ICONCOLOR.withOpacity(0.6), fontSize: 22),
                   border: InputBorder.none,
-                  errorStyle: TextStyle(height: 0),
+                  errorStyle: TextStyle(height: 0.045),
                   counterText: ""),
               validator: this.validator,
               onChanged: onChanged,

@@ -82,7 +82,7 @@ class HeaderText1Form extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: padding ?? const EdgeInsets.symmetric(horizontal: 34, vertical: 60),
+      padding: padding ?? const EdgeInsets.symmetric(horizontal: 34, vertical: 40),
       child: Text(
         this.text,
         style: TextStyle(
