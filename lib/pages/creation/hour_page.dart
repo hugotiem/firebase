@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:pts/components/app_datetime.dart';
 import 'package:pts/components/circular_slider/double_slider_paint.dart';
@@ -40,11 +39,9 @@ class _HourPageState extends State<HourPage> {
         DateTime dateFin = DateTime(
             date.year, date.month, date.day, heureFin.hour, heureFin.minute);
         if (dateFin.isBefore(dateDebut)) {
-          dateFin.add(Duration(days: 1));
+          dateFin = dateFin.add(Duration(days: 1));
         }
-        print(dateDebut);
-        print(dateFin);
-        // widget.onNext!();
+        widget.onNext!();
       },
       children: [
         HeaderText1Form(
@@ -104,14 +101,14 @@ class _HourPageState extends State<HourPage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 text(
-                    "${_formatTime(initTime)[0].toString()} : ${_formatTime(initTime)[1].toString()}"),
+                    "${intToDate(_formatTime(initTime)[0])} : ${intToDate(_formatTime(initTime)[1])}"),
                 Icon(
                   Ionicons.caret_down,
                   color: ICONCOLOR,
                   size: 40,
                 ),
                 text(
-                    "${_formatTime(endTime)[0].toString()} : ${_formatTime(endTime)[1].toString()}"),
+                    "${intToDate(_formatTime(endTime)[0])} : ${intToDate(_formatTime(endTime)[1])}"),
               ],
             ),
           ),

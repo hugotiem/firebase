@@ -7,12 +7,14 @@ class BackgroundForm extends StatelessWidget {
   final Key? formkey;
   final void Function()? onPrevious;
   final String? heroTag;
+  final bool validate;
   const BackgroundForm(
       {required this.children,
       required this.onPressedFAB,
       this.formkey,
       this.onPrevious,
       this.heroTag,
+      this.validate = true,
       Key? key})
       : super(key: key);
 
@@ -30,7 +32,7 @@ class BackgroundForm extends StatelessWidget {
         ),
         onPressed: onPressedFAB,
         elevation: 0,
-        backgroundColor: ICONCOLOR,
+        backgroundColor: validate == true ? ICONCOLOR : ICONCOLOR.withOpacity(0.4),
       ),
       body: Form(
         key: formkey,

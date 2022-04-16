@@ -22,6 +22,9 @@ class _GuestNumberState extends State<GuestNumber> {
   bool isCustomPrice = false;
   bool isFree = false;
 
+  final FixedExtentScrollController _controller =
+      FixedExtentScrollController(initialItem: 20);
+
   List<Map<String, dynamic>> prices = [
     {'title': 'Gratuit', 'id': 0.0},
     {'title': '5€', 'id': 5.0},
@@ -84,29 +87,17 @@ class _GuestNumberState extends State<GuestNumber> {
         HeaderText2Form("COMBIEN DE PERSONNES SOUHAITES-TU INVITER ?"),
         Stack(
           children: [
-            Align(
-              alignment: Alignment.centerLeft,
-              child: AnimatedContainer(
-                duration: Duration(milliseconds: 200),
-                margin: number < 100
-                    ? EdgeInsets.only(top: 80, left: 65)
-                    : EdgeInsets.only(top: 80, left: 45),
-                height: 70,
-                width: number < 100 ? 94 : 135,
-                decoration: BoxDecoration(
-                    border: Border.all(color: ICONCOLOR, width: 1.2),
-                    borderRadius: BorderRadius.circular(15)),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 80, left: 200),
-              child: Text(
-                "invités",
-                style: TextStyle(
-                    fontSize: 60,
-                    color: ICONCOLOR,
-                    fontWeight: FontWeight.w900,
-                    overflow: TextOverflow.ellipsis),
+            FittedBox(
+              child: Padding(
+                padding: EdgeInsets.only(top: 92, left: 200),
+                child: Text(
+                  "invités",
+                  style: TextStyle(
+                      fontSize: 60,
+                      color: ICONCOLOR,
+                      fontWeight: FontWeight.w900,
+                      overflow: TextOverflow.ellipsis),
+                ),
               ),
             ),
             Container(
@@ -114,6 +105,8 @@ class _GuestNumberState extends State<GuestNumber> {
               height: 250,
               width: MediaQuery.of(context).size.width * 0.55,
               child: ListWheelScrollView.useDelegate(
+                physics: FixedExtentScrollPhysics(),
+                controller: _controller,
                 squeeze: 1.1,
                 onSelectedItemChanged: (value) {
                   setState(() {
@@ -123,7 +116,7 @@ class _GuestNumberState extends State<GuestNumber> {
                 itemExtent: 70,
                 perspective: 0.001,
                 childDelegate: ListWheelChildBuilderDelegate(
-                    childCount: 1000,
+                    childCount: 10000,
                     builder: (BuildContext context, int i) {
                       return Opacity(
                         opacity: number == i ? 1 : 0.5,
@@ -136,6 +129,24 @@ class _GuestNumberState extends State<GuestNumber> {
                         ),
                       );
                     }),
+              ),
+            ),
+            Hero(
+              tag: "price",
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: AnimatedContainer(
+                  duration: Duration(milliseconds: 200),
+                  margin: number < 100
+                      ? EdgeInsets.only(top: 92, left: 65)
+                      : EdgeInsets.only(top: 92, left: 45),
+                  height: 70,
+                  width: number < 100 ? 94 : 135,
+                  decoration: BoxDecoration(
+                      border: Border.all(color: ICONCOLOR, width: 1.2),
+                      borderRadius: BorderRadius.circular(15)),
+                  child: InkWell(onTap: () => dialogPopup()),
+                ),
               ),
             ),
           ],
@@ -190,6 +201,24 @@ class _GuestNumberState extends State<GuestNumber> {
           ),
         )
       ],
+    );
+  }
+
+  void dialogPopup() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          insetAnimationDuration: Duration(seconds: 2),
+          child: Hero(
+            tag: "price",
+            child: Container(
+              height: 120,
+              width: 90,
+            ),
+          ),
+        );
+      },
     );
   }
 }

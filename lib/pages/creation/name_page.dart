@@ -9,12 +9,12 @@ import 'package:pts/models/capitalize.dart';
 
 class NamePage extends StatelessWidget {
   final void Function()? onNext;
-  const NamePage({this.onNext, Key? key}) : super(key: key);
+  NamePage({this.onNext, Key? key}) : super(key: key);
 
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    late String _name;
-    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+    String _name = "";
 
     return BackgroundForm(
       heroTag: "name",
