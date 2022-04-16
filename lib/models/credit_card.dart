@@ -1,34 +1,34 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:equatable/equatable.dart';
 
-class CreditCard {
-  String? cardNumber;
-  String? expiryDate;
-  String? cardHolderName;
-  String? cvvCode;
-  String? showBackView;
+class CreditCard extends Equatable {
+  final String id;
+  final String alias;
+  final String expirationDate;
+  final String mangopayUserId;
+  final String cardProvider;
+  final bool validity;
 
-  CreditCard(  
-    this.cardHolderName,
-    this.cardNumber,
-    this.cvvCode,
-    this.expiryDate,
-    this.showBackView,
+  CreditCard(
+    this.id,
+    this.mangopayUserId,
+    this.alias,
+    this.expirationDate,
+    this.cardProvider,
+    this.validity,
   );
 
-  factory CreditCard.fromSnapShots(  
-    QueryDocumentSnapshot<Map<String, dynamic>> snapshot) {
-      var data = snapshot.data();
-      var cardNumber = data['cardNumber'];
-      var expiryDate = data['expiryDate'];
-      var cardHolderName = data['cardHolderName'];
-      var cvvCode = data['cvvCode'];
-      var showBackView = data['showBackView'];
-      return CreditCard(  
-        cardNumber,
-        expiryDate,
-        cardHolderName,
-        cvvCode,
-        showBackView 
-      );
+  factory CreditCard.fromJson(Map<String, dynamic> json) {
+    var id = json['Id'];
+    var alias = json['Alias'];
+    var expirationDate = json['ExpirationDate'];
+    var mangopayUserId = json['mangopayUserId'];
+    var cardProvider = json['CardProvider'];
+    var validity = json['Validity'] == 'VALID';
+    return CreditCard(
+        id, alias, expirationDate, mangopayUserId, cardProvider, validity);
   }
+
+  @override
+  List<Object?> get props =>
+      [id, alias, expirationDate, mangopayUserId, cardProvider, validity];
 }

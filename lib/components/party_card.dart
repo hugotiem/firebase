@@ -434,35 +434,35 @@ class PartyCard extends StatelessWidget {
                                               } else {
                                                 print(party.price);
 
-                                                await PaymentService(
-                                                        amount: ((party.price ??
-                                                                    0) *
-                                                                100)
-                                                            .toInt())
-                                                    .initPaymentSheet(context,
-                                                        email: user.email)
-                                                    .then(
-                                                  (value) async {
-                                                    if (value) {
-                                                      await BlocProvider.of<
-                                                                  PartiesCubit>(
-                                                              context)
-                                                          .addUserInWaitList(
-                                                              user, party)
-                                                          .then(
-                                                            (value) =>
-                                                                Navigator.push(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                builder:
-                                                                    (context) =>
-                                                                        JoinWaitList(),
-                                                              ),
-                                                            ),
-                                                          );
-                                                    }
-                                                  },
-                                                );
+                                                // await PaymentService(
+                                                //         amount: ((party.price ??
+                                                //                     0) *
+                                                //                 100)
+                                                //             .toInt())
+                                                //     .initPaymentSheet(context,
+                                                //         email: user.email)
+                                                //     .then(
+                                                //   (value) async {
+                                                //     if (value) {
+                                                //       await BlocProvider.of<
+                                                //                   PartiesCubit>(
+                                                //               context)
+                                                //           .addUserInWaitList(
+                                                //               user, party)
+                                                //           .then(
+                                                //             (value) =>
+                                                //                 Navigator.push(
+                                                //               context,
+                                                //               MaterialPageRoute(
+                                                //                 builder:
+                                                //                     (context) =>
+                                                //                         JoinWaitList(),
+                                                //               ),
+                                                //             ),
+                                                //           );
+                                                //     }
+                                                //   },
+                                                // );
                                                 // Navigator.push(
                                                 //   context,
                                                 //   MaterialPageRoute(
