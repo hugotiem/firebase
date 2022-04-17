@@ -28,102 +28,104 @@ class NationnalityForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => UserCubit(),
-      child: Scaffold(
-        backgroundColor: PRIMARY_COLOR,
-        bottomSheet: Container(
-          decoration: BoxDecoration(
-            color: FORMBACKGROUNDCOLOR,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
-                spreadRadius: 5,
-                blurRadius: 7,
-                offset: Offset(0, 10),
+      child: BlocBuilder<UserCubit, UserState>(
+        builder: (context, state) {
+          return Scaffold(
+            backgroundColor: PRIMARY_COLOR,
+            bottomSheet: Container(
+              decoration: BoxDecoration(
+                color: FORMBACKGROUNDCOLOR,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: Offset(0, 10),
+                  ),
+                ],
               ),
-            ],
-          ),
-          child: Wrap(
-            children: <Widget>[
-              Center(
-                child: GestureDetector(
-                  child: Container(
-                    margin: EdgeInsets.symmetric(vertical: 20),
-                    width: MediaQuery.of(context).size.width - 100,
-                    padding: EdgeInsets.symmetric(vertical: 20),
-                    decoration: BoxDecoration(
-                      color: ICONCOLOR,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(15),
+              child: Wrap(
+                children: <Widget>[
+                  Center(
+                    child: GestureDetector(
+                      child: Container(
+                        margin: EdgeInsets.symmetric(vertical: 20),
+                        width: MediaQuery.of(context).size.width - 100,
+                        padding: EdgeInsets.symmetric(vertical: 20),
+                        decoration: BoxDecoration(
+                          color: ICONCOLOR,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(15),
+                          ),
+                        ),
+                        child: Text(
+                          "suivant".toUpperCase(),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
-                    ),
-                    child: Text(
-                      "suivant".toUpperCase(),
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
+                      onTap: () async {
+                        String? mangopayUserID = await paymentService.createMangopayUser(
+                          name!,
+                          surname!,
+                          email!,
+                          birth!,
+                          nationnalityController.text.split(" - ")[1],
+                          countryLivingController.text.split(" - ")[1],
+                          true,
+                        );
+                        if (mangopayUserID == null) return;
+                        await paymentService.createMangopayWallet(name!, mangopayUserID);
+                        await BlocProvider.of<UserCubit>(context)
+                            .updateUserInfoMangoPay(
+                              id, 
+                              mangoPayId: mangopayUserID
+                            )
+                            .then(
+                              (_) => Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => 
+                                      IdFormScreen(token: id),
+                                ),
+                              ),
+                            );
+                      },
                     ),
                   ),
-                  onTap: () async {
-                    String? mangopayUserID = await paymentService.createMangopayUser(
-                      name!,
-                      surname!,
-                      email!,
-                      birth!,
-                      nationnalityController.text.split(" - ")[1],
-                      countryLivingController.text.split(" - ")[1],
-                      true,
-                    );
-                    if (mangopayUserID == null) return;
-                    await paymentService.createMangopayWallet(name!, mangopayUserID);
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => IdFormScreen(token: id,)));
-                    await BlocProvider.of<UserCubit>(context)
-                        .updateUserInfo(
-                          id, 
-                          mangoPayId: mangopayUserID
-                        )
-                        .then(
-                          (_) => Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => 
-                                  IdFormScreen(token: id),
-                            ),
-                          ),
-                        );
-                  },
-                ),
+                ],
               ),
-            ],
-          ),
-        ),
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          toolbarHeight: 0,
-          elevation: 0,
-          systemOverlayStyle: SystemUiOverlayStyle.dark,
-        ),
-        body: Column(
-          children: [
-            HeaderText1(text: "Information supplémentaire"),
-            HeaderText2(text: "Qu'elle est ta nationnalité ?"),
-            SelectableTextField(
-              hint: "nationnalité",
-              countries: listOfCountry,
-              textEditingController: nationnalityController,
-              bottomSheetTitle: "Qu'elle est ta nationnalité ?",
             ),
-            HeaderText2(text: "Qu'elle est ton pays de résidence ?"),
-            SelectableTextField(
-              hint: "Pays de résidence",
-              countries: listOfCountry,
-              textEditingController: countryLivingController,
-              bottomSheetTitle: "Qu'elle est ton pays de résidence ?",
+            appBar: AppBar(
+              backgroundColor: Colors.transparent,
+              toolbarHeight: 0,
+              elevation: 0,
+              systemOverlayStyle: SystemUiOverlayStyle.dark,
             ),
-          ],
-        ),
+            body: Column(
+              children: [
+                HeaderText1(text: "Information supplémentaire"),
+                HeaderText2(text: "Qu'elle est ta nationnalité ?"),
+                SelectableTextField(
+                  hint: "nationnalité",
+                  countries: listOfCountry,
+                  textEditingController: nationnalityController,
+                  bottomSheetTitle: "Qu'elle est ta nationnalité ?",
+                ),
+                HeaderText2(text: "Qu'elle est ton pays de résidence ?"),
+                SelectableTextField(
+                  hint: "Pays de résidence",
+                  countries: listOfCountry,
+                  textEditingController: countryLivingController,
+                  bottomSheetTitle: "Qu'elle est ton pays de résidence ?",
+                ),
+              ],
+            ),
+          );
+        }
       ),
     );
   }
