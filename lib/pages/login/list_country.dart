@@ -54,7 +54,7 @@ List<SelectedListItem> listOfCountry = [
     SelectedListItem(false, "Etats-Unis - US"),
     SelectedListItem(false, "Fidji - FJ"),
     SelectedListItem(false, "Finlande - FI"),
-    SelectedListItem(false, "France - FR"),
+    SelectedListItem(true, "France - FR"),
     SelectedListItem(false, "Gabon - GA"),
     SelectedListItem(false, "Gambie - GM"),
     SelectedListItem(false, "Géorgie - GE"),
@@ -196,3 +196,4 @@ List<SelectedListItem> listOfCountry = [
     SelectedListItem(false, "Wallis-et-Futuna - WF"),
     SelectedListItem(false, "Zambie - ZM"),
   ];
+  

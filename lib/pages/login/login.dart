@@ -49,7 +49,7 @@ class _LoginPageState extends State<LoginPage>
           if (state.status == LoginStatus.signedUp) {
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
-                builder: (context) => RegisterFormScreen(),
+                builder: (context) => RegisterFormScreen(mail: _registerEmail),
               ),
             );
           }

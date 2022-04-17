@@ -61,6 +61,7 @@ class UserCubit extends AppBaseCubit<UserState> {
       String? surname,
       String? phonenumber,
       String? gender,
+      String? mangoPayId,
       var birthday}) async {
     emit(state.setRequestInProgress() as UserState);
     Map<String, dynamic> data = <String, dynamic>{
@@ -71,6 +72,7 @@ class UserCubit extends AppBaseCubit<UserState> {
       "birthday": birthday,
       'id': token,
       "photo": "",
+      "mangoPayId": mangoPayId,
     };
     await firestore.setWithId(token, data: data);
     emit(UserState.dataLoaded(user: state.user, token: state.token));
