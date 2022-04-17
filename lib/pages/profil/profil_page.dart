@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:pts/components/custom_text.dart';
 import 'package:pts/components/profile_photo.dart';
+import 'package:pts/pages/profil/subpage/existing_cards_page.dart';
 import 'package:pts/services/auth_service.dart';
 import 'package:pts/onboarding_page.dart';
 import 'package:pts/const.dart';
@@ -14,7 +15,6 @@ import 'package:pts/pages/profil/subpage/qr_code_page.dart';
 import '../../components/custom_container.dart';
 import 'package:pts/pages/profil/subpage/about_page.dart';
 import 'package:pts/pages/profil/subpage/contactus_page.dart';
-import 'package:pts/pages/profil/subpage/existingcard_page.dart';
 import 'package:pts/pages/profil/subpage/info_page.dart';
 import 'package:pts/pages/profil/subpage/notification_page.dart';
 import 'package:pts/pages/profil/subpage/user_page.dart';
@@ -146,7 +146,7 @@ class _ProfilState extends State<Profil> {
                               icon: Ionicons.person_outline,
                             ),
                             CickableContainerProfil(
-                              to: ExistingCard(),
+                              to: ExistingCard(user: user),
                               text: "Paiements",
                               icon: Ionicons.card_outline,
                             ),

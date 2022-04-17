@@ -18,6 +18,7 @@ class User {
   bool? verified;
   bool? banned;
   String? photo;
+  String? mangoPayId;
 
   User({
     this.id,
@@ -32,6 +33,7 @@ class User {
     this.verified,
     this.banned,
     this.photo,
+    this.mangoPayId,
   });
 
   Future<User?> get currentUser async {
@@ -56,6 +58,7 @@ class User {
     var verified = data['verified'];
     var banned = data['banned'];
     var photo = data['photo'];
+    var mangoPayId = data["mangoPayId"];
 
     return User(
       id: id,
@@ -70,6 +73,7 @@ class User {
       banned: banned,
       birthday: birthday,
       photo: photo,
+      mangoPayId: mangoPayId,
     );
   }
 }

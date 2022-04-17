@@ -4,11 +4,12 @@ import 'package:pts/components/appbar.dart';
 import 'package:pts/components/fab_join.dart';
 import 'package:pts/components/form/custom_ttf_form.dart';
 import 'package:pts/const.dart';
+import 'package:pts/models/user.dart';
 import 'package:pts/services/payment_service.dart';
 
-
 class NewCreditCard extends StatefulWidget {
-  const NewCreditCard({Key? key}) : super(key: key);
+  final User? user;
+  const NewCreditCard({this.user, Key? key}) : super(key: key);
 
   @override
   _NewCreditCardState createState() => _NewCreditCardState();
@@ -41,7 +42,8 @@ class _NewCreditCardState extends State<NewCreditCard> {
           print(_endDate);
           print(_cvv);
           print(_holderName);
-          await _paymentService.saveCardToMangopay("userId", _cardNumber!, _endDate!, _cvv!);
+          await _paymentService.saveCardToMangopay(
+              widget.user!.mangoPayId!, _cardNumber!, _endDate!, _cvv!);
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
