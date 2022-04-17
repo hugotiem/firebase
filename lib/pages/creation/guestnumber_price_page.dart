@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pts/components/form/background_form.dart';
 import 'package:pts/components/form/custom_text_form.dart';
@@ -22,7 +23,10 @@ class _GuestNumberState extends State<GuestNumber> {
   bool isCustomPrice = false;
   bool isFree = false;
 
-  final FixedExtentScrollController _controller =
+  late EdgeInsetsGeometry margin;
+  late double width;
+
+  final FixedExtentScrollController _scrollController =
       FixedExtentScrollController(initialItem: 20);
 
   List<Map<String, dynamic>> prices = [
@@ -66,6 +70,17 @@ class _GuestNumberState extends State<GuestNumber> {
 
   @override
   Widget build(BuildContext context) {
+    if (number < 100) {
+      margin = EdgeInsets.only(top: 92, left: 65);
+      width = 94;
+    } else if (number < 1000) {
+      margin = EdgeInsets.only(top: 92, left: 45);
+      width = 135;
+    } else {
+      margin = EdgeInsets.only(top: 92, left: 35);
+      width = 155;
+    }
+
     return BackgroundForm(
       heroTag: "guest number price",
       onPrevious: () => widget.onPrevious!(),
@@ -106,7 +121,7 @@ class _GuestNumberState extends State<GuestNumber> {
               width: MediaQuery.of(context).size.width * 0.55,
               child: ListWheelScrollView.useDelegate(
                 physics: FixedExtentScrollPhysics(),
-                controller: _controller,
+                controller: _scrollController,
                 squeeze: 1.1,
                 onSelectedItemChanged: (value) {
                   setState(() {
@@ -137,11 +152,9 @@ class _GuestNumberState extends State<GuestNumber> {
                 alignment: Alignment.centerLeft,
                 child: AnimatedContainer(
                   duration: Duration(milliseconds: 200),
-                  margin: number < 100
-                      ? EdgeInsets.only(top: 92, left: 65)
-                      : EdgeInsets.only(top: 92, left: 45),
+                  margin: margin,
                   height: 70,
-                  width: number < 100 ? 94 : 135,
+                  width: width,
                   decoration: BoxDecoration(
                       border: Border.all(color: ICONCOLOR, width: 1.2),
                       borderRadius: BorderRadius.circular(15)),
@@ -209,12 +222,34 @@ class _GuestNumberState extends State<GuestNumber> {
       context: context,
       builder: (BuildContext context) {
         return Dialog(
-          insetAnimationDuration: Duration(seconds: 2),
-          child: Hero(
-            tag: "price",
-            child: Container(
-              height: 120,
-              width: 90,
+          insetAnimationDuration: Duration(milliseconds: 200),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          child: Container(
+            height: 80,
+            width: 0,
+            constraints: BoxConstraints(minWidth: 10),
+            decoration: BoxDecoration(
+                color: PRIMARY_COLOR,
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(color: ICONCOLOR)),
+            child: Center(
+              child: TextFormField(
+                initialValue: number.toString(),
+                keyboardType: TextInputType.number,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                style: TextStyle(
+                  fontSize: 60,
+                  color: ICONCOLOR,
+                  fontWeight: FontWeight.w900,
+                ),
+                textAlign: TextAlign.center,
+                onFieldSubmitted: (value) {
+                  _scrollController.jumpToItem(int.parse(value));
+                  Navigator.pop(context);
+                },
+                decoration: InputDecoration(border: InputBorder.none),
+              ),
             ),
           ),
         );

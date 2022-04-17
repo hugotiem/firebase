@@ -43,7 +43,6 @@ class _ProfilState extends State<Profil> {
         create: (context) => UserCubit()..init(),
         child: BlocBuilder<UserCubit, UserState>(
           builder: (context, state) {
-
             var user = state.user;
             if (user == null) {
               return Center(child: CircularProgressIndicator());
@@ -59,21 +58,37 @@ class _ProfilState extends State<Profil> {
                         to: ProfilDetails(),
                         containerShadow: true,
                         child: Row(
-                          children: <Widget>[
-                            ProfilePhoto(user.photo),
-                            Container(
-                              margin: EdgeInsets.only(left: 20),
-                              child: new Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  BoldText(text: user.name ?? ""),
-                                  Opacity(
-                                    opacity: 0.7,
-                                    child: new Text("Afficher le profil"),
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: <Widget>[
+                                ProfilePhoto(user.photo),
+                                Container(
+                                  margin: EdgeInsets.only(left: 20),
+                                  child: new Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      BoldText(text: user.name ?? ""),
+                                      Opacity(
+                                        opacity: 0.7,
+                                        child: new Text("Afficher le profil"),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                BoldText(text: "0.0€"),
+                                Opacity(
+                                  opacity: 0.7,
+                                  child: Text("Portefeuille"),
+                                ),
+                              ],
+                            )
                           ],
                         ),
                       ),
