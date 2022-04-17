@@ -1,11 +1,15 @@
 import 'dart:convert';
-import 'dart:math';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:pts/models/card_registration.dart';
-import 'package:pts/models/credit_card.dart';
-import 'package:pts/models/wallet.dart';
+import 'package:pts/models/address.dart';
+import 'package:pts/models/payments/card_registration.dart';
+import 'package:pts/models/payments/credit_card.dart';
+import 'package:pts/models/payments/wallet.dart';
+
+enum KYCType { IDENTITY_PROOF, ADDRESS_PROOF }
 
 class PaymentService {
   final String prefixUrl = "https://api.sandbox.mangopay.com";
@@ -73,8 +77,37 @@ class PaymentService {
     return null;
   }
 
+  Future<void> getUserById(String userId) async {
+    final String _url = "$url/users/$userId";
+
+    var request = http.Request('GET', Uri.parse(_url));
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {}
+  }
+
   Future<Wallet?> getUserWallet(String walletId) async {
     final String _url = "$url/wallets/$walletId";
+
+    var request = http.Request('GET', Uri.parse(_url));
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      var map = json.decode(await response.stream.bytesToString());
+      return Wallet.fromJson(map);
+    }
+    print(response.reasonPhrase);
+    return null;
+  }
+
+  Future<Wallet?> getWalletByUserId(String userId) async {
+    final String _url = "$url/users/$userId/wallets/";
 
     var request = http.Request('GET', Uri.parse(_url));
 
@@ -193,6 +226,242 @@ class PaymentService {
     }
     print(response.reasonPhrase);
     return null;
+  }
+
+  Future<void> desactivateCard(String cardId) async {
+    final String _url = "$url/cards/$cardId";
+
+    var request = http.Request('PUT', Uri.parse(_url));
+
+    request.body = json.encode({"Active": "false"});
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      return print('SUCCESS');
+    }
+    print(response.reasonPhrase);
+    return print('FAILED');
+  }
+
+  Future<String?> _createKYCDocument(String userId, KYCType type) async {
+    final String _url = "$url/users/$userId/kyc/documents/";
+
+    var request = http.Request('POST', Uri.parse(_url));
+
+    request.body = json.encode({"Type": describeEnum(type)});
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      return json.decode(await response.stream.bytesToString())["Id"];
+    }
+    print(response.reasonPhrase);
+    return null;
+  }
+
+  Future<String?> _createKYCPage(String userId, File file, KYCType type) async {
+    final String? _documentId = await _createKYCDocument(userId, type);
+    if (_documentId == null) {
+      return null;
+    }
+
+    final String _url = "$url/users/$userId/kyc/documents/$_documentId/pages/";
+    final String _file = base64Encode(await file.readAsBytes());
+
+    var request = http.Request('POST', Uri.parse(_url));
+
+    request.body = json.encode({"File": _file});
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      return json.decode(await response.stream.bytesToString())["Id"];
+    }
+    print(response.reasonPhrase);
+    return null;
+  }
+
+  Future<void> submitKYCDocument(String userId, File file,
+      {KYCType type = KYCType.IDENTITY_PROOF}) async {
+    final String? _documentId = await _createKYCPage(userId, file, type);
+    if (_documentId == null) {
+      return;
+    }
+    final String _url = "$url/users/$userId/kyc/documents/$_documentId";
+
+    var request = http.Request('PUT', Uri.parse(_url));
+
+    request.body = json.encode({"Status": "VALIDATION_ASKED"});
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      return print('SUCCESS');
+    }
+    print(response.reasonPhrase);
+    return print("FAILED");
+  }
+
+  Future<void> cardDirectPayin(String userId, int amount, String cardId) async {
+    final Wallet? wallet = await getWalletByUserId(userId);
+    if (wallet == null) {
+      return;
+    }
+
+    final String _url = "$url/payins/card/direct";
+    final String _currency = 'EUR';
+
+    var request = http.Request('POST', Uri.parse(_url));
+
+    request.body = json.encode({
+      "AuthorId": userId,
+      "CreditedWalletId": wallet.id,
+      "DebitedFunds": {
+        "Currency": _currency,
+        "Amount": amount,
+      },
+      "Fees": {
+        "Currency": _currency,
+        "Amount": getTransactionFees(amount),
+      },
+      "CardId": cardId,
+      "SecureMode": "DEFAULT",
+      "SecureModeReturnURL": ""
+    });
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      return print('SUCCESS');
+    }
+    print(response.reasonPhrase);
+    return print('FAILED');
+  }
+
+  Future<String?> addIBANBankAccount(
+      String userId, String fullname, Address address, String iban) async {
+    final String _url = "$url/users/$userId/bankaccounts/iban/";
+
+    var request = http.Request('POST', Uri.parse(_url));
+
+    request.body = json.encode({
+      "OwnerName": fullname,
+      "OwnerAddress": {
+        "AddressLine1": "${address.streetNumber} ${address.streetName}",
+        "City": address.city,
+        "Region": address.region,
+        "PostalCode": address.postalCode,
+        "Country": "FR",
+      },
+      "IBAN": iban,
+    });
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      return json.decode(await response.stream.bytesToString())['Id'];
+    }
+    print(response.reasonPhrase);
+    return null;
+  }
+
+  Future<void> withdraw(String userId, String bankAccountId, int amount) async {
+    final Wallet? wallet = await getWalletByUserId(userId);
+    if (wallet == null) {
+      return;
+    }
+
+    final String _url = "$url/payouts/bankwire/";
+    final String _currency = "EUR";
+
+    var request = http.Request('POST', Uri.parse(_url));
+
+    request.body = json.encode({
+      "AuthorId": userId,
+      "DebitedFunds": {
+        "Currency": _currency,
+        "Amount": amount,
+      },
+      "Fees": {
+        "Currency": _currency,
+        "Amount": 0,
+      },
+      "BankAccountId": bankAccountId,
+      "DebitedWalletId": wallet.id,
+    });
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      return print('SUCCESS');
+    }
+    print(response.reasonPhrase);
+    return print('FAILED');
+  }
+
+  Future<String?> transfer(
+      String userId, String creditedWalletId, int amount) async {
+    final Wallet? wallet = await getWalletByUserId(userId);
+    if (wallet == null) {
+      return null;
+    }
+
+    final String _url = "$url/transfers/";
+    final String _currency = "EUR";
+
+    var request = http.Request('POST', Uri.parse(_url));
+
+    request.body = json.encode({
+      "AuthorId": userId,
+      "DebitedFunds": {
+        "Currency": _currency,
+        "Amount": amount,
+      },
+      "Fees": {
+        "Currency": _currency,
+        "Amount": 0,
+      },
+      "DebitedWalletId": wallet.id,
+      "CreditedWalletId": creditedWalletId,
+    });
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      return json.decode(await response.stream.bytesToString())['Status'];
+    }
+    print(response.reasonPhrase);
+    return null;
+  }
+
+  int getTransactionFees(int amount) {
+    double fees = (amount * 0.01) * 0.18;
+    return (double.parse(fees.toStringAsFixed(2)) * 100).toInt();
+  }
+}
+
+class InsufficientFundsError extends Error {
+  InsufficientFundsError();
+  @override
+  String toString() {
+    return "InsufficientFundsError: founds must be more than 0";
   }
 }
 
