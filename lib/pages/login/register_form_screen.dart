@@ -9,6 +9,8 @@ import 'package:pts/components/form/date_hour_picker.dart';
 import 'package:pts/const.dart';
 import 'package:pts/pages/login/id_form_screen.dart';
 import 'package:pts/blocs/user/user_cubit.dart';
+import 'package:pts/pages/login/nationnality_form_screen.dart';
+import 'package:pts/services/payment_service.dart';
 
 class RegisterFormScreen extends StatefulWidget {
   const RegisterFormScreen({Key? key}) : super(key: key);
@@ -221,8 +223,8 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                                 .then(
                                   (_) => Navigator.of(context).push(
                                     MaterialPageRoute(
-                                      builder: (context) =>
-                                          IdFormScreen(token: id),
+                                      builder: (context) => NationnalityForm()
+                                          // IdFormScreen(token: id),
                                     ),
                                   ),
                                 );

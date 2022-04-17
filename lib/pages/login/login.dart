@@ -6,6 +6,7 @@ import 'package:pts/components/form/custom_ttf_form.dart';
 import 'package:pts/const.dart';
 import 'package:pts/pages/login/register_form_screen.dart';
 import 'package:pts/blocs/login/login_cubit.dart';
+import 'package:pts/services/payment_service.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key? key}) : super(key: key);

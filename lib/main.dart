@@ -23,7 +23,6 @@ Future<void> main({bool isTesting = false}) async {
     WidgetsFlutterBinding.ensureInitialized();
 
     if (!isTesting) await NotificationService.init();
-    // await PaymentService.init();
 
     Bloc.observer = AppBlocDelegate();
     await Firebase.initializeApp();
