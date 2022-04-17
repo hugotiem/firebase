@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,9 +10,12 @@ import 'package:pts/components/form/date_hour_picker.dart';
 import 'package:pts/const.dart';
 import 'package:pts/pages/login/id_form_screen.dart';
 import 'package:pts/blocs/user/user_cubit.dart';
+import 'package:pts/pages/login/nationnality_form_screen.dart';
+import 'package:pts/services/payment_service.dart';
 
 class RegisterFormScreen extends StatefulWidget {
-  const RegisterFormScreen({Key? key}) : super(key: key);
+  final String? mail;
+  const RegisterFormScreen({this.mail, Key? key}) : super(key: key);
   @override
   _RegisterFormScreenState createState() => _RegisterFormScreenState();
 }
@@ -221,8 +225,8 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                                 .then(
                                   (_) => Navigator.of(context).push(
                                     MaterialPageRoute(
-                                      builder: (context) =>
-                                          IdFormScreen(token: id),
+                                      builder: (context) => NationnalityForm(id: id, name: _name, surname: _surname, birth: Timestamp.fromDate(_date), email: widget.mail,)
+                                          // IdFormScreen(token: id),
                                     ),
                                   ),
                                 );

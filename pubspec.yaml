@@ -71,6 +71,7 @@ dependencies:
   syncfusion_flutter_datepicker: ^19.4.55
   flutter_svg: ^1.0.3
   firebase_messaging: ^11.2.11
+  drop_down_list: ^0.0.2
 
 dev_dependencies:
   bloc_test: ^8.5.0

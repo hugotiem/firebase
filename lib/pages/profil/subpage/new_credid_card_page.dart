@@ -4,6 +4,7 @@ import 'package:pts/components/appbar.dart';
 import 'package:pts/components/fab_join.dart';
 import 'package:pts/components/form/custom_ttf_form.dart';
 import 'package:pts/const.dart';
+import 'package:pts/services/payment_service.dart';
 
 
 class NewCreditCard extends StatefulWidget {
@@ -19,6 +20,7 @@ class _NewCreditCardState extends State<NewCreditCard> {
   String? _cvv;
   String? _cardNumber;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final PaymentService _paymentService = PaymentService();
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,7 @@ class _NewCreditCardState extends State<NewCreditCard> {
       ),
       floatingActionButton: FABJoin(
         label: 'Ajouter',
-        onPressed: () {
+        onPressed: () async {
           if (!_formKey.currentState!.validate()) {
             return;
           }
@@ -39,6 +41,7 @@ class _NewCreditCardState extends State<NewCreditCard> {
           print(_endDate);
           print(_cvv);
           print(_holderName);
+          await _paymentService.saveCardToMangopay("userId", _cardNumber!, _endDate!, _cvv!);
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
