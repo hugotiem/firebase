@@ -38,7 +38,7 @@ class PaymentService {
     request.body = json.encode({
       "FirstName": name,
       "LastName": surname,
-      "Birthday": -258443002,
+      "Birthday": birth.millisecondsSinceEpoch,
       "Nationality": nationality,
       "CountryOfResidence": countryOfResidence,
       "Email": email,
