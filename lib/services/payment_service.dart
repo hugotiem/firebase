@@ -35,12 +35,11 @@ class PaymentService {
 
     var request = http.Request('POST', Uri.parse(_url));
 
-    print(birth.toUtc().millisecondsSinceEpoch);
 
     request.body = json.encode({
       "FirstName": name,
       "LastName": surname,
-      "Birthday": birth.toUtc().millisecondsSinceEpoch,
+      "Birthday": (birth.toUtc().millisecondsSinceEpoch * 0.001).toInt(),
       "Nationality": nationality,
       "CountryOfResidence": countryOfResidence,
       "Email": email,
