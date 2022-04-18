@@ -124,7 +124,7 @@ class Party extends Equatable {
     var postalCode = json?['postal code'];
     var smoke = SmokeState.values[json?['smoke']];
     var animals = AnimalState.values[json?['animals']];
-    var ownerId = json?['party owner'];
+    var ownerId = json?['ownerId'];
     var validatedList = json?['validatedList'];
     var validatedListInfo =
         (json?['validatedListInfo'] as Map?)?.cast<String, dynamic>() ??
