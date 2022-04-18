@@ -40,4 +40,7 @@ class PartiesState extends AppBaseState<PartiesStatus> {
           requestInProgress: requestInProgress,
           requestFailureCode: requestFailureCode,
           requestFailureMessage: requestFailureMessage);
+
+  @override
+  List<Object?> get props => super.props..addAll(parties ?? [])..addAll([selectedDate, currentDate, filters]);
 }

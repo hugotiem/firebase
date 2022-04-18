@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:pts/models/payments/wallet.dart';
 import 'package:pts/services/auth_service.dart';
 import 'package:pts/services/firestore_service.dart';
+import 'package:pts/services/payment_service.dart';
 import 'package:pts/services/storage_service.dart';
 import 'package:pts/models/user.dart';
 import 'package:pts/blocs/base/app_base_cubit.dart';
@@ -18,9 +20,12 @@ class UserCubit extends AppBaseCubit<UserState> {
   final AuthService service = AuthService();
   final FireStoreServices firestore = FireStoreServices("user");
 
+  final PaymentService _paymentService = PaymentService();
+
   Future<void> init() async {
     await service.getToken().then((value) {
-      emit(UserState.tokenLoaded(value));
+      emit(UserState.dataLoaded(
+          token: value, user: state.user, wallet: state.wallet));
     });
     service.instance.authStateChanges().listen((user) async {
       if (user != null) {
@@ -28,7 +33,7 @@ class UserCubit extends AppBaseCubit<UserState> {
         await this.loadData(user: user);
       } else {
         await service.setToken(null);
-        emit(UserState.tokenLoaded(null));
+        emit(UserState.dataLoaded());
       }
     });
   }
@@ -47,12 +52,14 @@ class UserCubit extends AppBaseCubit<UserState> {
 
   Future<void> loadDataByUserID(String? token) async {
     if (token != null) {
-      firestore.getDataById(token).then((value) {
-        emit(
-            UserState.dataLoaded(user: User.fromSnapshot(value), token: token));
+      firestore.getDataById(token).then((value) async {
+        var user = User.fromSnapshot(value);
+        var wallet =
+            await _paymentService.getWalletByUserId(user.mangoPayId ?? "");
+        emit(UserState.dataLoaded(user: user, token: token, wallet: wallet));
       }).catchError(onHandleError);
     } else {
-      emit(UserState.dataLoaded(user: null, token: null));
+      emit(UserState.dataLoaded());
     }
   }
 
@@ -103,7 +110,7 @@ class UserCubit extends AppBaseCubit<UserState> {
         "banned": false,
       };
       await firestore.setWithId(token, data: data);
-      emit(UserState.dataLoaded(user: state.user, token: state.token));
+      emit(UserState.idUploaded(user: state.user, token: state.token));
     });
   }
 }

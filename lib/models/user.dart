@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pts/services/auth_service.dart';
 import 'package:pts/services/firestore_service.dart';
+import 'package:equatable/equatable.dart';
 
-class User {
+class User extends Equatable {
   final AuthService authService = AuthService();
   final FireStoreServices fireStoreServices = FireStoreServices("user");
 
@@ -76,4 +77,21 @@ class User {
       mangoPayId: mangoPayId,
     );
   }
+
+  @override
+  List<Object?> get props => [
+        id,
+        name,
+        surname,
+        hasIdChecked,
+        age,
+        gender,
+        email,
+        phone,
+        verified,
+        banned,
+        birthday,
+        photo,
+        mangoPayId
+      ];
 }

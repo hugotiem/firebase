@@ -31,13 +31,8 @@ class BuildPartiesCubit extends AppBaseCubit<BuildPartiesState> {
     emit(BuildPartiesState.added(party));
   }
 
-  void setStartTime(DateTime startTime) {
-    var party = (state.party ?? Party()).copyWith(startTime: startTime);
-    emit(BuildPartiesState.added(party));
-  }
-
-  void setEndTime(DateTime endTime) {
-    var party = (state.party ?? Party()).copyWith(endTime: endTime);
+  void setStartTime(DateTime startTime, DateTime endTime) {
+    var party = (state.party ?? Party()).copyWith(startTime: startTime, endTime: endTime);
     emit(BuildPartiesState.added(party));
   }
 
@@ -78,7 +73,7 @@ class BuildPartiesCubit extends AppBaseCubit<BuildPartiesState> {
   }
 
   void setWaitList() {
-    var party = (state.party ?? Party()).copyWith(waitList: []);
+    var party = (state.party ?? Party()).copyWith(waitList: [], waitListInfo: {}, validatedList: [], validatedListInfo: {});
     emit(BuildPartiesState.added(party));
   }
 

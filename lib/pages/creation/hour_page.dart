@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:pts/blocs/parties/build_parties_cubit.dart';
 import 'package:pts/components/app_datetime.dart';
 import 'package:pts/components/circular_slider/double_slider_paint.dart';
 import 'package:pts/components/form/background_form.dart';
@@ -41,6 +43,8 @@ class _HourPageState extends State<HourPage> {
         if (dateFin.isBefore(dateDebut)) {
           dateFin = dateFin.add(Duration(days: 1));
         }
+        BlocProvider.of<BuildPartiesCubit>(context)
+          ..setStartTime(dateDebut, dateFin);
         widget.onNext!();
       },
       children: [

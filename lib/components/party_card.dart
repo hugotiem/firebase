@@ -27,6 +27,7 @@ class PartyCard extends StatelessWidget {
   final Party party;
 
   final FireStoreServices services = FireStoreServices("parties");
+  final PaymentService _paymentService = PaymentService();
 
   PartyCard({Key? key, required this.party}) : super(key: key);
 
@@ -433,6 +434,20 @@ class PartyCard extends StatelessWidget {
                                                 );
                                               } else {
                                                 print(party.price);
+
+                                                var cards =
+                                                    await _paymentService
+                                                        .getUserCreditCards(
+                                                            user.mangoPayId ??
+                                                                "");
+
+                                                if (cards == null) return;
+
+                                                await _paymentService
+                                                    .cardDirectPayin(
+                                                        user.mangoPayId ?? "",
+                                                        20000,
+                                                        cards[0].id);
 
                                                 // await PaymentService(
                                                 //         amount: ((party.price ??

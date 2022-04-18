@@ -43,7 +43,7 @@ class _NewCreditCardState extends State<NewCreditCard> {
           print(_cvv);
           print(_holderName);
           await _paymentService.saveCardToMangopay(
-              widget.user!.mangoPayId!, _cardNumber!, _endDate!, _cvv!);
+              widget.user!.mangoPayId!, _cardNumber!.replaceAll(" ", ""), _endDate!.replaceAll("/", ""), _cvv!);
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

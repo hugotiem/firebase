@@ -82,7 +82,8 @@ class _ProfilState extends State<Profil> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                BoldText(text: "0.0€"),
+                                BoldText(
+                                    text: "${state.wallet?.amount ?? 0.0}€"),
                                 Opacity(
                                   opacity: 0.7,
                                   child: Text("Portefeuille"),

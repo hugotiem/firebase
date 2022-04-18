@@ -142,7 +142,10 @@ class _IdFormScreenState extends State<IdFormScreen> {
                                 : seeImageText(),
                           ),
                         ),
-                        HeaderText2(text: "Selfie : ", padding: EdgeInsets.only(bottom: 20, top: 40),),
+                        HeaderText2(
+                          text: "Selfie : ",
+                          padding: EdgeInsets.only(bottom: 20, top: 40),
+                        ),
                         Center(
                           child: Container(
                             clipBehavior: Clip.antiAlias,
