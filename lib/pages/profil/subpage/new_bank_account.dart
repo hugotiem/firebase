@@ -3,9 +3,22 @@ import 'package:pts/components/appbar.dart';
 import 'package:pts/components/fab_join.dart';
 import 'package:pts/components/form/custom_ttf_form.dart';
 import 'package:pts/const.dart';
+import 'package:pts/models/address.dart';
+import 'package:pts/models/user.dart';
+import 'package:pts/services/payment_service.dart';
 
 class NewBankAccount extends StatelessWidget {
-  const NewBankAccount({Key? key}) : super(key: key);
+  final User user;
+  NewBankAccount({required this.user, Key? key}) : super(key: key);
+
+  final TextEditingController _accountNameController = TextEditingController();
+  final TextEditingController _ibanController = TextEditingController();
+  final TextEditingController _addressLineController = TextEditingController();
+  final TextEditingController _cityController = TextEditingController();
+  final TextEditingController _postalCodeController = TextEditingController();
+  final TextEditingController _countryController = TextEditingController();
+
+  final PaymentService _paymentService = PaymentService();
 
   @override
   Widget build(BuildContext context) {
@@ -20,42 +33,71 @@ class NewBankAccount extends StatelessWidget {
           // if (!_formKey.currentState!.validate()) {
           //   return;
           // }
+          print(user.mangoPayId);
+          Address _address = Address(
+            streetName: _addressLineController.text,
+            city: _cityController.text,
+            postalCode: _postalCodeController.text,
+            country: _countryController.text,
+          );
+          await _paymentService.addIBANBankAccount(user.mangoPayId!,
+              _accountNameController.text, _address, _ibanController.text);
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      body: Column(
-        children: [
-          TextNewBankAccount(text: "Titulaire du compte"),
-          TFFText(
-            hintText: "ex: Martin Morel",
-            validator: (value) {},
-          ),
-          TextNewBankAccount(text: "IBAN"),
-          TFFText(
-            hintText: "FR12 XXXX XXXX XXXX XXXX XXXX XXX",
-            validator: (value) {},
-          ),
-          TextNewBankAccount(text: "Rue et numéro"),
-          TFFText(
-            hintText: "7 avenue des champs élysés",
-            validator: (value) {},
-          ),
-          TextNewBankAccount(text: "Ville"),
-          TFFText(
-            hintText: "Paris",
-            validator: (value) {},
-          ),
-          TextNewBankAccount(text: "Code postal"),
-          TFFText(
-            hintText: "75008",
-            validator: (value) {},
-          ),
-          TextNewBankAccount(text: "Pays"),
-          TFFText(
-            hintText: "France",
-            validator: (value) {},
-          ),
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            TextNewBankAccount(text: "Titulaire du compte"),
+            TFFText(
+              hintText: "ex: Martin Morel",
+              controller: _accountNameController,
+              validator: (value) {
+                return null;
+              },
+            ),
+            TextNewBankAccount(text: "IBAN"),
+            TFFText(
+              hintText: "FR12 XXXX XXXX XXXX XXXX XXXX XXX",
+              controller: _ibanController,
+              validator: (value) {
+                return null;
+              },
+            ),
+            TextNewBankAccount(text: "Rue et numéro"),
+            TFFText(
+              hintText: "7 avenue des champs élysés",
+              controller: _addressLineController,
+              validator: (value) {
+                return null;
+              },
+            ),
+            TextNewBankAccount(text: "Ville"),
+            TFFText(
+              hintText: "Paris",
+              controller: _cityController,
+              validator: (value) {
+                return null;
+              },
+            ),
+            TextNewBankAccount(text: "Code postal"),
+            TFFText(
+              hintText: "75008",
+              controller: _postalCodeController,
+              validator: (value) {
+                return null;
+              },
+            ),
+            TextNewBankAccount(text: "Pays"),
+            TFFText(
+              hintText: "France",
+              controller: _countryController,
+              validator: (value) {
+                return null;
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

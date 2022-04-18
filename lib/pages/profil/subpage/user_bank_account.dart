@@ -51,7 +51,7 @@ class UserBank extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => NewBankAccount()));
+                            builder: (context) => NewBankAccount(user: user!)));
                   },
                   child: ListTile(
                       title: Text('Ajouter une carte'),

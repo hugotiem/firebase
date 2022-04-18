@@ -7,6 +7,7 @@ class Address {
   final String? region;
   final double? longitude;
   final double? latitude;
+  final String? country;
 
   const Address({
     this.label,
@@ -17,6 +18,7 @@ class Address {
     this.region,
     this.longitude,
     this.latitude,
+    this.country,
   });
 
   factory Address.fromJson(Map<String, dynamic> data) {

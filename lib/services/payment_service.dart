@@ -1,8 +1,6 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:pts/models/address.dart';
@@ -359,7 +357,7 @@ class PaymentService {
     request.body = json.encode({
       "OwnerName": fullname,
       "OwnerAddress": {
-        "AddressLine1": "${address.streetNumber} ${address.streetName}",
+        "AddressLine1": address.streetName,
         "City": address.city,
         "Region": address.region,
         "PostalCode": address.postalCode,
