@@ -35,7 +35,6 @@ class PaymentService {
 
     var request = http.Request('POST', Uri.parse(_url));
 
-
     request.body = json.encode({
       "FirstName": name,
       "LastName": surname,
@@ -118,7 +117,7 @@ class PaymentService {
 
     if (response.statusCode == 200) {
       var map = json.decode(await response.stream.bytesToString());
-      return Wallet.fromJson(map);
+      return Wallet.fromJson(map[0]);
     }
     print(response.reasonPhrase);
     return null;
