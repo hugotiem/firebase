@@ -225,7 +225,7 @@ class _RegisterFormScreenState extends State<RegisterFormScreen> {
                                 .then(
                                   (_) => Navigator.of(context).push(
                                     MaterialPageRoute(
-                                      builder: (context) => NationnalityForm(id: id, name: _name, surname: _surname, birth: Timestamp.fromDate(_date), email: widget.mail,)
+                                      builder: (context) => NationnalityForm(id: id, name: _name, surname: _surname, birth: _date, email: widget.mail,)
                                           // IdFormScreen(token: id),
                                     ),
                                   ),

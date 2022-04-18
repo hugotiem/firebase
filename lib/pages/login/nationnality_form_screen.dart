@@ -14,7 +14,7 @@ class NationnalityForm extends StatelessWidget {
   final String? name;
   final String? surname;
   final String? email;
-  final Timestamp? birth;
+  final DateTime? birth;
   final String? id;
   NationnalityForm(
       {this.id, this.birth, this.surname, this.email, this.name, Key? key})

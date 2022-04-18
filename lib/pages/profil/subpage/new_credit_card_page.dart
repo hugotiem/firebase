@@ -39,7 +39,7 @@ class _NewCreditCardState extends State<NewCreditCard> {
             return;
           }
           print(_cardNumber);
-          print(_endDate);
+          print(_endDate?.replaceAll("/", ""));
           print(_cvv);
           print(_holderName);
           await _paymentService.saveCardToMangopay(

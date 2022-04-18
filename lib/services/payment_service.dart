@@ -27,7 +27,7 @@ class PaymentService {
       String name,
       String surname,
       String email,
-      Timestamp birth,
+      DateTime birth,
       String nationality,
       String countryOfResidence,
       bool termsAndConditionsAccepted) async {
@@ -35,10 +35,12 @@ class PaymentService {
 
     var request = http.Request('POST', Uri.parse(_url));
 
+    print(birth.toUtc().millisecondsSinceEpoch);
+
     request.body = json.encode({
       "FirstName": name,
       "LastName": surname,
-      "Birthday": birth.millisecondsSinceEpoch,
+      "Birthday": birth.toUtc().millisecondsSinceEpoch,
       "Nationality": nationality,
       "CountryOfResidence": countryOfResidence,
       "Email": email,
