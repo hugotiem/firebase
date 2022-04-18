@@ -1,10 +1,12 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:pts/models/address.dart';
+import 'package:pts/models/payments/bank_account.dart';
 import 'package:pts/models/payments/card_registration.dart';
 import 'package:pts/models/payments/credit_card.dart';
 import 'package:pts/models/payments/wallet.dart';
@@ -114,7 +116,6 @@ class PaymentService {
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
-
     if (response.statusCode == 200) {
       var map = json.decode(await response.stream.bytesToString());
       return Wallet.fromJson(map[0]);
@@ -335,7 +336,7 @@ class PaymentService {
       },
       "CardId": cardId,
       "SecureMode": "DEFAULT",
-      "SecureModeReturnURL": ""
+      "SecureModeReturnURL": "https://google.com"
     });
 
     request.headers.addAll(headers);
@@ -373,6 +374,30 @@ class PaymentService {
 
     if (response.statusCode == 200) {
       return json.decode(await response.stream.bytesToString())['Id'];
+    }
+    print(response.reasonPhrase);
+    return null;
+  }
+
+  Future<List<BankAccount>?> getUserBankAccounts(String userId) async {
+    final String _url = "$url/users/$userId/bankaccounts/";
+
+    var request = http.Request('GET', Uri.parse(_url));
+
+    request.body = json.encode({
+      "Page": 1,
+      "Per_Page": 20,
+      "Sort": "CreationDate:DESC",
+      "Active": true,
+    });
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      var map = json.decode(await response.stream.bytesToString()) as List;
+      return map.map<BankAccount>((e) => BankAccount.fromJson(e)).toList();
     }
     print(response.reasonPhrase);
     return null;

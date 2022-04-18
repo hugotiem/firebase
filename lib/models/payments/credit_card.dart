@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:equatable/equatable.dart';
 
 class CreditCard extends Equatable {
@@ -21,11 +23,12 @@ class CreditCard extends Equatable {
     var id = json['Id'];
     var alias = json['Alias'];
     var expirationDate = json['ExpirationDate'];
-    var mangopayUserId = json['mangopayUserId'];
+    var mangopayUserId = json['UserId'];
     var cardProvider = json['CardProvider'];
     var validity = json['Validity'] == 'VALID';
+    log(json.toString());
     return CreditCard(
-        id, alias, expirationDate, mangopayUserId, cardProvider, validity);
+        id, mangopayUserId, alias, expirationDate, cardProvider, validity);
   }
 
   @override

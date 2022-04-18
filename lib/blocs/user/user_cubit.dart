@@ -41,9 +41,12 @@ class UserCubit extends AppBaseCubit<UserState> {
   Future<void> loadData({auth.User? user}) async {
     var token = user?.uid ?? state.token;
     if (token != null) {
-      firestore.getDataById(token).then((value) {
+      firestore.getDataById(token).then((value) async {
+        var user = User.fromSnapshot(value);
+        var wallet =
+            await _paymentService.getWalletByUserId(user.mangoPayId ?? "");
         emit(
-            UserState.dataLoaded(user: User.fromSnapshot(value), token: token));
+            UserState.dataLoaded(user: user, token: token, wallet: wallet));
       }).catchError(onHandleError);
     } else {
       emit(UserState.dataLoaded(user: null, token: null));
@@ -56,6 +59,7 @@ class UserCubit extends AppBaseCubit<UserState> {
         var user = User.fromSnapshot(value);
         var wallet =
             await _paymentService.getWalletByUserId(user.mangoPayId ?? "");
+        
         emit(UserState.dataLoaded(user: user, token: token, wallet: wallet));
       }).catchError(onHandleError);
     } else {

@@ -446,7 +446,7 @@ class PartyCard extends StatelessWidget {
                                                 await _paymentService
                                                     .cardDirectPayin(
                                                         user.mangoPayId ?? "",
-                                                        20000,
+                                                        200,
                                                         cards[0].id);
 
                                                 // await PaymentService(

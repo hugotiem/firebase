@@ -5,6 +5,7 @@ import 'package:ionicons/ionicons.dart';
 import 'package:pts/components/custom_text.dart';
 import 'package:pts/components/profile_photo.dart';
 import 'package:pts/pages/profil/subpage/existing_cards_page.dart';
+import 'package:pts/pages/profil/subpage/user_bank_account.dart';
 import 'package:pts/services/auth_service.dart';
 import 'package:pts/onboarding_page.dart';
 import 'package:pts/const.dart';
@@ -47,6 +48,7 @@ class _ProfilState extends State<Profil> {
             if (user == null) {
               return Center(child: CircularProgressIndicator());
             }
+            print(state.wallet);
 
             return SingleChildScrollView(
               child: Container(
@@ -149,6 +151,11 @@ class _ProfilState extends State<Profil> {
                             CickableContainerProfil(
                               to: ExistingCard(user: user),
                               text: "Paiements",
+                              icon: Ionicons.card_outline,
+                            ),
+                            CickableContainerProfil(
+                              to: UserBank(user: user),
+                              text: "Compte en banque",
                               icon: Ionicons.card_outline,
                             ),
                             CickableContainerProfil(
