@@ -1,15 +1,20 @@
 import 'package:animations/animations.dart';
+import 'package:badges/badges.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:lottie/lottie.dart';
+import 'package:pts/blocs/card_registration/card_registration_cubit.dart';
 import 'package:pts/components/components_export.dart';
 import 'package:pts/blocs/parties/parties_cubit.dart';
 import 'package:pts/components/form/custom_text_form.dart';
 import 'package:pts/models/capitalize.dart';
 import 'package:pts/models/party.dart';
+import 'package:pts/models/payments/credit_card.dart';
+import 'package:pts/pages/profil/subpage/new_credit_card_page.dart';
+import 'package:pts/pages/search/search_page.dart';
 import 'package:pts/services/firestore_service.dart';
 import 'package:pts/services/payment_service.dart';
 import 'package:pts/models/user.dart';
@@ -167,6 +172,167 @@ class PartyCard extends StatelessWidget {
           });
         }
       });
+    }
+
+    Future<dynamic> joinparty(
+        double prix, List<CreditCard> listCreditcard, User user) {
+      String selectedId = "";
+      return customShowModalBottomSheet(
+        context,
+        [
+          titleText("Sélectionne ton moyen de paiement"),
+          StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) {
+            return SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 4, left: 2),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: ((context) =>
+                                    NewCreditCard(user: user))));
+                          },
+                          child: Container(
+                            height: 70,
+                            width: 110,
+                            decoration: BoxDecoration(
+                              color: PRIMARY_COLOR,
+                              borderRadius: BorderRadius.circular(15),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey,
+                                  blurRadius: 3,
+                                  spreadRadius: 0,
+                                  offset: Offset(0, 3),
+                                ),
+                              ],
+                            ),
+                            child: const Icon(Ionicons.add_circle_outline,
+                                size: 45),
+                          ),
+                        ),
+                      ),
+                      const Text("+ ajouter")
+                    ],
+                  ),
+                  SizedBox(
+                    height: 100,
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: listCreditcard.length,
+                      itemBuilder: (context, index) {
+                        var card = listCreditcard[index];
+                        bool _selected = card.id == selectedId;
+                        return Padding(
+                          padding: const EdgeInsets.only(left: 16),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 4),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      selectedId = card.id;
+                                    });
+                                  },
+                                  child: Badge(
+                                    badgeContent: _selected
+                                        ? Icon(
+                                            Ionicons.checkmark_outline,
+                                            color: PRIMARY_COLOR,
+                                            size: 15,
+                                          )
+                                        : null,
+                                    position: BadgePosition.bottomEnd(),
+                                    badgeColor: _selected
+                                        ? Colors.green
+                                        : PRIMARY_COLOR,
+                                    elevation: 0,
+                                    child: Container(
+                                      height: 70,
+                                      width: 110,
+                                      decoration: BoxDecoration(
+                                        color: PRIMARY_COLOR,
+                                        borderRadius: BorderRadius.circular(15),
+                                        border: Border.all(
+                                            color: _selected
+                                                ? Colors.green
+                                                : PRIMARY_COLOR,
+                                            width: 2),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey,
+                                            blurRadius: 3,
+                                            spreadRadius: 0,
+                                            offset: Offset(0, 3),
+                                          )
+                                        ],
+                                      ),
+                                      child: Center(
+                                          child: Text(card.cardProvider)),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Text(card.alias.substring(8).replaceAll("X", "*"))
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 22),
+                ],
+              ),
+            );
+          }),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 22),
+            child: GestureDetector(
+              onTap: () {},
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.99,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: SECONDARY_COLOR,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Stack(
+                  children: [
+                    Center(
+                      child: Text(
+                        "Payer $prix €",
+                        style: TextStyle(
+                          color: PRIMARY_COLOR,
+                          fontSize: 17,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 12),
+                        child: Icon(Ionicons.lock_closed_outline,
+                            color: PRIMARY_COLOR),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      );
     }
 
     return BlocProvider(
@@ -410,97 +576,115 @@ class PartyCard extends StatelessWidget {
                                         child: BlocBuilder<PartiesCubit,
                                                 PartiesState>(
                                             builder: (context, state) {
-                                          return GestureDetector(
-                                            onTap: () async {
-                                              if (party.price == 0) {
-                                                final uid =
-                                                    connectUserState.user!.id;
+                                          return BlocProvider(
+                                            create: (context) =>
+                                                CardRegistrationCubit()
+                                                  ..loadData(connectUserState
+                                                      .user!.mangoPayId),
+                                            child: BlocBuilder<
+                                                    CardRegistrationCubit,
+                                                    CardRegistrationState>(
+                                                builder: (context,
+                                                    paymentCardState) {
+                                              return GestureDetector(
+                                                onTap: () async {
+                                                  if (party.price == 0) {
+                                                    final uid = connectUserState
+                                                        .user!.id;
 
-                                                if (uid == null) {
-                                                  throw Error();
-                                                }
+                                                    if (uid == null) {
+                                                      throw Error();
+                                                    }
 
-                                                await BlocProvider.of<
-                                                        PartiesCubit>(context)
-                                                    .addUserInWaitList(
-                                                        user, party);
+                                                    await BlocProvider.of<
+                                                                PartiesCubit>(
+                                                            context)
+                                                        .addUserInWaitList(
+                                                            user, party);
 
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        JoinWaitList(),
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            JoinWaitList(),
+                                                      ),
+                                                    );
+                                                  } else {
+                                                    print(party.price);
+                                                    joinparty(
+                                                      party.price!,
+                                                      paymentCardState.cards!,
+                                                      connectUserState.user!,
+                                                    );
+                                                    // var cards =
+                                                    //     await _paymentService
+                                                    //         .getUserCreditCards(
+                                                    //             user.mangoPayId ??
+                                                    //                 "");
+
+                                                    // if (cards == null) return;
+
+                                                    // await _paymentService
+                                                    //     .cardDirectPayin(
+                                                    //         user.mangoPayId ?? "",
+                                                    //         200,
+                                                    //         cards[0].id);
+
+                                                    // await PaymentService(
+                                                    //         amount: ((party.price ??
+                                                    //                     0) *
+                                                    //                 100)
+                                                    //             .toInt())
+                                                    //     .initPaymentSheet(context,
+                                                    //         email: user.email)
+                                                    //     .then(
+                                                    //   (value) async {
+                                                    //     if (value) {
+                                                    //       await BlocProvider.of<
+                                                    //                   PartiesCubit>(
+                                                    //               context)
+                                                    //           .addUserInWaitList(
+                                                    //               user, party)
+                                                    //           .then(
+                                                    //             (value) =>
+                                                    //                 Navigator.push(
+                                                    //               context,
+                                                    //               MaterialPageRoute(
+                                                    //                 builder:
+                                                    //                     (context) =>
+                                                    //                         JoinWaitList(),
+                                                    //               ),
+                                                    //             ),
+                                                    //           );
+                                                    //     }
+                                                    //   },
+                                                    // );
+                                                    // Navigator.push(
+                                                    //   context,
+                                                    //   MaterialPageRoute(
+                                                    //     builder: (context) =>
+                                                    //         ExistingCard(),
+                                                    //   ),
+                                                    // );
+                                                  }
+                                                },
+                                                child: Container(
+                                                  padding: EdgeInsets.all(15),
+                                                  decoration: BoxDecoration(
+                                                    color: SECONDARY_COLOR,
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                      Radius.circular(15),
+                                                    ),
                                                   ),
-                                                );
-                                              } else {
-                                                print(party.price);
-
-                                                var cards =
-                                                    await _paymentService
-                                                        .getUserCreditCards(
-                                                            user.mangoPayId ??
-                                                                "");
-
-                                                if (cards == null) return;
-
-                                                await _paymentService
-                                                    .cardDirectPayin(
-                                                        user.mangoPayId ?? "",
-                                                        200,
-                                                        cards[0].id);
-
-                                                // await PaymentService(
-                                                //         amount: ((party.price ??
-                                                //                     0) *
-                                                //                 100)
-                                                //             .toInt())
-                                                //     .initPaymentSheet(context,
-                                                //         email: user.email)
-                                                //     .then(
-                                                //   (value) async {
-                                                //     if (value) {
-                                                //       await BlocProvider.of<
-                                                //                   PartiesCubit>(
-                                                //               context)
-                                                //           .addUserInWaitList(
-                                                //               user, party)
-                                                //           .then(
-                                                //             (value) =>
-                                                //                 Navigator.push(
-                                                //               context,
-                                                //               MaterialPageRoute(
-                                                //                 builder:
-                                                //                     (context) =>
-                                                //                         JoinWaitList(),
-                                                //               ),
-                                                //             ),
-                                                //           );
-                                                //     }
-                                                //   },
-                                                // );
-                                                // Navigator.push(
-                                                //   context,
-                                                //   MaterialPageRoute(
-                                                //     builder: (context) =>
-                                                //         ExistingCard(),
-                                                //   ),
-                                                // );
-                                              }
-                                            },
-                                            child: Container(
-                                              padding: EdgeInsets.all(15),
-                                              decoration: BoxDecoration(
-                                                color: SECONDARY_COLOR,
-                                                borderRadius: BorderRadius.all(
-                                                  Radius.circular(15),
+                                                  child: CText(
+                                                    'Rejoindre',
+                                                    color: PRIMARY_COLOR,
+                                                    fontSize: 16,
+                                                  ),
                                                 ),
-                                              ),
-                                              child: CText(
-                                                'Rejoindre',
-                                                color: PRIMARY_COLOR,
-                                                fontSize: 16,
-                                              ),
-                                            ),
+                                              );
+                                            }),
                                           );
                                         }),
                                       ),

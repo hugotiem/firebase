@@ -1,9 +1,14 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pts/blocs/card_registration/card_registration_cubit.dart';
 import 'package:pts/components/appbar.dart';
 import 'package:pts/components/fab_join.dart';
 import 'package:pts/components/form/custom_ttf_form.dart';
 import 'package:pts/const.dart';
+import 'package:pts/models/payments/card_registration.dart';
 import 'package:pts/models/user.dart';
 import 'package:pts/services/payment_service.dart';
 
@@ -20,148 +25,179 @@ class _NewCreditCardState extends State<NewCreditCard> {
   String? _endDate;
   String? _cvv;
   String? _cardNumber;
+  String label = "Ajouter";
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final PaymentService _paymentService = PaymentService();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(50),
-        child: BackAppBar(
-          title: TitleAppBar('Ajouter une carte'),
-        ),
-      ),
-      floatingActionButton: FABJoin(
-        label: 'Ajouter',
-        onPressed: () async {
-          if (!_formKey.currentState!.validate()) {
-            return;
+    return BlocProvider(
+      create: (context) => CardRegistrationCubit(),
+      child: BlocListener<CardRegistrationCubit, CardRegistrationState>(
+        listener: (context, state) {
+          if (state.requestInProgress) {
+            setState(() {
+              label = "Chargement";
+            });
+          } else if (state.status == CardRegistrationStatus.dataLoaded) {
+            setState(() {
+              label = "Enregistré";
+            });
+            Future.delayed(const Duration(seconds: 1)).whenComplete(
+              () => Navigator.of(context).pop(),
+            );
+          } else if (state.status == CardRegistrationStatus.failed) {
+            setState(() {
+              label = "Erreur";
+            });
           }
-          print(_cardNumber);
-          print(_endDate?.replaceAll("/", ""));
-          print(_cvv);
-          print(_holderName);
-          await _paymentService.saveCardToMangopay(
-              widget.user!.mangoPayId!, _cardNumber!.replaceAll(" ", ""), _endDate!.replaceAll("/", ""), _cvv!);
         },
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      body: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              TextNewCreditCard(text: 'Titulaire de la carte'),
-              TFFText(
-                hintText: 'ex: Martin Morel',
-                onChanged: (value) {
-                  _holderName = value;
-                },
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Entrer le nom du propriétaire de la carte';
-                  } else {
-                    return null;
-                  }
-                },
+        child: BlocBuilder<CardRegistrationCubit, CardRegistrationState>(
+            builder: (context, cardRegistrationState) {
+          return Scaffold(
+            appBar: PreferredSize(
+              preferredSize: Size.fromHeight(50),
+              child: BackAppBar(
+                title: TitleAppBar('Ajouter une carte'),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Column(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.5,
-                        child: TextNewCreditCard(
-                          text: "Date d'expiration",
-                        ),
-                      ),
-                      TFFText(
-                        width: MediaQuery.of(context).size.width * 0.4,
-                        hintText: 'XX/XX',
-                        keyboardType: TextInputType.number,
-                        inputFormatters: [
-                          MaskedTextInputFormatter(
-                              mask: 'XX/XX', separator: '/')
-                        ],
-                        onChanged: (value) {
-                          _endDate = value;
-                        },
-                        validator: (value) {
-                          if (value != null) {
-                            if (value.length < 5) {
-                              return 'Date invalide';
-                            } else {
-                              return null;
-                            }
-                          }
+            ),
+            floatingActionButton: FABJoin(
+              label: label,
+              onPressed: () async {
+                if (!_formKey.currentState!.validate()) {
+                  return;
+                }
+                print(_cardNumber);
+                print(_endDate?.replaceAll("/", ""));
+                print(_cvv);
+                print(_holderName);
+                await BlocProvider.of<CardRegistrationCubit>(context)
+                    .registerCard(
+                        widget.user!.mangoPayId!,
+                        _cardNumber!.replaceAll(" ", ""),
+                        _endDate!.replaceAll("/", ""),
+                        _cvv!);
+              },
+            ),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerFloat,
+            body: SingleChildScrollView(
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    TextNewCreditCard(text: 'Titulaire de la carte'),
+                    TFFText(
+                      hintText: 'ex: Martin Morel',
+                      onChanged: (value) {
+                        _holderName = value;
+                      },
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Entrer le nom du propriétaire de la carte';
+                        } else {
                           return null;
-                        },
-                      ),
-                    ],
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.5,
-                        child: TextNewCreditCard(
-                          text: "CVV",
+                        }
+                      },
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Column(
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.5,
+                              child: TextNewCreditCard(
+                                text: "Date d'expiration",
+                              ),
+                            ),
+                            TFFText(
+                              width: MediaQuery.of(context).size.width * 0.4,
+                              hintText: 'XX/XX',
+                              keyboardType: TextInputType.number,
+                              inputFormatters: [
+                                MaskedTextInputFormatter(
+                                    mask: 'XX/XX', separator: '/')
+                              ],
+                              onChanged: (value) {
+                                _endDate = value;
+                              },
+                              validator: (value) {
+                                if (value != null) {
+                                  if (value.length < 5) {
+                                    return 'Date invalide';
+                                  } else {
+                                    return null;
+                                  }
+                                }
+                                return null;
+                              },
+                            ),
+                          ],
                         ),
-                      ),
-                      TFFText(
-                        keyboardType: TextInputType.number,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                        ],
-                        width: MediaQuery.of(context).size.width * 0.4,
-                        hintText: 'XXX',
-                        maxLength: 3,
-                        onChanged: (value) {
-                          _cvv = value;
-                        },
-                        validator: (value) {
-                          if (value != null) {
-                            if (value.length < 3) {
-                              return 'CVV invalide';
-                            } else {
-                              return null;
-                            }
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.5,
+                              child: TextNewCreditCard(
+                                text: "CVV",
+                              ),
+                            ),
+                            TFFText(
+                              keyboardType: TextInputType.number,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly,
+                              ],
+                              width: MediaQuery.of(context).size.width * 0.4,
+                              hintText: 'XXX',
+                              maxLength: 3,
+                              onChanged: (value) {
+                                _cvv = value;
+                              },
+                              validator: (value) {
+                                if (value != null) {
+                                  if (value.length < 3) {
+                                    return 'CVV invalide';
+                                  } else {
+                                    return null;
+                                  }
+                                }
+                                return null;
+                              },
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                    TextNewCreditCard(text: 'Numéro de carte'),
+                    TFFText(
+                      textCapitalization: TextCapitalization.characters,
+                      hintText: 'XXXX XXXX XXXX XXXX',
+                      onChanged: (value) {
+                        _cardNumber = value;
+                      },
+                      inputFormatters: [
+                        MaskedTextInputFormatter(
+                            mask: 'XXXX XXXX XXXX XXXX', separator: ' ')
+                      ],
+                      validator: (value) {
+                        if (value != null) {
+                          if (value.length < 19) {
+                            return 'Numéro de carte invalide';
+                          } else {
+                            return null;
                           }
-                          return null;
-                        },
-                      ),
-                    ],
-                  )
-                ],
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
+                ),
               ),
-              TextNewCreditCard(text: 'Numéro de carte'),
-              TFFText(
-                textCapitalization: TextCapitalization.characters,
-                hintText: 'XXXX XXXX XXXX XXXX',
-                onChanged: (value) {
-                  _cardNumber = value;
-                },
-                inputFormatters: [
-                  MaskedTextInputFormatter(
-                      mask: 'XXXX XXXX XXXX XXXX', separator: ' ')
-                ],
-                validator: (value) {
-                  if (value != null) {
-                    if (value.length < 19) {
-                      return 'Numéro de carte invalide';
-                    } else {
-                      return null;
-                    }
-                  }
-                  return null;
-                },
-              ),
-            ],
-          ),
-        ),
+            ),
+          );
+        }),
       ),
     );
   }

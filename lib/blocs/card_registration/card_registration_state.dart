@@ -26,5 +26,5 @@ class CardRegistrationState extends AppBaseState<CardRegistrationStatus> {
           {bool requestInProgress = false,
           String? requestFailureCode,
           String? requestFailureMessage}) =>
-      CardRegistrationState(this.status);
+      CardRegistrationState(this.status, requestInProgress: requestInProgress);
 }

@@ -20,4 +20,18 @@ class CardRegistrationCubit extends AppBaseCubit<CardRegistrationState> {
     }
     return emit(CardRegistrationState.dataLoaded(cards));
   }
+
+  Future<void> registerCard(String? userMangoPayId, String cardNumber,
+      String endDate, String cvv) async {
+    if (userMangoPayId == null) {
+      return emit(CardRegistrationState.failed());
+    }
+    emit(state.setRequestInProgress() as CardRegistrationState);
+    var register = await _mangopay.saveCardToMangopay(userMangoPayId,
+        cardNumber.replaceAll(" ", ""), endDate.replaceAll("/", ""), cvv);
+    if (register == "SUCCESS") {
+      return emit(CardRegistrationState.dataLoaded(state.cards));
+    } else
+      return emit(CardRegistrationState.failed());
+  }
 }

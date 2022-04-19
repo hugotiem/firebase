@@ -176,20 +176,20 @@ class PaymentService {
     return null;
   }
 
-  Future<void> saveCardToMangopay(String userId, String cardNumber,
+  Future<String> saveCardToMangopay(String userId, String cardNumber,
       String expirationDate, String csv) async {
     final CardRegistration? _cardRegistration =
         await _createCardRegistration(userId);
 
     if (_cardRegistration == null) {
-      return;
+      return "null";
     }
 
     final String? _registrationData = await _postCardDataInfo(
         userId, _cardRegistration, cardNumber, expirationDate, csv);
 
     if (_registrationData == null) {
-      return;
+      return "null";
     }
 
     var _url = "$url/CardRegistrations/${_cardRegistration.id}";
@@ -203,9 +203,9 @@ class PaymentService {
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
-      return print("SUCCESS");
+      return "SUCCESS";
     }
-    return print(response.reasonPhrase);
+    return response.reasonPhrase.toString();
   }
 
   Future<List<CreditCard>?> getUserCreditCards(String userId) async {
