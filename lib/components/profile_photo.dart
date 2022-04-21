@@ -3,25 +3,26 @@ import 'package:flutter/material.dart';
 class ProfilePhoto extends StatelessWidget {
   final String? photo;
   final double? radius;
-  const ProfilePhoto(this.photo, {this.radius = 30, Key? key}) : super(key: key);
+  const ProfilePhoto(this.photo, {this.radius = 30, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    String? image;
-    if (photo == "") {
+    String image = "";
+    if (photo?.isEmpty ?? true) {
       image = "assets/roundBlankProfilPicture.png";
     } else {
-      image = photo;
+      image = photo!;
     }
 
     return image == "assets/roundBlankProfilPicture.png"
         ? CircleAvatar(
             radius: radius,
-            backgroundImage: AssetImage(image!),
+            backgroundImage: AssetImage(image),
           )
         : CircleAvatar(
             radius: radius,
-            backgroundImage: NetworkImage(image!),
+            backgroundImage: NetworkImage(image),
           );
   }
 }

@@ -14,7 +14,6 @@ import 'package:pts/models/capitalize.dart';
 import 'package:pts/models/party.dart';
 import 'package:pts/models/payments/credit_card.dart';
 import 'package:pts/pages/profil/subpage/new_credit_card_page.dart';
-import 'package:pts/pages/search/search_page.dart';
 import 'package:pts/services/firestore_service.dart';
 import 'package:pts/services/payment_service.dart';
 import 'package:pts/models/user.dart';
@@ -105,7 +104,7 @@ class PartyCard extends StatelessWidget {
       textColor = PRIMARY_COLOR;
     }
 
-    void contacter(String? ownerName) async {
+    void contact(String? ownerName) async {
       FirebaseFirestore firestore = FirebaseFirestore.instance;
       var chatCollection = firestore.collection('chat');
       var currentUserID = AuthService().currentUser!.uid;
@@ -174,7 +173,7 @@ class PartyCard extends StatelessWidget {
       });
     }
 
-    Future<dynamic> joinparty(double prix, List<CreditCard> listCreditcard,
+    Future<dynamic> joinPartyBottomSheet(double prix, List<CreditCard> listCreditcard,
         User? connectUser, User? ownerPartyUser) {
       String selectedId = "";
       return customShowModalBottomSheet(
@@ -295,6 +294,16 @@ class PartyCard extends StatelessWidget {
               ),
             );
           }),
+          // Row(
+          //   children: [
+          //     Container(
+          //       decoration: BoxDecoration(  
+          //         border: 
+          //       ),
+          //     ),
+          //     Text("ou")
+          //   ]
+          // ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 22),
             child: GestureDetector(
@@ -505,7 +514,7 @@ class PartyCard extends StatelessWidget {
                                     smoke: party.smoke!,
                                     list: list,
                                     nameList: nameList,
-                                    contacter: () => contacter(user?.name),
+                                    contacter: () => contact(user?.name),
                                     photoUserProfile: user?.photo,
                                     acceptedUserInfo: party.validatedListInfo,
                                     gender: gender,
@@ -615,61 +624,11 @@ class PartyCard extends StatelessWidget {
                                                     );
                                                   } else {
                                                     print(party.price);
-                                                    joinparty(
+                                                    joinPartyBottomSheet(
                                                         party.price!,
                                                         paymentCardState.cards!,
-                                                        connectUserState.user!,
+                                                        connectUserState.user,
                                                         user);
-                                                    // var cards =
-                                                    //     await _paymentService
-                                                    //         .getUserCreditCards(
-                                                    //             user.mangoPayId ??
-                                                    //                 "");
-
-                                                    // if (cards == null) return;
-
-                                                    // await _paymentService
-                                                    //     .cardDirectPayin(
-                                                    //         user.mangoPayId ?? "",
-                                                    //         200,
-                                                    //         cards[0].id);
-
-                                                    // await PaymentService(
-                                                    //         amount: ((party.price ??
-                                                    //                     0) *
-                                                    //                 100)
-                                                    //             .toInt())
-                                                    //     .initPaymentSheet(context,
-                                                    //         email: user.email)
-                                                    //     .then(
-                                                    //   (value) async {
-                                                    //     if (value) {
-                                                    //       await BlocProvider.of<
-                                                    //                   PartiesCubit>(
-                                                    //               context)
-                                                    //           .addUserInWaitList(
-                                                    //               user, party)
-                                                    //           .then(
-                                                    //             (value) =>
-                                                    //                 Navigator.push(
-                                                    //               context,
-                                                    //               MaterialPageRoute(
-                                                    //                 builder:
-                                                    //                     (context) =>
-                                                    //                         JoinWaitList(),
-                                                    //               ),
-                                                    //             ),
-                                                    //           );
-                                                    //     }
-                                                    //   },
-                                                    // );
-                                                    // Navigator.push(
-                                                    //   context,
-                                                    //   MaterialPageRoute(
-                                                    //     builder: (context) =>
-                                                    //         ExistingCard(),
-                                                    //   ),
-                                                    // );
                                                   }
                                                 },
                                                 child: Container(
