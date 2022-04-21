@@ -174,8 +174,8 @@ class PartyCard extends StatelessWidget {
       });
     }
 
-    Future<dynamic> joinparty(
-        double prix, List<CreditCard> listCreditcard, User user) {
+    Future<dynamic> joinparty(double prix, List<CreditCard> listCreditcard,
+        User connectUser, User ownerPartyUser) {
       String selectedId = "";
       return customShowModalBottomSheet(
         context,
@@ -196,8 +196,8 @@ class PartyCard extends StatelessWidget {
                         child: GestureDetector(
                           onTap: () {
                             Navigator.of(context).push(MaterialPageRoute(
-                                builder: ((context) =>
-                                    NewCreditCard(user: user))));
+                                builder: (context) =>
+                                    NewCreditCard(user: connectUser)));
                           },
                           child: Container(
                             height: 70,
@@ -298,7 +298,11 @@ class PartyCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 22),
             child: GestureDetector(
-              onTap: () {},
+              onTap: () async {
+                await _paymentService.cardDirectPayin(
+                    connectUser.id!, (prix * 100).toInt(), selectedId,
+                    sellerId: ownerPartyUser.mangoPayId);
+              },
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.99,
                 height: 40,
@@ -612,10 +616,10 @@ class PartyCard extends StatelessWidget {
                                                   } else {
                                                     print(party.price);
                                                     joinparty(
-                                                      party.price!,
-                                                      paymentCardState.cards!,
-                                                      connectUserState.user!,
-                                                    );
+                                                        party.price!,
+                                                        paymentCardState.cards!,
+                                                        connectUserState.user!,
+                                                        user);
                                                     // var cards =
                                                     //     await _paymentService
                                                     //         .getUserCreditCards(

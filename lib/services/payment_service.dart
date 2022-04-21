@@ -55,14 +55,14 @@ class PaymentService {
     return null;
   }
 
-  Future<String?> createMangopayWallet(String name, String id) async {
+  Future<String?> createMangopayWallet(WalletType type, String id) async {
     final String _url = "$url/wallets";
 
     var request = http.Request('POST', Uri.parse(_url));
 
     request.body = json.encode({
       "Owners": [id],
-      "Description": "$name's wallet",
+      "Description": describeEnum(type),
       "Currency": "EUR",
     });
 
@@ -106,7 +106,7 @@ class PaymentService {
     return null;
   }
 
-  Future<Wallet?> getWalletByUserId(String userId) async {
+  Future<Map<WalletType, Wallet>?> getWalletByUserId(String userId) async {
     final String _url = "$url/users/$userId/wallets/";
 
     var request = http.Request('GET', Uri.parse(_url));
@@ -115,8 +115,15 @@ class PaymentService {
 
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
-      var map = json.decode(await response.stream.bytesToString());
-      return Wallet.fromJson(map[0]);
+      var list = json.decode(await response.stream.bytesToString()) as List;
+      Map<WalletType, Wallet> map = {};
+      map[WalletType.MAIN] = Wallet.fromJson(list
+          .where((element) => element["Description"] == "MAIN")
+          .toList()[0]);
+      map[WalletType.PENDING] = Wallet.fromJson(list
+          .where((element) => element["Description"] == "PENDING")
+          .toList()[0]);
+      return map;
     }
     print(response.reasonPhrase);
     return null;
@@ -310,11 +317,19 @@ class PaymentService {
     return print("FAILED");
   }
 
-  Future<void> cardDirectPayin(String userId, int amount, String cardId) async {
-    final Wallet? wallet = await getWalletByUserId(userId);
-    if (wallet == null) {
+  Future<void> cardDirectPayin(String userId, int amount, String cardId,
+      {String? sellerId}) async {
+    final Map<WalletType, Wallet>? _wallets =
+        await getWalletByUserId(sellerId ?? userId);
+
+    if (_wallets == null) {
       return;
     }
+
+    final WalletType _walletType =
+        sellerId == null ? WalletType.MAIN : WalletType.PENDING;
+
+    final Wallet _wallet = _wallets[_walletType]!;
 
     final String _url = "$url/payins/card/direct";
     final String _currency = 'EUR';
@@ -323,7 +338,7 @@ class PaymentService {
 
     request.body = json.encode({
       "AuthorId": userId,
-      "CreditedWalletId": wallet.id,
+      "CreditedWalletId": _wallet.id,
       "DebitedFunds": {
         "Currency": _currency,
         "Amount": amount,
@@ -402,10 +417,15 @@ class PaymentService {
   }
 
   Future<void> withdraw(String userId, String bankAccountId, int amount) async {
-    final Wallet? wallet = await getWalletByUserId(userId);
-    if (wallet == null) {
+    final Map<WalletType, Wallet>? _wallets = await getWalletByUserId(userId);
+
+    if (_wallets == null) {
       return;
     }
+
+    final Wallet? wallet = _wallets[WalletType.MAIN];
+
+    if (wallet == null) return;
 
     final String _url = "$url/payouts/bankwire/";
     final String _currency = "EUR";
@@ -437,12 +457,17 @@ class PaymentService {
     return print('FAILED');
   }
 
-  Future<String?> transfer(
-      String userId, String creditedWalletId, int amount) async {
-    final Wallet? wallet = await getWalletByUserId(userId);
-    if (wallet == null) {
+  Future<String?> transfer(String userId, String creditedWalletId, int amount,
+      {bool refound = false}) async {
+    final Map<WalletType, Wallet>? _wallets = await getWalletByUserId(userId);
+    if (_wallets == null) {
       return null;
     }
+
+    final Wallet? _wallet =
+        _wallets[refound ? WalletType.MAIN : WalletType.PENDING];
+
+    if (_wallet == null) return null;
 
     final String _url = "$url/transfers/";
     final String _currency = "EUR";
@@ -459,7 +484,7 @@ class PaymentService {
         "Currency": _currency,
         "Amount": 0,
       },
-      "DebitedWalletId": wallet.id,
+      "DebitedWalletId": _wallet.id,
       "CreditedWalletId": creditedWalletId,
     });
 

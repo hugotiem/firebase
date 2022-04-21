@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pts/blocs/user/user_cubit.dart';
 import 'package:pts/components/form/custom_text_form.dart';
 import 'package:pts/const.dart';
+import 'package:pts/models/payments/wallet.dart';
 import 'package:pts/pages/login/id_form_screen.dart';
 import 'package:drop_down_list/drop_down_list.dart';
 import 'package:pts/pages/login/list_country.dart';
@@ -81,7 +82,9 @@ class NationnalityForm extends StatelessWidget {
                       );
                       if (mangopayUserID == null) return;
                       await paymentService.createMangopayWallet(
-                          name!, mangopayUserID);
+                          WalletType.MAIN, mangopayUserID);
+                      await paymentService.createMangopayWallet(
+                          WalletType.PENDING, mangopayUserID);
                       await BlocProvider.of<UserCubit>(context)
                           .updateUserInfoMangoPay(id,
                               mangoPayId: mangopayUserID)

@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+enum WalletType { MAIN, PENDING }
+
 class Wallet extends Equatable {
   final String id;
   final String desc;

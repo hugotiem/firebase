@@ -46,7 +46,7 @@ class UserCubit extends AppBaseCubit<UserState> {
         var wallet =
             await _paymentService.getWalletByUserId(user.mangoPayId ?? "");
         emit(
-            UserState.dataLoaded(user: user, token: token, wallet: wallet));
+            UserState.dataLoaded(user: user, token: token, wallet: wallet?[WalletType.MAIN]));
       }).catchError(onHandleError);
     } else {
       emit(UserState.dataLoaded(user: null, token: null));
@@ -60,7 +60,7 @@ class UserCubit extends AppBaseCubit<UserState> {
         var wallet =
             await _paymentService.getWalletByUserId(user.mangoPayId ?? "");
         
-        emit(UserState.dataLoaded(user: user, token: token, wallet: wallet));
+        emit(UserState.dataLoaded(user: user, token: token, wallet: wallet?[WalletType.MAIN]));
       }).catchError(onHandleError);
     } else {
       emit(UserState.dataLoaded());
@@ -93,6 +93,7 @@ class UserCubit extends AppBaseCubit<UserState> {
     Map<String, dynamic> data = <String, dynamic>{
       'id': token,
       "mangoPayId": mangoPayId,
+      "verified": false,
     };
     await firestore.setWithId(token, data: data);
     emit(UserState.dataLoaded(user: state.user, token: state.token));
@@ -110,7 +111,6 @@ class UserCubit extends AppBaseCubit<UserState> {
       var url = await value.ref.getDownloadURL();
       Map<String, dynamic> data = <String, dynamic>{
         "$ref": url,
-        "verified": false,
         "banned": false,
       };
       await firestore.setWithId(token, data: data);

@@ -5,9 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:pts/blocs/app_bloc_delegate.dart';
 import 'package:pts/blocs/user/user_cubit.dart';
+import 'package:pts/const.dart';
 import 'package:pts/services/auth_service.dart';
 import 'package:pts/services/notification_service.dart';
-import 'package:pts/services/payment_service.dart';
 import 'home.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -35,8 +35,14 @@ Future<void> main({bool isTesting = false}) async {
           FirebaseCrashlytics.instance.recordError(error, stacktrace));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   static final String title = "Upload Flutter To GitHub";
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   final Future<FirebaseApp> _fbApp = Firebase.initializeApp();
 
   @override
@@ -69,10 +75,14 @@ class MyApp extends StatelessWidget {
                   create: (context) => UserCubit()..init(),
                   child: BlocBuilder<UserCubit, UserState>(
                     builder: (context, state) {
-                      if (state.user == null) {
-                        return HomeNotConnect();
-                      }
-                      return Home();
+                      bool isConnected = false;
+                      if (state.user != null) isConnected = true;
+                  
+                        return Stack(
+                          children: [
+                            Home(isConnected),
+                          ],
+                        );
                     },
                   ),
                 );
