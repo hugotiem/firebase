@@ -26,7 +26,7 @@ class WalletPage extends StatelessWidget {
       String selectedId = "";
       return customShowModalBottomSheet(
         context,
-        [
+        children: [
           titleText("Sélectionne ton moyen de paiement"),
           StatefulBuilder(
               builder: (BuildContext context, StateSetter setState) {

@@ -457,8 +457,9 @@ class PaymentService {
     return print('FAILED');
   }
 
-  Future<String?> transfer(String userId, String creditedWalletId, int amount,
+  Future<String?> transfer(String? userId, String creditedWalletId, int amount,
       {bool refound = false}) async {
+    if (userId == null) return null;
     final Map<WalletType, Wallet>? _wallets = await getWalletByUserId(userId);
     if (_wallets == null) {
       return null;

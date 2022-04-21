@@ -22,7 +22,7 @@ class CalendarPage extends StatelessWidget {
     Future<dynamic> manageParty() {
       return customShowModalBottomSheet(
         context,
-        [
+        children: [
           titleText("Gère tes soirées :"),
           onTapContainer(context, "Mes soirées", MyParty()),
           onTapContainer(

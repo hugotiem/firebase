@@ -3,9 +3,10 @@ import 'package:pts/const.dart';
 
 import 'custom_text.dart';
 
-Future<void> customShowModalBottomSheet(
-    BuildContext context, List<Widget> children) {
+Future<void> customShowModalBottomSheet(BuildContext context,
+    {Widget? child, List<Widget>? children}) {
   return showModalBottomSheet(
+    backgroundColor: Colors.white,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
         topLeft: Radius.circular(25.0),
@@ -16,11 +17,15 @@ Future<void> customShowModalBottomSheet(
     builder: (BuildContext context) {
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 22),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: children,
-        ),
+        child: Builder(builder: (context) {
+          if (children != null)
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: children,
+            );
+          return child ?? Container();
+        }),
       );
     },
   );
@@ -101,7 +106,6 @@ Widget onTapContainerToDialog(
           );
         },
       );
-      
     },
     child: Container(
       margin: EdgeInsets.only(bottom: 22),

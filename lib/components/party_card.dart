@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pts/blocs/card_registration/card_registration_cubit.dart';
+import 'package:pts/blocs/payment/payment_cubit.dart';
 import 'package:pts/components/components_export.dart';
 import 'package:pts/blocs/parties/parties_cubit.dart';
 import 'package:pts/components/form/custom_text_form.dart';
@@ -14,24 +15,20 @@ import 'package:pts/models/capitalize.dart';
 import 'package:pts/models/party.dart';
 import 'package:pts/models/payments/credit_card.dart';
 import 'package:pts/pages/profil/subpage/new_credit_card_page.dart';
-import 'package:pts/services/firestore_service.dart';
-import 'package:pts/services/payment_service.dart';
 import 'package:pts/models/user.dart';
 import 'package:pts/blocs/user/user_cubit.dart';
-import 'package:pts/services/auth_service.dart';
 import 'package:pts/pages/login/connect.dart';
 import 'package:pts/pages/messaging/subpage/chatpage.dart';
 import 'package:pts/pages/search/sliver/custom_sliver.dart';
 import 'package:pts/const.dart';
+import '../models/payments/wallet.dart';
 import 'horizontal_separator.dart';
+import 'inside_line_text.dart';
 import 'piechart.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class PartyCard extends StatelessWidget {
   final Party party;
-
-  final FireStoreServices services = FireStoreServices("parties");
-  final PaymentService _paymentService = PaymentService();
 
   PartyCard({Key? key, required this.party}) : super(key: key);
 
@@ -104,11 +101,11 @@ class PartyCard extends StatelessWidget {
       textColor = PRIMARY_COLOR;
     }
 
-    void contact(String? ownerName) async {
+    void contact(String? ownerName, User? connectUser) async {
       FirebaseFirestore firestore = FirebaseFirestore.instance;
       var chatCollection = firestore.collection('chat');
-      var currentUserID = AuthService().currentUser!.uid;
-      var currentUserName = AuthService().currentUser!.displayName;
+      var currentUserID = connectUser?.id;
+      var currentUserName = connectUser?.name;
       var otherUserUID = party.ownerId;
       List currentUIDList = [];
       List otherUIDList = [];
@@ -173,178 +170,217 @@ class PartyCard extends StatelessWidget {
       });
     }
 
-    Future<dynamic> joinPartyBottomSheet(double prix, List<CreditCard> listCreditcard,
-        User? connectUser, User? ownerPartyUser) {
-      String selectedId = "";
+    Future<dynamic> joinPartyBottomSheet(
+        double prix,
+        List<CreditCard> listCreditcard,
+        User? connectedUser,
+        User? ownerPartyUser,
+        Wallet? wallet) {
+      String selectedId = wallet?.id ?? listCreditcard[0].id;
+      String selectedType = wallet?.id == null ? "CARD" : "WALLET";
       return customShowModalBottomSheet(
         context,
-        [
-          titleText("Sélectionne ton moyen de paiement"),
-          StatefulBuilder(
-              builder: (BuildContext context, StateSetter setState) {
-            return SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 4, left: 2),
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) =>
-                                    NewCreditCard(user: connectUser)));
-                          },
-                          child: Container(
-                            height: 70,
-                            width: 110,
-                            decoration: BoxDecoration(
-                              color: PRIMARY_COLOR,
-                              borderRadius: BorderRadius.circular(15),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey,
-                                  blurRadius: 3,
-                                  spreadRadius: 0,
-                                  offset: Offset(0, 3),
-                                ),
-                              ],
-                            ),
-                            child: const Icon(Ionicons.add_circle_outline,
-                                size: 45),
-                          ),
-                        ),
-                      ),
-                      const Text("+ ajouter")
-                    ],
-                  ),
-                  SizedBox(
-                    height: 100,
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      itemCount: listCreditcard.length,
-                      itemBuilder: (context, index) {
-                        var card = listCreditcard[index];
-                        bool _selected = card.id == selectedId;
-                        return Padding(
-                          padding: const EdgeInsets.only(left: 16),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 4),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      selectedId = card.id;
-                                    });
-                                  },
-                                  child: Badge(
-                                    badgeContent: _selected
-                                        ? Icon(
-                                            Ionicons.checkmark_outline,
-                                            color: PRIMARY_COLOR,
-                                            size: 15,
-                                          )
-                                        : null,
-                                    position: BadgePosition.bottomEnd(),
-                                    badgeColor: _selected
-                                        ? Colors.green
-                                        : PRIMARY_COLOR,
-                                    elevation: 0,
-                                    child: Container(
-                                      height: 70,
-                                      width: 110,
-                                      decoration: BoxDecoration(
-                                        color: PRIMARY_COLOR,
-                                        borderRadius: BorderRadius.circular(15),
-                                        border: Border.all(
-                                            color: _selected
-                                                ? Colors.green
-                                                : PRIMARY_COLOR,
-                                            width: 2),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.grey,
-                                            blurRadius: 3,
-                                            spreadRadius: 0,
-                                            offset: Offset(0, 3),
-                                          )
-                                        ],
+        child: BlocProvider(
+          create: (context) => PaymentCubit(),
+          child: BlocBuilder<PaymentCubit, PaymentState>(
+              builder: (context, state) {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                titleText("Sélectionne ton moyen de paiement"),
+                StatefulBuilder(
+                    builder: (BuildContext context, StateSetter setState) {
+                  return SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(bottom: 4, left: 2),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) =>
+                                          NewCreditCard(user: connectedUser)));
+                                },
+                                child: Container(
+                                  height: 70,
+                                  width: 110,
+                                  decoration: BoxDecoration(
+                                    color: PRIMARY_COLOR,
+                                    borderRadius: BorderRadius.circular(15),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey,
+                                        blurRadius: 3,
+                                        spreadRadius: 0,
+                                        offset: Offset(0, 3),
                                       ),
-                                      child: Center(
-                                          child: Text(card.cardProvider)),
-                                    ),
+                                    ],
                                   ),
+                                  child: const Icon(Ionicons.add_circle_outline,
+                                      size: 45),
                                 ),
                               ),
-                              Text(card.alias.substring(8).replaceAll("X", "*"))
-                            ],
+                            ),
+                            const Text("+ ajouter")
+                          ],
+                        ),
+                        SizedBox(
+                          height: 100,
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemCount: listCreditcard.length,
+                            itemBuilder: (context, index) {
+                              var card = listCreditcard[index];
+                              bool _selected = card.id == selectedId;
+                              return Padding(
+                                padding: const EdgeInsets.only(left: 16),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(bottom: 4),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            selectedId = card.id;
+                                          });
+                                        },
+                                        child: Badge(
+                                          badgeContent: _selected
+                                              ? Icon(
+                                                  Ionicons.checkmark_outline,
+                                                  color: PRIMARY_COLOR,
+                                                  size: 15,
+                                                )
+                                              : null,
+                                          position: BadgePosition.bottomEnd(),
+                                          badgeColor: _selected
+                                              ? Colors.green
+                                              : PRIMARY_COLOR,
+                                          elevation: 0,
+                                          child: Container(
+                                            height: 70,
+                                            width: 110,
+                                            decoration: BoxDecoration(
+                                              color: PRIMARY_COLOR,
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                              border: Border.all(
+                                                  color: _selected
+                                                      ? Colors.green
+                                                      : PRIMARY_COLOR,
+                                                  width: 2),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Colors.grey,
+                                                  blurRadius: 3,
+                                                  spreadRadius: 0,
+                                                  offset: Offset(0, 3),
+                                                )
+                                              ],
+                                            ),
+                                            child: Center(
+                                                child: Text(card.cardProvider)),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Text(card.alias
+                                        .substring(8)
+                                        .replaceAll("X", "*"))
+                                  ],
+                                ),
+                              );
+                            },
                           ),
-                        );
-                      },
+                        ),
+                        const SizedBox(height: 22),
+                      ],
+                    ),
+                  );
+                }),
+                InsideLineText(text: "ou"),
+                Builder(builder: (context) {
+                  if (wallet?.id == null) return Container();
+                  bool _selected = selectedId == wallet?.id;
+
+                  return Container(
+                    decoration: BoxDecoration(
+                      color: PRIMARY_COLOR,
+                      borderRadius: BorderRadius.circular(15),
+                      border: Border.all(
+                          color: _selected ? Colors.green : PRIMARY_COLOR,
+                          width: 2),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey,
+                          blurRadius: 3,
+                          spreadRadius: 0,
+                          offset: Offset(0, 3),
+                        )
+                      ],
+                    ),
+                    child: Center(
+                        child: Text(wallet?.amount.toString() ?? "0.0€")),
+                  );
+                }),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 22),
+                  child: GestureDetector(
+                    onTap: () async {
+                      int _price = (prix * 100).toInt();
+                      BlocProvider.of<PaymentCubit>(context).purchase(
+                        selectedType,
+                        userId: connectedUser?.mangoPayId,
+                        amount: _price,
+                        selectedPurchaseId: selectedId,
+                        creditedUserId: ownerPartyUser?.id,
+                      );
+                    },
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.99,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: SECONDARY_COLOR,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Stack(
+                        children: [
+                          Center(
+                            child: Text(
+                              "Payer $prix €",
+                              style: TextStyle(
+                                color: PRIMARY_COLOR,
+                                fontSize: 17,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 12),
+                              child: Icon(Ionicons.lock_closed_outline,
+                                  color: PRIMARY_COLOR),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                  const SizedBox(height: 22),
-                ],
-              ),
+                ),
+              ],
             );
           }),
-          // Row(
-          //   children: [
-          //     Container(
-          //       decoration: BoxDecoration(  
-          //         border: 
-          //       ),
-          //     ),
-          //     Text("ou")
-          //   ]
-          // ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 22),
-            child: GestureDetector(
-              onTap: () async {
-                await _paymentService.cardDirectPayin(
-                    connectUser?.id, (prix * 100).toInt(), selectedId,
-                    sellerId: ownerPartyUser?.mangoPayId);
-              },
-              child: Container(
-                width: MediaQuery.of(context).size.width * 0.99,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: SECONDARY_COLOR,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Stack(
-                  children: [
-                    Center(
-                      child: Text(
-                        "Payer $prix €",
-                        style: TextStyle(
-                          color: PRIMARY_COLOR,
-                          fontSize: 17,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 12),
-                        child: Icon(Ionicons.lock_closed_outline,
-                            color: PRIMARY_COLOR),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
+        ),
       );
     }
 
@@ -514,7 +550,8 @@ class PartyCard extends StatelessWidget {
                                     smoke: party.smoke!,
                                     list: list,
                                     nameList: nameList,
-                                    contacter: () => contact(user?.name),
+                                    contacter: () => contact(
+                                        user?.name, connectUserState.user),
                                     photoUserProfile: user?.photo,
                                     acceptedUserInfo: party.validatedListInfo,
                                     gender: gender,
@@ -625,10 +662,12 @@ class PartyCard extends StatelessWidget {
                                                   } else {
                                                     print(party.price);
                                                     joinPartyBottomSheet(
-                                                        party.price!,
-                                                        paymentCardState.cards!,
-                                                        connectUserState.user,
-                                                        user);
+                                                      party.price!,
+                                                      paymentCardState.cards!,
+                                                      connectUserState.user,
+                                                      user,
+                                                      connectUserState.wallet,
+                                                    );
                                                   }
                                                 },
                                                 child: Container(
@@ -724,7 +763,7 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
     Future<void> editParty() {
       return customShowModalBottomSheet(
         context,
-        [
+        children: [
           titleText("Gère ta soirée"),
           onTapContainer(context, "Modifie ta soirée", EditParty(widget.party)),
           onTapContainerToDialog(
@@ -1541,11 +1580,7 @@ class _EditPartyState extends State<EditParty> {
       ..addListener(() {
         _desc = _descController!.text;
       });
-    super.initState();
-  }
 
-  @override
-  Widget build(BuildContext context) {
     _animal == null ? _animal = widget.party.animals : _animal = _animal;
     _name == null ? _name = widget.party.name : _name = _name;
     _number == null
@@ -1554,59 +1589,71 @@ class _EditPartyState extends State<EditParty> {
     _theme == null ? _theme = widget.party.theme : _theme = _theme;
     _smoke == null ? _smoke = widget.party.smoke : _smoke = _smoke;
     _desc == null ? _desc = widget.party.desc : _desc = _desc;
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(50),
-        child: BackAppBar(actions: [
-          TextButton(
-            onPressed: () async {
-              saveData(widget.party.id!, {
-                "name": _name,
-                "theme": _theme,
-                "number": _number,
-                "animals": _animal,
-                "smoke": _smoke,
-                "desc": _desc
-              });
-              int countComment = 0;
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: CText("Modifié"),
-                      content: CText("Tu as bien modifié t'as soirée"),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.popUntil(context, (route) {
-                            return countComment++ == 3;
-                          }),
-                          child: CText("OK"),
-                        )
-                      ],
-                    );
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => PartiesCubit(),
+      child: BlocBuilder<PartiesCubit, PartiesState>(builder: (context, state) {
+        return Scaffold(
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(50),
+            child: BackAppBar(actions: [
+              TextButton(
+                onPressed: () async {
+                  BlocProvider.of<PartiesCubit>(context)
+                      .saveData(widget.party.id!, {
+                    "name": _name,
+                    "theme": _theme,
+                    "number": _number,
+                    "animals": _animal,
+                    "smoke": _smoke,
+                    "desc": _desc
                   });
-            },
-            child: CText("Sauvegarder"),
-          )
-        ]),
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 22),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              HeaderText1(text: "Modifie ta soirée"),
-              ttf("Nom", _nameController),
-              dropdownTheme("Thème", widget.party.theme),
-              ttf("Nombre d'invité", _numberController),
-              dropdownAnimals("Animaux", widget.party.animals),
-              dropdownSmoke("Fumé", widget.party.smoke),
-              ttf('Description', _descController, maxLength: true)
-            ],
+                  int countComment = 0;
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: CText("Modifié"),
+                          content: CText("Tu as bien modifié t'as soirée"),
+                          actions: [
+                            TextButton(
+                              onPressed: () =>
+                                  Navigator.popUntil(context, (route) {
+                                return countComment++ == 3;
+                              }),
+                              child: CText("OK"),
+                            )
+                          ],
+                        );
+                      });
+                },
+                child: CText("Sauvegarder"),
+              )
+            ]),
           ),
-        ),
-      ),
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 22),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  HeaderText1(text: "Modifie ta soirée"),
+                  ttf("Nom", _nameController),
+                  dropdownTheme("Thème", widget.party.theme),
+                  ttf("Nombre d'invité", _numberController),
+                  dropdownAnimals("Animaux", widget.party.animals),
+                  dropdownSmoke("Fumé", widget.party.smoke),
+                  ttf('Description', _descController, maxLength: true)
+                ],
+              ),
+            ),
+          ),
+        );
+      }),
     );
   }
 
@@ -1774,9 +1821,5 @@ class _EditPartyState extends State<EditParty> {
 
   Widget hintText1(String text) {
     return Opacity(opacity: 0.65, child: CText(text));
-  }
-
-  Future saveData(String id, Map<String, dynamic> data) async {
-    await FirebaseFirestore.instance.collection("parties").doc(id).update(data);
   }
 }

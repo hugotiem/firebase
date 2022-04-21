@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pts/components/form/custom_ttf_form.dart';
+import 'package:pts/components/inside_line_text.dart';
 import 'package:pts/const.dart';
 import 'package:pts/pages/login/register_form_screen.dart';
 import 'package:pts/blocs/login/login_cubit.dart';
@@ -193,28 +194,7 @@ class _LoginPageState extends State<LoginPage>
               ),
             ),
           ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 10),
-            child: Wrap(
-              children: [
-                Stack(
-                  alignment: AlignmentDirectional.center,
-                  children: [
-                    Divider(
-                      height: 2,
-                      color: Colors.grey,
-                    ),
-                    Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-                      child: Text("ou"),
-                      color: Colors.white,
-                    )
-                  ],
-                ),
-              ],
-            ),
-          ),
+          InsideLineText(text: "ou"),
           GestureDetector(
             onTap: onTapGoogleBtn,
             child: Container(

@@ -273,4 +273,8 @@ class PartiesCubit extends AppBaseCubit<PartiesState> {
   Future updateParty(String id, Map<String, dynamic> data) async {
     await services.updateValue(id, data);
   }
+
+  Future<void> saveData(String id, Map<String, dynamic> data) async {
+    await FirebaseFirestore.instance.collection("parties").doc(id).update(data);
+  }
 }
