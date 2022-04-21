@@ -46,20 +46,20 @@ class User extends Equatable {
 
   factory User.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> snapshot) {
     var id = snapshot.id;
-    var data = snapshot.data()!;
-    var name = data['name'];
-    var surname = data['surname'];
-    var birthday = data['birthday']?.toDate() ?? DateTime(2017);
+    var data = snapshot.data();
+    var name = data?['name'];
+    var surname = data?['surname'];
+    var birthday = data?['birthday']?.toDate() ?? DateTime(2017);
     var now = DateTime.now();
     var age = (now.difference(birthday).inDays / 365).floor();
-    var gender = data['gender'];
-    var phone = data['phone number'];
-    var email = data['email'];
-    var hasIdChecked = data['idFront'] != null;
-    var verified = data['verified'];
-    var banned = data['banned'];
-    var photo = data['photo'];
-    var mangoPayId = data["mangoPayId"];
+    var gender = data?['gender'];
+    var phone = data?['phone number'];
+    var email = data?['email'];
+    var hasIdChecked = data?['idFront'] != null;
+    var verified = data?['verified'];
+    var banned = data?['banned'];
+    var photo = data?['photo'];
+    var mangoPayId = data?["mangoPayId"];
 
     return User(
       id: id,

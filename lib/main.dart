@@ -62,7 +62,7 @@ class _MyAppState extends State<MyApp> {
             return Text("ERROR");
           } else if (snapshot.hasData) {
             return FutureBuilder<bool>(
-              future: AuthService().hasValue("new"),
+              future: Future.value(true), // AuthService().hasValue("new"),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return CircularProgressIndicator();
@@ -75,14 +75,13 @@ class _MyAppState extends State<MyApp> {
                   create: (context) => UserCubit()..init(),
                   child: BlocBuilder<UserCubit, UserState>(
                     builder: (context, state) {
-                      bool isConnected = false;
-                      if (state.user != null) isConnected = true;
-                  
-                        return Stack(
-                          children: [
-                            Home(isConnected),
-                          ],
-                        );
+                      bool isConnected = state.user != null;
+
+                      return Stack(
+                        children: [
+                          Home(isConnected),
+                        ],
+                      );
                     },
                   ),
                 );

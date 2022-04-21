@@ -216,20 +216,20 @@ class PartiesCubit extends AppBaseCubit<PartiesState> {
     emit(PartiesState.loaded(state.parties, state.filters));
   }
 
-  Future<void> addUserInWaitList(User user, Party party) async {
+  Future<void> addUserInWaitList(User? user, Party party) async {
     emit(state.setRequestInProgress() as PartiesState);
     await services.setWithId(party.id, data: {
-      "waitList": FieldValue.arrayUnion([user.id]),
+      "waitList": FieldValue.arrayUnion([user?.id]),
     });
 
     await services.setWithId(party.id,
         data: {
-          "name": user.name,
-          "surname": user.surname,
-          "photo": user.photo,
-          "gender": user.gender,
+          "name": user?.name,
+          "surname": user?.surname,
+          "photo": user?.photo,
+          "gender": user?.gender,
         },
-        path: "waitListInfo.${user.id}");
+        path: "waitListInfo.${user?.id}");
     emit(PartiesState.loaded(state.parties, state.filters));
   }
 

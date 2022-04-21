@@ -42,6 +42,16 @@ class _HomeState extends State<Home> {
       widget.isConnected ? MessagePage() : Connect(),
       widget.isConnected ? Profil() : Connect(),
     ];
+    BlocProvider.of<UserCubit>(context).stream.listen((event) {
+      bool _isConnected = event.user != null;
+      setState(() => _children = [
+            Search(),
+            _isConnected ? Container() : Connect(),
+            Container(),
+            _isConnected ? MessagePage() : Connect(),
+            _isConnected ? Profil() : Connect(),
+          ]);
+    });
   }
 
   Future<void> initUniLinks() async {

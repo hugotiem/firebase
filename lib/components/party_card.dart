@@ -175,7 +175,7 @@ class PartyCard extends StatelessWidget {
     }
 
     Future<dynamic> joinparty(double prix, List<CreditCard> listCreditcard,
-        User connectUser, User ownerPartyUser) {
+        User? connectUser, User? ownerPartyUser) {
       String selectedId = "";
       return customShowModalBottomSheet(
         context,
@@ -300,8 +300,8 @@ class PartyCard extends StatelessWidget {
             child: GestureDetector(
               onTap: () async {
                 await _paymentService.cardDirectPayin(
-                    connectUser.id!, (prix * 100).toInt(), selectedId,
-                    sellerId: ownerPartyUser.mangoPayId);
+                    connectUser?.id, (prix * 100).toInt(), selectedId,
+                    sellerId: ownerPartyUser?.mangoPayId);
               },
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.99,
@@ -429,14 +429,14 @@ class PartyCard extends StatelessWidget {
                                       const EdgeInsets.symmetric(vertical: 1),
                                   child: Row(
                                     children: [
-                                      CText("${user!.name!} ${user.surname!}",
+                                      CText("${user?.name} ${user?.surname}",
                                           fontSize: 15,
                                           fontWeight: FontWeight.w500),
                                       SizedBox(
                                         width: 5,
                                       ),
                                       Icon(
-                                        user.verified == true
+                                        user?.verified == true
                                             ? Icons.verified
                                             : null,
                                         size: 15,
@@ -499,14 +499,14 @@ class PartyCard extends StatelessWidget {
                                     nombre: party.number?.toString(),
                                     desc: party.desc != null ? party.desc : '',
                                     nomOrganisateur:
-                                        "${user!.name} ${user.surname}",
+                                        "${user?.name} ${user?.surname}",
                                     partyOwner: partyOwnerState.parties,
                                     animal: party.animals!,
                                     smoke: party.smoke!,
                                     list: list,
                                     nameList: nameList,
-                                    contacter: () => contacter(user.name),
-                                    photoUserProfile: user.photo,
+                                    contacter: () => contacter(user?.name),
+                                    photoUserProfile: user?.photo,
                                     acceptedUserInfo: party.validatedListInfo,
                                     gender: gender,
                                   ),

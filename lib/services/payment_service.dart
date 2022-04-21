@@ -106,7 +106,7 @@ class PaymentService {
     return null;
   }
 
-  Future<Map<WalletType, Wallet>?> getWalletByUserId(String userId) async {
+  Future<Map<WalletType, Wallet>?> getWalletByUserId(String? userId) async {
     final String _url = "$url/users/$userId/wallets/";
 
     var request = http.Request('GET', Uri.parse(_url));
@@ -317,7 +317,7 @@ class PaymentService {
     return print("FAILED");
   }
 
-  Future<void> cardDirectPayin(String userId, int amount, String cardId,
+  Future<void> cardDirectPayin(String? userId, int amount, String cardId,
       {String? sellerId}) async {
     final Map<WalletType, Wallet>? _wallets =
         await getWalletByUserId(sellerId ?? userId);
