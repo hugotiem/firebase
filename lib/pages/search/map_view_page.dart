@@ -8,7 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:pts/blocs/parties/parties_cubit.dart';
 import 'package:pts/blocs/search/search_cubit.dart';
 import 'package:pts/components/components_export.dart';
-import 'package:pts/components/party_card.dart';
+import 'package:pts/components/party_card/party_card.dart';
 import 'package:pts/const.dart';
 import 'package:pts/models/party.dart';
 import 'package:pts/pages/search/search_form_page.dart';

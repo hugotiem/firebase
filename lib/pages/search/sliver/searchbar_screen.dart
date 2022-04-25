@@ -13,7 +13,7 @@ import 'package:pts/models/party.dart';
 import 'package:pts/pages/search/sliver/filter_screen.dart';
 import 'package:pts/pages/search/sliver/items.dart';
 import 'package:pts/pages/search/sliver/searchbar.dart';
-import 'package:pts/components/party_card.dart';
+import 'package:pts/components/party_card/party_card.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'dart:math' as math;
 

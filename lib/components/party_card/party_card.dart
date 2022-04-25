@@ -159,14 +159,14 @@ class PartyCard extends StatelessWidget {
           create: (context) => PaymentCubit(),
           child: BlocBuilder<PaymentCubit, PaymentState>(
               builder: (context, state) {
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                titleText("Sélectionne ton moyen de paiement"),
-                StatefulBuilder(
-                    builder: (BuildContext context, StateSetter setState) {
-                  return SingleChildScrollView(
+            return StatefulBuilder(
+                builder: (BuildContext context, StateSetter setState) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  titleText("Sélectionne ton moyen de paiement"),
+                  SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -238,7 +238,7 @@ class PartyCard extends StatelessWidget {
                                               : null,
                                           position: BadgePosition.bottomEnd(),
                                           badgeColor: _selected
-                                              ? Colors.green
+                                              ? SECONDARY_COLOR
                                               : PRIMARY_COLOR,
                                           elevation: 0,
                                           child: Container(
@@ -250,7 +250,7 @@ class PartyCard extends StatelessWidget {
                                                   BorderRadius.circular(15),
                                               border: Border.all(
                                                   color: _selected
-                                                      ? Colors.green
+                                                      ? SECONDARY_COLOR
                                                       : PRIMARY_COLOR,
                                                   width: 2),
                                               boxShadow: [
@@ -280,80 +280,105 @@ class PartyCard extends StatelessWidget {
                         const SizedBox(height: 22),
                       ],
                     ),
-                  );
-                }),
-                InsideLineText(text: "ou"),
-                Builder(builder: (context) {
-                  if (wallet?.id == null) return Container();
-                  bool _selected = selectedId == wallet?.id;
+                  ),
+                  InsideLineText(text: "ou"),
+                  Builder(builder: (context) {
+                    if (wallet?.id == null) return Container();
+                    bool _selected = selectedId == wallet?.id;
 
-                  return Container(
-                    decoration: BoxDecoration(
-                      color: PRIMARY_COLOR,
-                      borderRadius: BorderRadius.circular(15),
-                      border: Border.all(
-                          color: _selected ? Colors.green : PRIMARY_COLOR,
-                          width: 2),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey,
-                          blurRadius: 3,
-                          spreadRadius: 0,
-                          offset: Offset(0, 3),
-                        )
-                      ],
-                    ),
-                    child: Center(
-                        child: Text(wallet?.amount.toString() ?? "0.0€")),
-                  );
-                }),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 22),
-                  child: GestureDetector(
-                    onTap: () async {
-                      int _price = (prix * 100).toInt();
-                      BlocProvider.of<PaymentCubit>(context).purchase(
-                        selectedType,
-                        userId: connectedUser?.mangoPayId,
-                        amount: _price,
-                        selectedPurchaseId: selectedId,
-                        creditedUserId: ownerPartyUser?.id,
-                      );
-                    },
-                    child: Container(
-                      width: MediaQuery.of(context).size.width * 0.99,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        color: SECONDARY_COLOR,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Stack(
-                        children: [
-                          Center(
-                            child: Text(
-                              "Payer $prix €",
-                              style: TextStyle(
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selectedId = wallet!.id;
+                        });
+                      },
+                      child: Badge(
+                        badgeContent: _selected
+                            ? Icon(
+                                Ionicons.checkmark_outline,
                                 color: PRIMARY_COLOR,
-                                fontSize: 17,
-                                fontWeight: FontWeight.w700,
-                              ),
+                                size: 15,
+                              )
+                            : null,
+                        position: BadgePosition.bottomEnd(),
+                        badgeColor: _selected ? SECONDARY_COLOR : PRIMARY_COLOR,
+                        elevation: 0,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: PRIMARY_COLOR,
+                            borderRadius: BorderRadius.circular(15),
+                            border: Border.all(
+                                color:
+                                    _selected ? SECONDARY_COLOR : PRIMARY_COLOR,
+                                width: 2),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey,
+                                blurRadius: 3,
+                                spreadRadius: 0,
+                                offset: Offset(0, 3),
+                              )
+                            ],
+                          ),
+                          padding: EdgeInsets.symmetric(vertical: 16),
+                          child: Center(
+                            child: Text(
+                              "Portfeuille: ${wallet?.amount.toString()}€",
+                              style: TextStyle(fontSize: 17, color: SECONDARY_COLOR),
                             ),
                           ),
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: Padding(
-                              padding: const EdgeInsets.only(right: 12),
-                              child: Icon(Ionicons.lock_closed_outline,
-                                  color: PRIMARY_COLOR),
+                        ),
+                      ),
+                    );
+                  }),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 22),
+                    child: GestureDetector(
+                      onTap: () async {
+                        int _price = (prix * 100).toInt();
+                        BlocProvider.of<PaymentCubit>(context).purchase(
+                          selectedType,
+                          userId: connectedUser?.mangoPayId,
+                          amount: _price,
+                          selectedPurchaseId: selectedId,
+                          creditedUserId: ownerPartyUser?.id,
+                        );
+                      },
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * 0.99,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: SECONDARY_COLOR,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Stack(
+                          children: [
+                            Center(
+                              child: Text(
+                                "Payer $prix €",
+                                style: TextStyle(
+                                  color: PRIMARY_COLOR,
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
                             ),
-                          )
-                        ],
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 12),
+                                child: Icon(Ionicons.lock_closed_outline,
+                                    color: PRIMARY_COLOR),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            );
+                ],
+              );
+            });
           }),
         ),
       );

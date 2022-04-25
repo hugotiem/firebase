@@ -4,7 +4,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pts/blocs/parties/parties_cubit.dart';
-import 'package:pts/components/party_card.dart';
+import 'package:pts/components/party_card/party_card.dart';
 import 'package:pts/models/party.dart';
 import 'package:pts/pages/search/search_page.dart';
 

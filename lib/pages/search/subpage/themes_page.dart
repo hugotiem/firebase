@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pts/blocs/parties/parties_cubit.dart';
 import 'package:pts/components/appbar.dart';
-import 'package:pts/components/party_card.dart';
+import 'package:pts/components/party_card/party_card.dart';
 import 'package:pts/const.dart';
 
 class GridListThemes extends StatefulWidget {

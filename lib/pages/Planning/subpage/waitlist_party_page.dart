@@ -4,7 +4,7 @@ import 'package:pts/blocs/user/user_cubit.dart';
 import 'package:pts/const.dart';
 import 'package:pts/blocs/parties/parties_cubit.dart';
 import 'package:pts/components/appbar.dart';
-import 'package:pts/components/party_card.dart';
+import 'package:pts/components/party_card/party_card.dart';
 
 class PartyWaitList extends StatelessWidget {
   const PartyWaitList({Key? key}) : super(key: key);
