@@ -24,6 +24,8 @@ class NewCityGrid extends StatelessWidget {
               CityBox(text: "Marseille", image: "assets/marseille.jpg"),
               CityBox(text: "Bordeaux", image: "assets/bordeaux.jpg"),
               CityBox(text: "Lyon", image: "assets/lyon.jpg"),
+              CityBox(text: "Nantes", image: "assets/nantes.jpg"),
+              CityBox(text: "Lille", image: "assets/lille.jpg"),
               SizedBox(width: 32),
             ],
           ),
