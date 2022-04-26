@@ -51,7 +51,7 @@ class _SearchState extends State<Search> {
           decoration: BoxDecoration(
             image: DecorationImage(
               fit: BoxFit.cover,
-              image: AssetImage('assets/map.png'),
+              image: AssetImage('assets/cityview.png'),
             ),
             borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(36),
