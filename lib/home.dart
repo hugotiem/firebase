@@ -14,6 +14,7 @@ import 'package:pts/pages/login/connect.dart';
 import 'package:pts/pages/login/id_form_screen.dart';
 import 'package:pts/blocs/user/user_cubit.dart';
 import 'package:pts/pages/messaging/message_list.dart';
+import 'package:pts/pages/profil/new_profile_page.dart';
 import 'package:uni_links/uni_links.dart';
 import 'pages/Planning/calendar_page.dart';
 import 'pages/profil/profil_page.dart';
@@ -193,6 +194,20 @@ class _HomeState extends State<Home> {
         ),
       );
     } else if (index == 2 && !widget.isConnected) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => Connect(),
+          fullscreenDialog: true,
+        ),
+      );
+    } else if (index == 4 && widget.isConnected) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => NewProfilePage(),
+          fullscreenDialog: true,
+        ),
+      );
+    } else if (index == 4 && !widget.isConnected) {
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => Connect(),
