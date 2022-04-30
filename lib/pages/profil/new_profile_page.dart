@@ -1,4 +1,5 @@
 import 'package:pts/components/party_card/party_export.dart';
+import 'package:pts/pages/profil/subpage/new_user_page.dart';
 
 class NewProfilePage extends StatelessWidget {
   const NewProfilePage({Key? key}) : super(key: key);
@@ -86,17 +87,25 @@ class NewProfilePage extends StatelessWidget {
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.only(left: 8),
-                                        child: Icon(Icons.verified_user_sharp,
-                                            color: ICONCOLOR, size: 32),
+                                        child: Icon(Icons.verified_sharp,
+                                            color: ICONCOLOR),
                                       )
                                     ],
                                   ),
-                                  const Opacity(
-                                    opacity: 0.7,
-                                    child: Text(
-                                      "Afficher le profil",
-                                      style: TextStyle(
-                                          decoration: TextDecoration.underline),
+                                  InkWell(
+                                    onTap: () => Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                NewUserPage())),
+                                    child: const Opacity(
+                                      opacity: 0.7,
+                                      child: Text(
+                                        "Afficher le profil",
+                                        style: TextStyle(
+                                            decoration:
+                                                TextDecoration.underline),
+                                      ),
                                     ),
                                   ),
                                   Padding(
