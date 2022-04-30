@@ -8,7 +8,7 @@ class CustomSliver extends StatelessWidget {
   final Function(ScrollNotification)? onNotification;
   CustomSliver({
     Key? key,
-    required this.appBar,
+    this.appBar,
     required this.body,
     this.onNotification,
     this.backgroundColor,
@@ -33,7 +33,7 @@ class CustomSliver extends StatelessWidget {
         onNotification: onNotification as bool Function(ScrollNotification)?,
         child: Stack(
           children: <Widget>[
-            appBar!,
+            appBar ?? Container(),
             body!,
             Container(
               height: toolbarColor == Colors.transparent ? 0 : 120,

@@ -1,195 +1,236 @@
+import 'package:flutter/services.dart';
 import 'package:pts/components/party_card/party_export.dart';
 import 'package:pts/pages/profil/subpage/new_user_page.dart';
 
-class NewProfilePage extends StatelessWidget {
+class NewProfilePage extends StatefulWidget {
   const NewProfilePage({Key? key}) : super(key: key);
+
+  @override
+  State<NewProfilePage> createState() => _NewProfilePageState();
+}
+
+class _NewProfilePageState extends State<NewProfilePage> {
+  double _radius = 120;
 
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: Stack(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(colors: [SECONDARY_COLOR, ICONCOLOR]),
-            ),
-          ),
-          Align(
-            alignment: Alignment.topLeft,
-            child: Padding(
-              padding: EdgeInsets.only(
-                top: height * 0.05,
-                left: width * 0.05,
-              ),
-              child: InkWell(
-                onTap: () => Navigator.pop(context),
-                child: Image(
-                  image: AssetImage("assets/RETOUR.png"),
-                  alignment: Alignment.topLeft,
-                  height: 40,
-                  width: 40,
-                ),
-              ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              height: height * 0.88,
-              width: width,
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        automaticallyImplyLeading: false,
+        elevation: 0,
+        toolbarHeight: 0,
+        systemOverlayStyle: SystemUiOverlayStyle.light,
+      ),
+      body: NotificationListener<ScrollNotification>(
+        onNotification: (notification) {
+          if (notification.metrics.pixels < 0) {
+            setState(() {
+              _radius = 120;
+            });
+          } else if (notification.metrics.pixels > 80) {
+            setState(() {
+              _radius = 120 - 80;
+            });
+          } else if (notification.metrics.pixels < 80) {
+            setState(() {
+              _radius = 120 - notification.metrics.pixels;
+            });
+          }
+          return true;
+        },
+        child: Stack(
+          children: [
+            Container(
               decoration: BoxDecoration(
-                color: PRIMARY_COLOR,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(50),
-                  topRight: Radius.circular(50),
+                gradient: LinearGradient(colors: [SECONDARY_COLOR, ICONCOLOR]),
+              ),
+            ),
+            Align(
+              alignment: Alignment.topLeft,
+              child: Padding(
+                padding: EdgeInsets.only(
+                  top: height * 0.05,
+                  left: width * 0.05,
+                ),
+                child: InkWell(
+                  onTap: () => Navigator.pop(context),
+                  child: Image(
+                    image: AssetImage("assets/RETOUR.png"),
+                    alignment: Alignment.topLeft,
+                    height: 40,
+                    width: 40,
+                  ),
                 ),
               ),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Center(
-                      child: Padding(
-                        padding:
-                            const EdgeInsets.only(top: 22, right: 28, left: 28),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: PRIMARY_COLOR,
-                            borderRadius: BorderRadius.circular(30),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                blurRadius: 4,
-                                spreadRadius: 0,
-                                offset: Offset(0, 4),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                clipBehavior: Clip.antiAlias,
+                height: height * 0.88,
+                width: width,
+                decoration: BoxDecoration(
+                  color: PRIMARY_COLOR,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(50),
+                    topRight: Radius.circular(50),
+                  ),
+                ),
+                child: SafeArea(
+                  top: false,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Center(
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                top: 22, right: 28, left: 28),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: PRIMARY_COLOR,
+                                borderRadius: BorderRadius.circular(30),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.5),
+                                    blurRadius: 4,
+                                    spreadRadius: 0,
+                                    offset: Offset(0, 4),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: height * 0.2,
-                              ),
-                              Column(
+                              child: Column(
                                 children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
+                                  SizedBox(
+                                    height: height * 0.2,
+                                  ),
+                                  Column(
                                     children: [
-                                      Text(
-                                        "Jean",
-                                        style: TextStyle(
-                                          fontSize: 32,
-                                          fontWeight: FontWeight.w800,
-                                          color: SECONDARY_COLOR,
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            "Jean",
+                                            style: TextStyle(
+                                              fontSize: 32,
+                                              fontWeight: FontWeight.w800,
+                                              color: SECONDARY_COLOR,
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(left: 8),
+                                            child: Icon(Icons.verified_sharp,
+                                                color: ICONCOLOR),
+                                          )
+                                        ],
+                                      ),
+                                      InkWell(
+                                        onTap: () => Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    NewUserPage())),
+                                        child: const Opacity(
+                                          opacity: 0.7,
+                                          child: Text(
+                                            "Afficher le profil",
+                                            style: TextStyle(
+                                                decoration:
+                                                    TextDecoration.underline),
+                                          ),
                                         ),
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.only(left: 8),
-                                        child: Icon(Icons.verified_sharp,
-                                            color: ICONCOLOR),
+                                        padding: const EdgeInsets.only(
+                                            top: 30, bottom: 30),
+                                        child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              const Info(
+                                                "164",
+                                                hintInfo: "Avis",
+                                              ),
+                                              const Info(
+                                                "12",
+                                                hintInfo: "Soirée organisées",
+                                              ),
+                                              const Info(
+                                                "28",
+                                                hintInfo: "Participations",
+                                              )
+                                            ]),
                                       )
                                     ],
                                   ),
-                                  InkWell(
-                                    onTap: () => Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                NewUserPage())),
-                                    child: const Opacity(
-                                      opacity: 0.7,
-                                      child: Text(
-                                        "Afficher le profil",
-                                        style: TextStyle(
-                                            decoration:
-                                                TextDecoration.underline),
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 30, bottom: 30),
-                                    child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          const Info(
-                                            "164",
-                                            hintInfo: "Avis",
-                                          ),
-                                          const Info(
-                                            "12",
-                                            hintInfo: "Soirée organisées",
-                                          ),
-                                          const Info(
-                                            "28",
-                                            hintInfo: "Participations",
-                                          )
-                                        ]),
-                                  )
                                 ],
                               ),
-                            ],
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(left: 28, top: 28, bottom: 14),
-                      child: Text(
-                        "PARAMÈTRES DU COMPTE",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                    SettingContainer(
-                        text: "Informations personnelles",
-                        icon: Ionicons.person_outline),
-                    SettingContainer(
-                        text: "Paiements", icon: Ionicons.card_outline),
-                    SettingContainer(
-                        text: "Notifications",
-                        icon: Ionicons.notifications_outline),
-                    SettingContainer(
-                        text: "À propos",
-                        icon: Ionicons.information_circle_outline),
-                    SettingContainer(
-                        text: "Nous contacter", icon: Ionicons.mail_outline),
-                    SettingContainer(
-                        text: "QR code", icon: Ionicons.qr_code_outline),
-                    Center(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 22),
-                        child: Text(
-                          "Se déconnecter",
-                          style: TextStyle(
-                            color: Colors.red,
-                            decoration: TextDecoration.underline,
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left: 28, top: 28, bottom: 14),
+                          child: Text(
+                            "PARAMÈTRES DU COMPTE",
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.w600),
                           ),
                         ),
-                      ),
+                        SettingContainer(
+                            text: "Informations personnelles",
+                            icon: Ionicons.person_outline),
+                        SettingContainer(
+                            text: "Paiements", icon: Ionicons.card_outline),
+                        SettingContainer(
+                            text: "Notifications",
+                            icon: Ionicons.notifications_outline),
+                        SettingContainer(
+                            text: "À propos",
+                            icon: Ionicons.information_circle_outline),
+                        SettingContainer(
+                            text: "Nous contacter",
+                            icon: Ionicons.mail_outline),
+                        SettingContainer(
+                            text: "QR code", icon: Ionicons.qr_code_outline),
+                        Center(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 22),
+                            child: Text(
+                              "Se déconnecter",
+                              style: TextStyle(
+                                color: Colors.red,
+                                decoration: TextDecoration.underline,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
             ),
-          ),
-          Align(
-            alignment: Alignment.topCenter,
-            child: Padding(
-              padding: EdgeInsets.only(top: height * 0.05),
-              child: ProfilePhoto(
-                "",
-                radius: 120,
+            Align(
+              alignment: Alignment.topCenter,
+              child: Padding(
+                padding: EdgeInsets.only(top: height * 0.05),
+                child: ProfilePhoto(
+                  "",
+                  radius: _radius,
+                ),
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
@@ -276,8 +317,8 @@ class SettingContainer extends StatelessWidget {
           borderRadius: BorderRadius.circular(15),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              blurRadius: 4,
+              color: Colors.grey.withOpacity(0.3),
+              blurRadius: 6,
               spreadRadius: 0,
               offset: Offset(0, 4),
             ),
