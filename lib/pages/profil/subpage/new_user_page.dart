@@ -122,8 +122,8 @@ class NewUserPage extends StatelessWidget {
                         decoration: BoxDecoration(
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                blurRadius: 4,
+                                color: Colors.grey.withOpacity(0.3),
+                                blurRadius: 6,
                                 spreadRadius: 0,
                                 offset: Offset(0, 4),
                               ),
@@ -188,11 +188,53 @@ class NewUserPage extends StatelessWidget {
                       child: Text(
                         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
                         style: TextStyle(
-                          fontSize: 19, 
-                          fontWeight: FontWeight.w500
-                        ),
+                            fontSize: 19, fontWeight: FontWeight.w500),
                       ),
-                    )
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 28),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "12",
+                            style: TextStyle(
+                                color: ICONCOLOR,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 24),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 6),
+                            child: Text(
+                              "Soirées organisées",
+                              style: TextStyle(color: ICONCOLOR, fontSize: 20),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 14),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "28",
+                            style: TextStyle(
+                                color: ICONCOLOR,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 24),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 6),
+                            child: Text(
+                              "Participations",
+                              style: TextStyle(color: ICONCOLOR, fontSize: 20),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
