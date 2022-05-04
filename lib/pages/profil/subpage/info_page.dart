@@ -13,8 +13,7 @@ import 'package:pts/models/user.dart';
 
 class InformationPage extends StatefulWidget {
   final User user;
-  final birthday;
-  const InformationPage(this.user, this.birthday, {Key? key}) : super(key: key);
+  const InformationPage(this.user, {Key? key}) : super(key: key);
 
   @override
   _InformationPageState createState() => _InformationPageState();
@@ -46,7 +45,7 @@ class _InformationPageState extends State<InformationPage> {
         _surname = _surnameController!.text.trim();
       });
     _dateController = TextEditingController(
-        text: DateFormat.yMd('fr').format(widget.birthday))
+        text: DateFormat.yMd('fr').format(widget.user.birthday))
       ..addListener(() {
         _date = _dateController!.text;
       });

@@ -49,68 +49,71 @@ class NewUserPage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Center(
-                      child: Padding(
-                        padding:
-                            const EdgeInsets.only(top: 22, right: 28, left: 28),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: PRIMARY_COLOR,
-                            borderRadius: BorderRadius.circular(30),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                blurRadius: 4,
-                                spreadRadius: 0,
-                                offset: Offset(0, 4),
-                              ),
-                            ],
-                          ),
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: height * 0.2,
-                              ),
-                              Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        "Jean",
-                                        style: TextStyle(
-                                          fontSize: 32,
-                                          fontWeight: FontWeight.w800,
-                                          color: SECONDARY_COLOR,
+                    Hero(
+                      tag: "user",
+                      child: Center(
+                        child: Padding(
+                          padding:
+                              const EdgeInsets.only(top: 22, right: 28, left: 28),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: PRIMARY_COLOR,
+                              borderRadius: BorderRadius.circular(30),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  blurRadius: 4,
+                                  spreadRadius: 0,
+                                  offset: Offset(0, 4),
+                                ),
+                              ],
+                            ),
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: height * 0.2,
+                                ),
+                                Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "Jean",
+                                          style: TextStyle(
+                                            fontSize: 32,
+                                            fontWeight: FontWeight.w800,
+                                            color: SECONDARY_COLOR,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 8),
+                                          child: Icon(Icons.verified_sharp,
+                                              color: ICONCOLOR),
+                                        )
+                                      ],
+                                    ),
+                                    Text(
+                                      "22 ans",
+                                      style: TextStyle(fontSize: 20),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 6, bottom: 16),
+                                      child: const Opacity(
+                                        opacity: 0.7,
+                                        child: Text(
+                                          "Modifier la photo de profil",
+                                          style: TextStyle(
+                                              decoration:
+                                                  TextDecoration.underline),
                                         ),
                                       ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(left: 8),
-                                        child: Icon(Icons.verified_sharp,
-                                            color: ICONCOLOR),
-                                      )
-                                    ],
-                                  ),
-                                  Text(
-                                    "22 ans",
-                                    style: TextStyle(fontSize: 20),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 6, bottom: 16),
-                                    child: const Opacity(
-                                      opacity: 0.7,
-                                      child: Text(
-                                        "Modifier la photo de profil",
-                                        style: TextStyle(
-                                            decoration:
-                                                TextDecoration.underline),
-                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ],
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),

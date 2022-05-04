@@ -145,7 +145,7 @@ class _ProfilState extends State<Profil> {
                               text: 'Paramètres du compte',
                             ),
                             CickableContainerProfil(
-                              to: InformationPage(user, user.birthday),
+                              to: InformationPage(user),
                               text: "Informations personnelles",
                               icon: Ionicons.person_outline,
                             ),
