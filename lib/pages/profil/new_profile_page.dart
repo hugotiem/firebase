@@ -148,9 +148,13 @@ class _NewProfilePageState extends State<NewProfilePage> {
                                                       const EdgeInsets.only(
                                                           left: 8),
                                                   child: Icon(
-                                                    user.verified!
-                                                      ? Icons.verified_sharp : Icons.close_outlined,
-                                                      color: user.verified! ? ICONCOLOR : Colors.red),
+                                                      user.verified!
+                                                          ? Icons.verified_sharp
+                                                          : Icons
+                                                              .close_outlined,
+                                                      color: user.verified!
+                                                          ? ICONCOLOR
+                                                          : Colors.red),
                                                 )
                                               ],
                                             ),
@@ -171,30 +175,82 @@ class _NewProfilePageState extends State<NewProfilePage> {
                                                 ),
                                               ),
                                             ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 30, bottom: 30),
-                                              child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    const Info(
-                                                      "164",
-                                                      hintInfo: "Avis",
-                                                    ),
-                                                    const Info(
-                                                      "12",
-                                                      hintInfo:
-                                                          "Soirée organisées",
-                                                    ),
-                                                    const Info(
-                                                      "28",
-                                                      hintInfo:
-                                                          "Participations",
-                                                    )
-                                                  ]),
+                                            BlocProvider(
+                                              create: ((context) => PartiesCubit()
+                                                ..fetchPartiesWithWhereIsEqualTo(
+                                                    "ownerId", user.id)),
+                                              child: BlocBuilder<PartiesCubit,
+                                                      PartiesState>(
+                                                  builder: (context,
+                                                      partyownerstate) {
+                                                if (partyownerstate.parties ==
+                                                    null)
+                                                  return Center(
+                                                    child:
+                                                        CircularProgressIndicator(),
+                                                  );
+                                                int i = 0;
+                                                int count = 0;
+
+                                                if (partyownerstate.parties !=
+                                                    null) {
+                                                  // ignore: unused_local_variable
+                                                  for (var test
+                                                      in partyownerstate
+                                                          .parties!) {
+                                                    if (partyownerstate
+                                                        .parties![i]
+                                                        .commentIdList!
+                                                        .isNotEmpty) {
+                                                      setState(() {
+                                                        count += partyownerstate
+                                                            .parties![i]
+                                                            .commentIdList!
+                                                            .length;
+                                                      });
+                                                    }
+                                                    i++;
+                                                  }
+                                                } else
+                                                  count = 0;
+                                                return Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 30, bottom: 30),
+                                                  child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Info(
+                                                          count.toString(),
+                                                          hintInfo: "Avis",
+                                                        ),
+                                                        Info(
+                                                          partyownerstate.parties!.length.toString(),
+                                                          hintInfo:
+                                                              "Soirée organisées",
+                                                        ),
+                                                        BlocProvider(
+                                                          create: (context) => PartiesCubit()..fetchPartiesWithWhereIsEqualTo("validatedList", user.id),
+                                                          child: BlocBuilder<PartiesCubit, PartiesState>(
+                                                            builder: (context, joinpartystate) {
+                                                              if (joinpartystate.parties == null) 
+                                                                return Center(child: CircularProgressIndicator(),);
+                                                              return Info(
+                                                                joinpartystate.parties!.length.toString(),
+                                                                hintInfo:
+                                                                    "Participations",
+                                                              );
+                                                            }
+                                                          ),
+                                                        )
+                                                      ]),
+                                                );
+                                              }),
                                             )
                                           ],
                                         ),

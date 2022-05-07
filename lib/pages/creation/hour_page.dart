@@ -28,6 +28,7 @@ class _HourPageState extends State<HourPage> {
   Widget build(BuildContext context) {
     double size = MediaQuery.of(context).size.width * 0.85;
     return BackgroundForm(
+      isScrollable: false,
       heroTag: " hour",
       onPrevious: () => widget.onPrevious!(),
       onPressedFAB: () {
@@ -94,26 +95,28 @@ class _HourPageState extends State<HourPage> {
         ),
         SizedBox(height: 20),
         Center(
-          child: Container(
-            padding: EdgeInsets.symmetric(vertical: 6, horizontal: 20),
-            decoration: BoxDecoration(
-              color: Colors.transparent,
-              border: Border.all(color: ICONCOLOR, width: 3),
-              borderRadius: BorderRadius.circular(25),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                text(
-                    "${intToDate(_formatTime(initTime)[0])} : ${intToDate(_formatTime(initTime)[1])}"),
-                Icon(
-                  Ionicons.caret_down,
-                  color: ICONCOLOR,
-                  size: 40,
-                ),
-                text(
-                    "${intToDate(_formatTime(endTime)[0])} : ${intToDate(_formatTime(endTime)[1])}"),
-              ],
+          child: FittedBox(
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 6, horizontal: 20),
+              decoration: BoxDecoration(
+                color: Colors.transparent,
+                border: Border.all(color: ICONCOLOR, width: 3),
+                borderRadius: BorderRadius.circular(25),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  text(
+                      "${intToDate(_formatTime(initTime)[0])} : ${intToDate(_formatTime(initTime)[1])}"),
+                  Icon(
+                    Ionicons.caret_down,
+                    color: ICONCOLOR,
+                    size: 40,
+                  ),
+                  text(
+                      "${intToDate(_formatTime(endTime)[0])} : ${intToDate(_formatTime(endTime)[1])}"),
+                ],
+              ),
             ),
           ),
         ),
