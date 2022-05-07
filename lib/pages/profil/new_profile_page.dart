@@ -4,6 +4,7 @@ import 'package:pts/pages/profil/subpage/about_page.dart';
 import 'package:pts/pages/profil/subpage/existing_cards_page.dart';
 import 'package:pts/pages/profil/subpage/new_user_page.dart';
 import 'package:pts/pages/profil/subpage/notification_page.dart';
+import 'package:pts/services/auth_service.dart';
 
 import 'subpage/contactus_page.dart';
 import 'subpage/info_page.dart';
@@ -18,6 +19,7 @@ class NewProfilePage extends StatefulWidget {
 
 class _NewProfilePageState extends State<NewProfilePage> {
   double _radius = 120;
+  final AuthService service = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +106,7 @@ class _NewProfilePageState extends State<NewProfilePage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Hero(
-                              tag: "user",
+                              tag: "user ",
                               child: Center(
                                 child: Padding(
                                   padding: const EdgeInsets.only(
@@ -134,7 +136,7 @@ class _NewProfilePageState extends State<NewProfilePage> {
                                                   MainAxisAlignment.center,
                                               children: [
                                                 Text(
-                                                  "Jean",
+                                                  user.name!,
                                                   style: TextStyle(
                                                     fontSize: 32,
                                                     fontWeight: FontWeight.w800,
@@ -146,8 +148,9 @@ class _NewProfilePageState extends State<NewProfilePage> {
                                                       const EdgeInsets.only(
                                                           left: 8),
                                                   child: Icon(
-                                                      Icons.verified_sharp,
-                                                      color: ICONCOLOR),
+                                                    user.verified!
+                                                      ? Icons.verified_sharp : Icons.close_outlined,
+                                                      color: user.verified! ? ICONCOLOR : Colors.red),
                                                 )
                                               ],
                                             ),
@@ -234,15 +237,21 @@ class _NewProfilePageState extends State<NewProfilePage> {
                                 text: "QR code",
                                 icon: Ionicons.qr_code_outline,
                                 to: QrCodePage()),
-                            Center(
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 22),
-                                child: Text(
-                                  "Se déconnecter",
-                                  style: TextStyle(
-                                    color: Colors.red,
-                                    decoration: TextDecoration.underline,
+                            GestureDetector(
+                              onTap: () async {
+                                await service.setToken(null);
+                                await service.instance.signOut();
+                              },
+                              child: Center(
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 22),
+                                  child: Text(
+                                    "Se déconnecter",
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      decoration: TextDecoration.underline,
+                                    ),
                                   ),
                                 ),
                               ),
