@@ -46,6 +46,6 @@ class LoginCubit extends AppBaseCubit<LoginState> {
       if (fromGoogle) "surname": user.displayName.toString().split(" ")[1]
     };
     await fireStoreServices.setWithId(user.uid, data: data);
-    emit(LoginState.signedUp());
+    emit(LoginState.signedUp(user.email));
   }
 }

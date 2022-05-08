@@ -3,8 +3,11 @@ part of 'login_cubit.dart';
 enum LoginStatus { initial, logging, signedUp, logged }
 
 class LoginState extends AppBaseState<LoginStatus> {
-  const LoginState(LoginStatus? status,
-      {bool requestInProgress = false,
+  final String? email;
+
+  const LoginState(LoginStatus? status, 
+      {this.email,
+        bool requestInProgress = false,
       String? requestFailureCode,
       String? requestFailureMessage})
       : super(
@@ -14,7 +17,7 @@ class LoginState extends AppBaseState<LoginStatus> {
             requestFailureMessage: requestFailureMessage);
 
   const LoginState.initial() : this(LoginStatus.initial);
-  const LoginState.signedUp() : this(LoginStatus.signedUp);
+  const LoginState.signedUp(String? email) : this(LoginStatus.signedUp, email: email);
   const LoginState.logged() : this(LoginStatus.logged);
 
   @override

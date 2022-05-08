@@ -148,9 +148,9 @@ class _NewProfilePageState extends State<NewProfilePage> {
                                                       const EdgeInsets.only(
                                                           left: 8),
                                                   child: Icon(
-                                                    user.verified!
+                                                    (user.verified ?? false)
                                                       ? Icons.verified_sharp : Icons.close_outlined,
-                                                      color: user.verified! ? ICONCOLOR : Colors.red),
+                                                      color: user.verified?? false ? ICONCOLOR : Colors.red),
                                                 )
                                               ],
                                             ),
