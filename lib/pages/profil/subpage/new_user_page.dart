@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:pts/components/party_card/party_export.dart';
 
 class NewUserPage extends StatelessWidget {
@@ -143,7 +144,7 @@ class NewUserPage extends StatelessWidget {
                             user!.verified!
                                 ? Icons.verified_sharp
                                 : Icons.close_outlined,
-                            color: user!.verified! ? ICONCOLOR : Colors.red,
+                            color: SECONDARY_COLOR,
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 12),
@@ -152,9 +153,7 @@ class NewUserPage extends StatelessWidget {
                                   ? "Identité vérifiée"
                                   : "Identité non verifiée",
                               style: TextStyle(
-                                  color:
-                                      user!.verified! ? ICONCOLOR : Colors.red,
-                                  fontSize: 20),
+                                  color: SECONDARY_COLOR, fontSize: 20),
                             ),
                           )
                         ],
@@ -353,7 +352,16 @@ class _CommmentState extends State<Commment> {
                       )
                     ],
                   ),
-                  Icon(Ionicons.play_outline)
+                  // AnimatedIcon(icon: AnimatedIcon.play_pause, progress: progress),
+                  AnimatedRotation(
+                    turns: showComment ? 1.25 : 1,
+                    duration: Duration(milliseconds: 300),
+                    child: Icon(Ionicons.play_outline),
+                  ),
+                  // showComment
+                  //     ? RotatedBox(
+                  //         quarterTurns: 1, child: Icon(Ionicons.play_outline))
+                  //     : Icon(Ionicons.play_outline)
                 ],
               ),
             ),
@@ -366,27 +374,54 @@ class _CommmentState extends State<Commment> {
                   commentListId = widget.party![index].commentIdList ?? [];
                   list = commentListId.map((doc) {
                     comment = widget.party![index].comment![doc];
-                    return Container(
-                      decoration: BoxDecoration(
-                        color: PRIMARY_COLOR,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.3),
-                            blurRadius: 6,
-                            spreadRadius: 0,
-                            offset: Offset(0, 4),
-                          )
-                        ],
-                      ),
-                      child: Row(
-                        children: [ProfilePhoto(comment["photo"], radius: 50),
-                          Column(
-                            children: [
-                              Text(comment["name"]),
-                              Text(comment["comment"])
-                            ],
-                          )
-                        ],
+                    String date =
+                        widget.party![index].startTime.toString().split(" ")[0];
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 20),
+                      child: Container(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          color: PRIMARY_COLOR,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.3),
+                              blurRadius: 6,
+                              spreadRadius: 0,
+                              offset: Offset(0, 4),
+                            )
+                          ],
+                        ),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ProfilePhoto(comment["photo"], radius: 40),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 12),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      comment["name"],
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w900,
+                                          fontSize: 22),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 4, bottom: 8),
+                                      child: Text(
+                                          "Soirée du ${date.split("-")[2]}.${date.split("-")[1]}.${date.split("-")[0]}"),
+                                    ),
+                                    Text(comment["comment"])
+                                  ],
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     );
                   }).toList();
