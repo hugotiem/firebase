@@ -1,7 +1,8 @@
 import 'package:pts/components/party_card/party_export.dart';
 
 class NewUserPage extends StatelessWidget {
-  const NewUserPage({Key? key}) : super(key: key);
+  final User? user;
+  const NewUserPage(this.user, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -53,8 +54,8 @@ class NewUserPage extends StatelessWidget {
                       tag: "user",
                       child: Center(
                         child: Padding(
-                          padding:
-                              const EdgeInsets.only(top: 22, right: 28, left: 28),
+                          padding: const EdgeInsets.only(
+                              top: 22, right: 28, left: 28),
                           child: Container(
                             decoration: BoxDecoration(
                               color: PRIMARY_COLOR,
@@ -76,10 +77,11 @@ class NewUserPage extends StatelessWidget {
                                 Column(
                                   children: [
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Text(
-                                          "Jean",
+                                          user!.name ?? "",
                                           style: TextStyle(
                                             fontSize: 32,
                                             fontWeight: FontWeight.w800,
@@ -87,14 +89,19 @@ class NewUserPage extends StatelessWidget {
                                           ),
                                         ),
                                         Padding(
-                                          padding: const EdgeInsets.only(left: 8),
-                                          child: Icon(Icons.verified_sharp,
-                                              color: ICONCOLOR),
-                                        )
+                                            padding:
+                                                const EdgeInsets.only(left: 8),
+                                            child: Icon(
+                                                user!.verified!
+                                                    ? Icons.verified_sharp
+                                                    : Icons.close_outlined,
+                                                color: user!.verified!
+                                                    ? ICONCOLOR
+                                                    : Colors.red))
                                       ],
                                     ),
                                     Text(
-                                      "22 ans",
+                                      "${user!.age.toString()} ans",
                                       style: TextStyle(fontSize: 20),
                                     ),
                                     Padding(
@@ -118,58 +125,36 @@ class NewUserPage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 28, vertical: 20),
-                      child: Container(
-                        decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.3),
-                                blurRadius: 6,
-                                spreadRadius: 0,
-                                offset: Offset(0, 4),
-                              ),
-                            ],
-                            color: PRIMARY_COLOR,
-                            borderRadius: BorderRadius.circular(15)),
-                        padding:
-                            EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Icon(Ionicons.star_outline,
-                                    color: SECONDARY_COLOR),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 8),
-                                  child: Text(
-                                    "4.3/5 - 164 avis",
-                                    style: TextStyle(fontSize: 20),
-                                  ),
-                                )
-                              ],
-                            ),
-                            Icon(Ionicons.play_outline)
-                          ],
-                        ),
-                      ),
-                    ),
+                    BlocProvider(
+                        create: (context) => PartiesCubit()
+                          ..fetchPartiesWithWhereIsEqualTo("ownerId", user!.id),
+                        child: BlocBuilder<PartiesCubit, PartiesState>(
+                            builder: (context, partyownerstate) {
+                          if (partyownerstate.parties == null)
+                            return Center(child: CircularProgressIndicator());
+                          return Commment(partyownerstate.parties);
+                        })),
                     Padding(
                       padding: const EdgeInsets.only(top: 12, bottom: 12),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(
-                            Icons.verified_sharp,
-                            color: ICONCOLOR,
+                            user!.verified!
+                                ? Icons.verified_sharp
+                                : Icons.close_outlined,
+                            color: user!.verified! ? ICONCOLOR : Colors.red,
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 12),
                             child: Text(
-                              "Identité vérifiée",
-                              style: TextStyle(color: ICONCOLOR, fontSize: 20),
+                              user!.verified!
+                                  ? "Identité vérifiée"
+                                  : "Identité non verifiée",
+                              style: TextStyle(
+                                  color:
+                                      user!.verified! ? ICONCOLOR : Colors.red,
+                                  fontSize: 20),
                             ),
                           )
                         ],
@@ -194,49 +179,74 @@ class NewUserPage extends StatelessWidget {
                             fontSize: 19, fontWeight: FontWeight.w500),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 28),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "12",
-                            style: TextStyle(
-                                color: ICONCOLOR,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 24),
+                    BlocProvider(
+                      create: (context) => PartiesCubit()
+                        ..fetchPartiesWithWhereIsEqualTo("ownerId", user!.id),
+                      child: BlocBuilder<PartiesCubit, PartiesState>(
+                          builder: (context, partyownerstate) {
+                        if (partyownerstate.parties == null)
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        return Padding(
+                          padding: const EdgeInsets.only(top: 28),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                partyownerstate.parties!.length.toString(),
+                                style: TextStyle(
+                                    color: ICONCOLOR,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 24),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 6),
+                                child: Text(
+                                  "Soirées organisées",
+                                  style:
+                                      TextStyle(color: ICONCOLOR, fontSize: 20),
+                                ),
+                              )
+                            ],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 6),
-                            child: Text(
-                              "Soirées organisées",
-                              style: TextStyle(color: ICONCOLOR, fontSize: 20),
-                            ),
-                          )
-                        ],
-                      ),
+                        );
+                      }),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 14),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "28",
-                            style: TextStyle(
-                                color: ICONCOLOR,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 24),
+                    BlocProvider(
+                      create: (context) => PartiesCubit()
+                        ..fetchPartiesWithWhereIsEqualTo(
+                            "validatedList", user!.id),
+                      child: BlocBuilder<PartiesCubit, PartiesState>(
+                          builder: (context, joinpartystate) {
+                        if (joinpartystate.parties == null)
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        return Padding(
+                          padding: const EdgeInsets.only(top: 14),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                joinpartystate.parties!.length.toString(),
+                                style: TextStyle(
+                                    color: ICONCOLOR,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 24),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 6),
+                                child: Text(
+                                  "Participations",
+                                  style:
+                                      TextStyle(color: ICONCOLOR, fontSize: 20),
+                                ),
+                              )
+                            ],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 6),
-                            child: Text(
-                              "Participations",
-                              style: TextStyle(color: ICONCOLOR, fontSize: 20),
-                            ),
-                          )
-                        ],
-                      ),
+                        );
+                      }),
                     ),
                   ],
                 ),
@@ -254,6 +264,139 @@ class NewUserPage extends StatelessWidget {
             ),
           )
         ],
+      ),
+    );
+  }
+}
+
+class Commment extends StatefulWidget {
+  final List<Party>? party;
+  const Commment(this.party, {Key? key}) : super(key: key);
+
+  @override
+  State<Commment> createState() => _CommmentState();
+}
+
+class _CommmentState extends State<Commment> {
+  late Map comment;
+  late List commentListId;
+  List list = [];
+  List list1 = [];
+  int countComment = 0;
+  double countNote = 0;
+  bool showComment = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    for (Party party in widget.party!) {
+      if (party.commentIdList!.isNotEmpty) {
+        countComment += party.commentIdList!.length;
+      }
+    }
+
+    double _counter = 0;
+
+    for (Party party in widget.party!) {
+      if (party.commentIdList!.isNotEmpty) {
+        List nameList = party.commentIdList!;
+        nameList.map((doc) {
+          Map info = party.comment![doc];
+          _counter += double.parse(info["note"].toString());
+        }).toList();
+      }
+    }
+    countNote = _counter;
+    countNote /= countComment;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 20),
+      child: InkWell(
+        onTap: () {
+          setState(() {
+            if (showComment)
+              showComment = false;
+            else
+              showComment = true;
+          });
+        },
+        child: Column(
+          children: [
+            Container(
+              decoration: BoxDecoration(boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.3),
+                  blurRadius: 6,
+                  spreadRadius: 0,
+                  offset: Offset(0, 4),
+                ),
+              ], color: PRIMARY_COLOR, borderRadius: BorderRadius.circular(15)),
+              padding: EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Icon(Ionicons.star_outline, color: SECONDARY_COLOR),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 12),
+                        child: Text(
+                          countNote.isNaN
+                              ? "$countComment avis"
+                              : "${countNote.toStringAsFixed(1)}/5 - $countComment avis",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      )
+                    ],
+                  ),
+                  Icon(Ionicons.play_outline)
+                ],
+              ),
+            ),
+            if (showComment)
+              ListView.builder(
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: widget.party!.length,
+                itemBuilder: (BuildContext context, int index) {
+                  commentListId = widget.party![index].commentIdList ?? [];
+                  list = commentListId.map((doc) {
+                    comment = widget.party![index].comment![doc];
+                    return Container(
+                      decoration: BoxDecoration(
+                        color: PRIMARY_COLOR,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.3),
+                            blurRadius: 6,
+                            spreadRadius: 0,
+                            offset: Offset(0, 4),
+                          )
+                        ],
+                      ),
+                      child: Row(
+                        children: [ProfilePhoto(comment["photo"], radius: 50),
+                          Column(
+                            children: [
+                              Text(comment["name"]),
+                              Text(comment["comment"])
+                            ],
+                          )
+                        ],
+                      ),
+                    );
+                  }).toList();
+                  return Column(
+                    children: list as List<Widget>,
+                  );
+                },
+              )
+          ],
+        ),
       ),
     );
   }

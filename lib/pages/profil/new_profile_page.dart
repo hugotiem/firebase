@@ -160,7 +160,7 @@ class _NewProfilePageState extends State<NewProfilePage> {
                                                   context,
                                                   MaterialPageRoute(
                                                       builder: (context) =>
-                                                          NewUserPage())),
+                                                          NewUserPage(user))),
                                               child: const Opacity(
                                                 opacity: 0.7,
                                                 child: Text(
@@ -185,30 +185,7 @@ class _NewProfilePageState extends State<NewProfilePage> {
                                                     child:
                                                         CircularProgressIndicator(),
                                                   );
-                                                int i = 0;
-                                                int count = 0;
 
-                                                if (partyownerstate.parties !=
-                                                    null) {
-                                                  // ignore: unused_local_variable
-                                                  for (var test
-                                                      in partyownerstate
-                                                          .parties!) {
-                                                    if (partyownerstate
-                                                        .parties![i]
-                                                        .commentIdList!
-                                                        .isNotEmpty) {
-                                                      setState(() {
-                                                        count += partyownerstate
-                                                            .parties![i]
-                                                            .commentIdList!
-                                                            .length;
-                                                      });
-                                                    }
-                                                    i++;
-                                                  }
-                                                } else
-                                                  count = 0;
                                                 return Padding(
                                                   padding:
                                                       const EdgeInsets.only(
@@ -221,28 +198,41 @@ class _NewProfilePageState extends State<NewProfilePage> {
                                                           CrossAxisAlignment
                                                               .start,
                                                       children: [
+                                                        CountComment(partyownerstate.parties),
                                                         Info(
-                                                          count.toString(),
-                                                          hintInfo: "Avis",
-                                                        ),
-                                                        Info(
-                                                          partyownerstate.parties!.length.toString(),
+                                                          partyownerstate
+                                                              .parties!.length
+                                                              .toString(),
                                                           hintInfo:
                                                               "Soirée organisées",
                                                         ),
                                                         BlocProvider(
-                                                          create: (context) => PartiesCubit()..fetchPartiesWithWhereIsEqualTo("validatedList", user.id),
-                                                          child: BlocBuilder<PartiesCubit, PartiesState>(
-                                                            builder: (context, joinpartystate) {
-                                                              if (joinpartystate.parties == null) 
-                                                                return Center(child: CircularProgressIndicator(),);
-                                                              return Info(
-                                                                joinpartystate.parties!.length.toString(),
-                                                                hintInfo:
-                                                                    "Participations",
+                                                          create: (context) =>
+                                                              PartiesCubit()
+                                                                ..fetchPartiesWithWhereIsEqualTo(
+                                                                    "validatedList",
+                                                                    user.id),
+                                                          child: BlocBuilder<
+                                                                  PartiesCubit,
+                                                                  PartiesState>(
+                                                              builder: (context,
+                                                                  joinpartystate) {
+                                                            if (joinpartystate
+                                                                    .parties ==
+                                                                null)
+                                                              return Center(
+                                                                child:
+                                                                    CircularProgressIndicator(),
                                                               );
-                                                            }
-                                                          ),
+                                                            return Info(
+                                                              joinpartystate
+                                                                  .parties!
+                                                                  .length
+                                                                  .toString(),
+                                                              hintInfo:
+                                                                  "Participations",
+                                                            );
+                                                          }),
                                                         )
                                                       ]),
                                                 );
@@ -438,6 +428,37 @@ class SettingContainer extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class CountComment extends StatefulWidget {
+  final List<Party>? party;
+  const CountComment(this.party, {Key? key}) : super(key: key);
+
+  @override
+  State<CountComment> createState() => _CountCommentState();
+}
+
+class _CountCommentState extends State<CountComment> {
+  int count = 0;
+  @override
+  void initState() {
+    super.initState();
+
+    // ignore: unused_local_variable
+    for (Party party in widget.party!) {
+      if (party.commentIdList!.isNotEmpty) {
+        count += party.commentIdList!.length;
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Info(
+      count.toString(),
+      hintInfo: "Avis",
     );
   }
 }
