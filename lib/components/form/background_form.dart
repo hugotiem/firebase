@@ -8,6 +8,7 @@ class BackgroundForm extends StatelessWidget {
   final void Function()? onPrevious;
   final String? heroTag;
   final bool validate;
+  final bool isScrollable;
   const BackgroundForm(
       {required this.children,
       required this.onPressedFAB,
@@ -15,6 +16,7 @@ class BackgroundForm extends StatelessWidget {
       this.onPrevious,
       this.heroTag,
       this.validate = true,
+      this.isScrollable = true,
       Key? key})
       : super(key: key);
 
@@ -75,8 +77,8 @@ class BackgroundForm extends StatelessWidget {
                     topRight: Radius.circular(50),
                   ),
                 ),
-                child: SingleChildScrollView(
-                  child: Column(
+                child: adaptiveWidget(
+                  Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: children,
                   ),
@@ -87,5 +89,12 @@ class BackgroundForm extends StatelessWidget {
         ),
       ),
     );
+  }
+  Widget adaptiveWidget(Widget child) {
+    if (isScrollable)
+      return SingleChildScrollView(
+        child: child,
+      );
+    return child;
   }
 }

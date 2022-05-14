@@ -28,6 +28,7 @@ class _HourPageState extends State<HourPage> {
   Widget build(BuildContext context) {
     double size = MediaQuery.of(context).size.width * 0.85;
     return BackgroundForm(
+      isScrollable: false,
       heroTag: " hour",
       onPrevious: () => widget.onPrevious!(),
       onPressedFAB: () {
@@ -117,7 +118,6 @@ class _HourPageState extends State<HourPage> {
             ),
           ),
         ),
-        SizedBox(height: 100)
       ],
     );
   }
