@@ -45,12 +45,13 @@ class _LoginPageState extends State<LoginPage>
       child: BlocListener<LoginCubit, LoginState>(
         listener: (context, state) {
           if (state.status == LoginStatus.logged) {
-            Navigator.of(context).pop();
+            Navigator.of(context).pop(true);
           }
           if (state.status == LoginStatus.signedUp) {
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
-                builder: (context) => RegisterFormScreen(mail: state.email ?? ""),
+                builder: (context) =>
+                    RegisterFormScreen(mail: state.email ?? ""),
               ),
             );
           }
@@ -66,6 +67,10 @@ class _LoginPageState extends State<LoginPage>
                 systemOverlayStyle: SystemUiOverlayStyle.dark,
                 iconTheme:
                     Theme.of(context).iconTheme.copyWith(color: ICONCOLOR),
+                leading: IconButton(
+                  icon: Icon(Icons.close),
+                  onPressed: () => Navigator.of(context).pop(false),
+                ),
                 title: _currentIndex == 0
                     ? Text("Connexion")
                     : Text("Inscription"),

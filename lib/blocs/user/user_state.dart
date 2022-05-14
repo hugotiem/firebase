@@ -34,11 +34,16 @@ class UserState extends AppBaseState<UserStatus> {
 
   @override
   AppBaseState<UserStatus> copyWith(
-          {bool requestInProgress = false,
+          {String? token,
+          bool requestInProgress = false,
           String? requestFailureCode,
           String? requestFailureMessage}) =>
       UserState(this.status,
+          token: token ?? this.token,
           requestInProgress: requestInProgress,
           requestFailureCode: requestFailureCode,
           requestFailureMessage: requestFailureMessage);
+
+  @override
+  List<Object?> get props => super.props..addAll([token]);
 }

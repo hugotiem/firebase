@@ -30,23 +30,25 @@ class UserCubit extends AppBaseCubit<UserState> {
     service.instance.authStateChanges().listen((user) async {
       if (user != null) {
         emit(state.setRequestInProgress() as UserState);
+        service.setToken(user.uid);
         await this.loadData(user: user);
       } else {
-        await service.setToken(null);
-        emit(UserState.dataLoaded());
+        await service.deleteToken();
+        emit(UserState.dataLoaded(token: state.token));
       }
     });
   }
 
   Future<void> loadData({auth.User? user}) async {
     var token = user?.uid ?? state.token;
+    print("USER LOGGED");
     if (token != null) {
       firestore.getDataById(token).then((value) async {
         var user = User.fromSnapshot(value);
         var wallet =
             await _paymentService.getWalletByUserId(user.mangoPayId ?? "");
-        emit(
-            UserState.dataLoaded(user: user, token: token, wallet: wallet?[WalletType.MAIN]));
+        emit(UserState.dataLoaded(
+            user: user, token: token, wallet: wallet?[WalletType.MAIN]));
       }).catchError(onHandleError);
     } else {
       emit(UserState.dataLoaded(user: null, token: null));
@@ -59,8 +61,9 @@ class UserCubit extends AppBaseCubit<UserState> {
         var user = User.fromSnapshot(value);
         var wallet =
             await _paymentService.getWalletByUserId(user.mangoPayId ?? "");
-        
-        emit(UserState.dataLoaded(user: user, token: token, wallet: wallet?[WalletType.MAIN]));
+
+        emit(UserState.dataLoaded(
+            user: user, token: token, wallet: wallet?[WalletType.MAIN]));
       }).catchError(onHandleError);
     } else {
       emit(UserState.dataLoaded());
@@ -116,5 +119,20 @@ class UserCubit extends AppBaseCubit<UserState> {
       await firestore.setWithId(token, data: data);
       emit(UserState.idUploaded(user: state.user, token: state.token));
     });
+  }
+
+  Future<String?> getUserToken() async {
+    return await service.getToken();
+  }
+
+  Future<bool> hasToken() async {
+    var token = await getUserToken();
+    return token != null;
+  }
+
+  Future<void> logout() async {
+    await service.deleteToken();
+    await service.instance.signOut();
+    emit(UserState.dataLoaded());
   }
 }
