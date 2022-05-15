@@ -1,12 +1,32 @@
-import 'package:intl/intl.dart';
-import 'package:pts/components/party_card/party_export.dart';
+import 'dart:io';
 
-class NewUserPage extends StatelessWidget {
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.Dart' as Path;
+import 'package:pts/components/party_card/party_export.dart';
+import 'package:pts/services/storage_service.dart';
+
+import '../../../services/auth_service.dart';
+
+class NewUserPage extends StatefulWidget {
   final User? user;
   const NewUserPage(this.user, {Key? key}) : super(key: key);
 
   @override
+  State<NewUserPage> createState() => _NewUserPageState();
+}
+
+class _NewUserPageState extends State<NewUserPage> {
+  File? image;
+  String photo = "";
+
+  @override
   Widget build(BuildContext context) {
+    if (widget.user!.photo!.isEmpty) 
+      photo = "assets/roundBlankProfilPicture.png";
+    else 
+      photo = widget.user!.photo!;
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -82,7 +102,7 @@ class NewUserPage extends StatelessWidget {
                                           MainAxisAlignment.center,
                                       children: [
                                         Text(
-                                          user!.name ?? "",
+                                          widget.user!.name ?? "",
                                           style: TextStyle(
                                             fontSize: 32,
                                             fontWeight: FontWeight.w800,
@@ -93,28 +113,31 @@ class NewUserPage extends StatelessWidget {
                                             padding:
                                                 const EdgeInsets.only(left: 8),
                                             child: Icon(
-                                                user!.verified!
+                                                widget.user!.verified!
                                                     ? Icons.verified_sharp
                                                     : Icons.close_outlined,
-                                                color: user!.verified!
+                                                color: widget.user!.verified!
                                                     ? ICONCOLOR
                                                     : Colors.red))
                                       ],
                                     ),
                                     Text(
-                                      "${user!.age.toString()} ans",
+                                      "${widget.user!.age.toString()} ans",
                                       style: TextStyle(fontSize: 20),
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 6, bottom: 16),
-                                      child: const Opacity(
-                                        opacity: 0.7,
-                                        child: Text(
-                                          "Modifier la photo de profil",
-                                          style: TextStyle(
-                                              decoration:
-                                                  TextDecoration.underline),
+                                    InkWell(
+                                      onTap: () => showPhoto(photo),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 6, bottom: 16),
+                                        child: const Opacity(
+                                          opacity: 0.7,
+                                          child: Text(
+                                            "Modifier la photo de profil",
+                                            style: TextStyle(
+                                                decoration:
+                                                    TextDecoration.underline),
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -128,7 +151,7 @@ class NewUserPage extends StatelessWidget {
                     ),
                     BlocProvider(
                         create: (context) => PartiesCubit()
-                          ..fetchPartiesWithWhereIsEqualTo("ownerId", user!.id),
+                          ..fetchPartiesWithWhereIsEqualTo("ownerId", widget.user!.id),
                         child: BlocBuilder<PartiesCubit, PartiesState>(
                             builder: (context, partyownerstate) {
                           if (partyownerstate.parties == null)
@@ -141,7 +164,7 @@ class NewUserPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(
-                            user!.verified!
+                            widget.user!.verified!
                                 ? Icons.verified_sharp
                                 : Icons.close_outlined,
                             color: SECONDARY_COLOR,
@@ -149,7 +172,7 @@ class NewUserPage extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.only(left: 12),
                             child: Text(
-                              user!.verified!
+                              widget.user!.verified!
                                   ? "Identité vérifiée"
                                   : "Identité non verifiée",
                               style: TextStyle(
@@ -180,7 +203,7 @@ class NewUserPage extends StatelessWidget {
                     ),
                     BlocProvider(
                       create: (context) => PartiesCubit()
-                        ..fetchPartiesWithWhereIsEqualTo("ownerId", user!.id),
+                        ..fetchPartiesWithWhereIsEqualTo("ownerId", widget.user!.id),
                       child: BlocBuilder<PartiesCubit, PartiesState>(
                           builder: (context, partyownerstate) {
                         if (partyownerstate.parties == null)
@@ -215,7 +238,7 @@ class NewUserPage extends StatelessWidget {
                     BlocProvider(
                       create: (context) => PartiesCubit()
                         ..fetchPartiesWithWhereIsEqualTo(
-                            "validatedList", user!.id),
+                            "validatedList", widget.user!.id),
                       child: BlocBuilder<PartiesCubit, PartiesState>(
                           builder: (context, joinpartystate) {
                         if (joinpartystate.parties == null)
@@ -257,7 +280,7 @@ class NewUserPage extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.only(top: height * 0.05),
               child: ProfilePhoto(
-                "",
+                photo,
                 radius: 120,
               ),
             ),
@@ -266,6 +289,160 @@ class NewUserPage extends StatelessWidget {
       ),
     );
   }
+  registerPhotoInFirebase(String photo) {
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+      String userID = AuthService().currentUser!.uid;
+
+      try {
+        firestore.collection('user').doc(userID).update({"photo": photo});
+      } catch (e) {
+        print(e.toString());
+      }
+    }
+
+    Future registerPhoto() async {
+      String fileName = Path.basename(image!.path);
+      String destination = "UserPhoto/$fileName";
+      UploadTask task = StorageService(destination).uploadFile(image!);
+
+      task.then((element) async {
+        var url = await element.ref.getDownloadURL();
+        registerPhotoInFirebase(url);
+      });
+
+      Navigator.pop(context);
+    }
+
+    Future photoSelected() async {
+      return showModalBottomSheet(
+          isScrollControlled: true,
+          context: context,
+          builder: (BuildContext context) {
+            return Scaffold(
+              appBar: PreferredSize(
+                preferredSize: Size.fromHeight(80),
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 20.0),
+                  child: BackAppBar(actions: [
+                    TextButton(
+                      onPressed: () => registerPhoto(),
+                      child: Text(
+                        'Enregistrer',
+                        style: TextStyle(color: SECONDARY_COLOR, fontSize: 16),
+                      ),
+                    ),
+                  ]),
+                ),
+              ),
+              body: Center(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                  child: Container(
+                    child: Image.file(image!),
+                  ),
+                ),
+              ),
+            );
+          });
+    }
+
+    Future pickImage() async {
+      try {
+        final image =
+            await ImagePicker().pickImage(source: ImageSource.gallery);
+        if (image == null) return;
+
+        final imageTemporary = File(image.path);
+        setState(() => this.image = imageTemporary);
+
+        Navigator.pop(context);
+        photoSelected();
+      } on PlatformException catch (e) {
+        print('failed to pick image: $e');
+      }
+    }
+
+    Future takePhoto() async {
+      try {
+        final image = await ImagePicker().pickImage(source: ImageSource.camera);
+        if (image == null) return;
+
+        final imageTemporary = File(image.path);
+        setState(() => this.image = imageTemporary);
+
+        Navigator.pop(context);
+        photoSelected();
+      } on PlatformException catch (e) {
+        print('failed to pick image: $e');
+      }
+    }
+
+    Future<void> pickDialog() async {
+      return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Prendre une photo'),
+            content: Text(
+                'Prenez une nouvelle photo ou importez-en une depuis votre bibliothèque.'),
+            actions: <Widget>[
+              TextButton(
+                  onPressed: () => pickImage(),
+                  child: Text('GALERIE',
+                      style: TextStyle(color: SECONDARY_COLOR))),
+              TextButton(
+                  onPressed: () => takePhoto(),
+                  child: Text(
+                    'APPAREIL',
+                    style: TextStyle(color: SECONDARY_COLOR),
+                  ))
+            ],
+          );
+        },
+      );
+    }
+
+    Future showPhoto(String photo) async {
+      return showModalBottomSheet(
+        isScrollControlled: true,
+        context: context,
+        builder: (BuildContext context) {
+          return Scaffold(
+            appBar: PreferredSize(
+              preferredSize: Size.fromHeight(80),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: BackAppBar(
+                  actions: [
+                    TextButton(
+                      onPressed: () => pickDialog(),
+                      child: Text(
+                        'Modifier',
+                        style: TextStyle(
+                          color: SECONDARY_COLOR,
+                          fontSize: 16,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            body: Center(
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                child: Container(
+                  child: photo == "assets/roundBlankProfilPicture.png"
+                      ? Image.asset(photo)
+                      : Image.network(photo, fit: BoxFit.cover),
+                ),
+              ),
+            ),
+          );
+        },
+      );
+    }
 }
 
 class Commment extends StatefulWidget {
@@ -352,16 +529,11 @@ class _CommmentState extends State<Commment> {
                       )
                     ],
                   ),
-                  // AnimatedIcon(icon: AnimatedIcon.play_pause, progress: progress),
                   AnimatedRotation(
                     turns: showComment ? 1.25 : 1,
                     duration: Duration(milliseconds: 300),
                     child: Icon(Ionicons.play_outline),
                   ),
-                  // showComment
-                  //     ? RotatedBox(
-                  //         quarterTurns: 1, child: Icon(Ionicons.play_outline))
-                  //     : Icon(Ionicons.play_outline)
                 ],
               ),
             ),
