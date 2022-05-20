@@ -20,6 +20,7 @@ class User extends Equatable {
   bool? banned;
   String? photo;
   String? mangoPayId;
+  String? desc;
 
   User({
     this.id,
@@ -35,6 +36,7 @@ class User extends Equatable {
     this.banned,
     this.photo,
     this.mangoPayId,
+    this.desc,
   });
 
   Future<User?> get currentUser async {
@@ -60,6 +62,7 @@ class User extends Equatable {
     var banned = data?['banned'];
     var photo = data?['photo'];
     var mangoPayId = data?["mangoPayId"];
+    var desc = data?["desc"];
 
     return User(
       id: id,
@@ -75,6 +78,7 @@ class User extends Equatable {
       birthday: birthday,
       photo: photo,
       mangoPayId: mangoPayId,
+      desc: desc,
     );
   }
 
@@ -92,6 +96,7 @@ class User extends Equatable {
         banned,
         birthday,
         photo,
-        mangoPayId
+        mangoPayId,
+        desc,
       ];
 }

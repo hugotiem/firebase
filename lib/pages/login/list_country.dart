@@ -1,6 +1,7 @@
 import 'package:drop_down_list/drop_down_list.dart';
 
 List<SelectedListItem> listOfCountry = [
+    SelectedListItem(true, "France - FR"),
     SelectedListItem(false, "Afrique du Sud - ZA"),
     SelectedListItem(false, "Allemagne - DE"),
     SelectedListItem(false, "Andorre - AD"),
@@ -54,7 +55,6 @@ List<SelectedListItem> listOfCountry = [
     SelectedListItem(false, "Etats-Unis - US"),
     SelectedListItem(false, "Fidji - FJ"),
     SelectedListItem(false, "Finlande - FI"),
-    SelectedListItem(true, "France - FR"),
     SelectedListItem(false, "Gabon - GA"),
     SelectedListItem(false, "Gambie - GM"),
     SelectedListItem(false, "Géorgie - GE"),

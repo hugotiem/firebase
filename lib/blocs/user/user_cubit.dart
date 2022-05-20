@@ -85,6 +85,17 @@ class UserCubit extends AppBaseCubit<UserState> {
       "birthday": birthday,
       'id': token,
       "photo": "",
+      "desc": "",
+    };
+    await firestore.setWithId(token, data: data);
+    emit(UserState.dataLoaded(user: state.user, token: state.token));
+  }
+
+  Future<void> updatedesc(String token, String desc) async
+  {
+    emit(state.setRequestInProgress() as UserState);
+    Map<String, String> data = <String, String>{
+      "desc": desc
     };
     await firestore.setWithId(token, data: data);
     emit(UserState.dataLoaded(user: state.user, token: state.token));
