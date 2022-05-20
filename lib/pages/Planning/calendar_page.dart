@@ -87,7 +87,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
   @override
   void initState() {
     getDataFromFireStore().then((results) {
-      SchedulerBinding.instance!.addPostFrameCallback((timeStamp) {
+      SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
         setState(() {});
       });
     });

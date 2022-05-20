@@ -13,8 +13,7 @@ import 'subpage/info_page.dart';
 import 'subpage/qr_code_page.dart';
 
 class NewProfilePage extends StatefulWidget {
-  final bool? isConnected;
-  const NewProfilePage({Key? key, this.isConnected}) : super(key: key);
+  const NewProfilePage({Key? key}) : super(key: key);
 
   @override
   State<NewProfilePage> createState() => _NewProfilePageState();
@@ -23,14 +22,6 @@ class NewProfilePage extends StatefulWidget {
 class _NewProfilePageState extends State<NewProfilePage> {
   double _radius = 120;
   final AuthService service = AuthService();
-
-  late bool _isConnected;
-
-  @override
-  void initState() {
-    _isConnected = widget.isConnected ?? false;
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,11 +33,7 @@ class _NewProfilePageState extends State<NewProfilePage> {
         var token = state.token;
         log(token.toString());
         return token == null
-            ? Connect(
-                onLogin: (isLogged) => setState(() {
-                  _isConnected = isLogged;
-                }),
-              )
+            ? Connect()
             : Scaffold(
                 extendBodyBehindAppBar: true,
                 appBar: AppBar(

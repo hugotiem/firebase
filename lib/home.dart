@@ -193,29 +193,14 @@ class _HomeState extends State<Home> {
           fullscreenDialog: true,
         ),
       );
-    } else if (index == 2 && !widget.isConnected) {
+    }  else if (index == 4) {
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => Connect(),
-          fullscreenDialog: true,
-        ),
-      );
-    } else if (index == 4) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => NewProfilePage(isConnected: widget.isConnected),
+          builder: (context) => NewProfilePage(),
           fullscreenDialog: true,
         ),
       );
     } 
-    // else if (index == 4) {
-    //   Navigator.of(context).push(
-    //     MaterialPageRoute(
-    //       builder: (context) => Connect(),
-    //       fullscreenDialog: true,
-    //     ),
-    //   );
-    // }
      else
       setState(() {
         _currentIndex = index;
