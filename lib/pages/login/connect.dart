@@ -5,12 +5,7 @@ import 'package:pts/pages/login/login.dart';
 
 class Connect extends StatelessWidget {
   final bool? text;
-  final void Function(bool)? onLogin;
-  const Connect({
-    this.text = true,
-    Key? key,
-    this.onLogin,
-  }) : super(key: key);
+  const Connect({this.text = true, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,22 +26,11 @@ class Connect extends StatelessWidget {
                   : Container(),
               GestureDetector(
                 onTap: () {
-                  Navigator.of(context)
-                      .push(
+                  Navigator.of(context).push(
                     MaterialPageRoute(
                         builder: (context) => LoginPage(),
                         fullscreenDialog: true),
-                  )
-                      .then((value) {
-                    if (onLogin != null) {
-                      onLogin!(value ?? false);
-                    }
-                  });
-                  // showModalBottomSheet(
-                  //   context: context,
-                  //   builder: (context) => LoginPage(),
-                  //   isScrollControlled: true,
-                  // );
+                  );
                 },
                 child: Container(
                   margin: EdgeInsets.all(10),

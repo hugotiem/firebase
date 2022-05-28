@@ -6,6 +6,7 @@ import 'package:pts/pages/profil/subpage/about_page.dart';
 import 'package:pts/pages/profil/subpage/existing_cards_page.dart';
 import 'package:pts/pages/profil/subpage/new_user_page.dart';
 import 'package:pts/pages/profil/subpage/notification_page.dart';
+import 'package:pts/pages/profil/subpage/wallet_page.dart';
 import 'package:pts/services/auth_service.dart';
 
 import 'subpage/contactus_page.dart';
@@ -14,7 +15,7 @@ import 'subpage/qr_code_page.dart';
 
 class NewProfilePage extends StatefulWidget {
   final bool? isConnected;
-  const NewProfilePage({Key? key, this.isConnected}) : super(key: key);
+  const NewProfilePage(this.isConnected, {Key? key}) : super(key: key);
 
   @override
   State<NewProfilePage> createState() => _NewProfilePageState();
@@ -44,11 +45,7 @@ class _NewProfilePageState extends State<NewProfilePage> {
         var token = state.token;
         // log(token.toString());
         return token == null
-            ? Connect(
-                onLogin: (isLogged) => setState(() {
-                  _isConnected = isLogged;
-                }),
-              )
+            ? Connect()
             : Scaffold(
                 extendBodyBehindAppBar: true,
                 appBar: AppBar(
@@ -75,14 +72,14 @@ class _NewProfilePageState extends State<NewProfilePage> {
                       } else if (_pixels > 80) {
                         setState(() {
                           _radius = 120 - 80;
-                          if (_opacity > 0) _opacity = 1 - ((_pixels - 80) / 100);
-                          else _opacity = 0;
-                          print(_opacity);
+                          // if (_opacity > 0) _opacity = 1 - ((_pixels - 80) / 100);
+                          // else _opacity = 0;
+                          // print(_opacity);
                         });
                       } else if (_pixels < 80) {
                         setState(() {
                           _radius = 120 - _pixels;
-                          _opacity = 1;
+                          // _opacity = 1;
                         });
                       }
                       return true;
@@ -238,9 +235,10 @@ class _NewProfilePageState extends State<NewProfilePage> {
                                                         return Padding(
                                                           padding:
                                                               const EdgeInsets
-                                                                      .only(
-                                                                  top: 30,
-                                                                  bottom: 30),
+                                                                  .only(
+                                                            top:
+                                                                30, /*bottom: 30*/
+                                                          ),
                                                           child: Row(
                                                               mainAxisAlignment:
                                                                   MainAxisAlignment
@@ -291,6 +289,47 @@ class _NewProfilePageState extends State<NewProfilePage> {
                                                               ]),
                                                         );
                                                       }),
+                                                    ),
+                                                    InkWell(
+                                                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: ((context) => WalletPage()))),
+                                                      child: Container(
+                                                        padding:
+                                                            EdgeInsets.symmetric(
+                                                                vertical: 12),
+                                                        margin:
+                                                            EdgeInsets.symmetric(
+                                                                horizontal: 22,
+                                                                vertical: 22),
+                                                        alignment:
+                                                            Alignment.center,
+                                                        decoration: BoxDecoration(
+                                                          color: PRIMARY_COLOR,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(15),
+                                                          boxShadow: [
+                                                            BoxShadow(
+                                                              color: Colors.grey
+                                                                  .withOpacity(
+                                                                      0.5),
+                                                              blurRadius: 4,
+                                                              spreadRadius: 0,
+                                                              offset:
+                                                                  Offset(0, 4),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        child: Text(
+                                                          "Mon portefeuille : ${state.wallet!.amount}€",
+                                                          style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                            fontSize: 18,
+                                                            color:
+                                                                SECONDARY_COLOR,
+                                                          ),
+                                                        ),
+                                                      ),
                                                     )
                                                   ],
                                                 ),
