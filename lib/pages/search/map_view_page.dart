@@ -51,6 +51,8 @@ class _MapViewPageState extends State<MapViewPage> {
   late DateTime? _date;
   late List<DateTime>? _months;
 
+  BitmapDescriptor icon = BitmapDescriptor.defaultMarker;
+
   @override
   void initState() {
     _date = widget.date;
@@ -65,7 +67,28 @@ class _MapViewPageState extends State<MapViewPage> {
       });
     });
 
+    BitmapDescriptor.fromAssetImage(ImageConfiguration(), "assets/marker.png")
+        .then((value) => setState(() => icon = value));
+
     super.initState();
+  }
+
+  Set<Marker> _buildMarkers(List<Party>? parties) {
+    return Set.from(
+      parties?.map(
+            (e) => Marker(
+                flat: true,
+                markerId: MarkerId(e.id!),
+                infoWindow: InfoWindow(
+                    title: e.name,
+                    snippet: e.price.toString(),
+                    anchor: Offset(0, 0)),
+                position: LatLng(e.approximativeCoordinates?[1] ?? 0,
+                    e.approximativeCoordinates?[0] ?? 0),
+                icon: icon),
+          ) ??
+          [],
+    );
   }
 
   @override
@@ -127,6 +150,11 @@ class _MapViewPageState extends State<MapViewPage> {
                               target: LatLng(_latitude!, _longitude!),
                               zoom: 14),
                           onMapCreated: (controller) {
+                            parties?.forEach((element) {
+                              controller
+                                  .showMarkerInfoWindow(MarkerId(element.id!));
+                            });
+
                             mapController = controller;
 
                             mapControllerCompleter
@@ -136,6 +164,7 @@ class _MapViewPageState extends State<MapViewPage> {
                                 .then((value) =>
                                     setState(() => _hasOpacity = false));
                           },
+                          markers: _buildMarkers(parties),
                         ),
                       Positioned(
                         key: _seachDetailsKey,
