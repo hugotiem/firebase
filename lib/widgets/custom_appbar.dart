@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import '../components/party_card/party_export.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -14,11 +12,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: title != null ? Text(title!) : null,
       elevation: 0,
       leadingWidth: 70,
-      leading: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: IconButton(
-            icon: Image.asset("assets/back-btn.png"), onPressed: onPressed),
-      ),
+      leading: onPressed != null
+          ? Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: IconButton(
+                  icon: Image.asset("assets/back-btn.png"),
+                  onPressed: onPressed),
+            )
+          : null,
       flexibleSpace: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(

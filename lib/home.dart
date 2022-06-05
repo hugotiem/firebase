@@ -9,6 +9,7 @@ import 'package:ionicons/ionicons.dart';
 import 'package:pts/blocs/parties/parties_cubit.dart';
 import 'package:pts/components/components_export.dart';
 import 'package:pts/const.dart';
+import 'package:pts/pages/Planning/manage_party_page.dart';
 import 'package:pts/pages/creation/creation_page.dart';
 import 'package:pts/pages/login/connect.dart';
 import 'package:pts/pages/login/id_form_screen.dart';
@@ -38,7 +39,7 @@ class _HomeState extends State<Home> {
     super.initState();
     _children = [
       Search(),
-      widget.isConnected ? Container() : Connect(),
+      widget.isConnected ? ManagePartyOPage() : Connect(),
       Container(),
       widget.isConnected ? MessagePage() : Connect(),
       widget.isConnected ? Profil() : Connect(),
@@ -47,7 +48,7 @@ class _HomeState extends State<Home> {
       bool _isConnected = event.user != null;
       setState(() => _children = [
             Search(),
-            _isConnected ? Container() : Connect(),
+            _isConnected ? ManagePartyOPage() : Connect(),
             Container(),
             _isConnected ? MessagePage() : Connect(),
             _isConnected ? Profil() : Connect(),

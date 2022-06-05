@@ -10,6 +10,7 @@ import 'package:pts/components/profile_photo.dart';
 import 'package:pts/const.dart';
 import 'package:pts/models/party.dart';
 import 'package:pts/services/firestore_service.dart';
+import 'package:pts/widgets/widgets_export.dart';
 import '../../profil/Profil_page.dart';
 
 class GuestWaitList extends StatelessWidget {
@@ -21,40 +22,50 @@ class GuestWaitList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: PRIMARY_COLOR,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(50),
-        child: BackAppBar(title: TitleAppBar("Invités en attentes")),
+      appBar: CustomAppBar(
+        title: "Invités en attentes",
+        onPressed: () => Navigator.pop(context),
       ),
-      body: BlocProvider(
-        create: (context) => UserCubit()..init(),
-        child: BlocBuilder<UserCubit, UserState>(
-          builder: (context, state) {
-            if (state.user == null) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            return BlocProvider(
-              create: (context) => PartiesCubit()
-                ..fetchPartiesWithWhereIsEqualTo("party owner", state.token)
-                ..fetchPartiesWithWhereArrayContains("waitList", state.token),
-              child: BlocBuilder<PartiesCubit, PartiesState>(
-                builder: (context, state) {
-                  if (state.parties == null) {
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                  return ListView.builder(
-                    itemCount: state.parties!.length,
-                    itemBuilder: (BuildContext context, int index) =>
-                        buildValidationCard(
-                            context, state.parties![index], services),
+      body: Container(
+        decoration: BoxDecoration(
+            gradient: LinearGradient(colors: [SECONDARY_COLOR, ICONCOLOR])),
+        child: Container(
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(40))),
+          child: BlocProvider(
+            create: (context) => UserCubit()..init(),
+            child: BlocBuilder<UserCubit, UserState>(
+              builder: (context, state) {
+                if (state.user == null) {
+                  return Center(
+                    child: CircularProgressIndicator(),
                   );
-                },
-              ),
-            );
-          },
+                }
+                return BlocProvider(
+                  create: (context) => PartiesCubit()
+                    ..fetchPartiesWithWhereIsEqualTo("party owner", state.token)
+                    ..fetchPartiesWithWhereArrayContains(
+                        "waitList", state.token),
+                  child: BlocBuilder<PartiesCubit, PartiesState>(
+                    builder: (context, state) {
+                      if (state.parties == null) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      return ListView.builder(
+                        itemCount: state.parties!.length,
+                        itemBuilder: (BuildContext context, int index) =>
+                            buildValidationCard(
+                                context, state.parties![index], services),
+                      );
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
         ),
       ),
     );
