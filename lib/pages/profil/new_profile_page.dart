@@ -161,6 +161,9 @@ class _NewProfilePageState extends State<NewProfilePage> {
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
                                                               .center,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .end,
                                                       children: [
                                                         Text(
                                                           user.name ?? "",
@@ -291,18 +294,23 @@ class _NewProfilePageState extends State<NewProfilePage> {
                                                       }),
                                                     ),
                                                     InkWell(
-                                                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: ((context) => WalletPage()))),
+                                                      onTap: () => Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: ((context) =>
+                                                                  WalletPage(state.wallet, state.user)))),
                                                       child: Container(
-                                                        padding:
-                                                            EdgeInsets.symmetric(
+                                                        padding: EdgeInsets
+                                                            .symmetric(
                                                                 vertical: 12),
-                                                        margin:
-                                                            EdgeInsets.symmetric(
+                                                        margin: EdgeInsets
+                                                            .symmetric(
                                                                 horizontal: 22,
                                                                 vertical: 22),
                                                         alignment:
                                                             Alignment.center,
-                                                        decoration: BoxDecoration(
+                                                        decoration:
+                                                            BoxDecoration(
                                                           color: PRIMARY_COLOR,
                                                           borderRadius:
                                                               BorderRadius
@@ -319,14 +327,42 @@ class _NewProfilePageState extends State<NewProfilePage> {
                                                             ),
                                                           ],
                                                         ),
-                                                        child: Text(
-                                                          "Mon portefeuille : ${state.wallet!.amount}€",
-                                                          style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.w700,
-                                                            fontSize: 18,
-                                                            color:
-                                                                SECONDARY_COLOR,
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .symmetric(
+                                                                  horizontal:
+                                                                      22),
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              const Text(
+                                                                "Mon portefeuille :",
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w700,
+                                                                  fontSize: 18,
+                                                                  color:
+                                                                      SECONDARY_COLOR,
+                                                                ),
+                                                              ),
+                                                              Text(
+                                                                "${state.wallet!.amount.toString().replaceFirst(".", ",")}€",
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w700,
+                                                                  fontSize: 18,
+                                                                  color:
+                                                                      SECONDARY_COLOR,
+                                                                ),
+                                                              ),
+                                                            ],
                                                           ),
                                                         ),
                                                       ),
