@@ -292,11 +292,11 @@ class WalletPage extends StatelessWidget {
                                   padding:
                                       const EdgeInsets.symmetric(vertical: 20),
                                   child: Text(
-                                    "${wallet!.amount.toString().replaceFirst(".", ",")}€",
+                                    "${wallet!.amount.toStringAsFixed(2).replaceFirst(".", ",")} €",
                                     style: TextStyle(
                                       color: SECONDARY_COLOR,
                                       fontWeight: FontWeight.w800,
-                                      fontSize: 40,
+                                      fontSize: 50,
                                     ),
                                   ),
                                 ),
@@ -336,7 +336,9 @@ class WalletPage extends StatelessWidget {
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                      )
+                      ),
+                      TextPaymentReceived(),
+                      TextPaymentDone(),
                     ],
                   ),
                 ),
@@ -344,6 +346,83 @@ class WalletPage extends StatelessWidget {
             ),
           )
         ],
+      ),
+    );
+  }
+}
+
+class TextPaymentReceived extends StatelessWidget {
+  const TextPaymentReceived({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 40, top: 12, bottom: 12),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Icon(Ionicons.person_outline, color: ICONCOLOR),
+          Icon(Ionicons.arrow_back_outline, color: ICONCOLOR),
+          BoldText1("6.85€", secondaryColor: false),
+          SmallText1("reçu de", secondaryColor: false),
+          BoldText1("ANTHONY", secondaryColor: false),
+          Expanded(child: SmallText1("le 26.04.2022", secondaryColor: false)),
+        ],
+      ),
+    );
+  }
+}
+
+class TextPaymentDone extends StatelessWidget {
+  const TextPaymentDone({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 40, top: 12, bottom: 12),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Icon(Ionicons.person_outline, color: SECONDARY_COLOR),
+          Icon(Ionicons.arrow_forward_outline, color: SECONDARY_COLOR),
+          BoldText1("6.85€"),
+          SmallText1("reçu de"),
+          BoldText1("ANTHONY"),
+          Expanded(child: SmallText1("le 26.04.2022")),
+        ],
+      ),
+    );
+  }
+}
+
+class BoldText1 extends StatelessWidget {
+  final String text;
+  final bool secondaryColor;
+  const BoldText1(this.text, { this.secondaryColor = true, Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: TextStyle(
+          color: secondaryColor ? SECONDARY_COLOR : ICONCOLOR, fontSize: 24, fontWeight: FontWeight.w700),
+    );
+  }
+}
+
+class SmallText1 extends StatelessWidget {
+  final String text;
+  final bool secondaryColor;
+  const SmallText1(this.text, { this.secondaryColor = true, Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4),
+      child: Text(
+        text,
+        style: TextStyle(
+            color: secondaryColor ? SECONDARY_COLOR : ICONCOLOR, fontWeight: FontWeight.w400, fontSize: 16),
       ),
     );
   }
@@ -363,8 +442,8 @@ class TransactionBox extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              height: 50,
-              width: 50,
+              height: 60,
+              width: 60,
               decoration: BoxDecoration(
                 color: PRIMARY_COLOR,
                 boxShadow: [
@@ -386,7 +465,7 @@ class TransactionBox extends StatelessWidget {
                 style: TextStyle(
                     color: SECONDARY_COLOR, fontWeight: FontWeight.w600),
               ),
-            )
+            ),
           ],
         ),
       ),
