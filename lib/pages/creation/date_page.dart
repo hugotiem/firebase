@@ -11,7 +11,8 @@ class DatePage extends StatelessWidget {
   final void Function(BuildContext)? onNext;
   final void Function(BuildContext)? onPrevious;
   final DateTime? date;
-  const DatePage({Key? key, this.onNext, this.onPrevious, this.date}) : super(key: key);
+  const DatePage({Key? key, this.onNext, this.onPrevious, this.date})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +35,7 @@ class DatePage extends StatelessWidget {
           selectedDay: date,
           onSelectedDay: (selected) => _date = selected,
           themeColor: ICONCOLOR,
-          backgroundColor: PRIMARY_COLOR,
+          backgroundColor: Colors.white,
           shadow: true,
           padding: EdgeInsets.zero,
         ),
