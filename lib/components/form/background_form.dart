@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pts/const.dart';
+import 'package:pts/widgets/widgets_export.dart';
 
 class BackgroundForm extends StatelessWidget {
   final List<Widget> children;
@@ -23,32 +24,9 @@ class BackgroundForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.transparent,
-        leadingWidth: 70,
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                SECONDARY_COLOR,
-                ICONCOLOR,
-              ],
-              begin: const FractionalOffset(0.0, 0.0),
-              end: const FractionalOffset(1.0, 0.0),
-              stops: const [0.0, 1.0],
-            ),
-          ),
-        ),
-        leading: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: IconButton(
-            icon: Image.asset("assets/back-btn.png"),
-            onPressed:
-                onPrevious != null ? onPrevious : () => Navigator.pop(context),
-          ),
-        ),
+      appBar: CustomAppBar(
+        onPressed:
+            onPrevious != null ? onPrevious : () => Navigator.pop(context),
       ),
       floatingActionButton: FloatingActionButton.extended(
         heroTag: heroTag,
