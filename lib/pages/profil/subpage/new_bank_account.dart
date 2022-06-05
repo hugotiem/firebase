@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pts/components/appbar.dart';
 import 'package:pts/components/fab_join.dart';
-import 'package:pts/components/form/custom_ttf_form.dart';
+import 'package:pts/widgets/app_text_field.dart';
 import 'package:pts/const.dart';
 import 'package:pts/models/address.dart';
 import 'package:pts/models/user.dart';

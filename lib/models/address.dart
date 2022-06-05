@@ -27,13 +27,26 @@ class Address {
     List<String> context = (properties['context'] as String).split(", ");
     return Address(
       label: properties['label'],
-      streetName: properties['street'],
+      streetName: properties['street'] ?? properties['name'],
       streetNumber: properties['housenumber'],
       city: properties['city'],
       postalCode: properties['postcode'],
       region: context[2],
       longitude: coordinates[0],
       latitude: coordinates[1],
+    );
+  }
+
+  factory Address.fromDB(Map<String, dynamic>? data) {
+    var streetNumber = data?["streetnumber"];
+    var streetName = data?["address"];
+    var postalCode = data?["postalCode"];
+    var city = data?["city"];
+    return Address(
+      streetNumber: streetNumber,
+      streetName: streetName,
+      postalCode: postalCode,
+      city: city,
     );
   }
 }

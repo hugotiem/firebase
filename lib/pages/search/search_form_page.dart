@@ -11,6 +11,7 @@ import 'package:pts/models/city.dart';
 import 'package:pts/models/place_search.dart';
 import 'package:pts/pages/search/map_view_page.dart';
 import 'package:pts/pages/search/sliver/searchbar.dart';
+import 'package:pts/widgets/widgets_export.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -67,44 +68,22 @@ class _SearchFormPageState extends State<SearchFormPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leadingWidth: 70,
-        leading: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: IconButton(
-            icon: Image.asset("assets/back-btn.png"),
-            onPressed: () {
-              if (_panelController.isPanelClosed) {
-                _panelController
-                    .animatePanelToPosition(1,
-                        duration: const Duration(milliseconds: 300),
-                        curve: Curves.easeInOut)
-                    .whenComplete(() => _focusNode.requestFocus());
-              } else {
-                if (widget.onPop != null) {
-                  widget.onPop!();
-                } else {
-                  Navigator.of(context).pop();
-                }
-              }
-            },
-          ),
-        ),
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                SECONDARY_COLOR,
-                ICONCOLOR,
-              ],
-              begin: const FractionalOffset(0.0, 0.0),
-              end: const FractionalOffset(1.0, 0.0),
-              stops: const [0.0, 1.0],
-            ),
-          ),
-        ),
+      appBar: CustomAppBar(
+        onPressed: () {
+          if (_panelController.isPanelClosed) {
+            _panelController
+                .animatePanelToPosition(1,
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut)
+                .whenComplete(() => _focusNode.requestFocus());
+          } else {
+            if (widget.onPop != null) {
+              widget.onPop!();
+            } else {
+              Navigator.of(context).pop();
+            }
+          }
+        },
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -120,7 +99,7 @@ class _SearchFormPageState extends State<SearchFormPage> {
         ),
         child: SlidingUpPanel(
           panelSnapping: false,
-          borderRadius: BorderRadius.circular(40),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(40)),
           body: Padding(
             padding: EdgeInsets.only(top: 50 * _hiddenPaddingFactor),
             child: CalendarContent(destination: destination),
@@ -547,13 +526,15 @@ class CalendarWidget extends StatefulWidget {
   final Color? backgroundColor;
   final bool? shadow;
   final EdgeInsetsGeometry? padding;
+  final DateTime? selectedDay;
   CalendarWidget(
       {Key? key,
       required this.onSelectedDay,
       this.themeColor,
       this.backgroundColor,
       this.shadow = false,
-      this.padding})
+      this.padding,
+      this.selectedDay})
       : super(key: key);
 
   @override
@@ -573,8 +554,8 @@ class _CalendarWidgetState extends State<CalendarWidget> {
 
   String _currentDate = DateFormat.yMMMM('fr').format(DateTime.now());
 
-  DateTime _selectedDay = DateTime.now();
-  DateTime _focusedDay = DateTime.now();
+  late DateTime _selectedDay;
+  late DateTime _focusedDay;
 
   DateTime _firstDay = AppDateTime.now().copyWith(day: 1);
 
@@ -584,6 +565,8 @@ class _CalendarWidgetState extends State<CalendarWidget> {
 
   @override
   void initState() {
+    _selectedDay = widget.selectedDay ?? DateTime.now();
+    _focusedDay = _selectedDay;
     super.initState();
   }
 

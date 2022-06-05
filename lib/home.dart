@@ -72,30 +72,38 @@ class _HomeState extends State<Home> {
     return BlocProvider(
       create: (context) => UserCubit()..init(),
       child: BlocBuilder<UserCubit, UserState>(
-        builder: (context, userState) {
-          if (userState.user?.banned == true) {
-            return Banned(userState.user!.id);
+        builder: (context, state) {
+          var user = state.user;
+          if (state.user?.banned == true) {
+            return Banned(state.user!.id);
           }
-          return BlocProvider(
-            create: (context) => UserCubit()..loadData(),
-            child: BlocListener<UserCubit, UserState>(
-              listener: (context, state) {
-                if (state.user != null) {
-                  if (!state.user!.hasIdChecked!) {
-                    _showLoadingPopup();
+
+          return Scaffold(
+            body: AnimatedCrossFade(
+              duration: const Duration(milliseconds: 200),
+              firstChild: Container(color: Colors.white),
+              crossFadeState: user == null
+                  ? CrossFadeState.showFirst
+                  : CrossFadeState.showSecond,
+              secondChild: BlocListener<UserCubit, UserState>(
+                listener: (context, state) {
+                  if (state.user != null) {
+                    if (!state.user!.hasIdChecked!) {
+                      Future.delayed(const Duration(milliseconds: 200))
+                          .then((value) => _showLoadingPopup());
+                    }
                   }
-                }
-              },
-              child: BlocBuilder<UserCubit, UserState>(
-                builder: (context, state) {
-                  return BlocProvider(
-                    create: (context) =>
-                        PartiesCubit()..disablePartiesAfterDate(),
-                    child: BlocBuilder<PartiesCubit, PartiesState>(
-                      builder: (context, stateparty) {
-                        return Stack(
-                          children: [
-                            Scaffold(
+                },
+                child: BlocProvider(
+                  create: (context) =>
+                      PartiesCubit()..disablePartiesAfterDate(),
+                  child: BlocBuilder<PartiesCubit, PartiesState>(
+                    builder: (context, stateparty) {
+                      return Stack(
+                        children: [
+                          Container(
+                            height: MediaQuery.of(context).size.height,
+                            child: Scaffold(
                               extendBodyBehindAppBar: true,
                               body: _children[_currentIndex],
                               bottomNavigationBar: BottomNavigationBar(
@@ -149,34 +157,34 @@ class _HomeState extends State<Home> {
                                 backgroundColor: Colors.white,
                               ),
                             ),
-                            SafeArea(
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 2.5),
-                                child: Align(
-                                  alignment: Alignment.bottomCenter,
-                                  child: FloatingActionButton(
-                                    heroTag: "name",
-                                    onPressed: () => Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) => widget.isConnected
-                                            ? CreationPage()
-                                            : Connect(),
-                                        fullscreenDialog: true,
-                                      ),
+                          ),
+                          SafeArea(
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 2.5),
+                              child: Align(
+                                alignment: Alignment.bottomCenter,
+                                child: FloatingActionButton(
+                                  heroTag: "name",
+                                  onPressed: () => Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => widget.isConnected
+                                          ? CreationPage()
+                                          : Connect(),
+                                      fullscreenDialog: true,
                                     ),
-                                    backgroundColor: SECONDARY_COLOR,
-                                    child: Icon(Icons.add_rounded),
                                   ),
+                                  backgroundColor: SECONDARY_COLOR,
+                                  child: Icon(Icons.add_rounded),
                                 ),
                               ),
                             ),
-                          ],
-                        );
-                      },
-                    ),
-                  );
-                },
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                ),
               ),
             ),
           );
@@ -193,15 +201,14 @@ class _HomeState extends State<Home> {
           fullscreenDialog: true,
         ),
       );
-    }  else if (index == 4) {
+    } else if (index == 4) {
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => NewProfilePage(widget.isConnected),
           fullscreenDialog: true,
         ),
       );
-    } 
-     else
+    } else
       setState(() {
         _currentIndex = index;
       });

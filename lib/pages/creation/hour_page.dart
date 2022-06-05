@@ -10,8 +10,8 @@ import 'package:pts/const.dart';
 import 'package:pts/models/party.dart';
 
 class HourPage extends StatefulWidget {
-  final void Function()? onNext;
-  final void Function()? onPrevious;
+  final void Function(BuildContext)? onNext;
+  final void Function(BuildContext)? onPrevious;
   final Party? party;
   const HourPage({Key? key, this.onNext, this.onPrevious, this.party})
       : super(key: key);
@@ -21,22 +21,22 @@ class HourPage extends StatefulWidget {
 }
 
 class _HourPageState extends State<HourPage> {
-  int initTime = 0;
-  int endTime = 50;
+  int _initTime = 0;
+  int _endTime = 50;
 
   @override
   Widget build(BuildContext context) {
     double size = MediaQuery.of(context).size.width * 0.85;
     return BackgroundForm(
       isScrollable: false,
-      heroTag: " hour",
-      onPrevious: () => widget.onPrevious!(),
+      heroTag: "hour",
+      onPrevious: () => widget.onPrevious!(context),
       onPressedFAB: () {
         late DateTime? date = widget.party?.date;
         DateTime heureDebut = AppDateTime.from(date).copyWith(
-            hour: _formatTime(initTime)[0], minute: _formatTime(initTime)[1]);
+            hour: _formatTime(_initTime)[0], minute: _formatTime(_initTime)[1]);
         DateTime heureFin = AppDateTime.from(date).copyWith(
-            hour: _formatTime(endTime)[0], minute: _formatTime(endTime)[1]);
+            hour: _formatTime(_endTime)[0], minute: _formatTime(_endTime)[1]);
         DateTime dateDebut = DateTime(date!.year, date.month, date.day,
             heureDebut.hour, heureDebut.minute);
         DateTime dateFin = DateTime(
@@ -46,7 +46,7 @@ class _HourPageState extends State<HourPage> {
         }
         BlocProvider.of<BuildPartiesCubit>(context)
           ..setStartTime(dateDebut, dateFin);
-        widget.onNext!();
+        widget.onNext!(context);
       },
       children: [
         HeaderText1Form(
@@ -56,8 +56,8 @@ class _HourPageState extends State<HourPage> {
         Center(
           child: DoubleCircularSlider(
             288,
-            initTime,
-            endTime,
+            _initTime,
+            _endTime,
             width: size,
             height: size,
             baseColor: Colors.grey.withOpacity(0.2),
@@ -68,8 +68,8 @@ class _HourPageState extends State<HourPage> {
             handlerOutterRadius: 10,
             onSelectionChange: (init, end, laps) {
               setState(() {
-                initTime = init;
-                endTime = end;
+                _initTime = init;
+                _endTime = end;
               });
             },
             child: Container(
@@ -106,14 +106,14 @@ class _HourPageState extends State<HourPage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 text(
-                    "${intToDate(_formatTime(initTime)[0])} : ${intToDate(_formatTime(initTime)[1])}"),
+                    "${intToDate(_formatTime(_initTime)[0])} : ${intToDate(_formatTime(_initTime)[1])}"),
                 Icon(
                   Ionicons.caret_down,
                   color: ICONCOLOR,
                   size: 40,
                 ),
                 text(
-                    "${intToDate(_formatTime(endTime)[0])} : ${intToDate(_formatTime(endTime)[1])}"),
+                    "${intToDate(_formatTime(_endTime)[0])} : ${intToDate(_formatTime(_endTime)[1])}"),
               ],
             ),
           ),

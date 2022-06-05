@@ -200,7 +200,7 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
 
     return CustomSliver(
       backgroundColor: PRIMARY_COLOR,
-      toolbarColor: _toolbarColor,    
+      toolbarColor: _toolbarColor,
       body: widget.body!,
       searchBar: Stack(
         children: [
@@ -306,7 +306,7 @@ class _CustomSliverCardState extends State<CustomSliverCard> {
                                 ),
                               ),
                               CText(
-                                widget.party.city,
+                                widget.party.address?.city,
                                 color: SECONDARY_COLOR,
                                 fontSize: 16,
                               )

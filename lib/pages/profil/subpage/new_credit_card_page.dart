@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pts/blocs/card_registration/card_registration_cubit.dart';
 import 'package:pts/components/appbar.dart';
 import 'package:pts/components/fab_join.dart';
-import 'package:pts/components/form/custom_ttf_form.dart';
+import 'package:pts/widgets/app_text_field.dart';
 import 'package:pts/const.dart';
 import 'package:pts/models/payments/card_registration.dart';
 import 'package:pts/models/user.dart';

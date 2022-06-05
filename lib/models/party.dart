@@ -2,7 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'dart:math' as math;
 
+import 'package:pts/models/address.dart';
+
 enum SmokeState { outside, inside, notAllowed }
+
 enum AnimalState { allowed, notAllowed }
 
 // ignore: must_be_immutable
@@ -16,9 +19,10 @@ class Party extends Equatable {
   DateTime? endTime;
   double? price;
   String? desc;
-  String? address;
-  String? city;
-  String? postalCode;
+  Address? address;
+  // String? address;
+  // String? city;
+  // String? postalCode;
   SmokeState? smoke;
   AnimalState? animals;
   var ownerId;
@@ -45,8 +49,6 @@ class Party extends Equatable {
       this.price,
       this.desc,
       this.address,
-      this.city,
-      this.postalCode,
       this.smoke,
       this.animals,
       this.ownerId,
@@ -90,9 +92,10 @@ class Party extends Equatable {
       "endTime": endTime,
       "price": price,
       "desc": desc,
-      "address": address,
-      "city": city,
-      "postalCode": postalCode,
+      if (address?.streetNumber == null) "streetnumber": address?.streetNumber,
+      "address": address?.streetName,
+      "postalCode": address?.postalCode,
+      "city": address?.city,
       "smoke": smoke?.index,
       "animals": animals?.index,
       "ownerId": ownerId,
@@ -119,9 +122,7 @@ class Party extends Equatable {
     var endTime = json?['endTime'].toDate();
     double? price = json?['price'];
     var desc = json?['desc'];
-    var address = json?['address'];
-    var city = json?['city'];
-    var postalCode = json?['postal code'];
+    var address = Address.fromDB(json);
     var smoke = SmokeState.values[json?['smoke']];
     var animals = AnimalState.values[json?['animals']];
     var ownerId = json?['ownerId'];
@@ -152,8 +153,6 @@ class Party extends Equatable {
         price: price,
         desc: desc,
         address: address,
-        city: city,
-        postalCode: postalCode,
         smoke: smoke,
         animals: animals,
         ownerId: ownerId,
@@ -193,9 +192,7 @@ class Party extends Equatable {
           DateTime? endTime,
           double? price,
           String? desc,
-          String? address,
-          String? city,
-          String? postalCode,
+          Address? address,
           SmokeState? smoke,
           AnimalState? animals,
           var ownerId,
@@ -221,8 +218,6 @@ class Party extends Equatable {
         price: price ?? this.price,
         desc: desc ?? this.desc,
         address: address ?? this.address,
-        city: city ?? this.city,
-        postalCode: postalCode ?? this.postalCode,
         smoke: smoke ?? this.smoke,
         animals: animals ?? this.animals,
         ownerId: ownerId ?? this.ownerId,
@@ -250,8 +245,6 @@ class Party extends Equatable {
         price,
         desc,
         address,
-        city,
-        postalCode,
         smoke,
         animals,
         ownerId,

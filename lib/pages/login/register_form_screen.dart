@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:pts/components/custom_text.dart';
 import 'package:pts/components/form/custom_text_form.dart';
-import 'package:pts/components/form/custom_ttf_form.dart';
+import 'package:pts/widgets/app_text_field.dart';
 import 'package:pts/components/form/date_hour_picker.dart';
 import 'package:pts/const.dart';
 import 'package:pts/pages/login/id_form_screen.dart';

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pts/const.dart';
+import 'package:pts/widgets/widgets_export.dart';
 
 class BackgroundForm extends StatelessWidget {
   final List<Widget> children;
@@ -23,6 +24,10 @@ class BackgroundForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: CustomAppBar(
+        onPressed:
+            onPrevious != null ? onPrevious : () => Navigator.pop(context),
+      ),
       floatingActionButton: FloatingActionButton.extended(
         heroTag: heroTag,
         label: Padding(
@@ -34,62 +39,42 @@ class BackgroundForm extends StatelessWidget {
         ),
         onPressed: onPressedFAB,
         elevation: 0,
-        backgroundColor: validate == true ? ICONCOLOR : ICONCOLOR.withOpacity(0.4),
+        backgroundColor:
+            validate == true ? ICONCOLOR : ICONCOLOR.withOpacity(0.4),
       ),
       body: Form(
         key: formkey,
-        child: Stack(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(colors: [SECONDARY_COLOR, ICONCOLOR]),
+        child: Container(
+          padding: EdgeInsets.only(top: 20),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                SECONDARY_COLOR,
+                ICONCOLOR,
+              ],
+              begin: const FractionalOffset(0.0, 0.0),
+              end: const FractionalOffset(1.0, 0.0),
+              stops: const [0.0, 1.0],
+            ),
+          ),
+          child: Container(
+            height: double.infinity,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(40)),
+            ),
+            child: adaptiveWidget(
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: children,
               ),
             ),
-            Align(
-              alignment: Alignment.topLeft,
-              child: Padding(
-                padding: EdgeInsets.only(
-                  top: MediaQuery.of(context).size.height * 0.05,
-                  left: MediaQuery.of(context).size.width * 0.05,
-                ),
-                child: InkWell(
-                  onTap: onPrevious != null
-                      ? onPrevious
-                      : () => Navigator.pop(context),
-                  child: Image(
-                    image: AssetImage("assets/RETOUR.png"),
-                    alignment: Alignment.topLeft,
-                    height: 40,
-                    width: 40,
-                  ),
-                ),
-              ),
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                height: MediaQuery.of(context).size.height * 0.88,
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  color: PRIMARY_COLOR,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(50),
-                    topRight: Radius.circular(50),
-                  ),
-                ),
-                child: adaptiveWidget(
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: children,
-                  ),
-                ),
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
   }
+
   Widget adaptiveWidget(Widget child) {
     if (isScrollable)
       return SingleChildScrollView(
