@@ -157,44 +157,15 @@ class _NewProfilePageState extends State<NewProfilePage> {
                                                 ),
                                                 Column(
                                                   children: [
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .end,
-                                                      children: [
-                                                        Text(
-                                                          user.name ?? "",
-                                                          style: TextStyle(
-                                                            fontSize: 32,
-                                                            fontWeight:
-                                                                FontWeight.w800,
-                                                            color:
-                                                                SECONDARY_COLOR,
-                                                          ),
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .only(
-                                                                  left: 8),
-                                                          child: Icon(
-                                                              (user.verified ??
-                                                                      false)
-                                                                  ? Icons
-                                                                      .verified_sharp
-                                                                  : Icons
-                                                                      .close_outlined,
-                                                              color:
-                                                                  user.verified ??
-                                                                          false
-                                                                      ? ICONCOLOR
-                                                                      : Colors
-                                                                          .red),
-                                                        )
-                                                      ],
+                                                    Text(
+                                                      user.name ?? "",
+                                                      style: TextStyle(
+                                                        fontSize: 32,
+                                                        fontWeight:
+                                                            FontWeight.w800,
+                                                        color:
+                                                            SECONDARY_COLOR,
+                                                      ),
                                                     ),
                                                     InkWell(
                                                       onTap: () =>
