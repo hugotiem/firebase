@@ -63,23 +63,13 @@ class BackgroundForm extends StatelessWidget {
               color: Colors.white,
               borderRadius: BorderRadius.vertical(top: Radius.circular(40)),
             ),
-            child: adaptiveWidget(
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: children,
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: children,
             ),
           ),
         ),
       ),
     );
-  }
-
-  Widget adaptiveWidget(Widget child) {
-    if (isScrollable)
-      return SingleChildScrollView(
-        child: child,
-      );
-    return child;
   }
 }

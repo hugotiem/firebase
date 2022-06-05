@@ -667,70 +667,78 @@ class _CalendarWidgetState extends State<CalendarWidget> {
               ],
             ),
             clipBehavior: Clip.antiAlias,
-            child: TableCalendar(
-              currentDay: _selectedDay,
-              calendarStyle: CalendarStyle(
-                selectedDecoration: BoxDecoration(
-                  color:
-                      widget.backgroundColor ?? Colors.white.withOpacity(0.3),
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    widget.shadow == true
-                        ? BoxShadow(
-                            color: ICONCOLOR.withOpacity(0.5),
-                            spreadRadius: 7,
-                            blurRadius: 15,
-                          )
-                        : BoxShadow(color: Colors.transparent)
-                  ],
+            child: FittedBox(
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                child: TableCalendar(
+                  currentDay: _selectedDay,
+                  calendarStyle: CalendarStyle(
+                    selectedDecoration: BoxDecoration(
+                      color: widget.backgroundColor ??
+                          Colors.white.withOpacity(0.3),
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        widget.shadow == true
+                            ? BoxShadow(
+                                color: ICONCOLOR.withOpacity(0.5),
+                                spreadRadius: 7,
+                                blurRadius: 15,
+                              )
+                            : BoxShadow(color: Colors.transparent)
+                      ],
+                    ),
+                    defaultTextStyle:
+                        AppTextStyle(color: widget.themeColor ?? Colors.white),
+                    outsideDaysVisible: false,
+                    weekendTextStyle:
+                        AppTextStyle(color: widget.themeColor ?? Colors.white),
+                    disabledTextStyle: AppTextStyle(
+                        color: widget.themeColor?.withOpacity(0.6) ??
+                            Colors.white.withOpacity(0.3)),
+                    todayDecoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.3),
+                        shape: BoxShape.circle),
+                    todayTextStyle: AppTextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold),
+                    selectedTextStyle: AppTextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold),
+                  ),
+                  enabledDayPredicate: (day) {
+                    return isSameDay(DateTime.now(), day) ||
+                        day.isAfter(DateTime.now());
+                  },
+                  selectedDayPredicate: (day) {
+                    return isSameDay(_selectedDay, day);
+                  },
+                  onPageChanged: (current) {
+                    setState(() {
+                      _focusedDay = current;
+                      _currentDate = DateFormat.yMMMM('fr')
+                          .format(DateTime(current.year, current.month));
+                    });
+                  },
+                  onDaySelected: (selectedDay, focusedDay) {
+                    if (!isSameDay(_selectedDay, selectedDay)) {
+                      setState(() {
+                        _selectedDay = selectedDay;
+                        _focusedDay = focusedDay;
+                      });
+                    }
+                    widget.onSelectedDay(selectedDay);
+                  },
+                  daysOfWeekVisible: false,
+                  locale: 'fr',
+                  headerVisible: false,
+                  availableCalendarFormats: const {
+                    CalendarFormat.month: 'Month'
+                  },
+                  startingDayOfWeek: StartingDayOfWeek.monday,
+                  firstDay: _firstDay,
+                  focusedDay: _focusedDay,
+                  lastDay:
+                      DateTime(DateTime.now().year + 1, DateTime.now().month),
                 ),
-                defaultTextStyle:
-                    AppTextStyle(color: widget.themeColor ?? Colors.white),
-                outsideDaysVisible: false,
-                weekendTextStyle:
-                    AppTextStyle(color: widget.themeColor ?? Colors.white),
-                disabledTextStyle: AppTextStyle(
-                    color: widget.themeColor?.withOpacity(0.6) ??
-                        Colors.white.withOpacity(0.3)),
-                todayDecoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.3),
-                    shape: BoxShape.circle),
-                todayTextStyle: AppTextStyle(
-                    color: Colors.black, fontWeight: FontWeight.bold),
-                selectedTextStyle: AppTextStyle(
-                    color: Colors.black, fontWeight: FontWeight.bold),
               ),
-              enabledDayPredicate: (day) {
-                return isSameDay(DateTime.now(), day) ||
-                    day.isAfter(DateTime.now());
-              },
-              selectedDayPredicate: (day) {
-                return isSameDay(_selectedDay, day);
-              },
-              onPageChanged: (current) {
-                setState(() {
-                  _focusedDay = current;
-                  _currentDate = DateFormat.yMMMM('fr')
-                      .format(DateTime(current.year, current.month));
-                });
-              },
-              onDaySelected: (selectedDay, focusedDay) {
-                if (!isSameDay(_selectedDay, selectedDay)) {
-                  setState(() {
-                    _selectedDay = selectedDay;
-                    _focusedDay = focusedDay;
-                  });
-                }
-                widget.onSelectedDay(selectedDay);
-              },
-              daysOfWeekVisible: false,
-              locale: 'fr',
-              headerVisible: false,
-              availableCalendarFormats: const {CalendarFormat.month: 'Month'},
-              startingDayOfWeek: StartingDayOfWeek.monday,
-              firstDay: _firstDay,
-              focusedDay: _focusedDay,
-              lastDay: DateTime(DateTime.now().year + 1, DateTime.now().month),
             ),
           ),
         ],

@@ -327,7 +327,7 @@ class WalletPage extends StatelessWidget {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 40),
+                        padding: const EdgeInsets.only(left: 30),
                         child: Text(
                           "historique des transactions".toUpperCase(),
                           style: TextStyle(
@@ -357,17 +357,23 @@ class TextPaymentReceived extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 40, top: 12, bottom: 12),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Icon(Ionicons.person_outline, color: ICONCOLOR),
-          Icon(Ionicons.arrow_back_outline, color: ICONCOLOR),
-          BoldText1("6.85€", secondaryColor: false),
-          SmallText1("reçu de", secondaryColor: false),
-          BoldText1("ANTHONY", secondaryColor: false),
-          Expanded(child: SmallText1("le 26.04.2022", secondaryColor: false)),
-        ],
+      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
+      child: FittedBox(
+        fit: BoxFit.fitWidth,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Icon(Ionicons.person_outline, color: ICONCOLOR),
+            Icon(Ionicons.arrow_back_outline, color: ICONCOLOR),
+            BoldText1("6.85€", secondaryColor: false),
+            SmallText1("reçu de", secondaryColor: false),
+            BoldText1("ANTHONY", secondaryColor: false),
+            FittedBox(
+              fit: BoxFit.fitWidth,
+              child: SmallText1("le 26.04.2022", secondaryColor: false),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -379,17 +385,20 @@ class TextPaymentDone extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 40, top: 12, bottom: 12),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Icon(Ionicons.person_outline, color: SECONDARY_COLOR),
-          Icon(Ionicons.arrow_forward_outline, color: SECONDARY_COLOR),
-          BoldText1("6.85€"),
-          SmallText1("reçu de"),
-          BoldText1("ANTHONY"),
-          Expanded(child: SmallText1("le 26.04.2022")),
-        ],
+      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
+      child: FittedBox(
+        fit: BoxFit.fitWidth,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Icon(Ionicons.person_outline, color: SECONDARY_COLOR),
+            Icon(Ionicons.arrow_forward_outline, color: SECONDARY_COLOR),
+            BoldText1("6.85€"),
+            SmallText1("reçu de"),
+            BoldText1("ANTHONY"),
+            FittedBox(child: SmallText1("le 26.04.2022")),
+          ],
+        ),
       ),
     );
   }
@@ -398,14 +407,17 @@ class TextPaymentDone extends StatelessWidget {
 class BoldText1 extends StatelessWidget {
   final String text;
   final bool secondaryColor;
-  const BoldText1(this.text, { this.secondaryColor = true, Key? key}) : super(key: key);
+  const BoldText1(this.text, {this.secondaryColor = true, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Text(
       text,
       style: TextStyle(
-          color: secondaryColor ? SECONDARY_COLOR : ICONCOLOR, fontSize: 24, fontWeight: FontWeight.w700),
+          color: secondaryColor ? SECONDARY_COLOR : ICONCOLOR,
+          fontSize: 24,
+          fontWeight: FontWeight.w700),
     );
   }
 }
@@ -413,7 +425,8 @@ class BoldText1 extends StatelessWidget {
 class SmallText1 extends StatelessWidget {
   final String text;
   final bool secondaryColor;
-  const SmallText1(this.text, { this.secondaryColor = true, Key? key}) : super(key: key);
+  const SmallText1(this.text, {this.secondaryColor = true, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -422,7 +435,9 @@ class SmallText1 extends StatelessWidget {
       child: Text(
         text,
         style: TextStyle(
-            color: secondaryColor ? SECONDARY_COLOR : ICONCOLOR, fontWeight: FontWeight.w400, fontSize: 16),
+            color: secondaryColor ? SECONDARY_COLOR : ICONCOLOR,
+            fontWeight: FontWeight.w400,
+            fontSize: 16),
       ),
     );
   }
