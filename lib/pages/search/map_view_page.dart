@@ -61,7 +61,7 @@ class _MapViewPageState extends State<MapViewPage> {
     _destination = BlocProvider.of<SearchCubit>(context).state.destination;
     _getCoordinates(_destination);
 
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       setState(() {
         _searchContainerHeight = _seachDetailsKey.currentContext?.size?.height;
       });
