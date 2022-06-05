@@ -6,6 +6,7 @@ import 'package:pts/pages/profil/subpage/about_page.dart';
 import 'package:pts/pages/profil/subpage/existing_cards_page.dart';
 import 'package:pts/pages/profil/subpage/new_user_page.dart';
 import 'package:pts/pages/profil/subpage/notification_page.dart';
+import 'package:pts/pages/profil/subpage/wallet_page.dart';
 import 'package:pts/services/auth_service.dart';
 
 import 'subpage/contactus_page.dart';
@@ -13,7 +14,8 @@ import 'subpage/info_page.dart';
 import 'subpage/qr_code_page.dart';
 
 class NewProfilePage extends StatefulWidget {
-  const NewProfilePage({Key? key}) : super(key: key);
+  final bool? isConnected;
+  const NewProfilePage(this.isConnected, {Key? key}) : super(key: key);
 
   @override
   State<NewProfilePage> createState() => _NewProfilePageState();
@@ -21,7 +23,17 @@ class NewProfilePage extends StatefulWidget {
 
 class _NewProfilePageState extends State<NewProfilePage> {
   double _radius = 120;
+  double _opacity = 1;
   final AuthService service = AuthService();
+
+  // ignore: unused_field
+  late bool _isConnected;
+
+  @override
+  void initState() {
+    _isConnected = widget.isConnected ?? false;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +43,7 @@ class _NewProfilePageState extends State<NewProfilePage> {
       create: (context) => UserCubit()..init(),
       child: BlocBuilder<UserCubit, UserState>(builder: (context, state) {
         var token = state.token;
-        log(token.toString());
+        // log(token.toString());
         return token == null
             ? Connect()
             : Scaffold(
@@ -52,17 +64,22 @@ class _NewProfilePageState extends State<NewProfilePage> {
 
                   return NotificationListener<ScrollNotification>(
                     onNotification: (notification) {
-                      if (notification.metrics.pixels < 0) {
+                      double _pixels = notification.metrics.pixels;
+                      if (_pixels < 0) {
                         setState(() {
                           _radius = 120;
                         });
-                      } else if (notification.metrics.pixels > 80) {
+                      } else if (_pixels > 80) {
                         setState(() {
                           _radius = 120 - 80;
+                          // if (_opacity > 0) _opacity = 1 - ((_pixels - 80) / 100);
+                          // else _opacity = 0;
+                          // print(_opacity);
                         });
-                      } else if (notification.metrics.pixels < 80) {
+                      } else if (_pixels < 80) {
                         setState(() {
-                          _radius = 120 - notification.metrics.pixels;
+                          _radius = 120 - _pixels;
+                          // _opacity = 1;
                         });
                       }
                       return true;
@@ -218,9 +235,10 @@ class _NewProfilePageState extends State<NewProfilePage> {
                                                         return Padding(
                                                           padding:
                                                               const EdgeInsets
-                                                                      .only(
-                                                                  top: 30,
-                                                                  bottom: 30),
+                                                                  .only(
+                                                            top:
+                                                                30, /*bottom: 30*/
+                                                          ),
                                                           child: Row(
                                                               mainAxisAlignment:
                                                                   MainAxisAlignment
@@ -271,6 +289,47 @@ class _NewProfilePageState extends State<NewProfilePage> {
                                                               ]),
                                                         );
                                                       }),
+                                                    ),
+                                                    InkWell(
+                                                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: ((context) => WalletPage()))),
+                                                      child: Container(
+                                                        padding:
+                                                            EdgeInsets.symmetric(
+                                                                vertical: 12),
+                                                        margin:
+                                                            EdgeInsets.symmetric(
+                                                                horizontal: 22,
+                                                                vertical: 22),
+                                                        alignment:
+                                                            Alignment.center,
+                                                        decoration: BoxDecoration(
+                                                          color: PRIMARY_COLOR,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(15),
+                                                          boxShadow: [
+                                                            BoxShadow(
+                                                              color: Colors.grey
+                                                                  .withOpacity(
+                                                                      0.5),
+                                                              blurRadius: 4,
+                                                              spreadRadius: 0,
+                                                              offset:
+                                                                  Offset(0, 4),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        child: Text(
+                                                          "Mon portefeuille : ${state.wallet!.amount}€",
+                                                          style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                            fontSize: 18,
+                                                            color:
+                                                                SECONDARY_COLOR,
+                                                          ),
+                                                        ),
+                                                      ),
                                                     )
                                                   ],
                                                 ),
@@ -341,13 +400,18 @@ class _NewProfilePageState extends State<NewProfilePage> {
                             ),
                           ),
                         ),
-                        Align(
-                          alignment: Alignment.topCenter,
-                          child: Padding(
-                            padding: EdgeInsets.only(top: height * 0.05),
-                            child: ProfilePhoto(
-                              "",
-                              radius: _radius,
+                        Opacity(
+                          opacity: _opacity,
+                          child: Align(
+                            alignment: Alignment.topCenter,
+                            child: Padding(
+                              padding: EdgeInsets.only(top: height * 0.05),
+                              child: ProfilePhoto(
+                                user.photo!.isEmpty
+                                    ? "assets/roundBlankProfilPicture.png"
+                                    : user.photo,
+                                radius: _radius,
+                              ),
                             ),
                           ),
                         )
@@ -441,7 +505,7 @@ class SettingContainer extends StatelessWidget {
         onTap: () => Navigator.push(
             context, MaterialPageRoute(builder: (context) => to)),
         child: Container(
-          padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+          padding: EdgeInsets.symmetric(vertical: 14, horizontal: 16),
           decoration: BoxDecoration(
             color: PRIMARY_COLOR,
             borderRadius: BorderRadius.circular(15),

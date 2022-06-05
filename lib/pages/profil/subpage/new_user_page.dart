@@ -20,12 +20,13 @@ class NewUserPage extends StatefulWidget {
 class _NewUserPageState extends State<NewUserPage> {
   File? image;
   String photo = "";
+  String _description = "";
 
   @override
   Widget build(BuildContext context) {
-    if (widget.user!.photo!.isEmpty) 
+    if (widget.user!.photo!.isEmpty)
       photo = "assets/roundBlankProfilPicture.png";
-    else 
+    else
       photo = widget.user!.photo!;
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
@@ -97,11 +98,10 @@ class _NewUserPageState extends State<NewUserPage> {
                                 ),
                                 Column(
                                   children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
+                                    Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      child: Center(
+                                        child: Text(
                                           widget.user!.name ?? "",
                                           style: TextStyle(
                                             fontSize: 32,
@@ -109,17 +109,7 @@ class _NewUserPageState extends State<NewUserPage> {
                                             color: SECONDARY_COLOR,
                                           ),
                                         ),
-                                        Padding(
-                                            padding:
-                                                const EdgeInsets.only(left: 8),
-                                            child: Icon(
-                                                widget.user!.verified!
-                                                    ? Icons.verified_sharp
-                                                    : Icons.close_outlined,
-                                                color: widget.user!.verified!
-                                                    ? ICONCOLOR
-                                                    : Colors.red))
-                                      ],
+                                      ),
                                     ),
                                     Text(
                                       "${widget.user!.age.toString()} ans",
@@ -129,7 +119,7 @@ class _NewUserPageState extends State<NewUserPage> {
                                       onTap: () => showPhoto(photo),
                                       child: Padding(
                                         padding: const EdgeInsets.only(
-                                            top: 6, bottom: 16),
+                                            top: 12, bottom: 16),
                                         child: const Opacity(
                                           opacity: 0.7,
                                           child: Text(
@@ -151,7 +141,8 @@ class _NewUserPageState extends State<NewUserPage> {
                     ),
                     BlocProvider(
                         create: (context) => PartiesCubit()
-                          ..fetchPartiesWithWhereIsEqualTo("ownerId", widget.user!.id),
+                          ..fetchPartiesWithWhereIsEqualTo(
+                              "ownerId", widget.user!.id),
                         child: BlocBuilder<PartiesCubit, PartiesState>(
                             builder: (context, partyownerstate) {
                           if (partyownerstate.parties == null)
@@ -196,14 +187,28 @@ class _NewUserPageState extends State<NewUserPage> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 28),
                       child: Text(
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                        widget.user!.desc ?? "",
                         style: TextStyle(
                             fontSize: 19, fontWeight: FontWeight.w500),
                       ),
                     ),
+                    if (widget.user!.desc == "")
+                      Row(
+                        children: [
+                          InkWell(
+                              onTap: () => adddesc(),
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 29),
+                                child: Text("Ajoute une description",
+                                    style: TextStyle(
+                                        color: SECONDARY_COLOR, fontSize: 20, decoration: TextDecoration.underline)),
+                              )),
+                        ],
+                      ),
                     BlocProvider(
                       create: (context) => PartiesCubit()
-                        ..fetchPartiesWithWhereIsEqualTo("ownerId", widget.user!.id),
+                        ..fetchPartiesWithWhereIsEqualTo(
+                            "ownerId", widget.user!.id),
                       child: BlocBuilder<PartiesCubit, PartiesState>(
                           builder: (context, partyownerstate) {
                         if (partyownerstate.parties == null)
@@ -289,122 +294,126 @@ class _NewUserPageState extends State<NewUserPage> {
       ),
     );
   }
-  registerPhotoInFirebase(String photo) {
-      FirebaseFirestore firestore = FirebaseFirestore.instance;
-      String userID = AuthService().currentUser!.uid;
 
-      try {
-        firestore.collection('user').doc(userID).update({"photo": photo});
-      } catch (e) {
-        print(e.toString());
-      }
-    }
-
-    Future registerPhoto() async {
-      String fileName = Path.basename(image!.path);
-      String destination = "UserPhoto/$fileName";
-      UploadTask task = StorageService(destination).uploadFile(image!);
-
-      task.then((element) async {
-        var url = await element.ref.getDownloadURL();
-        registerPhotoInFirebase(url);
-      });
-
-      Navigator.pop(context);
-    }
-
-    Future photoSelected() async {
-      return showModalBottomSheet(
-          isScrollControlled: true,
-          context: context,
-          builder: (BuildContext context) {
-            return Scaffold(
-              appBar: PreferredSize(
-                preferredSize: Size.fromHeight(80),
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 20.0),
-                  child: BackAppBar(actions: [
-                    TextButton(
-                      onPressed: () => registerPhoto(),
-                      child: Text(
-                        'Enregistrer',
-                        style: TextStyle(color: SECONDARY_COLOR, fontSize: 16),
-                      ),
-                    ),
-                  ]),
-                ),
-              ),
-              body: Center(
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-                  child: Container(
-                    child: Image.file(image!),
-                  ),
-                ),
-              ),
-            );
-          });
-    }
-
-    Future pickImage() async {
-      try {
-        final image =
-            await ImagePicker().pickImage(source: ImageSource.gallery);
-        if (image == null) return;
-
-        final imageTemporary = File(image.path);
-        setState(() => this.image = imageTemporary);
-
-        Navigator.pop(context);
-        photoSelected();
-      } on PlatformException catch (e) {
-        print('failed to pick image: $e');
-      }
-    }
-
-    Future takePhoto() async {
-      try {
-        final image = await ImagePicker().pickImage(source: ImageSource.camera);
-        if (image == null) return;
-
-        final imageTemporary = File(image.path);
-        setState(() => this.image = imageTemporary);
-
-        Navigator.pop(context);
-        photoSelected();
-      } on PlatformException catch (e) {
-        print('failed to pick image: $e');
-      }
-    }
-
-    Future<void> pickDialog() async {
-      return showDialog(
+  Future<void> adddesc() {
+    return showModalBottomSheet(
+        isScrollControlled: true,
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(25.0),
+            topRight: Radius.circular(25.0),
+          ),
+        ),
         context: context,
         builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Prendre une photo'),
-            content: Text(
-                'Prenez une nouvelle photo ou importez-en une depuis votre bibliothèque.'),
-            actions: <Widget>[
-              TextButton(
-                  onPressed: () => pickImage(),
-                  child: Text('GALERIE',
-                      style: TextStyle(color: SECONDARY_COLOR))),
-              TextButton(
-                  onPressed: () => takePhoto(),
-                  child: Text(
-                    'APPAREIL',
-                    style: TextStyle(color: SECONDARY_COLOR),
-                  ))
-            ],
+          return Padding(
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 22),
+              child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    titleText("Ajoute une description :"),
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            right: 12, left: 12, bottom: 20),
+                        child: Container(
+                          height: 226,
+                          decoration: BoxDecoration(
+                            color: PRIMARY_COLOR,
+                            border: Border.all(color: SECONDARY_COLOR),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 16, right: 16),
+                            child: TextFormField(
+                              onChanged: (value) {
+                                _description = value;
+                              },
+                              style: TextStyle(
+                                  fontSize: 22, color: SECONDARY_COLOR),
+                              maxLength: 500,
+                              keyboardType: TextInputType.multiline,
+                              minLines: 1,
+                              maxLines: 10,
+                              decoration: InputDecoration(
+                                counterText: "",
+                                hintStyle: TextStyle(
+                                    color: SECONDARY_COLOR.withOpacity(0.65),
+                                    fontSize: 22),
+                                hintText: 'Décris toi !!',
+                                border: InputBorder.none,
+                                counterStyle: TextStyle(height: 1),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    BlocProvider(
+                      create: (context) => UserCubit(),
+                      child: BlocBuilder<UserCubit, UserState>(
+                        builder: (context, state) {
+                          return InkWell(
+                            onTap: () async {
+                              if (_description.isEmpty) return;
+                              await BlocProvider.of<UserCubit>(context)
+                                  .updatedesc(widget.user!.id!, _description.trim())
+                                  .then((value) => Navigator.pop(context));
+                            },
+                            child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              padding: EdgeInsets.symmetric(vertical: 16),
+                              margin: EdgeInsets.symmetric(horizontal: 12),
+                              decoration: BoxDecoration(
+                                  color: SECONDARY_COLOR,
+                                  borderRadius: BorderRadius.circular(15)),
+                              child: Center(
+                                  child: Text("Valider",
+                                      style: TextStyle(
+                                          color: PRIMARY_COLOR, fontSize: 22))),
+                            ),
+                          );
+                        }
+                      ),
+                    ),
+                    SizedBox(height: 20)
+                  ]),
+            ),
           );
-        },
-      );
-    }
+        });
+  }
 
-    Future showPhoto(String photo) async {
-      return showModalBottomSheet(
+  registerPhotoInFirebase(String photo) {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    String userID = AuthService().currentUser!.uid;
+
+    try {
+      firestore.collection('user').doc(userID).update({"photo": photo});
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future registerPhoto() async {
+    String fileName = Path.basename(image!.path);
+    String destination = "UserPhoto/$fileName";
+    UploadTask task = StorageService(destination).uploadFile(image!);
+
+    task.then((element) async {
+      var url = await element.ref.getDownloadURL();
+      registerPhotoInFirebase(url);
+    });
+
+    Navigator.pop(context);
+  }
+
+  Future photoSelected() async {
+    return showModalBottomSheet(
         isScrollControlled: true,
         context: context,
         builder: (BuildContext context) {
@@ -412,37 +421,126 @@ class _NewUserPageState extends State<NewUserPage> {
             appBar: PreferredSize(
               preferredSize: Size.fromHeight(80),
               child: Padding(
-                padding: const EdgeInsets.only(top: 20),
-                child: BackAppBar(
-                  actions: [
-                    TextButton(
-                      onPressed: () => pickDialog(),
-                      child: Text(
-                        'Modifier',
-                        style: TextStyle(
-                          color: SECONDARY_COLOR,
-                          fontSize: 16,
-                        ),
-                      ),
-                    )
-                  ],
-                ),
+                padding: const EdgeInsets.only(top: 20.0),
+                child: BackAppBar(actions: [
+                  TextButton(
+                    onPressed: () => registerPhoto(),
+                    child: Text(
+                      'Enregistrer',
+                      style: TextStyle(color: SECONDARY_COLOR, fontSize: 16),
+                    ),
+                  ),
+                ]),
               ),
             ),
             body: Center(
               child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                 child: Container(
-                  child: photo == "assets/roundBlankProfilPicture.png"
-                      ? Image.asset(photo)
-                      : Image.network(photo, fit: BoxFit.cover),
+                  child: Image.file(image!),
                 ),
               ),
             ),
           );
-        },
-      );
+        });
+  }
+
+  Future pickImage() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (image == null) return;
+
+      final imageTemporary = File(image.path);
+      setState(() => this.image = imageTemporary);
+
+      Navigator.pop(context);
+      photoSelected();
+    } on PlatformException catch (e) {
+      print('failed to pick image: $e');
     }
+  }
+
+  Future takePhoto() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.camera);
+      if (image == null) return;
+
+      final imageTemporary = File(image.path);
+      setState(() => this.image = imageTemporary);
+
+      Navigator.pop(context);
+      photoSelected();
+    } on PlatformException catch (e) {
+      print('failed to pick image: $e');
+    }
+  }
+
+  Future<void> pickDialog() async {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Prendre une photo'),
+          content: Text(
+              'Prenez une nouvelle photo ou importez-en une depuis votre bibliothèque.'),
+          actions: <Widget>[
+            TextButton(
+                onPressed: () => pickImage(),
+                child:
+                    Text('GALERIE', style: TextStyle(color: SECONDARY_COLOR))),
+            TextButton(
+                onPressed: () => takePhoto(),
+                child: Text(
+                  'APPAREIL',
+                  style: TextStyle(color: SECONDARY_COLOR),
+                ))
+          ],
+        );
+      },
+    );
+  }
+
+  Future showPhoto(String photo) async {
+    return showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      builder: (BuildContext context) {
+        return Scaffold(
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(80),
+            child: Padding(
+              padding: const EdgeInsets.only(top: 20),
+              child: BackAppBar(
+                actions: [
+                  TextButton(
+                    onPressed: () => pickDialog(),
+                    child: Text(
+                      'Modifier',
+                      style: TextStyle(
+                        color: SECONDARY_COLOR,
+                        fontSize: 16,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+          body: Center(
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+              child: Container(
+                child: photo == "assets/roundBlankProfilPicture.png"
+                    ? Image.asset(photo)
+                    : Image.network(photo, fit: BoxFit.cover),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
 }
 
 class Commment extends StatefulWidget {

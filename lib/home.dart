@@ -196,7 +196,7 @@ class _HomeState extends State<Home> {
     }  else if (index == 4) {
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => NewProfilePage(),
+          builder: (context) => NewProfilePage(widget.isConnected),
           fullscreenDialog: true,
         ),
       );
