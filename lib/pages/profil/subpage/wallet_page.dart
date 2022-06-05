@@ -1,5 +1,6 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:pts/blocs/card_registration/card_registration_cubit.dart';
@@ -14,7 +15,9 @@ import 'package:pts/pages/profil/subpage/new_credit_card_page.dart';
 import 'package:pts/services/payment_service.dart';
 
 class WalletPage extends StatelessWidget {
-  WalletPage({Key? key}) : super(key: key);
+  final Wallet? wallet;
+  final User? user;
+  WalletPage(this.wallet, this.user, {Key? key}) : super(key: key);
 
   final PaymentService _paymentService = PaymentService();
   final TextEditingController _controller = TextEditingController();
@@ -200,47 +203,193 @@ class WalletPage extends StatelessWidget {
       );
     }
 
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     return Scaffold(
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(50),
-          child: BackAppBar(
-            title: TitleAppBar("Portefeuille"),
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        automaticallyImplyLeading: false,
+        elevation: 0,
+        toolbarHeight: 0,
+        systemOverlayStyle: SystemUiOverlayStyle.light,
+      ),
+      body: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(colors: [SECONDARY_COLOR, ICONCOLOR]),
+            ),
           ),
+          Align(
+            alignment: Alignment.topLeft,
+            child: Padding(
+              padding: EdgeInsets.only(
+                top: height * 0.05,
+                left: width * 0.05,
+              ),
+              child: InkWell(
+                onTap: () => Navigator.pop(context),
+                child: Image(
+                  image: AssetImage("assets/RETOUR.png"),
+                  alignment: Alignment.topLeft,
+                  height: 40,
+                  width: 40,
+                ),
+              ),
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              clipBehavior: Clip.antiAlias,
+              height: height * 0.88,
+              width: width,
+              decoration: BoxDecoration(
+                color: PRIMARY_COLOR,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(50),
+                  topRight: Radius.circular(50),
+                ),
+              ),
+              child: SafeArea(
+                top: false,
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 30, horizontal: 40),
+                          child: Container(
+                            width: width,
+                            decoration: BoxDecoration(
+                                color: PRIMARY_COLOR,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.5),
+                                    blurRadius: 4,
+                                    spreadRadius: 0,
+                                    offset: Offset(0, 4),
+                                  ),
+                                ],
+                                borderRadius: BorderRadius.circular(30)),
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 18),
+                                  child: const Text(
+                                    "TON SOLDE ACTUEL",
+                                    style: TextStyle(
+                                      color: SECONDARY_COLOR,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 20),
+                                  child: Text(
+                                    "${wallet!.amount.toString().replaceFirst(".", ",")}€",
+                                    style: TextStyle(
+                                      color: SECONDARY_COLOR,
+                                      fontWeight: FontWeight.w800,
+                                      fontSize: 40,
+                                    ),
+                                  ),
+                                ),
+                                BlocProvider(
+                                  create: (context) => CardRegistrationCubit()
+                                    ..loadData(user!.mangoPayId),
+                                  child: BlocBuilder<CardRegistrationCubit,
+                                          CardRegistrationState>(
+                                      builder: (context, cardState) {
+                                    return Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        TransactionBox(text: "Retirer"),
+                                        TransactionBox(
+                                          text: "Ajouter",
+                                          onTap: () async {
+                                            joinparty(cardState.cards!, user!);
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  }),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 40),
+                        child: Text(
+                          "historique des transactions".toUpperCase(),
+                          style: TextStyle(
+                            color: SECONDARY_COLOR,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class TransactionBox extends StatelessWidget {
+  final String? text;
+  final void Function()? onTap;
+  const TransactionBox({this.text, this.onTap, Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20, left: 22, right: 22),
+      child: InkWell(
+        onTap: onTap,
+        child: Column(
+          children: [
+            Container(
+              height: 50,
+              width: 50,
+              decoration: BoxDecoration(
+                color: PRIMARY_COLOR,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    blurRadius: 4,
+                    spreadRadius: 0,
+                    offset: Offset(0, 4),
+                  ),
+                ],
+                borderRadius: BorderRadius.circular(10),
+              ),
+              // child: Icon,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: Text(
+                text ?? "",
+                style: TextStyle(
+                    color: SECONDARY_COLOR, fontWeight: FontWeight.w600),
+              ),
+            )
+          ],
         ),
-        body: BlocProvider(
-          create: (context) => UserCubit()..init(),
-          child: BlocBuilder<UserCubit, UserState>(builder: (context, state) {
-            User? user = state.user;
-            Wallet? wallet = state.wallet;
-            if (user == null && wallet == null) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            return BlocProvider(
-              create: (context) =>
-                  CardRegistrationCubit()..loadData(user!.mangoPayId),
-              child: BlocBuilder<CardRegistrationCubit, CardRegistrationState>(
-                  builder: (context, cardState) {
-                return Column(children: [
-                  Text(wallet!.amount.toString()),
-                  TextButton(
-                    onPressed: () async {
-                      joinparty(cardState.cards!, user!);
-                      // var cards = await _paymentService
-                      //     .getUserCreditCards(user!.mangoPayId ?? "");
-
-                      // if (cards == null) return;
-
-                      // await _paymentService.cardDirectPayin(
-                      //     user.mangoPayId ?? "", 200, cards[0].id);
-                    },
-                    child: Text("ajouter"),
-                  )
-                ]);
-              }),
-            );
-          }),
-        ));
+      ),
+    );
   }
 }

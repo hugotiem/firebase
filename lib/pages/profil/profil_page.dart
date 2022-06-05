@@ -154,11 +154,11 @@ class _ProfilState extends State<Profil> {
                               text: "Paiements",
                               icon: Ionicons.card_outline,
                             ),
-                            CickableContainerProfil(
-                              to: WalletPage(),
-                              text: "Portefeuille",
-                              icon: Ionicons.wallet_outline,
-                            ),
+                            // CickableContainerProfil(
+                            //   to: WalletPage(),
+                            //   text: "Portefeuille",
+                            //   icon: Ionicons.wallet_outline,
+                            // ),
                             CickableContainerProfil(
                               to: UserBank(user: user),
                               text: "Compte en banque",
