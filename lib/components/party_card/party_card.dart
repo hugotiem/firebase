@@ -493,7 +493,7 @@ class PartyCard extends StatelessWidget {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    CText(party.city!,
+                                    CText(party.address!.city!,
                                         fontSize: 15,
                                         fontWeight: FontWeight.w500),
                                     CText(

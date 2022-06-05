@@ -2,7 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pts/components/form/custom_ttf_form.dart';
+import 'package:pts/widgets/app_text_field.dart';
 import 'package:pts/components/inside_line_text.dart';
 import 'package:pts/const.dart';
 import 'package:pts/pages/login/register_form_screen.dart';

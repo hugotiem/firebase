@@ -32,13 +32,14 @@ class BuildPartiesCubit extends AppBaseCubit<BuildPartiesState> {
   }
 
   void setStartTime(DateTime startTime, DateTime endTime) {
-    var party = (state.party ?? Party()).copyWith(startTime: startTime, endTime: endTime);
+    var party = (state.party ?? Party())
+        .copyWith(startTime: startTime, endTime: endTime);
     emit(BuildPartiesState.added(party));
   }
 
-  void setAddress(String address, String postalCode, String city, List<double?>? coordinates) {
-    var party = (state.party ?? Party())
-        .copyWith(address: address, postalCode: postalCode, city: city, coordinates: coordinates);
+  void setAddress(Address address) {
+    var party = (state.party ?? Party()).copyWith(
+        address: address, coordinates: [address.longitude, address.latitude]);
     emit(BuildPartiesState.added(party));
   }
 
@@ -73,7 +74,11 @@ class BuildPartiesCubit extends AppBaseCubit<BuildPartiesState> {
   }
 
   void setWaitList() {
-    var party = (state.party ?? Party()).copyWith(waitList: [], waitListInfo: {}, validatedList: [], validatedListInfo: {});
+    var party = (state.party ?? Party()).copyWith(
+        waitList: [],
+        waitListInfo: {},
+        validatedList: [],
+        validatedListInfo: {});
     emit(BuildPartiesState.added(party));
   }
 
@@ -83,7 +88,8 @@ class BuildPartiesCubit extends AppBaseCubit<BuildPartiesState> {
   }
 
   void setComment() {
-    var party = (state.party ?? Party()).copyWith(commentIdList: [], comment: {});
+    var party =
+        (state.party ?? Party()).copyWith(commentIdList: [], comment: {});
     emit(BuildPartiesState.added(party));
   }
 
@@ -96,6 +102,8 @@ class BuildPartiesCubit extends AppBaseCubit<BuildPartiesState> {
     Map<String, dynamic> json = convert.jsonDecode(results.body);
 
     List infos = json['features'];
+
+    print(infos);
 
     List<Address> addresses = (infos).map((e) {
       return Address.fromJson(e as Map<String, dynamic>);

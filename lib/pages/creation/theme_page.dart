@@ -8,8 +8,8 @@ import 'package:pts/const.dart';
 import 'package:pts/models/party.dart';
 
 class ThemePage extends StatelessWidget {
-  final void Function()? onNext;
-  final void Function()? onPrevious;
+  final void Function(BuildContext)? onNext;
+  final void Function(BuildContext)? onPrevious;
   final Party? party;
 
   final List<Map<String, dynamic>> themes = [
@@ -68,6 +68,7 @@ class ThemePage extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
                   image: DecorationImage(
+                    fit: BoxFit.cover,
                     image: AssetImage(data['img']),
                     colorFilter: _selected
                         ? null
@@ -85,10 +86,10 @@ class ThemePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BackgroundForm(
-      onPrevious: () => onPrevious!(),
+      onPrevious: () => onPrevious!(context),
       onPressedFAB: () {
         if (party == null || party!.theme == null) return;
-        onNext!();
+        onNext!(context);
       },
       children: [
         HeaderText1Form(text: "Choisis un thème"),

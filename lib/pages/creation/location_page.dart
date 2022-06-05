@@ -3,42 +3,54 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pts/components/form/background_form.dart';
 import 'package:pts/components/form/custom_text_form.dart';
-import 'package:pts/components/form/custom_ttf_form.dart';
+import 'package:pts/widgets/app_text_field.dart';
 import 'package:pts/models/address.dart';
 import 'package:pts/blocs/parties/build_parties_cubit.dart';
 import 'package:pts/models/capitalize.dart';
 
 class LocationPage extends StatefulWidget {
-  final void Function()? onNext;
-  final void Function()? onPrevious;
+  final void Function(BuildContext)? onNext;
+  final void Function(BuildContext)? onPrevious;
+  final Address? address;
 
-  const LocationPage({Key? key, this.onNext, this.onPrevious})
+  const LocationPage({Key? key, this.onNext, this.onPrevious, this.address})
       : super(key: key);
   @override
   _LocationPageState createState() => _LocationPageState();
 }
 
 class _LocationPageState extends State<LocationPage> {
-  TextEditingController _addressController = TextEditingController();
-  TextEditingController _cityController = TextEditingController();
-  TextEditingController _postCodeController = TextEditingController();
+  late TextEditingController _addressController;
+  late TextEditingController _cityController;
+  late TextEditingController _postCodeController;
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  Address? address;
+  late Address? _address;
+
+  @override
+  void initState() {
+    _address = widget.address;
+
+    print("OKK $_address");
+
+    _addressController = TextEditingController(
+        text: streetnameParser(_address?.streetNumber, _address?.streetName));
+    _cityController = TextEditingController(text: _address?.city);
+    _postCodeController = TextEditingController(text: _address?.postalCode);
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return BackgroundForm(
       heroTag: "location",
-      onPrevious: () => widget.onPrevious!(),
+      onPrevious: () => widget.onPrevious!(context),
       onPressedFAB: () {
         if (!_formKey.currentState!.validate()) return;
 
-        BlocProvider.of<BuildPartiesCubit>(context).setAddress(
-            _addressController.text.trim().inCaps,
-            _postCodeController.text,
-            _cityController.text.trim().inCaps,
-            [address?.longitude, address?.latitude]);
+        BlocProvider.of<BuildPartiesCubit>(context).setAddress(_address!);
 
         // BlocProvider.of<BuildPartiesCubit>(context)
         //   ..addItem(
@@ -47,13 +59,13 @@ class _LocationPageState extends State<LocationPage> {
         //   ..addItem("postal code", _postCodeController.text)
         //   ..addItem("coordinates", [address?.longitude, address?.latitude]);
 
-        widget.onNext!();
+        widget.onNext!(context);
       },
       formkey: _formKey,
       children: [
         HeaderText1Form(text: "Le lieu"),
         HeaderText2Form("ADRESSE"),
-        TypeAheadTFFText(
+        AppTypeAheadFormField(
           controller: _addressController,
           validator: (value) {
             if (value == null || value.isEmpty) {
@@ -79,18 +91,21 @@ class _LocationPageState extends State<LocationPage> {
             return widget;
           },
           onSuggestionSelected: (suggestion) {
-            address = suggestion as Address;
+            _address = suggestion as Address;
             setState(() {
-              _addressController.text =
-                  address!.streetNumber! + " " + address!.streetName!;
-              _cityController.text = address!.city!;
-              _postCodeController.text = address!.postalCode!;
+              var parser = streetnameParser(
+                  _address!.streetNumber, _address!.streetName);
+              if (parser != null) {
+                _addressController.text = parser;
+                _cityController.text = _address!.city!;
+                _postCodeController.text = _address!.postalCode!;
+              }
             });
           },
         ),
         HeaderText2Form("VILLE"),
-        TFFForm(
-          "ex: Paris",
+        AppTextFormField(
+          hintText: "ex: Paris",
           controller: _cityController,
           validator: (value) {
             if (value == null || value.isEmpty) {
@@ -101,8 +116,8 @@ class _LocationPageState extends State<LocationPage> {
           },
         ),
         HeaderText2Form("CODE POSTAL"),
-        TFFForm(
-          "ex: 75008",
+        AppTextFormField(
+          hintText: "ex: 75008",
           controller: _postCodeController,
           validator: (value) {
             if (value == null || value.isEmpty) {
@@ -121,5 +136,16 @@ class _LocationPageState extends State<LocationPage> {
         ),
       ],
     );
+  }
+
+  String? streetnameParser(String? number, String? street) {
+    if (street == null) {
+      return null;
+    }
+    if (number != null) {
+      return number + " " + street;
+    }
+
+    return street;
   }
 }

@@ -11,8 +11,8 @@ import 'package:pts/services/firestore_service.dart';
 import 'package:pts/blocs/parties/build_parties_cubit.dart';
 
 class DescriptionPage extends StatefulWidget {
-  final void Function()? onNext;
-  final void Function()? onPrevious;
+  final void Function(BuildContext)? onNext;
+  final void Function(BuildContext)? onPrevious;
 
   const DescriptionPage({Key? key, this.onNext, this.onPrevious});
   @override
@@ -103,18 +103,17 @@ class _DescriptionPageState extends State<DescriptionPage> {
         builder: (context, state) {
           return BackgroundForm(
             heroTag: "description",
-            onPrevious: () => widget.onPrevious!(),
+            onPrevious: () => widget.onPrevious!(context),
             onPressedFAB: () async {
-              
               BlocProvider.of<BuildPartiesCubit>(context)
-                  ..setAnimals(_animals!)
-                  ..setSmoke(_smoke!)
-                  ..setDesc(_description)
-                  ..setOwnerId(state.user!.id)
-                  ..setWaitList()
-                  ..setisActive()
-                  ..setComment();
-              
+                ..setAnimals(_animals!)
+                ..setSmoke(_smoke!)
+                ..setDesc(_description)
+                ..setOwnerId(state.user!.id)
+                ..setWaitList()
+                ..setisActive()
+                ..setComment();
+
               // BlocProvider.of<BuildPartiesCubit>(context)
               // ..addItem('uid', AuthService.currentUser.uid)
               // ..addItem('owner', AuthService.currentUser.displayName)
@@ -127,8 +126,6 @@ class _DescriptionPageState extends State<DescriptionPage> {
               // ..addItem("party owner", state.user!.id)
               // ..addItem("commentIdList", [])
               // ..addItem("comment", {});
-
-
 
               await BlocProvider.of<BuildPartiesCubit>(context)
                   .addToFireStore();

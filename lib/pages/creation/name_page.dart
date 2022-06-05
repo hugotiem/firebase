@@ -3,18 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pts/components/form/background_form.dart';
 import 'package:pts/components/form/custom_text_form.dart';
-import 'package:pts/components/form/custom_ttf_form.dart';
 import 'package:pts/blocs/parties/build_parties_cubit.dart';
 import 'package:pts/models/capitalize.dart';
+import 'package:pts/widgets/app_text_field.dart';
 
 class NamePage extends StatelessWidget {
-  final void Function()? onNext;
-  NamePage({this.onNext, Key? key}) : super(key: key);
+  final void Function(BuildContext) onNext;
+  final String? title;
+  NamePage({required this.onNext, Key? key, this.title}) : super(key: key);
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    String _name = "";
+    String _name = title ?? "";
 
     return BackgroundForm(
       heroTag: "name",
@@ -22,12 +23,14 @@ class NamePage extends StatelessWidget {
       onPressedFAB: () {
         if (!_formKey.currentState!.validate()) return;
         BlocProvider.of<BuildPartiesCubit>(context).setName(_name.inCaps);
-        onNext!();
+        onNext(context);
       },
       children: [
         HeaderText1Form(text: "Comment s'appelle ta soirée ?"),
-        TFFForm(
-          "ex: La Fête du Roi",
+        AppTextFormField(
+          formKey: _formKey,
+          hintText: "ex: La Fête du Roi",
+          controller: TextEditingController(text: title ?? _name),
           onChanged: (value) => _name = value,
           validator: (value) {
             if (value == null || value.isEmpty)

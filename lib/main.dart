@@ -77,11 +77,7 @@ class _MyAppState extends State<MyApp> {
                     builder: (context, state) {
                       bool isConnected = state.user != null;
 
-                      return Stack(
-                        children: [
-                          Home(isConnected),
-                        ],
-                      );
+                      return Home(isConnected);
                     },
                   ),
                 );

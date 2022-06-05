@@ -3,13 +3,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pts/components/form/background_form.dart';
 import 'package:pts/components/form/custom_text_form.dart';
-import 'package:pts/components/form/custom_ttf_form.dart';
+import 'package:pts/widgets/app_text_field.dart';
 import 'package:pts/const.dart';
 import 'package:pts/blocs/parties/build_parties_cubit.dart';
 
 class GuestNumber extends StatefulWidget {
-  final void Function()? onNext;
-  final void Function()? onPrevious;
+  final void Function(BuildContext)? onNext;
+  final void Function(BuildContext)? onPrevious;
 
   const GuestNumber({Key? key, this.onNext, this.onPrevious}) : super(key: key);
   @override
@@ -83,7 +83,7 @@ class _GuestNumberState extends State<GuestNumber> {
 
     return BackgroundForm(
       heroTag: "guest number price",
-      onPrevious: () => widget.onPrevious!(),
+      onPrevious: () => widget.onPrevious!(context),
       onPressedFAB: () {
         if (prix == null) return;
 
@@ -95,7 +95,7 @@ class _GuestNumberState extends State<GuestNumber> {
         //   ..addItem("number", number)
         //   ..addItem("price", prix);
 
-        widget.onNext!();
+        widget.onNext!(context);
       },
       children: [
         HeaderText1Form(text: "Les invités"),
