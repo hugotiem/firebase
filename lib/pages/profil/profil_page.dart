@@ -6,7 +6,6 @@ import 'package:pts/components/custom_text.dart';
 import 'package:pts/components/profile_photo.dart';
 import 'package:pts/pages/profil/subpage/existing_cards_page.dart';
 import 'package:pts/pages/profil/subpage/user_bank_account.dart';
-import 'package:pts/pages/profil/subpage/wallet_page.dart';
 import 'package:pts/services/auth_service.dart';
 import 'package:pts/onboarding_page.dart';
 import 'package:pts/const.dart';

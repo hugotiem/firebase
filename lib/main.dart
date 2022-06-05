@@ -5,8 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:pts/blocs/app_bloc_delegate.dart';
 import 'package:pts/blocs/user/user_cubit.dart';
-import 'package:pts/const.dart';
-import 'package:pts/services/auth_service.dart';
 import 'package:pts/services/notification_service.dart';
 import 'home.dart';
 import 'package:firebase_core/firebase_core.dart';

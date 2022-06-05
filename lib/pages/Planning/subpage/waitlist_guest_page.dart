@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:pts/blocs/parties/parties_cubit.dart';
 import 'package:pts/blocs/user/user_cubit.dart';
-import 'package:pts/components/appbar.dart';
 import 'package:pts/components/custom_container.dart';
 import 'package:pts/components/profile_photo.dart';
 

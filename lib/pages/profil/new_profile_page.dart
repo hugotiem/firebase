@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/services.dart';
 import 'package:pts/components/party_card/party_export.dart';
 import 'package:pts/pages/profil/subpage/about_page.dart';

@@ -6,7 +6,6 @@ import 'package:pts/components/form/custom_text_form.dart';
 import 'package:pts/widgets/app_text_field.dart';
 import 'package:pts/models/address.dart';
 import 'package:pts/blocs/parties/build_parties_cubit.dart';
-import 'package:pts/models/capitalize.dart';
 
 class LocationPage extends StatefulWidget {
   final void Function(BuildContext)? onNext;

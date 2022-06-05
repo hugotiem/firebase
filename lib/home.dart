@@ -17,7 +17,6 @@ import 'package:pts/blocs/user/user_cubit.dart';
 import 'package:pts/pages/messaging/message_list.dart';
 import 'package:pts/pages/profil/new_profile_page.dart';
 import 'package:uni_links/uni_links.dart';
-import 'pages/Planning/calendar_page.dart';
 import 'pages/profil/profil_page.dart';
 import 'pages/search/search_page.dart';
 
