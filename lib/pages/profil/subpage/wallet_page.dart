@@ -2,22 +2,23 @@ import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:pts/blocs/card_registration/card_registration_cubit.dart';
-import 'package:pts/blocs/user/user_cubit.dart';
-import 'package:pts/components/appbar.dart';
+import 'package:pts/blocs/transactions/transactions_cubit.dart';
 import 'package:pts/components/showModalBottomSheet.dart';
 import 'package:pts/const.dart';
 import 'package:pts/models/payments/credit_card.dart';
+import 'package:pts/models/payments/transaction.dart';
 import 'package:pts/models/payments/wallet.dart';
 import 'package:pts/models/user.dart';
 import 'package:pts/pages/profil/subpage/new_credit_card_page.dart';
 import 'package:pts/services/payment_service.dart';
 
 class WalletPage extends StatelessWidget {
-  final Wallet? wallet;
+  // final Wallet? wallet;
   final User? user;
-  WalletPage(this.wallet, this.user, {Key? key}) : super(key: key);
+  WalletPage(this.user, {Key? key}) : super(key: key);
 
   final PaymentService _paymentService = PaymentService();
   final TextEditingController _controller = TextEditingController();
@@ -214,145 +215,231 @@ class WalletPage extends StatelessWidget {
         toolbarHeight: 0,
         systemOverlayStyle: SystemUiOverlayStyle.light,
       ),
-      body: Stack(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(colors: [SECONDARY_COLOR, ICONCOLOR]),
-            ),
-          ),
-          Align(
-            alignment: Alignment.topLeft,
-            child: Padding(
-              padding: EdgeInsets.only(
-                top: height * 0.05,
-                left: width * 0.05,
-              ),
-              child: InkWell(
-                onTap: () => Navigator.pop(context),
-                child: Image(
-                  image: AssetImage("assets/RETOUR.png"),
-                  alignment: Alignment.topLeft,
-                  height: 40,
-                  width: 40,
+      body: BlocProvider(
+        create: (context) =>
+            TransactionsCubit()..loadData(user?.mangoPayId ?? ""),
+        child: BlocBuilder<TransactionsCubit, TransactionsState>(
+            builder: (context, state) {
+          var wallet = state.wallet;
+          var transactions = state.transactions;
+          return Stack(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  gradient:
+                      LinearGradient(colors: [SECONDARY_COLOR, ICONCOLOR]),
                 ),
               ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              clipBehavior: Clip.antiAlias,
-              height: height * 0.88,
-              width: width,
-              decoration: BoxDecoration(
-                color: PRIMARY_COLOR,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(50),
-                  topRight: Radius.circular(50),
-                ),
-              ),
-              child: SafeArea(
-                top: false,
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Center(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 30, horizontal: 40),
-                          child: Container(
-                            width: width,
-                            decoration: BoxDecoration(
-                                color: PRIMARY_COLOR,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    blurRadius: 4,
-                                    spreadRadius: 0,
-                                    offset: Offset(0, 4),
-                                  ),
-                                ],
-                                borderRadius: BorderRadius.circular(30)),
-                            child: Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 18),
-                                  child: const Text(
-                                    "TON SOLDE ACTUEL",
-                                    style: TextStyle(
-                                      color: SECONDARY_COLOR,
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 20),
-                                  child: Text(
-                                    "${wallet!.amount.toStringAsFixed(2).replaceFirst(".", ",")} €",
-                                    style: TextStyle(
-                                      color: SECONDARY_COLOR,
-                                      fontWeight: FontWeight.w800,
-                                      fontSize: 50,
-                                    ),
-                                  ),
-                                ),
-                                BlocProvider(
-                                  create: (context) => CardRegistrationCubit()
-                                    ..loadData(user!.mangoPayId),
-                                  child: BlocBuilder<CardRegistrationCubit,
-                                          CardRegistrationState>(
-                                      builder: (context, cardState) {
-                                    return Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        TransactionBox(text: "Retirer"),
-                                        TransactionBox(
-                                          text: "Ajouter",
-                                          onTap: () async {
-                                            joinparty(cardState.cards!, user!);
-                                          },
-                                        ),
-                                      ],
-                                    );
-                                  }),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 30),
-                        child: Text(
-                          "historique des transactions".toUpperCase(),
-                          style: TextStyle(
-                            color: SECONDARY_COLOR,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ),
-                      TextPaymentReceived(),
-                      TextPaymentDone(),
-                    ],
+              Align(
+                alignment: Alignment.topLeft,
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    top: height * 0.05,
+                    left: width * 0.05,
+                  ),
+                  child: InkWell(
+                    onTap: () => Navigator.pop(context),
+                    child: Image(
+                      image: AssetImage("assets/RETOUR.png"),
+                      alignment: Alignment.topLeft,
+                      height: 40,
+                      width: 40,
+                    ),
                   ),
                 ),
               ),
-            ),
-          )
-        ],
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  clipBehavior: Clip.antiAlias,
+                  height: height * 0.88,
+                  width: width,
+                  decoration: BoxDecoration(
+                    color: PRIMARY_COLOR,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(50),
+                      topRight: Radius.circular(50),
+                    ),
+                  ),
+                  child: SafeArea(
+                    top: false,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Center(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 30, horizontal: 40),
+                              child: Container(
+                                width: width,
+                                decoration: BoxDecoration(
+                                    color: PRIMARY_COLOR,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.5),
+                                        blurRadius: 4,
+                                        spreadRadius: 0,
+                                        offset: Offset(0, 4),
+                                      ),
+                                    ],
+                                    borderRadius: BorderRadius.circular(30)),
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 18),
+                                      child: const Text(
+                                        "TON SOLDE ACTUEL",
+                                        style: TextStyle(
+                                          color: SECONDARY_COLOR,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 20),
+                                      child: Builder(builder: (context) {
+                                        String text;
+                                        if (wallet == null) {
+                                          text = "-,--";
+                                        } else {
+                                          text = wallet.amount
+                                              .toStringAsFixed(2)
+                                              .replaceFirst(".", ",");
+                                        }
+                                        return Text(
+                                          "$text €",
+                                          style: TextStyle(
+                                            color: SECONDARY_COLOR,
+                                            fontWeight: FontWeight.w800,
+                                            fontSize: 50,
+                                          ),
+                                        );
+                                      }),
+                                    ),
+                                    BlocProvider(
+                                      create: (context) =>
+                                          CardRegistrationCubit()
+                                            ..loadData(user!.mangoPayId),
+                                      child: BlocBuilder<CardRegistrationCubit,
+                                              CardRegistrationState>(
+                                          builder: (context, cardState) {
+                                        return Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            TransactionBox(text: "Retirer"),
+                                            TransactionBox(
+                                              text: "Ajouter",
+                                              onTap: () async {
+                                                joinparty(
+                                                    cardState.cards!, user!);
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      }),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 30),
+                            child: Text(
+                              "historique des transactions".toUpperCase(),
+                              style: TextStyle(
+                                color: SECONDARY_COLOR,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                          Builder(
+                            builder: (context) {
+                              if (transactions == null) {
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    color: ICONCOLOR,
+                                  ),
+                                );
+                              }
+                              if (transactions.isEmpty) {
+                                return Center(
+                                  child:
+                                      Text("Aucune transaction pour le moment"),
+                                );
+                              }
+                              return ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: transactions.length,
+                                itemBuilder: (context, index) {
+                                  var transaction = transactions[index];
+                                  if (transaction.type ==
+                                      TransactionType.PAYIN) {
+                                    if (transaction.recipientId ==
+                                        transaction.authorId) {
+                                      // Lorsqu'on recharge notre compte
+
+                                      // return TextPaymentReceived(
+                                      //   amount: transaction.amount ?? 0,
+                                      //   recipient: user?.name ?? "",
+                                      //   date:
+                                      //       transaction.date ?? DateTime.now(),
+                                      // );
+                                    }
+                                  }
+                                  if (transaction.type ==
+                                      TransactionType.TRANSFER) {
+                                    if (transaction.recipientId ==
+                                        transaction.authorId) {
+                                      return TextPaymentReceived(
+                                          recipient: transaction.tag ?? "",
+                                          amount: transaction.amount ?? 0,
+                                          date: transaction.date ??
+                                              DateTime.now());
+                                    }
+                                    return TextPaymentDone();
+                                  }
+                                  return Container();
+                                },
+                              );
+
+                              // Column(
+                              //   children: [
+                              //     TextPaymentReceived(),
+                              //     TextPaymentDone(),
+                              //   ],
+                              // );
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              )
+            ],
+          );
+        }),
       ),
     );
   }
 }
 
 class TextPaymentReceived extends StatelessWidget {
-  const TextPaymentReceived({Key? key}) : super(key: key);
+  final String recipient;
+  final int amount;
+  final DateTime date;
+  const TextPaymentReceived(
+      {Key? key,
+      required this.recipient,
+      required this.amount,
+      required this.date})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -365,12 +452,14 @@ class TextPaymentReceived extends StatelessWidget {
           children: [
             Icon(Ionicons.person_outline, color: ICONCOLOR),
             Icon(Ionicons.arrow_back_outline, color: ICONCOLOR),
-            BoldText1("6.85€", secondaryColor: false),
+            BoldText1("${(amount * 0.01).toString().replaceFirst(".", ",")}€",
+                secondaryColor: false),
             SmallText1("reçu de", secondaryColor: false),
-            BoldText1("ANTHONY", secondaryColor: false),
+            BoldText1(recipient.toUpperCase(), secondaryColor: false),
             FittedBox(
               fit: BoxFit.fitWidth,
-              child: SmallText1("le 26.04.2022", secondaryColor: false),
+              child: SmallText1("le ${DateFormat.yMd('fr').format(date)}",
+                  secondaryColor: false),
             ),
           ],
         ),

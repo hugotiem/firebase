@@ -269,7 +269,7 @@ class _NewProfilePageState extends State<NewProfilePage> {
                                                           context,
                                                           MaterialPageRoute(
                                                               builder: ((context) =>
-                                                                  WalletPage(state.wallet, state.user)))),
+                                                                  WalletPage(state.user)))),
                                                       child: Container(
                                                         padding: EdgeInsets
                                                             .symmetric(
