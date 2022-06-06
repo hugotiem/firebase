@@ -1,5 +1,7 @@
-import 'package:pts/components/party_card/party_export.dart';
+import 'package:flutter_credit_card_new/credit_card_widget.dart';
 import 'package:pts/widgets/widgets_export.dart';
+
+import '../../../components/party_card/party_export.dart';
 
 class ExistingCard extends StatelessWidget {
   final User? user;
@@ -36,9 +38,17 @@ class ExistingCard extends StatelessWidget {
                       itemCount: cards.length,
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
-                        var card = cards[index];
-                        return Container(
-                          child: Text(card.alias),
+                        CreditCard card = cards[index];
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                          child: CreditCardWidget(
+                              cardNumber: card.alias,
+                              expiryDate: card.expirationDate,
+                              cardHolderName: "Jean Sauvage",
+                              cvvCode: "455",
+                              showBackView: false,
+                              isHolderNameVisible: true,
+                              onCreditCardWidgetChange: (credit) {}),
                         );
                       },
                     );

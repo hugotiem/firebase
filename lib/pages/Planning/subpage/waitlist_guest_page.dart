@@ -10,7 +10,7 @@ import 'package:pts/const.dart';
 import 'package:pts/models/party.dart';
 import 'package:pts/services/firestore_service.dart';
 import 'package:pts/widgets/widgets_export.dart';
-import '../../profil/Profil_page.dart';
+import '../../profil/profile_page.dart';
 
 class GuestWaitList extends StatelessWidget {
   GuestWaitList({Key? key}) : super(key: key);
@@ -43,7 +43,7 @@ class GuestWaitList extends StatelessWidget {
                 }
                 return BlocProvider(
                   create: (context) => PartiesCubit()
-                    ..fetchPartiesWithWhereIsEqualTo("party owner", state.token)
+                    ..fetchPartiesWithWhereIsEqualTo("ownerId", state.token)
                     ..fetchPartiesWithWhereArrayContains(
                         "waitList", state.token),
                   child: BlocBuilder<PartiesCubit, PartiesState>(

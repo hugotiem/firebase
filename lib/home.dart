@@ -15,9 +15,8 @@ import 'package:pts/pages/login/connect.dart';
 import 'package:pts/pages/login/id_form_screen.dart';
 import 'package:pts/blocs/user/user_cubit.dart';
 import 'package:pts/pages/messaging/message_list.dart';
-import 'package:pts/pages/profil/new_profile_page.dart';
+import 'package:pts/pages/profil/profile_page.dart';
 import 'package:uni_links/uni_links.dart';
-import 'pages/profil/profil_page.dart';
 import 'pages/search/search_page.dart';
 
 class Home extends StatefulWidget {
@@ -41,7 +40,7 @@ class _HomeState extends State<Home> {
       widget.isConnected ? ManagePartyOPage() : Connect(),
       Container(),
       widget.isConnected ? MessagePage() : Connect(),
-      widget.isConnected ? Profil() : Connect(),
+      widget.isConnected ? ProfilePage(widget.isConnected) : Connect(),
     ];
     BlocProvider.of<UserCubit>(context).stream.listen((event) {
       bool _isConnected = event.user != null;
@@ -50,7 +49,7 @@ class _HomeState extends State<Home> {
             _isConnected ? ManagePartyOPage() : Connect(),
             Container(),
             _isConnected ? MessagePage() : Connect(),
-            _isConnected ? Profil() : Connect(),
+            _isConnected ? ProfilePage(widget.isConnected) : Connect(),
           ]);
     });
   }
@@ -204,7 +203,7 @@ class _HomeState extends State<Home> {
     } else if (index == 4) {
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => NewProfilePage(widget.isConnected),
+          builder: (context) => ProfilePage(widget.isConnected),
           fullscreenDialog: true,
         ),
       );
