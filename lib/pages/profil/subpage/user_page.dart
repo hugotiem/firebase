@@ -156,8 +156,8 @@ class _UserPageState extends State<UserPage> {
                                               child: Text(
                                                 "Modifier la photo de profil",
                                                 style: TextStyle(
-                                                    decoration:
-                                                        TextDecoration.underline),
+                                                    decoration: TextDecoration
+                                                        .underline),
                                               ),
                                             ),
                                           ),
@@ -177,7 +177,16 @@ class _UserPageState extends State<UserPage> {
                             child: BlocBuilder<PartiesCubit, PartiesState>(
                                 builder: (context, partyownerstate) {
                               if (partyownerstate.parties == null)
-                                return Center(child: CircularProgressIndicator());
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 28, vertical: 20),
+                                  child: Container(
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(15),
+                                        color: Colors.black.withOpacity(0.04)),
+                                  ),
+                                );
                               return Commment(partyownerstate.parties);
                             })),
                         Padding(
@@ -246,8 +255,18 @@ class _UserPageState extends State<UserPage> {
                           child: BlocBuilder<PartiesCubit, PartiesState>(
                               builder: (context, partyownerstate) {
                             if (partyownerstate.parties == null)
-                              return Center(
-                                child: CircularProgressIndicator(),
+                              return Padding(
+                                padding: const EdgeInsets.only(top: 28),
+                                child: Center(
+                                  child: Container(
+                                    height: 18,
+                                    width: 180,
+                                    decoration: BoxDecoration(
+                                        color: Colors.black.withOpacity(0.04),
+                                        borderRadius:
+                                            BorderRadius.circular(15)),
+                                  ),
+                                ),
                               );
                             return Padding(
                               padding: const EdgeInsets.only(top: 28),
@@ -281,8 +300,18 @@ class _UserPageState extends State<UserPage> {
                           child: BlocBuilder<PartiesCubit, PartiesState>(
                               builder: (context, joinpartystate) {
                             if (joinpartystate.parties == null)
-                              return Center(
-                                child: CircularProgressIndicator(),
+                              return Padding(
+                                padding: const EdgeInsets.only(top: 14),
+                                child: Center(
+                                  child: Container(
+                                    height: 18,
+                                    width: 180,
+                                    decoration: BoxDecoration(
+                                        color: Colors.black.withOpacity(0.04),
+                                        borderRadius:
+                                            BorderRadius.circular(15)),
+                                  ),
+                                ),
                               );
                             return Padding(
                               padding: const EdgeInsets.only(top: 14),

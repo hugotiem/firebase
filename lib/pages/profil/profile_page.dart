@@ -55,10 +55,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 body: Builder(builder: (context) {
                   var user = state.user;
-                  if (user == null)
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
+                  if (user == null) return (Skeleton());
+                  // return Center(
+                  //   child: CircularProgressIndicator(),
+                  // );
 
                   return NotificationListener<ScrollNotification>(
                     onNotification: (notification) {
@@ -133,47 +133,45 @@ class _ProfilePageState extends State<ProfilePage> {
                                         child: Padding(
                                           padding: const EdgeInsets.only(
                                               top: 22, right: 28, left: 28),
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              color: PRIMARY_COLOR,
-                                              borderRadius:
-                                                  BorderRadius.circular(30),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: Colors.grey
-                                                      .withOpacity(0.5),
-                                                  blurRadius: 4,
-                                                  spreadRadius: 0,
-                                                  offset: Offset(0, 4),
-                                                ),
-                                              ],
-                                            ),
-                                            child: Column(
-                                              children: [
-                                                SizedBox(
-                                                  height: height * 0.2,
-                                                ),
-                                                Column(
-                                                  children: [
-                                                    Text(
-                                                      user.name ?? "",
-                                                      style: TextStyle(
-                                                        fontSize: 32,
-                                                        fontWeight:
-                                                            FontWeight.w800,
-                                                        color: SECONDARY_COLOR,
+                                          child: InkWell(
+                                            onTap: () => Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: ((context) =>
+                                                        UserPage(user)))),
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                color: PRIMARY_COLOR,
+                                                borderRadius:
+                                                    BorderRadius.circular(30),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.grey
+                                                        .withOpacity(0.5),
+                                                    blurRadius: 4,
+                                                    spreadRadius: 0,
+                                                    offset: Offset(0, 4),
+                                                  ),
+                                                ],
+                                              ),
+                                              child: Column(
+                                                children: [
+                                                  SizedBox(
+                                                    height: height * 0.2,
+                                                  ),
+                                                  Column(
+                                                    children: [
+                                                      Text(
+                                                        user.name ?? "",
+                                                        style: TextStyle(
+                                                          fontSize: 32,
+                                                          fontWeight:
+                                                              FontWeight.w800,
+                                                          color:
+                                                              SECONDARY_COLOR,
+                                                        ),
                                                       ),
-                                                    ),
-                                                    InkWell(
-                                                      onTap: () =>
-                                                          Navigator.push(
-                                                              // .push(_route()),
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                  builder: (context) =>
-                                                                      UserPage(
-                                                                          user))),
-                                                      child: const Opacity(
+                                                      const Opacity(
                                                         opacity: 0.7,
                                                         child: Text(
                                                           "Afficher le profil",
@@ -183,165 +181,171 @@ class _ProfilePageState extends State<ProfilePage> {
                                                                       .underline),
                                                         ),
                                                       ),
-                                                    ),
-                                                    BlocProvider(
-                                                      create: ((context) =>
-                                                          PartiesCubit()
-                                                            ..fetchPartiesWithWhereIsEqualTo(
-                                                                "ownerId",
-                                                                user.id)),
-                                                      child: BlocBuilder<
-                                                              PartiesCubit,
-                                                              PartiesState>(
-                                                          builder: (context,
-                                                              partyownerstate) {
-                                                        if (partyownerstate
-                                                                .parties ==
-                                                            null)
-                                                          return Center(
-                                                            child:
-                                                                CircularProgressIndicator(),
-                                                          );
+                                                      BlocProvider(
+                                                        create: ((context) =>
+                                                            PartiesCubit()
+                                                              ..fetchPartiesWithWhereIsEqualTo(
+                                                                  "ownerId",
+                                                                  user.id)),
+                                                        child: BlocBuilder<
+                                                                PartiesCubit,
+                                                                PartiesState>(
+                                                            builder: (context,
+                                                                partyownerstate) {
+                                                          if (partyownerstate
+                                                                  .parties ==
+                                                              null)
+                                                            return Center(
+                                                              child:
+                                                                  CircularProgressIndicator(),
+                                                            );
 
-                                                        return Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .only(
-                                                            top:
-                                                                30, /*bottom: 30*/
-                                                          ),
-                                                          child: Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .center,
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                CountComment(
-                                                                    partyownerstate
-                                                                        .parties),
-                                                                Info(
-                                                                  partyownerstate
-                                                                      .parties!
-                                                                      .length
-                                                                      .toString(),
-                                                                  hintInfo:
-                                                                      "Soirée organisées",
-                                                                ),
-                                                                BlocProvider(
-                                                                  create: (context) => PartiesCubit()
-                                                                    ..fetchPartiesWithWhereIsEqualTo(
-                                                                        "validatedList",
-                                                                        user.id),
-                                                                  child: BlocBuilder<
-                                                                          PartiesCubit,
-                                                                          PartiesState>(
-                                                                      builder:
-                                                                          (context,
-                                                                              joinpartystate) {
-                                                                    if (joinpartystate
-                                                                            .parties ==
-                                                                        null)
-                                                                      return Center(
-                                                                        child:
-                                                                            CircularProgressIndicator(),
-                                                                      );
-                                                                    return Info(
-                                                                      joinpartystate
-                                                                          .parties!
-                                                                          .length
-                                                                          .toString(),
-                                                                      hintInfo:
-                                                                          "Participations",
-                                                                    );
-                                                                  }),
-                                                                )
-                                                              ]),
-                                                        );
-                                                      }),
-                                                    ),
-                                                    InkWell(
-                                                      onTap: () => Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                              builder: ((context) =>
-                                                                  WalletPage(
-                                                                      state
-                                                                          .wallet,
-                                                                      state
-                                                                          .user)))),
-                                                      child: Container(
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                                vertical: 12),
-                                                        margin: EdgeInsets
-                                                            .symmetric(
-                                                                horizontal: 22,
-                                                                vertical: 22),
-                                                        alignment:
-                                                            Alignment.center,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: PRIMARY_COLOR,
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(15),
-                                                          boxShadow: [
-                                                            BoxShadow(
-                                                              color: Colors.grey
-                                                                  .withOpacity(
-                                                                      0.5),
-                                                              blurRadius: 4,
-                                                              spreadRadius: 0,
-                                                              offset:
-                                                                  Offset(0, 4),
+                                                          return Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .only(
+                                                              top:
+                                                                  30, /*bottom: 30*/
                                                             ),
-                                                          ],
-                                                        ),
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .symmetric(
+                                                            child: Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  CountComment(
+                                                                      partyownerstate
+                                                                          .parties),
+                                                                  Info(
+                                                                    partyownerstate
+                                                                        .parties!
+                                                                        .length
+                                                                        .toString(),
+                                                                    hintInfo:
+                                                                        "Soirée organisées",
+                                                                  ),
+                                                                  BlocProvider(
+                                                                    create: (context) => PartiesCubit()
+                                                                      ..fetchPartiesWithWhereIsEqualTo(
+                                                                          "validatedList",
+                                                                          user.id),
+                                                                    child: BlocBuilder<
+                                                                            PartiesCubit,
+                                                                            PartiesState>(
+                                                                        builder:
+                                                                            (context,
+                                                                                joinpartystate) {
+                                                                      if (joinpartystate
+                                                                              .parties ==
+                                                                          null)
+                                                                        return Center(
+                                                                          child:
+                                                                              CircularProgressIndicator(),
+                                                                        );
+                                                                      return Info(
+                                                                        joinpartystate
+                                                                            .parties!
+                                                                            .length
+                                                                            .toString(),
+                                                                        hintInfo:
+                                                                            "Participations",
+                                                                      );
+                                                                    }),
+                                                                  )
+                                                                ]),
+                                                          );
+                                                        }),
+                                                      ),
+                                                      InkWell(
+                                                        onTap: () => Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder: ((context) =>
+                                                                    WalletPage(
+                                                                        state
+                                                                            .wallet,
+                                                                        state
+                                                                            .user)))),
+                                                        child: Container(
+                                                          padding: EdgeInsets
+                                                              .symmetric(
+                                                                  vertical: 12),
+                                                          margin: EdgeInsets
+                                                              .symmetric(
                                                                   horizontal:
-                                                                      22),
-                                                          child: Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                            children: [
-                                                              const Text(
-                                                                "Mon portefeuille :",
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w700,
-                                                                  fontSize: 18,
-                                                                  color:
-                                                                      SECONDARY_COLOR,
-                                                                ),
-                                                              ),
-                                                              Text(
-                                                                "${state.wallet!.amount.toString().replaceFirst(".", ",")}€",
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w700,
-                                                                  fontSize: 18,
-                                                                  color:
-                                                                      SECONDARY_COLOR,
-                                                                ),
+                                                                      22,
+                                                                  vertical: 22),
+                                                          alignment:
+                                                              Alignment.center,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color:
+                                                                PRIMARY_COLOR,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        15),
+                                                            boxShadow: [
+                                                              BoxShadow(
+                                                                color: Colors
+                                                                    .grey
+                                                                    .withOpacity(
+                                                                        0.5),
+                                                                blurRadius: 4,
+                                                                spreadRadius: 0,
+                                                                offset: Offset(
+                                                                    0, 4),
                                                               ),
                                                             ],
                                                           ),
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .symmetric(
+                                                                    horizontal:
+                                                                        22),
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: [
+                                                                const Text(
+                                                                  "Mon portefeuille :",
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w700,
+                                                                    fontSize:
+                                                                        18,
+                                                                    color:
+                                                                        SECONDARY_COLOR,
+                                                                  ),
+                                                                ),
+                                                                Text(
+                                                                  "${state.wallet!.amount.toString().replaceFirst(".", ",")}€",
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w700,
+                                                                    fontSize:
+                                                                        18,
+                                                                    color:
+                                                                        SECONDARY_COLOR,
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
                                                         ),
-                                                      ),
-                                                    )
-                                                  ],
-                                                ),
-                                              ],
+                                                      )
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -418,7 +422,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               child: ProfilePhoto(
                                 user.photo!.isEmpty
                                     ? "assets/roundBlankProfilPicture.png"
-                                    : user.photo,
+                                : user.photo,
                                 radius: _radius,
                               ),
                             ),
@@ -438,8 +442,7 @@ class _ProfilePageState extends State<ProfilePage> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text("Se déconnecter"
-            ),
+            title: Text("Se déconnecter"),
             actions: <Widget>[
               TextButton(
                 onPressed: onTap,
@@ -618,6 +621,183 @@ class TitleTextProfil extends StatelessWidget {
         text: this.text,
         fontSize: 15,
       ),
+    );
+  }
+}
+
+class Skeleton extends StatelessWidget {
+  const Skeleton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        // Container(
+        //   decoration: BoxDecoration(
+        //     color: Colors.black.withOpacity(0.04),
+        //     borderRadius: BorderRadius.circular(15)
+        //   ),
+        //   child: Column(
+        //     children: [
+        //       SizedBox(height: MediaQuery.of(context).size.height * 0.22),
+        //       Container(
+
+        //       ),
+        //     ],
+        //   ),
+        // ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: Container(
+            height: MediaQuery.of(context).size.height * 0.88,
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(50)),
+            child: SafeArea(
+              top: false,
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 28, vertical: 18),
+                  child: Column(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.04),
+                            borderRadius: BorderRadius.circular(30)),
+                        child: Column(
+                          children: [
+                            SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.22),
+                            Container(
+                              margin: EdgeInsets.only(top: 0, bottom: 8),
+                              height: 25,
+                              width: 80,
+                              decoration: BoxDecoration(
+                                  color: Colors.black.withOpacity(0.04),
+                                  borderRadius: BorderRadius.circular(15)),
+                            ),
+                            Container(
+                              height: 15,
+                              width: 100,
+                              decoration: BoxDecoration(
+                                  color: Colors.black.withOpacity(0.04),
+                                  borderRadius: BorderRadius.circular(15)),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 30),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    height: 40,
+                                    width: 80,
+                                    decoration: BoxDecoration(
+                                        color: Colors.black.withOpacity(0.04),
+                                        borderRadius:
+                                            BorderRadius.circular(15)),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8),
+                                    child: Container(
+                                      height: 40,
+                                      width: 80,
+                                      decoration: BoxDecoration(
+                                          color: Colors.black.withOpacity(0.04),
+                                          borderRadius:
+                                              BorderRadius.circular(15)),
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 40,
+                                    width: 80,
+                                    decoration: BoxDecoration(
+                                        color: Colors.black.withOpacity(0.04),
+                                        borderRadius:
+                                            BorderRadius.circular(15)),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(
+                                  right: 22, bottom: 20, left: 22),
+                              width: MediaQuery.of(context).size.width,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                  color: Colors.black.withOpacity(0.04),
+                                  borderRadius: BorderRadius.circular(15)),
+                            )
+                          ],
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Container(
+                          margin: EdgeInsets.symmetric(vertical: 24),
+                          height: 30,
+                          width: 220,
+                          decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.04),
+                              borderRadius: BorderRadius.circular(15)),
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: 45,
+                              decoration: BoxDecoration(
+                                  color: Colors.black.withOpacity(0.04),
+                                  borderRadius: BorderRadius.circular(15)),
+                            ),
+                      ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Container(
+                          margin: EdgeInsets.symmetric(vertical: 30),
+                              width: MediaQuery.of(context).size.width,
+                              height: 45,
+                              decoration: BoxDecoration(
+                                  color: Colors.black.withOpacity(0.04),
+                                  borderRadius: BorderRadius.circular(15)),
+                            ),
+                      ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: 45,
+                              decoration: BoxDecoration(
+                                  color: Colors.black.withOpacity(0.04),
+                                  borderRadius: BorderRadius.circular(15)),
+                            ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+        Padding(
+          padding:
+              EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.05),
+          child: Align(
+            alignment: Alignment.topCenter,
+            child: Container(
+              height: 230,
+              width: 230,
+              decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.04),
+                shape: BoxShape.circle,
+              ),
+            ),
+          ),
+        )
+      ],
     );
   }
 }
