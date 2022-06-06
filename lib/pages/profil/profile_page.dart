@@ -265,8 +265,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                                                 builder: ((context) =>
                                                                     WalletPage(
                                                                         state
-                                                                            .wallet,
-                                                                        state
                                                                             .user)))),
                                                         child: Container(
                                                           padding: EdgeInsets

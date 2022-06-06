@@ -7,6 +7,7 @@ import 'package:pts/models/address.dart';
 import 'package:pts/models/payments/bank_account.dart';
 import 'package:pts/models/payments/card_registration.dart';
 import 'package:pts/models/payments/credit_card.dart';
+import 'package:pts/models/payments/transaction.dart';
 import 'package:pts/models/payments/wallet.dart';
 
 enum KYCType { IDENTITY_PROOF, ADDRESS_PROOF }
@@ -496,6 +497,28 @@ class PaymentService {
     if (response.statusCode == 200) {
       return json.decode(await response.stream.bytesToString())['Status'];
     }
+    print(response.reasonPhrase);
+    return null;
+  }
+
+  Future<List<Transaction>?> getUserTransactions(String walletId, String userId,
+      {int? page}) async {
+    final String _url = "$url/wallets/$walletId/transactions?Sort=CreationDate:DESC";
+
+    var request = http.Request('GET', Uri.parse(_url));
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      var transactions =
+          json.decode(await response.stream.bytesToString()) as List;
+      return transactions
+          .map<Transaction>((e) => Transaction.fromJson(e))
+          .toList();
+    }
+
     print(response.reasonPhrase);
     return null;
   }

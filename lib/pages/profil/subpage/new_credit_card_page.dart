@@ -83,18 +83,21 @@ class _NewCreditCardState extends State<NewCreditCard> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     TextNewCreditCard(text: 'Titulaire de la carte'),
-                    TFFText(
-                      hintText: 'ex: Martin Morel',
-                      onChanged: (value) {
-                        _holderName = value;
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Entrer le nom du propriétaire de la carte';
-                        } else {
-                          return null;
-                        }
-                      },
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      child: TFFText(
+                        hintText: 'ex: Martin Morel',
+                        onChanged: (value) {
+                          _holderName = value;
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Entrer le nom du propriétaire de la carte';
+                          } else {
+                            return null;
+                          }
+                        },
+                      ),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,

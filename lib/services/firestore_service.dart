@@ -69,6 +69,25 @@ class FireStoreServices {
     return this._firestore.collection(collection).doc(id).get();
   }
 
+  Future<QuerySnapshot<Map<String, dynamic>>> getUserByMangopayId(
+      String mangopayId) async {
+    return this
+        ._firestore
+        .collection(collection)
+        .where("mangoPayId", isEqualTo: mangopayId)
+        .get();
+  }
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getNameByMangopayId(
+      String mangopayId) async {
+    return this
+        ._firestore
+        .collection(collection)
+        .where("mangoPayId", isEqualTo: mangopayId).startAt([])
+        .get();
+  }
+
+
   Future<int> getCountOf(String key, dynamic value) async {
     var data = await this
         ._firestore
@@ -105,9 +124,8 @@ class FireStoreServices {
         .get();
   }
 
-  Future<QuerySnapshot<Map<String, dynamic>>>
-      getDataByDateWithWhereIsEqualTo(
-          String key, String? data, DateTime date) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> getDataByDateWithWhereIsEqualTo(
+      String key, String? data, DateTime date) async {
     log(Timestamp.fromDate(date).toString());
     return this
         ._firestore
@@ -136,7 +154,8 @@ class FireStoreServices {
         .collection(collection)
         .where(key, isEqualTo: value)
         .where("date", isGreaterThanOrEqualTo: date)
-        .where("date", isLessThan: AppDateTime.from(date).yM().addTime(month: 1))
+        .where("date",
+            isLessThan: AppDateTime.from(date).yM().addTime(month: 1))
         .where("isActive", isEqualTo: true)
         .get();
   }
