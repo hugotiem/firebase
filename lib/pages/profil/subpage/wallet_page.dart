@@ -329,9 +329,10 @@ class WalletPage extends StatelessWidget {
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
-                                            TransactionBox(text: "Retirer"),
+                                            TransactionBox(text: "Retirer", image: "assets/retiré.png",),
                                             TransactionBox(
                                               text: "Ajouter",
+                                              image: "assets/ajouté.png",
                                               onTap: () async {
                                                 joinparty(
                                                     cardState.cards!, user!);
@@ -534,7 +535,8 @@ class SmallText1 extends StatelessWidget {
 class TransactionBox extends StatelessWidget {
   final String? text;
   final void Function()? onTap;
-  const TransactionBox({this.text, this.onTap, Key? key}) : super(key: key);
+  final String? image;
+  const TransactionBox({this.text, this.onTap, this.image, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -547,6 +549,8 @@ class TransactionBox extends StatelessWidget {
             Container(
               height: 60,
               width: 60,
+              margin: EdgeInsets.all(8),
+              padding: EdgeInsets.all(8),
               decoration: BoxDecoration(
                 color: PRIMARY_COLOR,
                 boxShadow: [
@@ -559,7 +563,7 @@ class TransactionBox extends StatelessWidget {
                 ],
                 borderRadius: BorderRadius.circular(10),
               ),
-              // child: Icon,
+              child: Image(image: AssetImage(image!)),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 4),
