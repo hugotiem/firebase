@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,10 +7,8 @@ import 'package:pts/components/form/custom_text_form.dart';
 import 'package:pts/widgets/app_text_field.dart';
 import 'package:pts/components/form/date_hour_picker.dart';
 import 'package:pts/const.dart';
-import 'package:pts/pages/login/id_form_screen.dart';
 import 'package:pts/blocs/user/user_cubit.dart';
 import 'package:pts/pages/login/nationnality_form_screen.dart';
-import 'package:pts/services/payment_service.dart';
 
 class RegisterFormScreen extends StatefulWidget {
   final String? mail;

@@ -8,8 +8,8 @@ import 'package:pts/blocs/user/user_cubit.dart';
 import 'package:pts/components/custom_text.dart';
 import 'package:pts/components/form/custom_text_form.dart';
 import 'package:pts/const.dart';
-import 'package:pts/components/appbar.dart';
 import 'package:pts/models/user.dart';
+import 'package:pts/widgets/widgets_export.dart';
 
 class InformationPage extends StatefulWidget {
   final User user;
@@ -85,41 +85,52 @@ class _InformationPageState extends State<InformationPage> {
               ),
             );
           }
-          
+
           if (verified == true) {
             return Scaffold(
               backgroundColor: PRIMARY_COLOR,
-              appBar: PreferredSize(
-                preferredSize: Size.fromHeight(50),
-                child: BackAppBar(
-                  actions: [
-                    TextButton(
-                      onPressed: () async {
-                        saveVerifiedProfile(
-                          _email,
-                          _phone,
-                        );
-                      },
-                      child: CText('sauvegarder'),
-                    )
-                  ],
-                ),
+              appBar: CustomAppBar(
+                onPressed: () => Navigator.pop(context),
+                actions: [
+                  TextButton(
+                    onPressed: () async {
+                      saveVerifiedProfile(
+                        _email,
+                        _phone,
+                      );
+                    },
+                    child: CText('sauvegarder',
+                        color: PRIMARY_COLOR, fontSize: 16),
+                  )
+                ],
               ),
-              body: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 22),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      HeaderText1(
-                          text: 'Modifie tes informations personnelles'),
-                      ttf("Prénom", _nameController, readOnly: true),
-                      ttf('Nom', _surnameController, readOnly: true),
-                      ttf1('Genre', user.gender, readOnly: true),
-                      ttf('Date de naissance', _dateController, readOnly: true),
-                      ttf('Adresse mail', _emailController),
-                      ttf('Téléphone', _phoneController),
-                    ],
+              body: Container(
+                decoration: BoxDecoration(
+                    gradient:
+                        LinearGradient(colors: [SECONDARY_COLOR, ICONCOLOR])),
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: PRIMARY_COLOR,
+                      borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(40))),
+                  child: SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 22),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          HeaderText1(
+                              text: 'Modifie tes informations personnelles'),
+                          ttf("Prénom", _nameController, readOnly: true),
+                          ttf('Nom', _surnameController, readOnly: true),
+                          ttf1('Genre', user.gender, readOnly: true),
+                          ttf('Date de naissance', _dateController,
+                              readOnly: true),
+                          ttf('Adresse mail', _emailController),
+                          ttf('Téléphone', _phoneController),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -127,40 +138,50 @@ class _InformationPageState extends State<InformationPage> {
           } else {
             return Scaffold(
               backgroundColor: PRIMARY_COLOR,
-              appBar: PreferredSize(
-                preferredSize: Size.fromHeight(50),
-                child: BackAppBar(
-                  actions: [
-                    TextButton(
-                      onPressed: () async {
-                        saveNonVerifiedProfile(
-                            _name,
-                            _surname,
-                            _dateNonFormat == null ? _date : _dateNonFormat,
-                            _gender,
-                            _email,
-                            _phone);
-                      },
-                      child: CText('sauvegarder'),
-                    )
-                  ],
-                ),
+              appBar: CustomAppBar(
+                onPressed: () => Navigator.pop(context),
+                actions: [
+                  TextButton(
+                    onPressed: () async {
+                      saveNonVerifiedProfile(
+                          _name,
+                          _surname,
+                          _dateNonFormat == null ? _date : _dateNonFormat,
+                          _gender,
+                          _email,
+                          _phone);
+                    },
+                    child: CText('sauvegarder',
+                        color: PRIMARY_COLOR, fontSize: 16),
+                  )
+                ],
               ),
-              body: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 22),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      HeaderText1(
-                          text: 'Modifie tes informations personnelles'),
-                      ttf("Prénom", _nameController),
-                      ttf('Nom', _surnameController),
-                      dropdown('Genre', user.gender),
-                      datePicker('Date de naissance', _dateController),
-                      ttf('Adresse mail', _emailController),
-                      ttf('Téléphone', _phoneController),
-                    ],
+              body: Container(
+                decoration: BoxDecoration(
+                    gradient:
+                        LinearGradient(colors: [SECONDARY_COLOR, ICONCOLOR])),
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: PRIMARY_COLOR,
+                      borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(40))),
+                  child: SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 22),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          HeaderText1(
+                              text: 'Modifie tes informations personnelles'),
+                          ttf("Prénom", _nameController),
+                          ttf('Nom', _surnameController),
+                          dropdown('Genre', user.gender),
+                          datePicker('Date de naissance', _dateController),
+                          ttf('Adresse mail', _emailController),
+                          ttf('Téléphone', _phoneController),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),

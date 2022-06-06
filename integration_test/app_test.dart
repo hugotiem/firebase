@@ -5,10 +5,10 @@ import 'package:integration_test/integration_test.dart';
 import 'package:pts/components/custom_text.dart';
 
 import 'package:pts/main.dart' as app;
+import 'package:pts/pages/profil/profile_page.dart';
 import 'package:pts/services/auth_service.dart';
 import 'package:pts/pages/creation/creation_page.dart';
 import 'package:pts/pages/login/connect.dart';
-import 'package:pts/pages/profil/profil_page.dart';
 import 'package:pts/pages/search/search_page.dart';
 import 'package:pts/pages/search/sliver/searchbar.dart';
 import 'package:pts/pages/search/sliver/searchbar_screen.dart';
@@ -90,7 +90,7 @@ void main() {
 
         tester.tap(finder);
 
-        var profilFinder = find.byType(Profil);
+        var profilFinder = find.byType(ProfilePage);
 
         expect(profilFinder, findsOneWidget);
 

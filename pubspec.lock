@@ -342,6 +342,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "7.3.3"
+  flutter_credit_card_new:
+    dependency: "direct main"
+    description:
+      name: flutter_credit_card_new
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.4"
   flutter_driver:
     dependency: transitive
     description: flutter

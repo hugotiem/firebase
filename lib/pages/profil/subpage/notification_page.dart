@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pts/components/appbar.dart';
 import 'package:pts/components/custom_text.dart';
 import 'package:pts/const.dart';
+import 'package:pts/widgets/widgets_export.dart';
 
 class NotificationPage extends StatefulWidget {
   const NotificationPage({Key? key}) : super(key: key);
@@ -26,57 +26,72 @@ class _NotificationPageState extends State<NotificationPage> {
 
     return Scaffold(
       backgroundColor: PRIMARY_COLOR,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(50),
-        child: BackAppBar(
-          title: TitleAppBar('Réglages des notifications'),
-        ),
+      // appBar: PreferredSize(
+      //   preferredSize: Size.fromHeight(50),
+      //   child: BackAppBar(
+      //     title: TitleAppBar('Réglages des notifications'),
+      //   ),
+      // ),
+      appBar: CustomAppBar(
+        title: "Réglages des notifictions",
+        onPressed: () => Navigator.pop(context),
       ),
-      body: Column(
-        children: [
-          SizedBox(height: 22),
-          customCheckBox("Activer les notifications", mainNotification,
-              (value) {
-            setState(() {
-              mainNotification = value!;
-            });
-          }),
-          customCheckBox("Soirée", partyNotification, (value) {
-            setState(() {
-              partyNotification = value!;
-              if (mainNotification == false && partyNotification == true) {
-                mainNotification = true;
-              }
-            });
-          },
-              hintText:
-                  "Recevez une notification lorsque vous êtes accepté ou refusé dans une soirée."),
-          customCheckBox("Demande", askNotification, (value) {
-            setState(() {
-              askNotification = value!;
-              if (mainNotification == false && askNotification == true) {
-                mainNotification = true;
-              }
-            });
-          },
-              hintText:
-                  "Recevez une notification lorsque quelqu'un souhaite rejoindre votre soirée"),
-          customCheckBox(
-            "Messages",
-            messagesNotification,
-            (value) {
-              setState(() {
-                messagesNotification = value!;
-                if (mainNotification == false && messagesNotification == true) {
-                  mainNotification = true;
-                }
-              });
-            },
-            hintText:
-                "Recevez une notification lorsque vous recevez un message.",
-            separator: false,
+      body: Container(
+        decoration: BoxDecoration(  
+          gradient: LinearGradient(colors: [SECONDARY_COLOR, ICONCOLOR])
+        ),
+        child: Container(
+          decoration: BoxDecoration(  
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(40))
           ),
-        ],
+          child: Column(
+            children: [
+              SizedBox(height: 22),
+              customCheckBox("Activer les notifications", mainNotification,
+                  (value) {
+                setState(() {
+                  mainNotification = value!;
+                });
+              }),
+              customCheckBox("Soirée", partyNotification, (value) {
+                setState(() {
+                  partyNotification = value!;
+                  if (mainNotification == false && partyNotification == true) {
+                    mainNotification = true;
+                  }
+                });
+              },
+                  hintText:
+                      "Recevez une notification lorsque vous êtes accepté ou refusé dans une soirée."),
+              customCheckBox("Demande", askNotification, (value) {
+                setState(() {
+                  askNotification = value!;
+                  if (mainNotification == false && askNotification == true) {
+                    mainNotification = true;
+                  }
+                });
+              },
+                  hintText:
+                      "Recevez une notification lorsque quelqu'un souhaite rejoindre votre soirée"),
+              customCheckBox(
+                "Messages",
+                messagesNotification,
+                (value) {
+                  setState(() {
+                    messagesNotification = value!;
+                    if (mainNotification == false && messagesNotification == true) {
+                      mainNotification = true;
+                    }
+                  });
+                },
+                hintText:
+                    "Recevez une notification lorsque vous recevez un message.",
+                separator: false,
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

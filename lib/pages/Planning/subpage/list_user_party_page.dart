@@ -1,64 +1,60 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ionicons/ionicons.dart';
 import 'package:pts/blocs/user/user_cubit.dart';
 import 'package:pts/const.dart';
 import 'package:pts/blocs/parties/parties_cubit.dart';
-import 'package:pts/components/appbar.dart';
 import 'package:pts/components/party_card/party_card.dart';
+import 'package:pts/widgets/widgets_export.dart';
 
 class MyParty extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: DefaultTabController(
-        length: 2,
-        child: Scaffold(
-          appBar: PreferredSize(
-            preferredSize: Size.fromHeight(110),
-            child: new BackAppBar(
-              leading: CupertinoButton(
-                child: Icon(
-                  Ionicons.arrow_back_outline,
-                  color: ICONCOLOR,
-                ),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-              title: TitleAppBar('Soirées'),
-              bottom: TabBar(
-                indicatorColor: SECONDARY_COLOR,
-                indicatorWeight: 1.2,
-                tabs: [
-                  TabText(
-                    text: 'Rejoints',
+      appBar: CustomAppBar(
+        title: "Soirées",
+        onPressed: () => Navigator.pop(context),
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+            gradient: LinearGradient(colors: [SECONDARY_COLOR, ICONCOLOR])),
+        child: Container(
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(40))),
+          child: DefaultTabController(
+            length: 2,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TabBar(
+                    indicatorColor: SECONDARY_COLOR,
+                    indicatorWeight: 1.2,
+                    tabs: [
+                      TabText(text: "Rejoints"),
+                      TabText(text: "Créées"),
+                    ]),
+                BlocProvider(
+                  create: (context) => UserCubit()..init(),
+                  child: BlocBuilder<UserCubit, UserState>(
+                    builder: (context, state) {
+                      var user = state.user;
+                      if (user == null) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      return Expanded(
+                        child: TabBarView(
+                          children: [
+                            PartyJoin(user.name, user.id),
+                            PartyCreate(user.id),
+                          ],
+                        ),
+                      );
+                    },
                   ),
-                  TabText(
-                    text: 'Créées',
-                  )
-                ],
-              ),
-            ),
-          ),
-          body: BlocProvider(
-            create: (context) => UserCubit()..init(),
-            child: BlocBuilder<UserCubit, UserState>(
-              builder: (context, state) {
-                
-                var user = state.user;
-                if (user == null) {
-                  return Center(child: CircularProgressIndicator(),);
-                }
-                
-                return TabBarView(
-                  children: [
-                    PartyJoin(user.name, user.id),
-                    PartyCreate(user.id),
-                  ],
-                );
-              },
+                ),
+              ],
             ),
           ),
         ),
@@ -82,8 +78,9 @@ class PartyJoin extends StatelessWidget {
           return Center(child: const CircularProgressIndicator());
         return ListView.builder(
           itemCount: state.parties!.length,
-          itemBuilder: (BuildContext context, int index) =>
-              SizedBox(height: 270, child: Padding(
+          itemBuilder: (BuildContext context, int index) => SizedBox(
+              height: 270,
+              child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 child: PartyCard(party: state.parties![index]),
               )),
@@ -91,18 +88,6 @@ class PartyJoin extends StatelessWidget {
       }),
     );
   }
-
-  // Stream<QuerySnapshot> getStream(BuildContext context) async* {
-  //   final _db = FirebaseFirestore.instance.collection('party');
-  //   Map _uid = {
-  //     'Name': AuthService.currentUser.displayName.split(' ')[0],
-  //     'uid': AuthService.currentUser.uid
-  //   };
-
-  //   yield* _db
-  //       .where('validate guest list', arrayContains: _uid)
-  //       .snapshots();
-  // }
 }
 
 class PartyCreate extends StatelessWidget {
@@ -113,14 +98,15 @@ class PartyCreate extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-          PartiesCubit()..fetchPartiesWithWhereIsEqualTo('party owner', token),
+          PartiesCubit()..fetchPartiesWithWhereIsEqualTo('ownerId', token),
       child: BlocBuilder<PartiesCubit, PartiesState>(builder: (context, state) {
         if (state.parties == null)
           return Center(child: const CircularProgressIndicator());
         return ListView.builder(
           itemCount: state.parties!.length,
-          itemBuilder: (BuildContext context, int index) =>
-              SizedBox(height: 270, child: Padding(
+          itemBuilder: (BuildContext context, int index) => SizedBox(
+              height: 270,
+              child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 child: PartyCard(party: state.parties![index]),
               )),
@@ -128,14 +114,6 @@ class PartyCreate extends StatelessWidget {
       }),
     );
   }
-
-  // Stream<QuerySnapshot> getPartyStreamSnapshots(BuildContext context) async* {
-  //   final _db = FirebaseFirestore.instance.collection('party');
-
-  //   yield* _db
-  //       .where('UID', isEqualTo: AuthService.currentUser.uid)
-  //       .snapshots();
-  // }
 }
 
 class TabText extends StatelessWidget {

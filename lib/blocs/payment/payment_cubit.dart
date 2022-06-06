@@ -1,6 +1,5 @@
 import 'package:pts/blocs/base/app_base_cubit.dart';
 import 'package:pts/blocs/base/app_base_state.dart';
-import 'package:pts/models/user.dart';
 import 'package:pts/services/payment_service.dart';
 
 part 'payment_state.dart';

@@ -1,12 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pts/blocs/user/user_cubit.dart';
 import 'package:pts/components/party_card/party_export.dart';
-import 'package:pts/const.dart';
 import 'package:pts/services/auth_service.dart';
-import 'package:pts/pages/messaging/subpage/chatpage.dart';
+import 'package:pts/widgets/widgets_export.dart';
 
 class MessagePage extends StatelessWidget {
   const MessagePage({Key? key}) : super(key: key);
@@ -23,18 +17,14 @@ class MessagePage extends StatelessWidget {
             backgroundColor: PRIMARY_COLOR,
             appBar: !isLogged
                 ? null
-                : AppBar(
-                    backgroundColor: PRIMARY_COLOR,
-                    systemOverlayStyle: SystemUiOverlayStyle.dark,
-                    elevation: 0.5,
-                    title: Text(
-                      'Messages',
-                      style: TextStyle(
-                        color: SECONDARY_COLOR,
-                      ),
-                    ),
+                : CustomAppBar(
+                    title: "Messages",
                   ),
-            body: ListMessage(),
+            body: Container(
+                decoration: BoxDecoration(
+                    gradient:
+                        LinearGradient(colors: [SECONDARY_COLOR, ICONCOLOR])),
+                child: ListMessage()),
           );
         },
       ),
@@ -57,49 +47,55 @@ class _ListMessageState extends State<ListMessage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => UserCubit()..init(),
-      child: BlocBuilder<UserCubit, UserState>(builder: (context, state) {
-        if (state.token == null) {
-          return Connect();
-        }
-        
-        var user = state.user;
-        if (user == null) {
-          return Center(child: CircularProgressIndicator());
-        }
+    return Container(
+      
+          decoration: BoxDecoration(
+              color: PRIMARY_COLOR,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(40))),
+      child: BlocProvider(
+        create: (context) => UserCubit()..init(),
+        child: BlocBuilder<UserCubit, UserState>(builder: (context, state) {
+          if (state.token == null) {
+            return Connect();
+          }
 
-        currentUserId = AuthService().currentUser!.uid;
-        currentUserName = AuthService().currentUser!.displayName;
+          var user = state.user;
+          if (user == null) {
+            return Center(child: CircularProgressIndicator());
+          }
 
-        return StreamBuilder(
-          stream: getmessageStreamSnapshot(context),
-          builder:
-              (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-            if (!snapshot.hasData)
-              return const Center(
-                child: CircularProgressIndicator(),
+          currentUserId = AuthService().currentUser!.uid;
+          currentUserName = AuthService().currentUser!.displayName;
+
+          return StreamBuilder(
+            stream: getmessageStreamSnapshot(context),
+            builder: (BuildContext context,
+                AsyncSnapshot<DocumentSnapshot> snapshot) {
+              if (!snapshot.hasData)
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              _docs = snapshot.data;
+              if (_docs.exists == false) return EmptyList();
+              List listUser = snapshot.data!['userid'];
+              return Container(
+                margin: const EdgeInsets.only(bottom: 40, top: 10),
+                child: Column(
+                  children: listUser.map(
+                    (doc) {
+                      return InkWell(
+                        onTap: () => openChat(doc['uid'], doc['name']),
+                        child: UserLineDesign(
+                            userID: doc['uid'], userName: doc['name']),
+                      );
+                    },
+                  ).toList(),
+                ),
               );
-            _docs = snapshot.data;
-            if (_docs.exists == false) return EmptyList();
-            List listUser = snapshot.data!['userid'];
-            return Container(
-              margin: const EdgeInsets.only(bottom: 40, top: 10),
-              child: Column(
-                children: listUser.map(
-                  (doc) {
-                    return InkWell(
-                      onTap: () => openChat(doc['uid'], doc['name']),
-                      child: UserLineDesign(
-                          userID: doc['uid'], userName: doc['name']),
-                    );
-                  },
-                ).toList(),
-              ),
-            );
-          },
-        );
-      }),
+            },
+          );
+        }),
+      ),
     );
   }
 

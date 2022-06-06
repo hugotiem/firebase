@@ -1,10 +1,8 @@
-import 'dart:developer';
-
 import 'package:flutter/services.dart';
 import 'package:pts/components/party_card/party_export.dart';
 import 'package:pts/pages/profil/subpage/about_page.dart';
 import 'package:pts/pages/profil/subpage/existing_cards_page.dart';
-import 'package:pts/pages/profil/subpage/new_user_page.dart';
+import 'package:pts/pages/profil/subpage/user_page.dart';
 import 'package:pts/pages/profil/subpage/notification_page.dart';
 import 'package:pts/pages/profil/subpage/wallet_page.dart';
 import 'package:pts/services/auth_service.dart';
@@ -13,15 +11,15 @@ import 'subpage/contactus_page.dart';
 import 'subpage/info_page.dart';
 import 'subpage/qr_code_page.dart';
 
-class NewProfilePage extends StatefulWidget {
+class ProfilePage extends StatefulWidget {
   final bool? isConnected;
-  const NewProfilePage(this.isConnected, {Key? key}) : super(key: key);
+  const ProfilePage(this.isConnected, {Key? key}) : super(key: key);
 
   @override
-  State<NewProfilePage> createState() => _NewProfilePageState();
+  State<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _NewProfilePageState extends State<NewProfilePage> {
+class _ProfilePageState extends State<ProfilePage> {
   double _radius = 120;
   double _opacity = 1;
   final AuthService service = AuthService();
@@ -163,8 +161,7 @@ class _NewProfilePageState extends State<NewProfilePage> {
                                                         fontSize: 32,
                                                         fontWeight:
                                                             FontWeight.w800,
-                                                        color:
-                                                            SECONDARY_COLOR,
+                                                        color: SECONDARY_COLOR,
                                                       ),
                                                     ),
                                                     InkWell(
@@ -174,7 +171,7 @@ class _NewProfilePageState extends State<NewProfilePage> {
                                                               context,
                                                               MaterialPageRoute(
                                                                   builder: (context) =>
-                                                                      NewUserPage(
+                                                                      UserPage(
                                                                           user))),
                                                       child: const Opacity(
                                                         opacity: 0.7,
@@ -269,7 +266,8 @@ class _NewProfilePageState extends State<NewProfilePage> {
                                                           context,
                                                           MaterialPageRoute(
                                                               builder: ((context) =>
-                                                                  WalletPage(state.user)))),
+                                                                  WalletPage(state
+                                                                      .user)))),
                                                       child: Container(
                                                         padding: EdgeInsets
                                                             .symmetric(
@@ -383,8 +381,9 @@ class _NewProfilePageState extends State<NewProfilePage> {
                                         to: QrCodePage()),
                                     GestureDetector(
                                       onTap: () async {
-                                        BlocProvider.of<UserCubit>(context)
-                                            .logout();
+                                        _logout(() =>
+                                            BlocProvider.of<UserCubit>(context)
+                                                .logout());
                                       },
                                       child: Center(
                                         child: Padding(
@@ -429,6 +428,36 @@ class _NewProfilePageState extends State<NewProfilePage> {
               );
       }),
     );
+  }
+
+  Future<void> _logout(void Function()? onTap) async {
+    return showDialog<void>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Se déconnecter"),
+            actions: <Widget>[
+              TextButton(
+                onPressed: onTap,
+                child: Text(
+                  "OUI",
+                  style: TextStyle(
+                    color: Colors.red,
+                  ),
+                ),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text(
+                  "NON",
+                  style: TextStyle(
+                    color: SECONDARY_COLOR,
+                  ),
+                ),
+              )
+            ],
+          );
+        });
   }
 }
 
@@ -568,6 +597,23 @@ class _CountCommentState extends State<CountComment> {
     return Info(
       count.toString(),
       hintInfo: "Avis",
+    );
+  }
+}
+
+class TitleTextProfil extends StatelessWidget {
+  final String? text;
+
+  const TitleTextProfil({this.text, Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(left: 20, bottom: 10),
+      child: BoldText(
+        text: this.text,
+        fontSize: 15,
+      ),
     );
   }
 }

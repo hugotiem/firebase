@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pts/components/appbar.dart';
 import 'package:pts/components/custom_text.dart';
 import 'package:pts/const.dart';
-import 'package:pts/models/Capitalize.dart';
+import 'package:pts/widgets/widgets_export.dart';
 
 import 'help_page.dart';
 
@@ -13,32 +12,47 @@ class AboutPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: PRIMARY_COLOR,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(50),
-        child: BackAppBar(
-          title: TitleAppBar('à propos'.inCaps),
-        ),
+      // appBar: PreferredSize(
+      //   preferredSize: Size.fromHeight(50),
+      //   child: BackAppBar(
+      //     title: TitleAppBar('à propos'.inCaps),
+      //   ),
+      // ),
+      appBar: CustomAppBar(
+        title: "À propos",
+        onPressed: () => Navigator.pop(context)
       ),
-      body: Column(
-        children: [
-          SizedBox(height: 22),
-          onTapBox(
-            context,
-            'Aide',
-            'Avez-vous des questions concernant PTS ?',
-            to: HelpPage(),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(colors: [SECONDARY_COLOR, ICONCOLOR])
+        ),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(40))
           ),
-          onTapBox(
-            context,
-            'Politique de confidentialité',
-            'Lisez la politique de confidentialité',
+          child: Column(
+            children: [
+              SizedBox(height: 22),
+              onTapBox(
+                context,
+                'Aide',
+                'Avez-vous des questions concernant PTS ?',
+                to: HelpPage(),
+              ),
+              onTapBox(
+                context,
+                'Politique de confidentialité',
+                'Lisez la politique de confidentialité',
+              ),
+              onTapBox(
+                context,
+                "Version de l'application",
+                "1.0.0",
+              )
+            ],
           ),
-          onTapBox(
-            context,
-            "Version de l'application",
-            "1.0.0",
-          )
-        ],
+        ),
       ),
     );
   }
