@@ -17,17 +17,17 @@ import 'package:pts/blocs/user/user_cubit.dart';
 import 'package:pts/pages/messaging/message_list.dart';
 import 'package:pts/pages/profil/profile_page.dart';
 import 'package:uni_links/uni_links.dart';
-import 'pages/search/search_page.dart';
+import 'pages/home/home_page.dart';
 
-class Home extends StatefulWidget {
+class CustomBottomBar extends StatefulWidget {
   final bool isConnected;
 
-  const Home(this.isConnected, {Key? key}) : super(key: key);
+  const CustomBottomBar(this.isConnected, {Key? key}) : super(key: key);
   @override
-  _HomeState createState() => _HomeState();
+  _CustomBottomBarState createState() => _CustomBottomBarState();
 }
 
-class _HomeState extends State<Home> {
+class _CustomBottomBarState extends State<CustomBottomBar> {
   int _currentIndex = 0;
   late List<Widget> _children;
   // StreamSubscription? _sub;
@@ -36,7 +36,7 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     _children = [
-      Search(),
+      HomePage(),
       widget.isConnected ? ManagePartyOPage() : Connect(),
       Container(),
       widget.isConnected ? MessagePage() : Connect(),
@@ -45,7 +45,7 @@ class _HomeState extends State<Home> {
     BlocProvider.of<UserCubit>(context).stream.listen((event) {
       bool _isConnected = event.user != null;
       setState(() => _children = [
-            Search(),
+            HomePage(),
             _isConnected ? ManagePartyOPage() : Connect(),
             Container(),
             _isConnected ? MessagePage() : Connect(),

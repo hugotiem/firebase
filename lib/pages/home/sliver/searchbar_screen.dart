@@ -10,9 +10,9 @@ import 'package:pts/blocs/search/search_cubit.dart';
 import 'package:pts/components/form/calendar_screen.dart';
 import 'package:pts/const.dart';
 import 'package:pts/models/party.dart';
-import 'package:pts/pages/search/sliver/filter_screen.dart';
-import 'package:pts/pages/search/sliver/items.dart';
-import 'package:pts/pages/search/sliver/searchbar.dart';
+// import 'package:pts/pages/search/sliver/filter_screen.dart';
+// import 'package:pts/pages/search/sliver/items.dart';
+// import 'package:pts/pages/search/sliver/searchbar.dart';
 import 'package:pts/components/party_card/party_card.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'dart:math' as math;
@@ -132,9 +132,9 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                         compassEnabled: false,
                         onMapCreated: (controller) {
                           mapController = controller;
-                          mapControllerCompleter
-                              .complete(controller..setMapStyle(mapStyle));
-                          _mapAnimationController.forward();
+                          // mapControllerCompleter
+                          //     .complete(controller..setMapStyle(mapStyle));
+                          // _mapAnimationController.forward();
                         },
                         initialCameraPosition: CameraPosition(
                             target: LatLng(latitude!, longitude!), zoom: 14),
@@ -213,17 +213,17 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                                 Stack(
                                   clipBehavior: Clip.none,
                                   children: [
-                                    Hero(
-                                      tag: 'search-widget',
-                                      child: SearchBar(
-                                        hintText: "",
-                                        onChanged: (value) {
-                                          BlocProvider.of<SearchCubit>(context)
-                                              .fetchResults(value);
-                                        },
-                                        focusNode: focusNode,
-                                      ),
-                                    ),
+                                    // Hero(
+                                    //   tag: 'search-widget',
+                                    //   child: SearchBar(
+                                    //     hintText: "",
+                                    //     onChanged: (value) {
+                                    //       BlocProvider.of<SearchCubit>(context)
+                                    //           .fetchResults(value);
+                                    //     },
+                                    //     focusNode: focusNode,
+                                    //   ),
+                                    // ),
                                     Positioned(
                                       bottom: -60,
                                       left: -30,
@@ -625,25 +625,25 @@ class _SearchBarScreenState extends State<SearchBarScreen>
                   ),
                 ],
               ),
-              SlidingUpPanel(
-                minHeight: 0,
-                maxHeight: MediaQuery.of(context).size.height - 50,
-                panelBuilder: (ScrollController sc) {
-                  return FilterScreen(
-                    sc: sc,
-                    context: context,
-                    currentCity: result,
-                  );
-                },
-                controller: _filterPanelController,
-                backdropEnabled: true,
-                snapPoint: 0.7,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(10),
-                  topRight: Radius.circular(10),
-                ),
-                color: Colors.transparent,
-              ),
+              // SlidingUpPanel(
+              //   minHeight: 0,
+              //   maxHeight: MediaQuery.of(context).size.height - 50,
+              //   panelBuilder: (ScrollController sc) {
+              //     return FilterScreen(
+              //       sc: sc,
+              //       context: context,
+              //       currentCity: result,
+              //     );
+              //   },
+              //   controller: _filterPanelController,
+              //   backdropEnabled: true,
+              //   snapPoint: 0.7,
+              //   borderRadius: BorderRadius.only(
+              //     topLeft: Radius.circular(10),
+              //     topRight: Radius.circular(10),
+              //   ),
+              //   color: Colors.transparent,
+              // ),
             ],
           ),
         ),

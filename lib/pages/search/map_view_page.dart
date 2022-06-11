@@ -12,7 +12,7 @@ import 'package:pts/components/party_card/party_card.dart';
 import 'package:pts/const.dart';
 import 'package:pts/models/party.dart';
 import 'package:pts/pages/search/search_form_page.dart';
-import 'package:pts/pages/search/sliver/items.dart';
+import 'package:pts/pages/search/items.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class MapViewPage extends StatefulWidget {
@@ -47,6 +47,8 @@ class _MapViewPageState extends State<MapViewPage> {
 
   bool _loadingScreen = true;
   bool _hasOpacity = true;
+
+  CameraPosition? _position;
 
   late DateTime? _date;
   late List<DateTime>? _months;
@@ -107,6 +109,9 @@ class _MapViewPageState extends State<MapViewPage> {
               ..fetchPartiesByMonthsWithWhereIsEqualTo(
                   "city", _destination, widget.months!);
           }
+          if (_destination == null) {
+            return PartiesCubit();
+          }
           return PartiesCubit()
             ..fetchPartiesWithWhereIsEqualTo("city", _destination);
         },
@@ -139,11 +144,10 @@ class _MapViewPageState extends State<MapViewPage> {
                     children: [
                       if (_longitude != null && _latitude != null)
                         GoogleMap(
-                          onCameraMove: (position) {
-                            print(position.target);
-
-                            print(position.zoom);
-                          },
+                          onCameraIdle: () =>
+                              BlocProvider.of<PartiesCubit>(context),
+                          onCameraMove: (position) =>
+                              setState(() => _position = position),
                           // onCameraIdle: ,
                           myLocationButtonEnabled: false,
                           initialCameraPosition: CameraPosition(

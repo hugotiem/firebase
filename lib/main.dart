@@ -6,7 +6,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:pts/blocs/app_bloc_delegate.dart';
 import 'package:pts/blocs/user/user_cubit.dart';
 import 'package:pts/services/notification_service.dart';
-import 'home.dart';
+import 'custom_bottom_bar.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter/services.dart';
@@ -75,7 +75,7 @@ class _MyAppState extends State<MyApp> {
                     builder: (context, state) {
                       bool isConnected = state.user != null;
 
-                      return Home(isConnected);
+                      return CustomBottomBar(isConnected);
                     },
                   ),
                 );

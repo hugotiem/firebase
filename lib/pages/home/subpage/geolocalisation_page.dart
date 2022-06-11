@@ -6,7 +6,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:pts/blocs/parties/parties_cubit.dart';
 import 'package:pts/components/party_card/party_card.dart';
 import 'package:pts/models/party.dart';
-import 'package:pts/pages/search/search_page.dart';
+import 'package:pts/pages/home/home_page.dart';
 
 class GeolocationWidget extends StatefulWidget {
   const GeolocationWidget({Key? key}) : super(key: key);

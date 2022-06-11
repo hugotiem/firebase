@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:pts/components/app_datetime.dart';
 import 'package:pts/models/city.dart';
 import 'package:pts/models/party.dart';
@@ -275,5 +276,9 @@ class PartiesCubit extends AppBaseCubit<PartiesState> {
 
   Future<void> saveData(String id, Map<String, dynamic> data) async {
     await FirebaseFirestore.instance.collection("parties").doc(id).update(data);
+  }
+
+  Future<void> fetchPartiesFromPosition(CameraPosition position) async {
+    
   }
 }

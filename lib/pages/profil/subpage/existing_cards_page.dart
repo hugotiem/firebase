@@ -9,6 +9,7 @@ class ExistingCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return BlocProvider(
       create: (context) => CardRegistrationCubit()..loadData(user?.mangoPayId),
       child: BlocBuilder<CardRegistrationCubit, CardRegistrationState>(

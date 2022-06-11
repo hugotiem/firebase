@@ -18,7 +18,7 @@ export 'package:pts/models/user.dart';
 export 'package:pts/blocs/user/user_cubit.dart';
 export 'package:pts/pages/login/connect.dart';
 export 'package:pts/pages/messaging/subpage/chatpage.dart';
-export 'package:pts/pages/search/sliver/custom_sliver.dart';
+export 'package:pts/pages/home/sliver/custom_sliver.dart';
 export 'package:pts/const.dart';
 export '../../models/payments/wallet.dart';
 export '../horizontal_separator.dart';
