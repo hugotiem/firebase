@@ -27,12 +27,14 @@ class _InformationPageState extends State<InformationPage> {
   var _dateNonFormat;
   String? _email;
   String? _phone;
+  String? _desc;
 
   TextEditingController? _nameController;
   TextEditingController? _surnameController;
   TextEditingController? _dateController;
   TextEditingController? _emailController;
   TextEditingController? _phoneController;
+  TextEditingController? _descController;
 
   @override
   void initState() {
@@ -58,6 +60,11 @@ class _InformationPageState extends State<InformationPage> {
           ..addListener(() {
             _phone = _phoneController!.text;
           });
+    _descController =
+        TextEditingController(text: widget.user.desc ?? 'Aucune description')
+          ..addListener(() {
+            _desc = _descController!.text;
+          });
     super.initState();
   }
 
@@ -76,6 +83,7 @@ class _InformationPageState extends State<InformationPage> {
           _date == null ? _date = user?.birthday : _dateNonFormat;
           _email == null ? _email = user?.email : _email;
           _phone == null ? _phone = user?.phone : _phone;
+          _desc == null ? _desc = user?.desc : _desc;
 
           if (user == null) {
             return Scaffold(
@@ -97,6 +105,7 @@ class _InformationPageState extends State<InformationPage> {
                       saveVerifiedProfile(
                         _email,
                         _phone,
+                        _desc,
                       );
                     },
                     child: CText('sauvegarder',
@@ -128,6 +137,7 @@ class _InformationPageState extends State<InformationPage> {
                               readOnly: true),
                           ttf('Adresse mail', _emailController),
                           ttf('Téléphone', _phoneController),
+                          ttf("Description", _descController),
                         ],
                       ),
                     ),
@@ -149,7 +159,7 @@ class _InformationPageState extends State<InformationPage> {
                           _dateNonFormat == null ? _date : _dateNonFormat,
                           _gender,
                           _email,
-                          _phone);
+                          _phone, _desc);
                     },
                     child: CText('sauvegarder',
                         color: PRIMARY_COLOR, fontSize: 16),
@@ -179,6 +189,7 @@ class _InformationPageState extends State<InformationPage> {
                           datePicker('Date de naissance', _dateController),
                           ttf('Adresse mail', _emailController),
                           ttf('Téléphone', _phoneController),
+                          ttf("Description", _descController),
                         ],
                       ),
                     ),
@@ -331,7 +342,7 @@ class _InformationPageState extends State<InformationPage> {
   }
 
   Future saveNonVerifiedProfile(String? name, String? surname, var birthday,
-      String? gender, String? email, String? phone) async {
+      String? gender, String? email, String? phone, String? desc) async {
     FirebaseFirestore.instance.collection('user').doc(widget.user.id).update({
       'name': name,
       'surname': surname,
@@ -339,13 +350,15 @@ class _InformationPageState extends State<InformationPage> {
       'gender': gender,
       'email': email,
       'phone number': phone,
+      'desc': desc,
     });
   }
 
-  Future saveVerifiedProfile(String? email, String? phone) async {
+  Future saveVerifiedProfile(String? email, String? phone, String? desc) async {
     FirebaseFirestore.instance.collection('user').doc(widget.user.id).update({
       'email': email,
       'phone number': phone,
+      'desc': desc,
     });
   }
 }
