@@ -14,16 +14,20 @@ Future<void> customShowModalBottomSheet(BuildContext context,
       ),
     ),
     context: context,
+    isScrollControlled: true,
     builder: (BuildContext context) {
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 22),
         child: Builder(builder: (context) {
           if (children != null)
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: children,
-            );
+            return Padding(
+                padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: children,
+                ));
           return child ?? Container();
         }),
       );

@@ -24,7 +24,7 @@ class WalletPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<dynamic> joinparty(
+    Future<dynamic> add_money(
         List<CreditCard> listCreditcard, User connectUser) {
       String selectedId = "";
       return customShowModalBottomSheet(
@@ -145,13 +145,49 @@ class WalletPage extends StatelessWidget {
               ),
             );
           }),
-          TextField(
-            controller: _controller,
-            style: TextStyle(
-              color: SECONDARY_COLOR,
-              fontSize: 17,
-              fontWeight: FontWeight.w700,
-            ),
+          titleText("Montant à ajouter"),
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 0),
+                child: Container(
+                  height: 52,
+                  width: 80,
+                  decoration: BoxDecoration(
+                    color: PRIMARY_COLOR,
+                    borderRadius: BorderRadius.circular(15),
+                    border: Border.all(color: SECONDARY_COLOR),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 16),
+                    child: Center(
+                      child: TextFormField(
+                        controller: _controller,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
+                        style: TextStyle(
+                          fontSize: 30,
+                          color: SECONDARY_COLOR,
+                        ),
+                        decoration: InputDecoration(border: InputBorder.none),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 8),
+                child: Text(
+                  "€",
+                  style: TextStyle(
+                    color: SECONDARY_COLOR,
+                    fontSize: 30,
+                  ),
+                ),
+              )
+            ],
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 22),
@@ -329,12 +365,15 @@ class WalletPage extends StatelessWidget {
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
-                                            TransactionBox(text: "Retirer", image: "assets/retiré.png",),
+                                            TransactionBox(
+                                              text: "Retirer",
+                                              image: "assets/retiré.png",
+                                            ),
                                             TransactionBox(
                                               text: "Ajouter",
                                               image: "assets/ajouté.png",
                                               onTap: () async {
-                                                joinparty(
+                                                add_money(
                                                     cardState.cards!, user!);
                                               },
                                             ),
@@ -536,7 +575,8 @@ class TransactionBox extends StatelessWidget {
   final String? text;
   final void Function()? onTap;
   final String? image;
-  const TransactionBox({this.text, this.onTap, this.image, Key? key}) : super(key: key);
+  const TransactionBox({this.text, this.onTap, this.image, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
