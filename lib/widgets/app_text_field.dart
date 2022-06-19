@@ -214,6 +214,8 @@ class AppTextFormField extends StatelessWidget {
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormatters;
   final EdgeInsetsGeometry? contentPadding;
+  final double? width; 
+  final TextCapitalization? textCapitalization;
 
   AppTextFormField(
       {Key? key,
@@ -225,7 +227,9 @@ class AppTextFormField extends StatelessWidget {
       this.keyboardType,
       this.inputFormatters,
       this.formKey,
-      this.contentPadding})
+      this.contentPadding,
+      this.width,
+      this.textCapitalization})
       : super(key: key);
 
   final FocusNode focusNode = FocusNode();
@@ -234,7 +238,9 @@ class AppTextFormField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20),
+      width: width ?? null,
       child: TextFormField(
+        textCapitalization: textCapitalization ?? TextCapitalization.none,
         focusNode: focusNode,
         onFieldSubmitted: (value) {
           formKey?.currentState?.validate();

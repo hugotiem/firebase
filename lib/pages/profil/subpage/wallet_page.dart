@@ -21,7 +21,6 @@ import 'package:pts/pages/profil/subpage/new_credit_card_page.dart';
 import 'package:pts/services/payment_service.dart';
 
 class WalletPage extends StatelessWidget {
-  // final Wallet? wallet;
   final User? user;
   WalletPage(this.user, {Key? key}) : super(key: key);
 
@@ -30,7 +29,7 @@ class WalletPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<dynamic> joinparty(
+    Future<dynamic> add_money(
         List<CreditCard> listCreditcard, User connectUser) {
       String selectedId = "";
       return customShowModalBottomSheet(
@@ -161,6 +160,50 @@ class WalletPage extends StatelessWidget {
               ),
             );
           }),
+          titleText("Montant à ajouter"),
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 0),
+                child: Container(
+                  height: 52,
+                  width: 80,
+                  decoration: BoxDecoration(
+                    color: PRIMARY_COLOR,
+                    borderRadius: BorderRadius.circular(15),
+                    border: Border.all(color: SECONDARY_COLOR),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 16),
+                    child: Center(
+                      child: TextFormField(
+                        controller: _controller,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
+                        style: TextStyle(
+                          fontSize: 30,
+                          color: SECONDARY_COLOR,
+                        ),
+                        decoration: InputDecoration(border: InputBorder.none),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 8),
+                child: Text(
+                  "€",
+                  style: TextStyle(
+                    color: SECONDARY_COLOR,
+                    fontSize: 30,
+                  ),
+                ),
+              )
+            ],
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 22),
             child: Column(
@@ -350,6 +393,7 @@ class WalletPage extends StatelessWidget {
                                           children: [
                                             TransactionBox(
                                               text: "Retirer",
+                                              image: "assets/retiré.png",
                                               onTap: () => wallet == null
                                                   ? null
                                                   : _showWithdrawModalBottomSheet(
@@ -359,8 +403,9 @@ class WalletPage extends StatelessWidget {
                                             ),
                                             TransactionBox(
                                               text: "Ajouter",
+                                              image: "assets/ajouté.png",
                                               onTap: () async {
-                                                joinparty(
+                                                add_money(
                                                     cardState.cards!, user!);
                                               },
                                             ),
@@ -778,7 +823,9 @@ class SmallText1 extends StatelessWidget {
 class TransactionBox extends StatelessWidget {
   final String? text;
   final void Function()? onTap;
-  const TransactionBox({this.text, this.onTap, Key? key}) : super(key: key);
+  final String? image;
+  const TransactionBox({this.text, this.onTap, this.image, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -791,6 +838,8 @@ class TransactionBox extends StatelessWidget {
             Container(
               height: 60,
               width: 60,
+              margin: EdgeInsets.all(8),
+              padding: EdgeInsets.all(8),
               decoration: BoxDecoration(
                 color: PRIMARY_COLOR,
                 boxShadow: [
@@ -803,7 +852,7 @@ class TransactionBox extends StatelessWidget {
                 ],
                 borderRadius: BorderRadius.circular(10),
               ),
-              // child: Icon,
+              child: Image(image: AssetImage(image!)),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 4),

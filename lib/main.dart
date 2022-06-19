@@ -22,7 +22,8 @@ Future<void> main({bool isTesting = false}) async {
 
     if (!isTesting) await NotificationService.init();
 
-    Bloc.observer = AppBlocDelegate();
+    BlocOverrides.runZoned(() => runApp(MyApp()),
+        blocObserver: AppBlocDelegate());
     await Firebase.initializeApp();
 
     FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
