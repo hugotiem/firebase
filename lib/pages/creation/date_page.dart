@@ -5,7 +5,7 @@ import 'package:pts/components/form/background_form.dart';
 import 'package:pts/components/form/custom_text_form.dart';
 
 import 'package:pts/const.dart';
-import 'package:pts/pages/search/search_form_page.dart';
+import 'package:pts/pages/search/search_page.dart';
 
 class DatePage extends StatelessWidget {
   final void Function(BuildContext)? onNext;

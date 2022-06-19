@@ -1,5 +1,6 @@
 import 'package:pts/blocs/base/app_base_cubit.dart';
 import 'package:pts/blocs/base/app_base_state.dart';
+import 'package:pts/models/address.dart';
 import 'package:pts/models/payments/bank_account.dart';
 import 'package:pts/services/firestore_service.dart';
 import 'package:pts/services/payment_service.dart';
@@ -19,5 +20,21 @@ class BankAccountCubit extends AppBaseCubit<BankAccountState> {
     emit(BankAccountState.dataLoaded(bankAccounts));
   }
 
-  Future<void> refresh() async {}
+  Future<void> addBankAccount(
+      String userId, String ownerName, Address address, String iban) async {
+    await _paymentService
+        .addIBANBankAccount(userId, ownerName, address, iban)
+        .then((value) {
+      if (value == QueryState.success) {
+        return emit(BankAccountState.dataAdded());
+      }
+      return emit(BankAccountState.failed());
+    });
+  }
+
+  Future<void> refresh(String? userId) async {
+    if (userId == null) return;
+    emit(state.setRequestInProgress() as BankAccountState);
+    loadData(userId);
+  }
 }

@@ -12,10 +12,12 @@ import 'package:pts/models/payments/wallet.dart';
 
 enum KYCType { IDENTITY_PROOF, ADDRESS_PROOF }
 
+enum QueryState { success, failed }
+
 class PaymentService {
-  final String prefixUrl = "https://api.sandbox.mangopay.com";
-  final String apiVersion = "v2.01";
-  final String clientId = "ptstest";
+  // final String prefixUrl = "https://api.sandbox.mangopay.com";
+  // final String apiVersion = "v2.01";
+  // final String clientId = "ptstest";
   final String apiKey = "WEsMJm4EJDND0UsFvw1ngTYoDC56WwAndVZOAERWj8LKTu4020";
   final String url = "https://api.sandbox.mangopay.com/v2.01/ptstest";
   final Map<String, String> headers = {
@@ -364,7 +366,7 @@ class PaymentService {
     return print('FAILED');
   }
 
-  Future<String?> addIBANBankAccount(
+  Future<QueryState> addIBANBankAccount(
       String userId, String fullname, Address address, String iban) async {
     final String _url = "$url/users/$userId/bankaccounts/iban/";
 
@@ -387,10 +389,11 @@ class PaymentService {
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
-      return json.decode(await response.stream.bytesToString())['Id'];
+      return QueryState.success;
+      // return json.decode(await response.stream.bytesToString())['Id'];
     }
     print(response.reasonPhrase);
-    return null;
+    return QueryState.failed;
   }
 
   Future<List<BankAccount>?> getUserBankAccounts(String userId) async {
@@ -417,16 +420,23 @@ class PaymentService {
     return null;
   }
 
-  Future<void> withdraw(String userId, String bankAccountId, int amount) async {
-    final Map<WalletType, Wallet>? _wallets = await getWalletByUserId(userId);
+  Future<QueryState> withdraw(String bankAccountId, int amount,
+      {String? userId, String? walletId}) async {
+    if (walletId == null) {
+      if (userId == null) {
+        print("WalletId or userId should not be null");
+        return QueryState.failed;
+      }
+      final Map<WalletType, Wallet>? _wallets = await getWalletByUserId(userId);
+      if (_wallets == null) {
+        return QueryState.failed;
+      }
+      final Wallet? wallet = _wallets[WalletType.MAIN];
 
-    if (_wallets == null) {
-      return;
+      if (wallet == null) return QueryState.failed;
+
+      walletId = wallet.id;
     }
-
-    final Wallet? wallet = _wallets[WalletType.MAIN];
-
-    if (wallet == null) return;
 
     final String _url = "$url/payouts/bankwire/";
     final String _currency = "EUR";
@@ -444,7 +454,7 @@ class PaymentService {
         "Amount": 0,
       },
       "BankAccountId": bankAccountId,
-      "DebitedWalletId": wallet.id,
+      "DebitedWalletId": walletId,
     });
 
     request.headers.addAll(headers);
@@ -452,10 +462,12 @@ class PaymentService {
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
-      return print('SUCCESS');
+      print('SUCCESS');
+      return QueryState.success;
     }
     print(response.reasonPhrase);
-    return print('FAILED');
+    print('FAILED');
+    return QueryState.failed;
   }
 
   Future<String?> transfer(String? userId, String creditedWalletId, int amount,
@@ -503,7 +515,8 @@ class PaymentService {
 
   Future<List<Transaction>?> getUserTransactions(String walletId, String userId,
       {int? page}) async {
-    final String _url = "$url/wallets/$walletId/transactions?Sort=CreationDate:DESC";
+    final String _url =
+        "$url/wallets/$walletId/transactions?Sort=CreationDate:DESC";
 
     var request = http.Request('GET', Uri.parse(_url));
 

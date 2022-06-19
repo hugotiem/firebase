@@ -11,7 +11,7 @@ import 'package:pts/components/components_export.dart';
 import 'package:pts/components/party_card/party_card.dart';
 import 'package:pts/const.dart';
 import 'package:pts/models/party.dart';
-import 'package:pts/pages/search/search_form_page.dart';
+import 'package:pts/pages/search/search_page.dart';
 import 'package:pts/pages/search/items.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -349,7 +349,7 @@ class SearchInfoContent extends StatelessWidget {
                 var last = BlocProvider.of<SearchCubit>(context).state.last;
                 Navigator.of(context)
                     .push(MaterialPageRoute(
-                        builder: (context) => SearchFormPage(last: last),
+                        builder: (context) => SearchPage(last: last),
                         fullscreenDialog: true))
                     .then((value) {
                   if (value != null) {

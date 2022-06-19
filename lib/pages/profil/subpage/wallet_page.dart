@@ -4,14 +4,19 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:pts/blocs/bank_account/bank_account_cubit.dart';
 import 'package:pts/blocs/card_registration/card_registration_cubit.dart';
+import 'package:pts/blocs/payment/payment_cubit.dart';
 import 'package:pts/blocs/transactions/transactions_cubit.dart';
+import 'package:pts/components/app_datetime.dart';
 import 'package:pts/components/showModalBottomSheet.dart';
 import 'package:pts/const.dart';
+import 'package:pts/custom_bottom_bar.dart';
 import 'package:pts/models/payments/credit_card.dart';
 import 'package:pts/models/payments/transaction.dart';
 import 'package:pts/models/payments/wallet.dart';
 import 'package:pts/models/user.dart';
+import 'package:pts/pages/profil/subpage/new_bank_account.dart';
 import 'package:pts/pages/profil/subpage/new_credit_card_page.dart';
 import 'package:pts/services/payment_service.dart';
 
@@ -30,174 +35,186 @@ class WalletPage extends StatelessWidget {
       String selectedId = "";
       return customShowModalBottomSheet(
         context,
+        padding: EdgeInsets.zero,
         children: [
-          titleText("Sélectionne ton moyen de paiement"),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 22),
+            child: titleText("Sélectionne ton moyen de paiement"),
+          ),
           StatefulBuilder(
               builder: (BuildContext context, StateSetter setState) {
             return SingleChildScrollView(
               scrollDirection: Axis.horizontal,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 4, left: 2),
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) =>
-                                    NewCreditCard(user: connectUser)));
-                          },
-                          child: Container(
-                            height: 70,
-                            width: 110,
-                            decoration: BoxDecoration(
-                              color: PRIMARY_COLOR,
-                              borderRadius: BorderRadius.circular(15),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey,
-                                  blurRadius: 3,
-                                  spreadRadius: 0,
-                                  offset: Offset(0, 3),
-                                ),
-                              ],
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 22),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 4, left: 2),
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) =>
+                                      NewCreditCard(user: connectUser)));
+                            },
+                            child: Container(
+                              height: 70,
+                              width: 110,
+                              decoration: BoxDecoration(
+                                color: PRIMARY_COLOR,
+                                borderRadius: BorderRadius.circular(15),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey,
+                                    blurRadius: 3,
+                                    spreadRadius: 0,
+                                    offset: Offset(0, 3),
+                                  ),
+                                ],
+                              ),
+                              child: const Icon(Ionicons.add_circle_outline,
+                                  size: 45),
                             ),
-                            child: const Icon(Ionicons.add_circle_outline,
-                                size: 45),
                           ),
                         ),
-                      ),
-                      const Text("+ ajouter")
-                    ],
-                  ),
-                  SizedBox(
-                    height: 100,
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      itemCount: listCreditcard.length,
-                      itemBuilder: (context, index) {
-                        var card = listCreditcard[index];
-                        bool _selected = card.id == selectedId;
-                        return Padding(
-                          padding: const EdgeInsets.only(left: 16),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 4),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      selectedId = card.id;
-                                    });
-                                  },
-                                  child: Badge(
-                                    badgeContent: _selected
-                                        ? Icon(
-                                            Ionicons.checkmark_outline,
-                                            color: PRIMARY_COLOR,
-                                            size: 15,
-                                          )
-                                        : null,
-                                    position: BadgePosition.bottomEnd(),
-                                    badgeColor: _selected
-                                        ? Colors.green
-                                        : PRIMARY_COLOR,
-                                    elevation: 0,
-                                    child: Container(
-                                      height: 70,
-                                      width: 110,
-                                      decoration: BoxDecoration(
-                                        color: PRIMARY_COLOR,
-                                        borderRadius: BorderRadius.circular(15),
-                                        border: Border.all(
-                                            color: _selected
-                                                ? Colors.green
-                                                : PRIMARY_COLOR,
-                                            width: 2),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.grey,
-                                            blurRadius: 3,
-                                            spreadRadius: 0,
-                                            offset: Offset(0, 3),
-                                          )
-                                        ],
+                        const Text("+ ajouter")
+                      ],
+                    ),
+                    SizedBox(
+                      height: 100,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: listCreditcard.length,
+                        itemBuilder: (context, index) {
+                          var card = listCreditcard[index];
+                          bool _selected = card.id == selectedId;
+                          return Padding(
+                            padding: const EdgeInsets.only(left: 16),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 4),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        selectedId = card.id;
+                                      });
+                                    },
+                                    child: Badge(
+                                      badgeContent: _selected
+                                          ? Icon(
+                                              Ionicons.checkmark_outline,
+                                              color: PRIMARY_COLOR,
+                                              size: 15,
+                                            )
+                                          : null,
+                                      position: BadgePosition.bottomEnd(),
+                                      badgeColor: _selected
+                                          ? Colors.green
+                                          : PRIMARY_COLOR,
+                                      elevation: 0,
+                                      child: Container(
+                                        height: 70,
+                                        width: 110,
+                                        decoration: BoxDecoration(
+                                          color: PRIMARY_COLOR,
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          border: Border.all(
+                                              color: _selected
+                                                  ? Colors.green
+                                                  : PRIMARY_COLOR,
+                                              width: 2),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.grey,
+                                              blurRadius: 3,
+                                              spreadRadius: 0,
+                                              offset: Offset(0, 3),
+                                            )
+                                          ],
+                                        ),
+                                        child: Center(
+                                            child: Text(card.cardProvider)),
                                       ),
-                                      child: Center(
-                                          child: Text(card.cardProvider)),
                                     ),
                                   ),
                                 ),
-                              ),
-                              Text(card.alias.substring(8).replaceAll("X", "*"))
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                  const SizedBox(height: 22),
-                ],
-              ),
-            );
-          }),
-          TextField(
-            controller: _controller,
-            style: TextStyle(
-              color: SECONDARY_COLOR,
-              fontSize: 17,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 22),
-            child: GestureDetector(
-              onTap: () async {
-                double prix = double.parse(_controller.text);
-                int prix1 = (prix * 100).toInt();
-                await _paymentService.cardDirectPayin(
-                    connectUser.mangoPayId!, prix1, selectedId);
-                // await _paymentService.transfer(
-                //   connectUser.id!,
-                //   "CREDIT_EUR",
-                //   (prix * 100).toInt(),
-                // );
-              },
-              child: Container(
-                width: MediaQuery.of(context).size.width * 0.99,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: SECONDARY_COLOR,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Stack(
-                  children: [
-                    Center(
-                      child: Text(
-                        "Valider",
-                        style: TextStyle(
-                          color: PRIMARY_COLOR,
-                          fontSize: 17,
-                          fontWeight: FontWeight.w700,
-                        ),
+                                Text(card.alias
+                                    .substring(8)
+                                    .replaceAll("X", "*"))
+                              ],
+                            ),
+                          );
+                        },
                       ),
                     ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 12),
-                        child: Icon(Ionicons.lock_closed_outline,
-                            color: PRIMARY_COLOR),
-                      ),
-                    )
+                    const SizedBox(height: 22),
                   ],
                 ),
               ),
+            );
+          }),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 22),
+            child: Column(
+              children: [
+                TextField(
+                  controller: _controller,
+                  style: TextStyle(
+                    color: SECONDARY_COLOR,
+                    fontSize: 17,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 22),
+                  child: GestureDetector(
+                    onTap: () async {
+                      int price =
+                          (double.parse(_controller.text) * 100).toInt();
+                      await _paymentService.cardDirectPayin(
+                          connectUser.mangoPayId!, price, selectedId);
+                    },
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.99,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: SECONDARY_COLOR,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Stack(
+                        children: [
+                          Center(
+                            child: Text(
+                              "Valider",
+                              style: TextStyle(
+                                color: PRIMARY_COLOR,
+                                fontSize: 17,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 12),
+                              child: Icon(Ionicons.lock_closed_outline,
+                                  color: PRIMARY_COLOR),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],
@@ -208,6 +225,7 @@ class WalletPage extends StatelessWidget {
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
       extendBodyBehindAppBar: true,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         automaticallyImplyLeading: false,
@@ -330,7 +348,15 @@ class WalletPage extends StatelessWidget {
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
-                                            TransactionBox(text: "Retirer"),
+                                            TransactionBox(
+                                              text: "Retirer",
+                                              onTap: () => wallet == null
+                                                  ? null
+                                                  : _showWithdrawModalBottomSheet(
+                                                      context,
+                                                      userId: user!.mangoPayId!,
+                                                      wallet: wallet),
+                                            ),
                                             TransactionBox(
                                               text: "Ajouter",
                                               onTap: () async {
@@ -426,6 +452,223 @@ class WalletPage extends StatelessWidget {
           );
         }),
       ),
+    );
+  }
+
+  Future<void> _showWithdrawModalBottomSheet(BuildContext context,
+      {required String userId, User? user, required Wallet wallet}) async {
+    final TextEditingController _controller = TextEditingController();
+
+    String? selectedId;
+
+    return customShowModalBottomSheet(
+      context,
+      children: [
+        titleText("Sélectionne ton moyen de paiement"),
+        StatefulBuilder(builder: (context, setState) {
+          return SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 4, left: 2),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context)
+                              .push(MaterialPageRoute(
+                                builder: (context) =>
+                                    NewBankAccount(user: user!),
+                                fullscreenDialog: true,
+                              ))
+                              .then((_) =>
+                                  BlocProvider.of<BankAccountCubit>(context)
+                                      .refresh(userId));
+                        },
+                        child: Container(
+                          height: 70,
+                          width: 110,
+                          decoration: BoxDecoration(
+                            color: PRIMARY_COLOR,
+                            borderRadius: BorderRadius.circular(15),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey,
+                                blurRadius: 3,
+                                spreadRadius: 0,
+                                offset: Offset(0, 3),
+                              ),
+                            ],
+                          ),
+                          child:
+                              const Icon(Ionicons.add_circle_outline, size: 45),
+                        ),
+                      ),
+                    ),
+                    const Text("+ ajouter")
+                  ],
+                ),
+                BlocProvider(
+                  create: (context) => BankAccountCubit()..loadData(userId),
+                  child: BlocBuilder<BankAccountCubit, BankAccountState>(
+                      builder: (context, state) {
+                    var bankAccounts = state.bankAccounts;
+                    if (state.status == BankAccountStatus.failed) {
+                      return Center(
+                        child: Text(
+                            "Unable to load user's bank account. Please try later"),
+                      );
+                    }
+                    if (bankAccounts == null) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                    return SizedBox(
+                      height: 100,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: bankAccounts.length,
+                        itemBuilder: (context, index) {
+                          var bankAccount = bankAccounts[index];
+                          bool _selected = bankAccount.id == selectedId;
+                          return Padding(
+                            padding: const EdgeInsets.only(left: 16),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 4),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        selectedId = bankAccount.id;
+                                      });
+                                    },
+                                    child: Badge(
+                                      badgeContent: _selected
+                                          ? Icon(
+                                              Ionicons.checkmark_outline,
+                                              color: PRIMARY_COLOR,
+                                              size: 15,
+                                            )
+                                          : null,
+                                      position: BadgePosition.bottomEnd(),
+                                      badgeColor: _selected
+                                          ? Colors.green
+                                          : PRIMARY_COLOR,
+                                      elevation: 0,
+                                      child: Container(
+                                        height: 70,
+                                        width: 110,
+                                        decoration: BoxDecoration(
+                                          color: PRIMARY_COLOR,
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          border: Border.all(
+                                              color: _selected
+                                                  ? Colors.green
+                                                  : PRIMARY_COLOR,
+                                              width: 2),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.grey,
+                                              blurRadius: 3,
+                                              spreadRadius: 0,
+                                              offset: Offset(0, 3),
+                                            )
+                                          ],
+                                        ),
+                                        child: Center(
+                                            child: Text(bankAccount.bic)),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Text(bankAccount.iban)
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  }),
+                ),
+                const SizedBox(height: 22),
+              ],
+            ),
+          );
+        }),
+        TextField(
+          controller: _controller,
+          style: TextStyle(
+            color: SECONDARY_COLOR,
+            fontSize: 17,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        BlocProvider(
+          create: (context) => PaymentCubit(),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 22),
+            child: GestureDetector(
+              onTap: selectedId == null
+                  ? null
+                  : () async {
+                      if (!user!.verified!) {
+                        await showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          backgroundColor: Colors.transparent,
+                          builder: (context) => CheckIdPopup(),
+                        );
+                        return;
+                      }
+
+                      int? price =
+                          (double.parse(_controller.text) * 100).toInt();
+
+                      BlocProvider.of<PaymentCubit>(context).withdraw(
+                          walletId: wallet.id,
+                          amount: price,
+                          bankAccountId: selectedId!);
+                    },
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.99,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: SECONDARY_COLOR,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Stack(
+                  children: [
+                    Center(
+                      child: Text(
+                        "Valider",
+                        style: TextStyle(
+                          color: PRIMARY_COLOR,
+                          fontSize: 17,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 12),
+                        child: Icon(Ionicons.lock_closed_outline,
+                            color: PRIMARY_COLOR),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

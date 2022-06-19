@@ -130,7 +130,7 @@ class _HomePageState extends State<HomePage> {
                 (_size! - 100) > 50 ? _size! - 100 : 50), //(_size ?? 0) - 130),
 
         child: Hero(
-          tag: 'HomePage-widget',
+          tag: 'search-widget',
           child: SearchBar(
               hintText: 'Sélectionne ta ville',
               backgroundColor: Colors.white.withOpacity(0.8),

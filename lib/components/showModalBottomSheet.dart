@@ -4,7 +4,7 @@ import 'package:pts/const.dart';
 import 'custom_text.dart';
 
 Future<void> customShowModalBottomSheet(BuildContext context,
-    {Widget? child, List<Widget>? children}) {
+    {Widget? child, List<Widget>? children, EdgeInsetsGeometry? padding}) {
   return showModalBottomSheet(
     backgroundColor: Colors.white,
     shape: RoundedRectangleBorder(
@@ -16,7 +16,7 @@ Future<void> customShowModalBottomSheet(BuildContext context,
     context: context,
     builder: (BuildContext context) {
       return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 22),
+        padding: padding ?? const EdgeInsets.symmetric(horizontal: 22),
         child: Builder(builder: (context) {
           if (children != null)
             return Column(

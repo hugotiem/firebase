@@ -1,6 +1,6 @@
 part of 'payment_cubit.dart';
 
-enum PaymentStatus { initial, success }
+enum PaymentStatus { initial, success, failed }
 
 class PaymentState extends AppBaseState<PaymentStatus> {
   const PaymentState(PaymentStatus? status,
@@ -14,6 +14,8 @@ class PaymentState extends AppBaseState<PaymentStatus> {
             requestFailureMessage: requestFailureMessage);
 
   const PaymentState.initial() : this(PaymentStatus.initial);
+  const PaymentState.success() : this(PaymentStatus.success);
+  const PaymentState.failed() : this(PaymentStatus.failed);
 
   @override
   AppBaseState<PaymentStatus> copyWith(

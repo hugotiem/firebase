@@ -1,11 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:pts/components/appbar.dart';
+import 'package:pts/blocs/bank_account/bank_account_cubit.dart';
 import 'package:pts/components/fab_join.dart';
+import 'package:pts/components/party_card/party_export.dart';
 import 'package:pts/widgets/app_text_field.dart';
 import 'package:pts/const.dart';
 import 'package:pts/models/address.dart';
-import 'package:pts/models/user.dart';
-import 'package:pts/services/payment_service.dart';
 
 class NewBankAccount extends StatelessWidget {
   final User user;
@@ -18,86 +16,108 @@ class NewBankAccount extends StatelessWidget {
   final TextEditingController _postalCodeController = TextEditingController();
   final TextEditingController _countryController = TextEditingController();
 
-  final PaymentService _paymentService = PaymentService();
+  final GlobalKey<FormState> _formKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(50),
-        child: BackAppBar(title: TitleAppBar("Ajouter un compte en banque")),
-      ),
-      floatingActionButton: FABJoin(
-        label: 'Ajouter',
-        onPressed: () async {
-          // if (!_formKey.currentState!.validate()) {
-          //   return;
-          // }
-          print(user.mangoPayId);
-          Address _address = Address(
-            streetName: _addressLineController.text,
-            city: _cityController.text,
-            postalCode: _postalCodeController.text,
-            country: _countryController.text,
-          );
-          await _paymentService.addIBANBankAccount(user.mangoPayId!,
-              _accountNameController.text, _address, _ibanController.text);
+    return BlocProvider(
+      create: (context) => BankAccountCubit()..loadData(user.mangoPayId),
+      child: BlocListener<BankAccountCubit, BankAccountState>(
+        listener: (context, state) {
+          if (state.status == BankAccountStatus.dataAdded) {
+            Future.delayed(const Duration(milliseconds: 1))
+                .then((_) => Navigator.of(context).pop());
+          }
         },
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            TextNewBankAccount(text: "Titulaire du compte"),
-            TFFText(
-              hintText: "ex: Martin Morel",
-              controller: _accountNameController,
-              validator: (value) {
-                return null;
+        child: BlocBuilder<BankAccountCubit, BankAccountState>(
+            builder: (context, state) {
+          return Scaffold(
+            appBar: PreferredSize(
+              preferredSize: Size.fromHeight(50),
+              child:
+                  BackAppBar(title: TitleAppBar("Ajouter un compte en banque")),
+            ),
+            floatingActionButton: FABJoin(
+              label: 'Ajouter',
+              onPressed: () async {
+                if (!_formKey.currentState!.validate()) {
+                  return;
+                }
+                Address _address = Address(
+                  streetName: _addressLineController.text,
+                  city: _cityController.text,
+                  postalCode: _postalCodeController.text,
+                  country: _countryController.text,
+                );
+
+                BlocProvider.of<BankAccountCubit>(context).addBankAccount(
+                    user.mangoPayId!,
+                    _accountNameController.text,
+                    _address,
+                    _ibanController.text);
               },
             ),
-            TextNewBankAccount(text: "IBAN"),
-            TFFText(
-              hintText: "FR12 XXXX XXXX XXXX XXXX XXXX XXX",
-              controller: _ibanController,
-              validator: (value) {
-                return null;
-              },
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerFloat,
+            body: SingleChildScrollView(
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    TextNewBankAccount(text: "Titulaire du compte"),
+                    TFFText(
+                      hintText: "ex: Martin Morel",
+                      controller: _accountNameController,
+                      validator: (value) {
+                        return null;
+                      },
+                    ),
+                    TextNewBankAccount(text: "IBAN"),
+                    TFFText(
+                      hintText: "FR12 XXXX XXXX XXXX XXXX XXXX XXX",
+                      controller: _ibanController,
+                      validator: (value) {
+                        return null;
+                      },
+                    ),
+                    TextNewBankAccount(text: "Rue et numéro"),
+                    TFFText(
+                      hintText: "7 avenue des champs élysés",
+                      controller: _addressLineController,
+                      validator: (value) {
+                        return null;
+                      },
+                    ),
+                    TextNewBankAccount(text: "Ville"),
+                    TFFText(
+                      hintText: "Paris",
+                      controller: _cityController,
+                      validator: (value) {
+                        return null;
+                      },
+                    ),
+                    TextNewBankAccount(text: "Code postal"),
+                    TFFText(
+                      hintText: "75008",
+                      controller: _postalCodeController,
+                      validator: (value) {
+                        return null;
+                      },
+                    ),
+                    TextNewBankAccount(text: "Pays"),
+                    TFFText(
+                      hintText: "France",
+                      controller: _countryController,
+                      validator: (value) {
+                        return null;
+                      },
+                    ),
+                  ],
+                ),
+              ),
             ),
-            TextNewBankAccount(text: "Rue et numéro"),
-            TFFText(
-              hintText: "7 avenue des champs élysés",
-              controller: _addressLineController,
-              validator: (value) {
-                return null;
-              },
-            ),
-            TextNewBankAccount(text: "Ville"),
-            TFFText(
-              hintText: "Paris",
-              controller: _cityController,
-              validator: (value) {
-                return null;
-              },
-            ),
-            TextNewBankAccount(text: "Code postal"),
-            TFFText(
-              hintText: "75008",
-              controller: _postalCodeController,
-              validator: (value) {
-                return null;
-              },
-            ),
-            TextNewBankAccount(text: "Pays"),
-            TFFText(
-              hintText: "France",
-              controller: _countryController,
-              validator: (value) {
-                return null;
-              },
-            ),
-          ],
-        ),
+          );
+        }),
       ),
     );
   }

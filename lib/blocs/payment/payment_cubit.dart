@@ -20,4 +20,21 @@ class PaymentCubit extends AppBaseCubit<PaymentState> {
     await _paymentService.cardDirectPayin(userId, amount, selectedPurchaseId,
         sellerId: creditedUserId);
   }
+
+  /// If [amount] = null, withdraw all available amount from the wallet
+  Future<void> withdraw(
+      {required String walletId,
+      required String bankAccountId,
+      required int amount}) async {
+
+        
+
+    await _paymentService
+        .withdraw(bankAccountId, amount, walletId: walletId)
+        .then(
+          (res) => res == QueryState.success
+              ? emit(PaymentState.success())
+              : emit(PaymentState.failed()),
+        );
+  }
 }

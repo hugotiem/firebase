@@ -10,8 +10,6 @@ import 'package:pts/services/auth_service.dart';
 import 'package:pts/pages/creation/creation_page.dart';
 import 'package:pts/pages/login/connect.dart';
 import 'package:pts/pages/search/search_page.dart';
-import 'package:pts/pages/search/sliver/searchbar.dart';
-import 'package:pts/pages/search/sliver/searchbar_screen.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
@@ -108,33 +106,33 @@ void main() {
     },
   );
 
-  testWidgets(
-    "should open the search form",
-    (WidgetTester tester) async {
-      app.main(isTesting: true);
-      await tester.pumpAndSettle();
+  // testWidgets(
+  //   "should open the search form",
+  //   (WidgetTester tester) async {
+  //     app.main(isTesting: true);
+  //     await tester.pumpAndSettle();
 
-      tester.runAsync(() async {
-        await Future.delayed(const Duration(seconds: 2));
-        var finder = find.byWidgetPredicate((Widget widget) =>
-            widget is BottomNavigationBarItem &&
-            (widget as BottomNavigationBarItem).label == "Rechercher");
+  //     tester.runAsync(() async {
+  //       await Future.delayed(const Duration(seconds: 2));
+  //       var finder = find.byWidgetPredicate((Widget widget) =>
+  //           widget is BottomNavigationBarItem &&
+  //           (widget as BottomNavigationBarItem).label == "Rechercher");
 
-        tester.tap(finder);
+  //       tester.tap(finder);
 
-        var searchFinder = find.byType(Search);
+  //       var searchFinder = find.byType(Search);
 
-        expect(searchFinder, findsOneWidget);
+  //       expect(searchFinder, findsOneWidget);
 
-        var searchBarFinder = find.byWidgetPredicate((widget) =>
-            widget is OpenContainer && widget.openBuilder is SearchBarScreen);
+  //       var searchBarFinder = find.byWidgetPredicate((widget) =>
+  //           widget is OpenContainer && widget.openBuilder is SearchBarScreen);
 
-        tester.tap(searchBarFinder);
+  //       tester.tap(searchBarFinder);
 
-        var searchBarWidgetFinder = find.byType(SearchBar);
+  //       var searchBarWidgetFinder = find.byType(SearchBar);
 
-        expect(searchBarWidgetFinder, findsOneWidget);
-      });
-    },
-  );
+  //       expect(searchBarWidgetFinder, findsOneWidget);
+  //     });
+  //   },
+  // );
 }
