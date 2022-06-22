@@ -20,7 +20,7 @@ Future<void> main({bool isTesting = false}) async {
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
 
-    if (!isTesting) await NotificationService.init();
+    if (!isTesting) await NotificationService.initFirebaseMessaging();
 
     BlocOverrides.runZoned(() => runApp(MyApp()),
         blocObserver: AppBlocDelegate());

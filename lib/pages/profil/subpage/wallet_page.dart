@@ -398,6 +398,7 @@ class WalletPage extends StatelessWidget {
                                                   ? null
                                                   : _showWithdrawModalBottomSheet(
                                                       context,
+                                                      user: user,
                                                       userId: user!.mangoPayId!,
                                                       wallet: wallet),
                                             ),
@@ -511,139 +512,144 @@ class WalletPage extends StatelessWidget {
       children: [
         titleText("Sélectionne ton moyen de paiement"),
         StatefulBuilder(builder: (context, setState) {
-          return SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+          return BlocProvider(
+            create: (context) => BankAccountCubit()..loadData(userId),
+            child: BlocBuilder<BankAccountCubit, BankAccountState>(
+                builder: (context, state) {
+              return SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 4, left: 2),
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.of(context)
-                              .push(MaterialPageRoute(
-                                builder: (context) =>
-                                    NewBankAccount(user: user!),
-                                fullscreenDialog: true,
-                              ))
-                              .then((_) =>
-                                  BlocProvider.of<BankAccountCubit>(context)
-                                      .refresh(userId));
-                        },
-                        child: Container(
-                          height: 70,
-                          width: 110,
-                          decoration: BoxDecoration(
-                            color: PRIMARY_COLOR,
-                            borderRadius: BorderRadius.circular(15),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey,
-                                blurRadius: 3,
-                                spreadRadius: 0,
-                                offset: Offset(0, 3),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 4, left: 2),
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.of(context)
+                                  .push(MaterialPageRoute(
+                                    builder: (context) =>
+                                        NewBankAccount(user: user!),
+                                    fullscreenDialog: true,
+                                  ))
+                                  .then((_) =>
+                                      BlocProvider.of<BankAccountCubit>(context)
+                                          .refresh(userId));
+                            },
+                            child: Container(
+                              height: 70,
+                              width: 110,
+                              decoration: BoxDecoration(
+                                color: PRIMARY_COLOR,
+                                borderRadius: BorderRadius.circular(15),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey,
+                                    blurRadius: 3,
+                                    spreadRadius: 0,
+                                    offset: Offset(0, 3),
+                                  ),
+                                ],
                               ),
-                            ],
+                              child: const Icon(Ionicons.add_circle_outline,
+                                  size: 45),
+                            ),
                           ),
-                          child:
-                              const Icon(Ionicons.add_circle_outline, size: 45),
                         ),
-                      ),
+                        const Text("+ ajouter")
+                      ],
                     ),
-                    const Text("+ ajouter")
-                  ],
-                ),
-                BlocProvider(
-                  create: (context) => BankAccountCubit()..loadData(userId),
-                  child: BlocBuilder<BankAccountCubit, BankAccountState>(
-                      builder: (context, state) {
-                    var bankAccounts = state.bankAccounts;
-                    if (state.status == BankAccountStatus.failed) {
-                      return Center(
-                        child: Text(
-                            "Unable to load user's bank account. Please try later"),
-                      );
-                    }
-                    if (bankAccounts == null) {
-                      return Center(child: CircularProgressIndicator());
-                    }
-                    return SizedBox(
-                      height: 100,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        itemCount: bankAccounts.length,
-                        itemBuilder: (context, index) {
-                          var bankAccount = bankAccounts[index];
-                          bool _selected = bankAccount.id == selectedId;
-                          return Padding(
-                            padding: const EdgeInsets.only(left: 16),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 4),
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        selectedId = bankAccount.id;
-                                      });
-                                    },
-                                    child: Badge(
-                                      badgeContent: _selected
-                                          ? Icon(
-                                              Ionicons.checkmark_outline,
-                                              color: PRIMARY_COLOR,
-                                              size: 15,
-                                            )
-                                          : null,
-                                      position: BadgePosition.bottomEnd(),
-                                      badgeColor: _selected
-                                          ? Colors.green
-                                          : PRIMARY_COLOR,
-                                      elevation: 0,
-                                      child: Container(
-                                        height: 70,
-                                        width: 110,
-                                        decoration: BoxDecoration(
-                                          color: PRIMARY_COLOR,
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                          border: Border.all(
-                                              color: _selected
-                                                  ? Colors.green
-                                                  : PRIMARY_COLOR,
-                                              width: 2),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.grey,
-                                              blurRadius: 3,
-                                              spreadRadius: 0,
-                                              offset: Offset(0, 3),
-                                            )
-                                          ],
+                    Builder(builder: (context) {
+                      var bankAccounts = state.bankAccounts;
+                      if (state.status == BankAccountStatus.failed) {
+                        return Center(
+                          child: Text(
+                              "Unable to load user's bank account. Please try later"),
+                        );
+                      }
+                      if (bankAccounts == null) {
+                        return Container(
+                          margin: EdgeInsets.symmetric(horizontal: 20),
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      return SizedBox(
+                        height: 100,
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: bankAccounts.length,
+                          itemBuilder: (context, index) {
+                            var bankAccount = bankAccounts[index];
+                            bool _selected = bankAccount.id == selectedId;
+                            return Padding(
+                              padding: const EdgeInsets.only(left: 16),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 4),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          selectedId = bankAccount.id;
+                                        });
+                                      },
+                                      child: Badge(
+                                        badgeContent: _selected
+                                            ? Icon(
+                                                Ionicons.checkmark_outline,
+                                                color: PRIMARY_COLOR,
+                                                size: 15,
+                                              )
+                                            : null,
+                                        position: BadgePosition.bottomEnd(),
+                                        badgeColor: _selected
+                                            ? Colors.green
+                                            : PRIMARY_COLOR,
+                                        elevation: 0,
+                                        child: Container(
+                                          height: 70,
+                                          width: 110,
+                                          decoration: BoxDecoration(
+                                            color: PRIMARY_COLOR,
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            border: Border.all(
+                                                color: _selected
+                                                    ? Colors.green
+                                                    : PRIMARY_COLOR,
+                                                width: 2),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.grey,
+                                                blurRadius: 3,
+                                                spreadRadius: 0,
+                                                offset: Offset(0, 3),
+                                              )
+                                            ],
+                                          ),
+                                          child: Center(
+                                              child: Text(bankAccount.bic)),
                                         ),
-                                        child: Center(
-                                            child: Text(bankAccount.bic)),
                                       ),
                                     ),
                                   ),
-                                ),
-                                Text(bankAccount.iban)
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                    );
-                  }),
+                                  Text(bankAccount.iban)
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    }),
+                    const SizedBox(height: 22),
+                  ],
                 ),
-                const SizedBox(height: 22),
-              ],
-            ),
+              );
+            }),
           );
         }),
         TextField(
