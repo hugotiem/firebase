@@ -2,6 +2,7 @@ import 'package:pts/services/auth_service.dart';
 import 'package:pts/services/firestore_service.dart';
 import 'package:pts/blocs/base/app_base_cubit.dart';
 import 'package:pts/blocs/base/app_base_state.dart';
+import 'package:uuid/uuid.dart';
 
 part 'login_state.dart';
 
@@ -10,6 +11,8 @@ class LoginCubit extends AppBaseCubit<LoginState> {
 
   final AuthService auth = AuthService();
   final FireStoreServices fireStoreServices = FireStoreServices("user");
+
+
 
   Future<void> register(String email, String password) async {
     emit(state.setRequestInProgress() as LoginState);
@@ -43,7 +46,8 @@ class LoginCubit extends AppBaseCubit<LoginState> {
     Map<String, dynamic> data = {
       "email": user.email,
       if (fromGoogle) "name": user.displayName.toString().split(" ")[0],
-      if (fromGoogle) "surname": user.displayName.toString().split(" ")[1]
+      if (fromGoogle) "surname": user.displayName.toString().split(" ")[1],
+      "analyticsId": Uuid().v1()
     };
     await fireStoreServices.setWithId(user.uid, data: data);
     emit(LoginState.signedUp(user.email));

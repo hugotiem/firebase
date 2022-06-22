@@ -21,6 +21,7 @@ class User extends Equatable {
   String? photo;
   String? mangoPayId;
   String? desc;
+  final String? analyticsId;
 
   User({
     this.id,
@@ -37,6 +38,7 @@ class User extends Equatable {
     this.photo,
     this.mangoPayId,
     this.desc,
+    this.analyticsId,
   });
 
   Future<User?> get currentUser async {
@@ -63,6 +65,7 @@ class User extends Equatable {
     var photo = data?['photo'];
     var mangoPayId = data?["mangoPayId"];
     var desc = data?["desc"];
+    var analyticsId = data?["analyticsId"];
 
     return User(
       id: id,
@@ -79,6 +82,7 @@ class User extends Equatable {
       photo: photo,
       mangoPayId: mangoPayId,
       desc: desc,
+      analyticsId: analyticsId,
     );
   }
 
