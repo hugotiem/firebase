@@ -100,7 +100,7 @@ class AuthService extends ChangeNotifier {
         EmailAuthProvider.credential(email: email, password: password)
             as EmailAuthCredential;
 
-    await _auth.currentUser!.reauthenticateWithCredential(credential);
+    await _auth.currentUser?.reauthenticateWithCredential(credential);
   }
 
   Future<void> updateDisplayName(String name) async {
@@ -110,7 +110,7 @@ class AuthService extends ChangeNotifier {
 
   Future<String> updateEmail(String newEmail) async {
     try {
-      await _auth.currentUser!.updateEmail(newEmail);
+      await _auth.currentUser?.updateEmail(newEmail);
     } on FirebaseAuthException catch (e) {
       if (e.code == "invalid-email") {
         return "Email invalide";

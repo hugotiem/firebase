@@ -12,12 +12,11 @@ class LoginCubit extends AppBaseCubit<LoginState> {
   final AuthService auth = AuthService();
   final FireStoreServices fireStoreServices = FireStoreServices("user");
 
-
-
   Future<void> register(String email, String password) async {
     emit(state.setRequestInProgress() as LoginState);
-    await auth.register(email, password).then((value) async {
-      await addUserAfterRegistration(value);
+    await auth.register(email, password).then((user) async {
+      user?.sendEmailVerification();
+      await addUserAfterRegistration(user);
     }).onError(onHandleError);
   }
 
@@ -30,12 +29,13 @@ class LoginCubit extends AppBaseCubit<LoginState> {
 
   Future<void> signInWithGoogle() async {
     await auth.signInWithGoogle().then((value) async {
-      var user = value.user!;
-      await auth.setToken(user.uid);
-      var res = await fireStoreServices.getDataById(user.uid);
+      var user = value.user;
+      await auth.setToken(user?.uid);
+      var res = await fireStoreServices.getDataById(user?.uid);
       if (res.exists) {
         emit(LoginState.logged());
       } else {
+        user?.sendEmailVerification();
         addUserAfterRegistration(user, fromGoogle: true);
       }
     }).catchError(onHandleError);
@@ -50,6 +50,7 @@ class LoginCubit extends AppBaseCubit<LoginState> {
       "analyticsId": Uuid().v1()
     };
     await fireStoreServices.setWithId(user.uid, data: data);
+
     emit(LoginState.signedUp(user.email));
   }
 }

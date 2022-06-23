@@ -12,6 +12,8 @@ import 'package:pts/models/payments/wallet.dart';
 
 enum KYCType { IDENTITY_PROOF, ADDRESS_PROOF }
 
+enum KYCStatus { VALIDATION_ASKED, SUCCEEDED, OUT_OF_DATE }
+
 enum QueryState { success, failed }
 
 class PaymentService {
