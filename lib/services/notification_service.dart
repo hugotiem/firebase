@@ -23,7 +23,8 @@ class NotificationService {
 
     print('User granted permission: ${settings.authorizationStatus}');
 
-    await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    await FirebaseMessaging.instance
+        .setForegroundNotificationPresentationOptions(
       alert: true, // Required to display a heads up notification
       badge: true,
       sound: false,
@@ -32,7 +33,8 @@ class NotificationService {
     await _initLocalNotifications();
     _lookForMessagingToken();
 
-    FirebaseMessaging.onMessage.listen((message) => _onMessage(message, onForeground: true));
+    FirebaseMessaging.onMessage
+        .listen((message) => _onMessage(message, onForeground: true));
     FirebaseMessaging.onMessageOpenedApp.listen(_onNotificationOpenedApp);
   }
 
@@ -43,8 +45,13 @@ class NotificationService {
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('@mipmap/ic_launcher');
 
-    final InitializationSettings initializationSettings = InitializationSettings(
+    const IOSInitializationSettings initializationSettingsIOS =
+        IOSInitializationSettings();
+
+    final InitializationSettings initializationSettings =
+        InitializationSettings(
       android: initializationSettingsAndroid,
+      iOS: initializationSettingsIOS,
     );
 
     await flutterLocalNotificationsPlugin.initialize(
@@ -57,7 +64,8 @@ class NotificationService {
     print("Local notification clicked !");
   }
 
-  static void _onMessage(RemoteMessage message, {bool onForeground = false}) async {
+  static void _onMessage(RemoteMessage message,
+      {bool onForeground = false}) async {
     final AndroidNotification? android = message.notification?.android;
     final RemoteNotification? notification = message.notification;
 
@@ -73,20 +81,18 @@ class NotificationService {
           FlutterLocalNotificationsPlugin();
 
       await flutterLocalNotificationsPlugin
-          .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+          .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>()
           ?.createNotificationChannel(channel);
 
-      flutterLocalNotificationsPlugin.show(
-        notification.hashCode,
-        notification.title,
-        notification.body,
-        _notificationDetail()
-      );
+      flutterLocalNotificationsPlugin.show(notification.hashCode,
+          notification.title, notification.body, _notificationDetail());
     }
   }
 
   static void _onNotificationOpenedApp(RemoteMessage message) async {
-    print("Une notification a ouvert l'application ! ${message.notification?.title}");
+    print(
+        "Une notification a ouvert l'application ! ${message.notification?.title}");
   }
 
   static void _lookForMessagingToken() async {

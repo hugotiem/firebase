@@ -91,12 +91,9 @@ class UserCubit extends AppBaseCubit<UserState> {
     emit(UserState.dataLoaded(user: state.user, token: state.token));
   }
 
-  Future<void> updatedesc(String token, String desc) async
-  {
+  Future<void> updatedesc(String token, String desc) async {
     emit(state.setRequestInProgress() as UserState);
-    Map<String, String> data = <String, String>{
-      "desc": desc
-    };
+    Map<String, String> data = <String, String>{"desc": desc};
     await firestore.setWithId(token, data: data);
     emit(UserState.dataLoaded(user: state.user, token: state.token));
   }
@@ -111,6 +108,22 @@ class UserCubit extends AppBaseCubit<UserState> {
     };
     await firestore.setWithId(token, data: data);
     emit(UserState.dataLoaded(user: state.user, token: state.token));
+  }
+
+  Future<void> sendId2Mangopay(
+      String? mangopayId, File idRecto, File idVerso) async {
+    print("mangopayId: $mangopayId");
+    if (mangopayId == null) {
+      return emit(UserState.failed());
+    }
+    await _paymentService
+        .submitKYCDocument(mangopayId, idRecto, verso: idVerso)
+        .then((value) {
+      if (value == QueryState.success) {
+        return emit(UserState.idUploaded(user: state.user, token: state.token));
+      }
+      return emit(UserState.failed());
+    });
   }
 
   Future<void> addId(File? file, String ref, var token) async {

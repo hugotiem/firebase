@@ -89,7 +89,7 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
                   if (state.user != null) {
                     if (!state.user!.hasIdChecked!) {
                       Future.delayed(const Duration(milliseconds: 200))
-                          .then((value) => _showLoadingPopup());
+                          .then((value) => _showLoadingPopup(state.user?.mangoPayId));
                     }
                   }
                 },
@@ -213,18 +213,22 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
       });
   }
 
-  Future<dynamic> _showLoadingPopup() async {
+  Future<dynamic> _showLoadingPopup(String? mangopayId) async {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => CheckIdPopup(),
+      builder: (context) => CheckIdPopup(mangopayId: mangopayId),
     );
   }
 }
 
 class CheckIdPopup extends StatelessWidget {
-  const CheckIdPopup({Key? key}) : super(key: key);
+  final String? mangopayId;
+  const CheckIdPopup({
+    Key? key,
+    this.mangopayId,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -299,11 +303,13 @@ class CheckIdPopup extends StatelessWidget {
                               context,
                               Platform.isIOS
                                   ? CupertinoPageRoute(
-                                      builder: (context) => IdFormScreen(),
+                                      builder: (context) =>
+                                          IdFormScreen(mangopayId: mangopayId),
                                       fullscreenDialog: true,
                                     )
                                   : MaterialPageRoute(
-                                      builder: (context) => IdFormScreen(),
+                                      builder: (context) =>
+                                          IdFormScreen(mangopayId: mangopayId),
                                     ),
                             );
                           },

@@ -90,7 +90,7 @@ class NationnalityForm extends StatelessWidget {
                           .then(
                             (_) => Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) => IdFormScreen(token: id),
+                                builder: (context) => IdFormScreen(token: id, mangopayId: mangopayUserID,),
                               ),
                             ),
                           );

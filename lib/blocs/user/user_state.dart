@@ -1,11 +1,6 @@
 part of 'user_cubit.dart';
 
-enum UserStatus {
-  initial,
-  loggedOut,
-  dataLoaded,
-  idUploaded,
-}
+enum UserStatus { initial, loggedOut, dataLoaded, idUploaded, failed }
 
 class UserState extends AppBaseState<UserStatus> {
   final String? token;
@@ -31,6 +26,8 @@ class UserState extends AppBaseState<UserStatus> {
 
   const UserState.idUploaded({User? user, String? token})
       : this(UserStatus.idUploaded, token: token, user: user);
+
+  const UserState.failed() : this(UserStatus.failed);
 
   @override
   AppBaseState<UserStatus> copyWith(

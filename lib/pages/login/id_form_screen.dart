@@ -17,7 +17,9 @@ class IdFormScreen extends StatefulWidget {
   final String? name;
   final String? surname;
   final String? token;
-  const IdFormScreen({Key? key, this.name, this.surname, this.token})
+  final String? mangopayId;
+  const IdFormScreen(
+      {Key? key, this.name, this.surname, this.token, required this.mangopayId})
       : super(key: key);
 
   @override
@@ -40,13 +42,12 @@ class _IdFormScreenState extends State<IdFormScreen> {
           create: (context) => UserCubit(),
           child: BlocListener<UserCubit, UserState>(
             listener: (context, state) {
-              if (state.status == UserStatus.idUploaded) {
-                Navigator.of(context).popUntil((route) => route.isFirst);
-              }
-
               if (state.requestInProgress == false && loaderKey != null) {
                 Navigator.of(loaderKey!.currentContext!).pop();
                 loaderKey = null;
+              }
+              if (state.status == UserStatus.idUploaded) {
+                Navigator.of(context).popUntil((route) => route.isFirst);
               }
             },
             child: BlocBuilder<UserCubit, UserState>(
@@ -210,7 +211,6 @@ class _IdFormScreenState extends State<IdFormScreen> {
                             ),
                             onTap: () async {
                               if (_idFrontImage == null) {
-                                //var message = "Veuillez saisir une image";
                                 return;
                               }
                               if (_idBackImage == null) {
@@ -224,27 +224,29 @@ class _IdFormScreenState extends State<IdFormScreen> {
                               }
                               _showLoadingPopup();
                               await BlocProvider.of<UserCubit>(context)
-                                  .addId(_idFrontImage, "idFront", widget.token)
-                                  .whenComplete(
-                                    () => BlocProvider.of<UserCubit>(context)
-                                        .addId(_idBackImage, "idBack",
-                                            widget.token)
-                                        .whenComplete(
-                                          () => BlocProvider.of<UserCubit>(
-                                                  context)
-                                              .addId(_faceImage, "selfie",
-                                                  widget.token),
-                                        )
-                                        .whenComplete(
-                                          () => BlocProvider.of<UserCubit>(
-                                                  context)
-                                              .emit(
-                                            UserState.idUploaded(
-                                                token: state.token,
-                                                user: state.user),
-                                          ),
-                                        ),
-                                  );
+                                  .sendId2Mangopay(widget.mangopayId,
+                                      _idFrontImage!, _idBackImage!);
+                              // .addId(_idFrontImage, "idFront", widget.token)
+                              // .whenComplete(
+                              //   () => BlocProvider.of<UserCubit>(context)
+                              //       .addId(_idBackImage, "idBack",
+                              //           widget.token)
+                              //       .whenComplete(
+                              //         () => BlocProvider.of<UserCubit>(
+                              //                 context)
+                              //             .addId(_faceImage, "selfie",
+                              //                 widget.token),
+                              //       )
+                              //       .whenComplete(
+                              //         () => BlocProvider.of<UserCubit>(
+                              //                 context)
+                              //             .emit(
+                              //           UserState.idUploaded(
+                              //               token: state.token,
+                              //               user: state.user),
+                              //         ),
+                              //       ),
+                              // );
                             },
                           ),
                         ),

@@ -1,8 +1,14 @@
-import * as user from "firestore/user.js" 
+// import * as user from "firestore/user.js" 
 const functions = require("firebase-functions");
+const {Firestore} = require('@google-cloud/firestore');
 
+exports.handleMessage = functions.https.onRequest(async (req, res) => {
+  try {
 
-
+  } catch(error) {
+    
+  }
+})
 
 // const stripe = require("stripe")("sk_test_51J7plnEBJbFZnzalvUng7Yv7K6WkalbZ0ONbww3UpUQJY9qpsi8XWVWp8pWVbPdMTOiYncMcmxFjfqOvvGqjb4rU00AO7ZAUpB");
 

@@ -256,6 +256,7 @@ class PaymentService {
   }
 
   Future<String?> _createKYCDocument(String userId, KYCType type) async {
+    print("creating document ...");
     final String _url = "$url/users/$userId/kyc/documents/";
 
     var request = http.Request('POST', Uri.parse(_url));
@@ -267,13 +268,16 @@ class PaymentService {
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
+      print("Document created");
       return json.decode(await response.stream.bytesToString())["Id"];
     }
     print(response.reasonPhrase);
     return null;
   }
 
-  Future<String?> _createKYCPage(String userId, File file, KYCType type) async {
+  Future<String?> _createKYCPage(String userId, File file, KYCType type,
+      {File? verso}) async {
+    print("creating page ...");
     final String? _documentId = await _createKYCDocument(userId, type);
     if (_documentId == null) {
       return null;
@@ -290,18 +294,36 @@ class PaymentService {
 
     http.StreamedResponse response = await request.send();
 
-    if (response.statusCode == 200) {
-      return json.decode(await response.stream.bytesToString())["Id"];
+    if (response.statusCode == 204) {
+      print("page created");
+      if (verso != null) {
+        final String _file2 = base64Encode(await verso.readAsBytes());
+
+        var request = http.Request('POST', Uri.parse(_url));
+
+        request.body = json.encode({"File": _file2});
+
+        request.headers.addAll(headers);
+
+        http.StreamedResponse response = await request.send();
+
+        if (response.statusCode == 204) {
+          print("page 2 created");
+          return _documentId;
+        }
+      }
+      return _documentId;
     }
     print(response.reasonPhrase);
     return null;
   }
 
-  Future<void> submitKYCDocument(String userId, File file,
-      {KYCType type = KYCType.IDENTITY_PROOF}) async {
-    final String? _documentId = await _createKYCPage(userId, file, type);
+  Future<QueryState> submitKYCDocument(String userId, File file,
+      {File? verso, KYCType type = KYCType.IDENTITY_PROOF}) async {
+    final String? _documentId =
+        await _createKYCPage(userId, file, type, verso: verso);
     if (_documentId == null) {
-      return;
+      return QueryState.failed;
     }
     final String _url = "$url/users/$userId/kyc/documents/$_documentId";
 
@@ -314,10 +336,10 @@ class PaymentService {
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
-      return print('SUCCESS');
+      return QueryState.success;
     }
     print(response.reasonPhrase);
-    return print("FAILED");
+    return QueryState.failed;
   }
 
   Future<void> cardDirectPayin(String? userId, int amount, String cardId,

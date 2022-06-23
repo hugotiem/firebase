@@ -21,9 +21,9 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 Future<void> main({bool isTesting = false}) async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  if (!isTesting) await NotificationService.initFirebaseMessaging();
+   await Firebase.initializeApp();
 
-  await Firebase.initializeApp();
+  if (!isTesting) await NotificationService.initFirebaseMessaging();
 
   runZonedGuarded<Future<void>>(() async {
     Isolate.current.addErrorListener(RawReceivePort((pair) async {
@@ -67,7 +67,7 @@ class _MyAppState extends State<MyApp> {
       child: MaterialApp(
         title: "PTS",
         home: FutureBuilder<void>(
-          future: AnalyticsManager.of(context).init(),
+          future: _analyticsInterface.init(),
           builder: (context, _) {
             return FutureBuilder(
               future: _fbApp,
