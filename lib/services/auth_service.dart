@@ -25,6 +25,13 @@ class AuthService extends ChangeNotifier {
     return token;
   }
 
+  Future<void> setRegistrationToken(String token) async {
+    await storage.write(key: "registrationToken", value: token);
+    var id = await getToken();
+
+    services.setWithId(id, data: {"messagingToken": token});
+  }
+
   Future<void> deleteToken() async {
     await storage.delete(key: "token");
     return;

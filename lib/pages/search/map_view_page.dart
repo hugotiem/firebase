@@ -1,6 +1,10 @@
 import 'dart:async';
 
+import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -48,12 +52,18 @@ class _MapViewPageState extends State<MapViewPage> {
   bool _loadingScreen = true;
   bool _hasOpacity = true;
 
+  GlobalKey _globalKey = GlobalKey();
+
   CameraPosition? _position;
 
   late DateTime? _date;
   late List<DateTime>? _months;
 
   BitmapDescriptor icon = BitmapDescriptor.defaultMarker;
+
+  List<PartyMarker> _markerWidgets = [];
+
+  Set<Marker> _markers = Set();
 
   @override
   void initState() {
@@ -67,30 +77,51 @@ class _MapViewPageState extends State<MapViewPage> {
       setState(() {
         _searchContainerHeight = _seachDetailsKey.currentContext?.size?.height;
       });
+      // widgetToIcon(_globalKey).then((value) => setState(() => icon = value));
     });
-
-    BitmapDescriptor.fromAssetImage(ImageConfiguration(), "assets/marker.png")
-        .then((value) => setState(() => icon = value));
 
     super.initState();
   }
 
-  Set<Marker> _buildMarkers(List<Party>? parties) {
-    return Set.from(
-      parties?.map(
-            (e) => Marker(
-                flat: true,
-                markerId: MarkerId(e.id!),
-                infoWindow: InfoWindow(
-                    title: e.name,
-                    snippet: e.price.toString(),
-                    anchor: Offset(0, 0)),
-                position: LatLng(e.approximativeCoordinates?[1] ?? 0,
-                    e.approximativeCoordinates?[0] ?? 0),
-                icon: icon),
-          ) ??
-          [],
-    );
+  Future<Set<Marker>> _buildMarkers(List<PartyMarker>? markersWidgets) async {
+    await Future.delayed(const Duration(milliseconds: 200));
+    var list = [];
+    for (PartyMarker item in markersWidgets ?? []) {
+      var _icon = await widgetToIcon(item.globalKey);
+      list.add(Marker(
+          markerId: MarkerId(item.id),
+          icon: _icon ?? BitmapDescriptor.defaultMarker,
+          position: item.coordinates));
+    }
+    return Set.from(list);
+  }
+
+  List<PartyMarker> _buildMarkersWidget(List<Party>? parties) {
+    return parties?.map<PartyMarker>((e) {
+          GlobalKey _key = GlobalKey();
+          return PartyMarker(
+            title: e.name ?? "",
+            theme: e.theme ?? "",
+            globalKey: _key,
+            id: e.id ?? "",
+            coordinates: LatLng(e.approximativeCoordinates?[1] ?? 0,
+                e.approximativeCoordinates?[0] ?? 0),
+          );
+        }).toList() ??
+        [];
+  }
+
+  Future<BitmapDescriptor?> widgetToIcon(GlobalKey globalKey) async {
+    if (globalKey.currentContext == null) return null;
+    RenderRepaintBoundary boundary =
+        globalKey.currentContext?.findRenderObject() as RenderRepaintBoundary;
+    if (boundary.debugNeedsPaint) {
+      print("Waiting for boundary to be painted.");
+      await Future.delayed(const Duration(milliseconds: 20));
+    }
+    ui.Image image = await boundary.toImage();
+    ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+    return BitmapDescriptor.fromBytes(byteData!.buffer.asUint8List());
   }
 
   @override
@@ -115,106 +146,124 @@ class _MapViewPageState extends State<MapViewPage> {
           return PartiesCubit()
             ..fetchPartiesWithWhereIsEqualTo("city", _destination);
         },
-        child:
-            BlocBuilder<PartiesCubit, PartiesState>(builder: (context, state) {
-          var parties = state.parties;
-          return Scaffold(
-            extendBodyBehindAppBar: true,
-            appBar: AppBar(
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              leadingWidth: 70,
-              leading: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: IconButton(
-                  icon: Image.asset("assets/back-btn.png"),
-                  onPressed: () => Navigator.of(context).pop(),
+        child: BlocListener<PartiesCubit, PartiesState>(
+          listener: (context, state) async {
+            if (state.status == PartiesStatus.loaded) {
+              // _buildMarkers(_markerWidgets);
+            }
+          },
+          child: BlocBuilder<PartiesCubit, PartiesState>(
+              builder: (context, state) {
+            var parties = state.parties;
+            _markerWidgets = _buildMarkersWidget(parties);
+            return Scaffold(
+              extendBodyBehindAppBar: true,
+              appBar: AppBar(
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                leadingWidth: 70,
+                leading: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: IconButton(
+                    icon: Image.asset("assets/back-btn.png"),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
                 ),
               ),
-            ),
-            body: Stack(
-              children: [
-                SlidingUpPanel(
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(40)),
-                  snapPoint: 0.5,
-                  maxHeight: MediaQuery.of(context).size.height -
-                      (_searchContainerHeight ?? 0) +
-                      20,
-                  body: Stack(
-                    children: [
-                      if (_longitude != null && _latitude != null)
-                        GoogleMap(
-                          onCameraIdle: () =>
-                              BlocProvider.of<PartiesCubit>(context),
-                          onCameraMove: (position) =>
-                              setState(() => _position = position),
-                          // onCameraIdle: ,
-                          myLocationButtonEnabled: false,
-                          initialCameraPosition: CameraPosition(
-                              target: LatLng(_latitude!, _longitude!),
-                              zoom: 14),
-                          onMapCreated: (controller) {
-                            parties?.forEach((element) {
-                              controller
-                                  .showMarkerInfoWindow(MarkerId(element.id!));
-                            });
+              body: Stack(
+                children: [
+                  ..._markerWidgets,
+                  SlidingUpPanel(
+                    borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(40)),
+                    snapPoint: 0.5,
+                    maxHeight: MediaQuery.of(context).size.height -
+                        (_searchContainerHeight ?? 0) +
+                        20,
+                    body: Stack(
+                      children: [
+                        if (_longitude != null && _latitude != null)
+                          FutureBuilder<Set<Marker>>(
+                              future: _buildMarkers(_markerWidgets),
+                              builder: (context, snapshot) {
+                                if (!snapshot.hasData) {
+                                  return Container();
+                                }
+                                return GoogleMap(
+                                  onCameraIdle: () =>
+                                      BlocProvider.of<PartiesCubit>(context),
+                                  onCameraMove: (position) =>
+                                      setState(() => _position = position),
+                                  // onCameraIdle: ,
+                                  myLocationButtonEnabled: false,
+                                  initialCameraPosition: CameraPosition(
+                                      target: LatLng(_latitude!, _longitude!),
+                                      zoom: 14),
+                                  onMapCreated: (controller) {
+                                    parties?.forEach((element) {
+                                      controller.showMarkerInfoWindow(
+                                          MarkerId(element.id!));
+                                    });
 
-                            mapController = controller;
+                                    mapController = controller;
 
-                            mapControllerCompleter
-                                .complete(controller..setMapStyle(mapStyle));
+                                    mapControllerCompleter.complete(
+                                        controller..setMapStyle(mapStyle));
 
-                            Future.delayed(const Duration(milliseconds: 200))
-                                .then((value) =>
-                                    setState(() => _hasOpacity = false));
-                          },
-                          markers: _buildMarkers(parties),
+                                    Future.delayed(
+                                            const Duration(milliseconds: 200))
+                                        .then((value) => setState(
+                                            () => _hasOpacity = false));
+                                  },
+                                  markers: snapshot.data ?? Set(),
+                                );
+                              }),
+                        Positioned(
+                          key: _seachDetailsKey,
+                          top: 100,
+                          left: 0,
+                          right: 0,
+                          child: SearchInfoContent(
+                            result: _destination,
+                            date: _date,
+                            months: _months,
+                            onDateChanged: (date, months) {
+                              print(date);
+                              if (date != null) {
+                                setState(() {
+                                  _date = date;
+                                  _months = null;
+                                });
+                              } else {
+                                setState(() {
+                                  _months = months;
+                                  _date = null;
+                                });
+                              }
+                            },
+                          ),
                         ),
-                      Positioned(
-                        key: _seachDetailsKey,
-                        top: 100,
-                        left: 0,
-                        right: 0,
-                        child: SearchInfoContent(
-                          result: _destination,
-                          date: _date,
-                          months: _months,
-                          onDateChanged: (date, months) {
-                            print(date);
-                            if (date != null) {
-                              setState(() {
-                                _date = date;
-                                _months = null;
-                              });
-                            } else {
-                              setState(() {
-                                _months = months;
-                                _date = null;
-                              });
-                            }
-                          },
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
+                    panelBuilder: (scrollController) {
+                      return ResultsListContent(
+                        scrollController: scrollController,
+                        parties: parties,
+                      );
+                    },
                   ),
-                  panelBuilder: (scrollController) {
-                    return ResultsListContent(
-                      scrollController: scrollController,
-                      parties: parties,
-                    );
-                  },
-                ),
-                if (_loadingScreen)
-                  LoadingScreen(
-                    pageLoaded: _hasOpacity,
-                    onLoadingClosed: () => setState(() {
-                      _loadingScreen = false;
-                    }),
-                  )
-              ],
-            ),
-          );
-        }),
+                  if (_loadingScreen)
+                    LoadingScreen(
+                      pageLoaded: _hasOpacity,
+                      onLoadingClosed: () => setState(() {
+                        _loadingScreen = false;
+                      }),
+                    )
+                ],
+              ),
+            );
+          }),
+        ),
       );
     });
   }
@@ -494,6 +543,62 @@ class ResultsListContent extends StatelessWidget {
                   }),
             );
           })
+        ],
+      ),
+    );
+  }
+}
+
+class PartyMarker extends StatelessWidget {
+  final GlobalKey globalKey;
+  final String id;
+  final LatLng coordinates;
+  final String title;
+  final String theme;
+
+  const PartyMarker(
+      {Key? key,
+      required this.globalKey,
+      required this.id,
+      required this.coordinates,
+      required this.title,
+      required this.theme})
+      : super(key: key);
+
+  String getImage() {
+    switch (theme) {
+      case 'Festive':
+        return "assets/festive.jpg";
+      case 'Gaming':
+        return "assets/gaming.jpg";
+      case "Jeux de société":
+        return "assets/jeuxdesociete.jpg";
+      case "Thème":
+        return "assets/theme.jpg";
+      default:
+        return "assets/festive.jpg";
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return RepaintBoundary(
+      key: globalKey,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Container(
+            width: 250,
+            height: 180,
+            decoration: BoxDecoration(
+              border: Border.all(),
+              borderRadius: BorderRadius.circular(10),
+              image: DecorationImage(image: AssetImage(getImage())),
+            ),
+            child: Column(
+              children: [],
+            ),
+          ),
         ],
       ),
     );

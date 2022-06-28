@@ -70,6 +70,8 @@ class UserCubit extends AppBaseCubit<UserState> {
     }
   }
 
+
+
   Future<void> updateUserInfo(String? token,
       {String? name,
       String? surname,
@@ -112,7 +114,6 @@ class UserCubit extends AppBaseCubit<UserState> {
 
   Future<void> sendId2Mangopay(
       String? mangopayId, File idRecto, File idVerso) async {
-    print("mangopayId: $mangopayId");
     if (mangopayId == null) {
       return emit(UserState.failed());
     }

@@ -3,9 +3,11 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:pts/blocs/messaging/messaging_cubit.dart';
 import 'package:pts/components/appbar.dart';
 import 'package:pts/const.dart';
 import 'package:pts/models/Capitalize.dart';
@@ -30,8 +32,7 @@ class ChatPage extends StatelessWidget {
           child: BackAppBar(
               backgroundColor: PRIMARY_COLOR,
               elevation: 0.5,
-              title: TitleAppBar(
-                  otherUserName == null ? '' : otherUserName)),
+              title: TitleAppBar(otherUserName == null ? '' : otherUserName)),
         ),
         bottomNavigationBar: MessageField(otherUserID),
         body: Container(
@@ -213,8 +214,8 @@ class _MessageFieldState extends State<MessageField> {
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: IconButton(
                       onPressed: () => photoDialog(),
-                      icon: Icon(Ionicons.image_outline,
-                          color: SECONDARY_COLOR)),
+                      icon:
+                          Icon(Ionicons.image_outline, color: SECONDARY_COLOR)),
                 ),
                 Expanded(
                   child: Padding(
@@ -292,34 +293,38 @@ class ListMessage extends StatefulWidget {
 }
 
 class _ListMessageState extends State<ListMessage> {
-  late List<DocumentSnapshot> _docs;
+  // late List<DocumentSnapshot> _docs;
   var currentUserId = AuthService().currentUser!.uid;
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      reverse: true,
-      child: StreamBuilder(
-        stream: getmessageStreamSnapshot(context),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (!snapshot.hasData)
-            return Center(
-              child: CircularProgressIndicator(),
+    return BlocProvider(
+      create: (context) => MessagingCubit()
+        ..fetchMessage(
+            currentUserID: currentUserId, otherUserID: widget.otherUserID),
+      child: SingleChildScrollView(
+        reverse: true,
+        child: BlocBuilder<MessagingCubit, MessagingState>(
+          builder: (context, state) {
+            var messages = state.messages;
+            if (messages == null)
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            if (messages.isEmpty) {
+              return const Center(
+                child: Text("Envoi le premier message"),
+              );
+            }
+            return SingleChildScrollView(
+              child: Column(
+                  children: messages.map((document) {
+                return document.userid == currentUserId
+                    ? CurrentUserMessage(document.text, document.date)
+                    : OtherUserMessage(document.text, document.date);
+              }).toList()),
             );
-          _docs = snapshot.data!.docs;
-          if (_docs.isEmpty) {
-            return const Center(
-              child: Text("Envoi le premier message"),
-            );
-          }
-          return SingleChildScrollView(
-            child: Column(
-                children: _docs.map((document) {
-              return document['userid'] == currentUserId
-                  ? CurrentUserMessage(document['text'], document['date'])
-                  : OtherUserMessage(document['text'], document['date']);
-            }).toList()),
-          );
-        },
+          },
+        ),
       ),
     );
   }
@@ -392,20 +397,22 @@ class OtherUserMessage extends StatelessWidget {
         children: [
           Container(
             margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-            padding: detect(textMessage!) == false ? const EdgeInsets.fromLTRB(10, 0, 10, 0) : null,
+            padding: detect(textMessage!) == false
+                ? const EdgeInsets.fromLTRB(10, 0, 10, 0)
+                : null,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
               color: Colors.grey.shade300,
             ),
             child: Center(
               child: Container(
-                padding:
-                    detect(textMessage!) == false ? EdgeInsets.only(top: 10, left: 5, bottom: 10, right: 5) : null,
-                width: textMessage!.length >= 50
-                    ? MediaQuery.of(context).size.width * 0.6
-                    : null,
-                child: message(textMessage!, color: SECONDARY_COLOR)
-              ),
+                  padding: detect(textMessage!) == false
+                      ? EdgeInsets.only(top: 10, left: 5, bottom: 10, right: 5)
+                      : null,
+                  width: textMessage!.length >= 50
+                      ? MediaQuery.of(context).size.width * 0.6
+                      : null,
+                  child: message(textMessage!, color: SECONDARY_COLOR)),
             ),
           ),
           Text(
@@ -421,7 +428,8 @@ class OtherUserMessage extends StatelessWidget {
 }
 
 bool detect(String str) {
-  if (str.toString().contains('https://firebasestorage.googleapis.com/v0/b/pts-beta-yog.appspot.com/o/Messagerie%')) {
+  if (str.toString().contains(
+      'https://firebasestorage.googleapis.com/v0/b/pts-beta-yog.appspot.com/o/Messagerie%')) {
     return true;
   } else {
     return false;
@@ -437,7 +445,8 @@ Widget message(String str, {Color? color}) {
   } else {
     return Text(
       str,
-      style: TextStyle(color: color == null ? Colors.white : color, fontSize: 17),
+      style:
+          TextStyle(color: color == null ? Colors.white : color, fontSize: 17),
     );
   }
 }

@@ -1,10 +1,17 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:pts/services/auth_service.dart';
+import 'package:pts/services/firestore_service.dart';
 
 class NotificationService {
   static final FlutterLocalNotificationsPlugin _notificationService =
       FlutterLocalNotificationsPlugin();
+
+  static final AuthService _authService = AuthService();
+
+  static final FireStoreServices _userFirestoreService =
+      FireStoreServices("user");
 
   static FlutterLocalNotificationsPlugin get instance => _notificationService;
 
@@ -98,8 +105,17 @@ class NotificationService {
   static void _lookForMessagingToken() async {
     final String? token = await FirebaseMessaging.instance.getToken();
     print("Firebase Messaging Token : $token");
-    FirebaseMessaging.instance.onTokenRefresh.listen((String token) {
-      print("Firebase Messaging Token : $token");
+
+    final userId = await _authService.getToken();
+    if (userId != null && token != null) {
+      _authService.setRegistrationToken(token);
+    }
+    FirebaseMessaging.instance.onTokenRefresh
+        .listen((String refreshToken) async {
+      print("Firebase Messaging Token : $refreshToken");
+      if (userId != null) {
+        _authService.setRegistrationToken(refreshToken);
+      }
     });
   }
 
@@ -125,7 +141,7 @@ class NotificationService {
         id,
         title,
         body,
-        await _notificationDetail(),
+        _notificationDetail(),
         payload: payload,
       );
 }
