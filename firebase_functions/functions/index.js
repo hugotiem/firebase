@@ -6,13 +6,16 @@ const admin = require("firebase-admin")
 admin.initializeApp();
 
 exports.handleMessage = functions.https.onRequest(async (req, res) => {
-  const registrationToken = req.body.token;
 
-  const senderName = req.body.name;
+  const jsonBody = JSON.parse(req.body);
+
+  const registrationToken = jsonBody.token;
+
+  const senderName = jsonBody.name;
   
-  const notificationType = req.body.type ?? "";
+  const notificationType = jsonBody.type ?? "";
 
-  const title = "Nouvelle notification !";
+  const title = jsonBody.partyName;
 
   let body;
 
