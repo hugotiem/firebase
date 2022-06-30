@@ -40,7 +40,7 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
       widget.isConnected ? ManagePartyOPage() : Connect(),
       Container(),
       widget.isConnected ? MessagePage() : Connect(),
-      widget.isConnected ? ProfilePage(widget.isConnected) : Connect(),
+      widget.isConnected ? ProfilePage() : Connect(),
     ];
     BlocProvider.of<UserCubit>(context).stream.listen((event) {
       bool _isConnected = event.user != null;
@@ -49,7 +49,7 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
             _isConnected ? ManagePartyOPage() : Connect(),
             Container(),
             _isConnected ? MessagePage() : Connect(),
-            _isConnected ? ProfilePage(widget.isConnected) : Connect(),
+            _isConnected ? ProfilePage() : Connect(),
           ]);
     });
   }
@@ -203,7 +203,7 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
     } else if (index == 4) {
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => ProfilePage(widget.isConnected),
+          builder: (context) => ProfilePage(),
           fullscreenDialog: true,
         ),
       );

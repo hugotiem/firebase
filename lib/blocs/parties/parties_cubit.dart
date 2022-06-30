@@ -1,4 +1,7 @@
+import 'dart:convert';
 import 'dart:math';
+
+import "package:http/http.dart" as http;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -231,6 +234,30 @@ class PartiesCubit extends AppBaseCubit<PartiesState> {
         },
         path: "waitListInfo.${user?.id}");
     emit(PartiesState.loaded(state.parties, state.filters));
+
+    try {
+      var url =
+          "https://us-central1-pts-beta-yog.cloudfunctions.net/handleMessage";
+
+      print(party.name);
+
+      var response = await http.post(
+        Uri.parse(url),
+        body: jsonEncode({
+          "token":
+              "eSVP0ZqdYklZu2NtNzFQ7p:APA91bGsiZm1lP5y7PABV9fIdo0RnA4F3V-WS76DFpUla68Zr5eX6Stb9w5BMZN0QpfN0UImtUHJM_VmumqbNlA2zIpLQMI3hw58CtWsbujuTjBpR7UUR3bR2YX5kmE4V23kgPrLO2lo",
+          "type": "waiting",
+          "name": "Jean",
+          "partyName": party.name,
+        }),
+      );
+
+      var json = jsonDecode(response.body);
+
+      print(json);
+    } catch (error) {
+      print(error);
+    }
   }
 
   Future<void> addUserInValidatedList(
@@ -278,7 +305,5 @@ class PartiesCubit extends AppBaseCubit<PartiesState> {
     await FirebaseFirestore.instance.collection("parties").doc(id).update(data);
   }
 
-  Future<void> fetchPartiesFromPosition(CameraPosition position) async {
-    
-  }
+  Future<void> fetchPartiesFromPosition(CameraPosition position) async {}
 }

@@ -12,8 +12,7 @@ import 'subpage/info_page.dart';
 import 'subpage/qr_code_page.dart';
 
 class ProfilePage extends StatefulWidget {
-  final bool? isConnected;
-  const ProfilePage(this.isConnected, {Key? key}) : super(key: key);
+  const ProfilePage({Key? key}) : super(key: key);
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -23,15 +22,6 @@ class _ProfilePageState extends State<ProfilePage> {
   double _radius = 120;
   double _opacity = 1;
   final AuthService service = AuthService();
-
-  // ignore: unused_field
-  late bool _isConnected;
-
-  @override
-  void initState() {
-    _isConnected = widget.isConnected ?? false;
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {

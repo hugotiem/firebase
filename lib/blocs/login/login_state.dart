@@ -5,9 +5,9 @@ enum LoginStatus { initial, logging, signedUp, logged }
 class LoginState extends AppBaseState<LoginStatus> {
   final String? email;
 
-  const LoginState(LoginStatus? status, 
+  const LoginState(LoginStatus? status,
       {this.email,
-        bool requestInProgress = false,
+      bool requestInProgress = false,
       String? requestFailureCode,
       String? requestFailureMessage})
       : super(
@@ -17,7 +17,8 @@ class LoginState extends AppBaseState<LoginStatus> {
             requestFailureMessage: requestFailureMessage);
 
   const LoginState.initial() : this(LoginStatus.initial);
-  const LoginState.signedUp(String? email) : this(LoginStatus.signedUp, email: email);
+  const LoginState.signedUp(String? email)
+      : this(LoginStatus.signedUp, email: email);
   const LoginState.logged() : this(LoginStatus.logged);
 
   @override
