@@ -6,23 +6,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:pts/blocs/application/application_cubit.dart';
 import 'package:pts/blocs/parties/parties_cubit.dart';
 import 'package:pts/components/components_export.dart';
 import 'package:pts/const.dart';
 import 'package:pts/pages/Planning/manage_party_page.dart';
 import 'package:pts/pages/creation/creation_page.dart';
-import 'package:pts/pages/login/connect.dart';
 import 'package:pts/pages/login/id_form_screen.dart';
-import 'package:pts/blocs/user/user_cubit.dart';
 import 'package:pts/pages/messaging/message_list.dart';
 import 'package:pts/pages/profil/profile_page.dart';
 import 'package:uni_links/uni_links.dart';
 import 'pages/home/home_page.dart';
 
 class CustomBottomBar extends StatefulWidget {
-  final bool isConnected;
-
-  const CustomBottomBar(this.isConnected, {Key? key}) : super(key: key);
+  const CustomBottomBar({Key? key}) : super(key: key);
   @override
   _CustomBottomBarState createState() => _CustomBottomBarState();
 }
@@ -37,21 +34,11 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
     super.initState();
     _children = [
       HomePage(),
-      widget.isConnected ? ManagePartyOPage() : Connect(),
+      ManagePartyOPage(),
       Container(),
-      widget.isConnected ? MessagePage() : Connect(),
-      widget.isConnected ? ProfilePage() : Connect(),
+      MessagePage(),
+      ProfilePage(),
     ];
-    BlocProvider.of<UserCubit>(context).stream.listen((event) {
-      bool _isConnected = event.user != null;
-      setState(() => _children = [
-            HomePage(),
-            _isConnected ? ManagePartyOPage() : Connect(),
-            Container(),
-            _isConnected ? MessagePage() : Connect(),
-            _isConnected ? ProfilePage() : Connect(),
-          ]);
-    });
   }
 
   Future<void> initUniLinks() async {
@@ -68,132 +55,108 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => UserCubit()..init(),
-      child: BlocBuilder<UserCubit, UserState>(
-        builder: (context, state) {
-          var user = state.user;
-          if (state.user?.banned == true) {
-            return Banned(state.user!.id);
-          }
-
-          return Scaffold(
-            body: AnimatedCrossFade(
-              duration: const Duration(milliseconds: 200),
-              firstChild: Container(color: Colors.white),
-              crossFadeState: user == null
-                  ? CrossFadeState.showFirst
-                  : CrossFadeState.showSecond,
-              secondChild: BlocListener<UserCubit, UserState>(
-                listener: (context, state) {
-                  if (state.user != null) {
-                    if (!state.user!.hasIdChecked!) {
-                      Future.delayed(const Duration(milliseconds: 200))
-                          .then((value) => _showLoadingPopup(state.user?.mangoPayId));
-                    }
-                  }
-                },
-                child: BlocProvider(
-                  create: (context) =>
-                      PartiesCubit()..disablePartiesAfterDate(),
-                  child: BlocBuilder<PartiesCubit, PartiesState>(
-                    builder: (context, stateparty) {
-                      return Stack(
-                        children: [
-                          Container(
-                            height: MediaQuery.of(context).size.height,
-                            child: Scaffold(
-                              extendBodyBehindAppBar: true,
-                              body: _children[_currentIndex],
-                              bottomNavigationBar: BottomNavigationBar(
-                                type: BottomNavigationBarType.fixed,
-                                selectedFontSize: 10,
-                                unselectedFontSize: 10,
-                                showSelectedLabels: true,
-                                showUnselectedLabels: true,
-                                selectedItemColor: ICONCOLOR,
-                                unselectedItemColor: SECONDARY_COLOR,
-                                onTap: onTabTapped,
-                                currentIndex: _currentIndex,
-                                items: [
-                                  BottomNavigationBarItem(
-                                    icon: new Icon(
-                                      Ionicons.search_outline,
-                                      size: 25,
-                                    ),
-                                    label: "Rechercher",
-                                  ),
-                                  BottomNavigationBarItem(
-                                    icon: new Icon(
-                                      Ionicons.calendar_clear_outline,
-                                      size: 25,
-                                    ),
-                                    label: "Soirées",
-                                  ),
-                                  BottomNavigationBarItem(
-                                    icon: new Icon(
-                                      Ionicons.add_circle_outline,
-                                      color: Colors.transparent,
-                                      size: 40,
-                                    ),
-                                    label: "",
-                                  ),
-                                  BottomNavigationBarItem(
-                                    icon: new Icon(
-                                      Ionicons.chatbox_outline,
-                                      size: 25,
-                                    ),
-                                    label: "Messages",
-                                  ),
-                                  BottomNavigationBarItem(
-                                    icon: new Icon(
-                                      Ionicons.person_outline,
-                                      size: 25,
-                                    ),
-                                    label: "Profil",
-                                  ),
-                                ],
-                                backgroundColor: Colors.white,
-                              ),
+    return Scaffold(
+      body: AnimatedCrossFade(
+        duration: const Duration(milliseconds: 200),
+        firstChild: Container(color: Colors.white),
+        crossFadeState:
+            BlocProvider.of<ApplicationCubit>(context).state.status ==
+                    ApplicationStatus.splash
+                ? CrossFadeState.showFirst
+                : CrossFadeState.showSecond,
+        secondChild: BlocProvider(
+          create: (context) => PartiesCubit()..disablePartiesAfterDate(),
+          child: BlocBuilder<PartiesCubit, PartiesState>(
+            builder: (context, stateparty) {
+              return Stack(
+                children: [
+                  Container(
+                    height: MediaQuery.of(context).size.height,
+                    child: Scaffold(
+                      extendBodyBehindAppBar: true,
+                      body: _children[_currentIndex],
+                      bottomNavigationBar: BottomNavigationBar(
+                        type: BottomNavigationBarType.fixed,
+                        selectedFontSize: 10,
+                        unselectedFontSize: 10,
+                        showSelectedLabels: true,
+                        showUnselectedLabels: true,
+                        selectedItemColor: ICONCOLOR,
+                        unselectedItemColor: SECONDARY_COLOR,
+                        onTap: onTabTapped,
+                        currentIndex: _currentIndex,
+                        items: [
+                          BottomNavigationBarItem(
+                            icon: new Icon(
+                              Ionicons.search_outline,
+                              size: 25,
                             ),
+                            label: "Rechercher",
                           ),
-                          SafeArea(
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 2.5),
-                              child: Align(
-                                alignment: Alignment.bottomCenter,
-                                child: FloatingActionButton(
-                                  heroTag: "name",
-                                  onPressed: () => Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) => widget.isConnected
-                                          ? CreationPage()
-                                          : Connect(),
-                                      fullscreenDialog: true,
-                                    ),
-                                  ),
-                                  backgroundColor: SECONDARY_COLOR,
-                                  child: Icon(Icons.add_rounded),
-                                ),
-                              ),
+                          BottomNavigationBarItem(
+                            icon: new Icon(
+                              Ionicons.calendar_clear_outline,
+                              size: 25,
                             ),
+                            label: "Soirées",
+                          ),
+                          BottomNavigationBarItem(
+                            icon: new Icon(
+                              Ionicons.add_circle_outline,
+                              color: Colors.transparent,
+                              size: 40,
+                            ),
+                            label: "",
+                          ),
+                          BottomNavigationBarItem(
+                            icon: new Icon(
+                              Ionicons.chatbox_outline,
+                              size: 25,
+                            ),
+                            label: "Messages",
+                          ),
+                          BottomNavigationBarItem(
+                            icon: new Icon(
+                              Ionicons.person_outline,
+                              size: 25,
+                            ),
+                            label: "Profil",
                           ),
                         ],
-                      );
-                    },
+                        backgroundColor: Colors.white,
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            ),
-          );
-        },
+                  SafeArea(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 2.5),
+                      child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: FloatingActionButton(
+                          heroTag: "name",
+                          onPressed: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => CreationPage(),
+                              fullscreenDialog: true,
+                            ),
+                          ),
+                          backgroundColor: SECONDARY_COLOR,
+                          child: Icon(Icons.add_rounded),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+        ),
       ),
     );
   }
 
   void onTabTapped(int index) async {
-    if (index == 2 && widget.isConnected) {
+    if (index == 2) {
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => CreationPage(),

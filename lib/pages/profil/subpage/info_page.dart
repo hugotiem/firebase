@@ -47,7 +47,9 @@ class _InformationPageState extends State<InformationPage> {
         _surname = _surnameController!.text.trim();
       });
     _dateController = TextEditingController(
-        text: DateFormat.yMd('fr').format(widget.user.birthday))
+        text: widget.user.birthday == null
+            ? ""
+            : DateFormat.yMd('fr').format(widget.user.birthday!))
       ..addListener(() {
         _date = _dateController!.text;
       });
@@ -159,7 +161,8 @@ class _InformationPageState extends State<InformationPage> {
                           _dateNonFormat == null ? _date : _dateNonFormat,
                           _gender,
                           _email,
-                          _phone, _desc);
+                          _phone,
+                          _desc);
                     },
                     child: CText('sauvegarder',
                         color: PRIMARY_COLOR, fontSize: 16),
@@ -317,7 +320,7 @@ class _InformationPageState extends State<InformationPage> {
   Future<Null> _selectionDate() async {
     DateTime? _dateChoisie = await showDatePicker(
         context: context,
-        initialDate: widget.user.birthday,
+        initialDate: widget.user.birthday ?? DateTime.now(),
         firstDate: DateTime(1900),
         lastDate: DateTime.now(),
         builder: (BuildContext context, Widget? child) {

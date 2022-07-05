@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:pts/services/auth_service.dart';
 import 'package:pts/services/firestore_service.dart';
@@ -144,4 +147,23 @@ class NotificationService {
         _notificationDetail(),
         payload: payload,
       );
+
+  static Future<void> sendNotification({Map<String, dynamic>? body}) async {
+    if (body?["type"] == null) return;
+    body?["type"] = describeEnum(body["type"]);
+    try {
+      var url =
+          "https://us-central1-pts-beta-yog.cloudfunctions.net/handleMessage";
+
+      var response = await http.post(
+        Uri.parse(url),
+        body: jsonEncode(body),
+      );
+      var json = jsonDecode(response.body);
+
+      print(json);
+    } catch (error) {
+      print(error);
+    }
+  }
 }

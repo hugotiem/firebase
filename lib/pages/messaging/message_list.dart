@@ -1,3 +1,4 @@
+import 'package:pts/blocs/application/application_cubit.dart';
 import 'package:pts/components/party_card/party_export.dart';
 import 'package:pts/services/auth_service.dart';
 import 'package:pts/widgets/widgets_export.dart';
@@ -7,6 +8,9 @@ class MessagePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (BlocProvider.of<ApplicationCubit>(context).state.user == null) {
+      return Connect();
+    }
     return BlocProvider(
       create: (context) => UserCubit()..init(),
       child: BlocBuilder<UserCubit, UserState>(
@@ -48,10 +52,9 @@ class _ListMessageState extends State<ListMessage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      
-          decoration: BoxDecoration(
-              color: PRIMARY_COLOR,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(40))),
+      decoration: BoxDecoration(
+          color: PRIMARY_COLOR,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(40))),
       child: BlocProvider(
         create: (context) => UserCubit()..init(),
         child: BlocBuilder<UserCubit, UserState>(builder: (context, state) {

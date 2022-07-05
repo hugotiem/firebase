@@ -1,3 +1,4 @@
+import 'package:pts/blocs/application/application_cubit.dart';
 import 'package:pts/components/party_card/party_export.dart';
 import 'package:pts/pages/creation/date_page.dart';
 import 'package:pts/pages/creation/description_page.dart';
@@ -9,7 +10,7 @@ import 'package:pts/pages/creation/name_page.dart';
 import 'package:pts/pages/creation/theme_page.dart';
 import 'package:pts/blocs/parties/build_parties_cubit.dart';
 
-class CreationPage extends StatelessWidget{
+class CreationPage extends StatelessWidget {
   CreationPage({Key? key}) : super(key: key);
   final PageController _controller = PageController();
 
@@ -29,57 +30,54 @@ class CreationPage extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => UserCubit()..init(),
-      child: BlocBuilder<UserCubit, UserState>(builder: (context, userState) {
-        if (userState.token == null) {
-          return Connect();
-        }
-        return Scaffold(
-          appBar: AppBar(
-            automaticallyImplyLeading: false,
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            toolbarHeight: 0,
-          ),
-          extendBodyBehindAppBar: true,
-          body: BlocProvider(
-            create: (context) => BuildPartiesCubit(),
-            child: BlocBuilder<BuildPartiesCubit, BuildPartiesState>(
-                builder: (context, state) {
-              var party = state.party;
-              return PageView(
-                controller: _controller,
-                children: [
-                  NamePage(
-                    onNext: onNext,
-                    title: party?.name,
-                  ),
-                  ThemePage(
-                    onNext: onNext,
-                    onPrevious: onPrevious,
-                    party: party,
-                  ),
-                  DatePage(
-                    onNext: onNext,
-                    onPrevious: onPrevious,
-                    date: party?.date,
-                  ),
-                  HourPage(
-                      onNext: onNext,
-                      onPrevious: onPrevious,
-                      party: state.party),
-                  LocationPage(onNext: onNext, onPrevious: onPrevious, address: party?.address,),
-                  GuestNumber(onNext: onNext, onPrevious: onPrevious),
-                  DescriptionPage(onNext: onNext, onPrevious: onPrevious),
-                  EndPage(),
-                ],
-                physics: NeverScrollableScrollPhysics(),
-              );
-            }),
-          ),
-        );
-      }),
+    if (BlocProvider.of<ApplicationCubit>(context).state.user == null) {
+      return Connect();
+    }
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        toolbarHeight: 0,
+      ),
+      extendBodyBehindAppBar: true,
+      body: BlocProvider(
+        create: (context) => BuildPartiesCubit(),
+        child: BlocBuilder<BuildPartiesCubit, BuildPartiesState>(
+            builder: (context, state) {
+          var party = state.party;
+          return PageView(
+            controller: _controller,
+            children: [
+              NamePage(
+                onNext: onNext,
+                title: party?.name,
+              ),
+              ThemePage(
+                onNext: onNext,
+                onPrevious: onPrevious,
+                party: party,
+              ),
+              DatePage(
+                onNext: onNext,
+                onPrevious: onPrevious,
+                date: party?.date,
+              ),
+              HourPage(
+                  onNext: onNext, onPrevious: onPrevious, party: state.party),
+              LocationPage(
+                onNext: onNext,
+                onPrevious: onPrevious,
+                address: party?.address,
+              ),
+              GuestNumber(onNext: onNext, onPrevious: onPrevious),
+              DescriptionPage(onNext: onNext, onPrevious: onPrevious),
+              EndPage(),
+            ],
+            physics: NeverScrollableScrollPhysics(),
+          );
+        }),
+      ),
     );
   }
 }

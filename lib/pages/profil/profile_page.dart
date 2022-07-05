@@ -1,4 +1,5 @@
 import 'package:flutter/services.dart';
+import 'package:pts/blocs/application/application_cubit.dart';
 import 'package:pts/components/party_card/party_export.dart';
 import 'package:pts/pages/profil/subpage/about_page.dart';
 import 'package:pts/pages/profil/subpage/existing_cards_page.dart';
@@ -27,6 +28,9 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
+    if (BlocProvider.of<ApplicationCubit>(context).state.user == null) {
+      return Connect();
+    }
     return BlocProvider(
       create: (context) => UserCubit()..init(),
       child: BlocBuilder<UserCubit, UserState>(builder: (context, state) {
@@ -253,9 +257,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                                             context,
                                                             MaterialPageRoute(
                                                                 builder: ((context) =>
-                                                                    WalletPage(
-                                                                        state
-                                                                            .user)))),
+                                                                    WalletPage(state
+                                                                        .user)))),
                                                         child: Container(
                                                           padding: EdgeInsets
                                                               .symmetric(
@@ -410,7 +413,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               child: ProfilePhoto(
                                 user.photo!.isEmpty
                                     ? "assets/roundBlankProfilPicture.png"
-                                : user.photo,
+                                    : user.photo,
                                 radius: _radius,
                               ),
                             ),
@@ -735,33 +738,33 @@ class Skeleton extends StatelessWidget {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Container(
-                              width: MediaQuery.of(context).size.width,
-                              height: 45,
-                              decoration: BoxDecoration(
-                                  color: Colors.black.withOpacity(0.04),
-                                  borderRadius: BorderRadius.circular(15)),
-                            ),
+                          width: MediaQuery.of(context).size.width,
+                          height: 45,
+                          decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.04),
+                              borderRadius: BorderRadius.circular(15)),
+                        ),
                       ),
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Container(
                           margin: EdgeInsets.symmetric(vertical: 30),
-                              width: MediaQuery.of(context).size.width,
-                              height: 45,
-                              decoration: BoxDecoration(
-                                  color: Colors.black.withOpacity(0.04),
-                                  borderRadius: BorderRadius.circular(15)),
-                            ),
+                          width: MediaQuery.of(context).size.width,
+                          height: 45,
+                          decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.04),
+                              borderRadius: BorderRadius.circular(15)),
+                        ),
                       ),
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Container(
-                              width: MediaQuery.of(context).size.width,
-                              height: 45,
-                              decoration: BoxDecoration(
-                                  color: Colors.black.withOpacity(0.04),
-                                  borderRadius: BorderRadius.circular(15)),
-                            ),
+                          width: MediaQuery.of(context).size.width,
+                          height: 45,
+                          decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.04),
+                              borderRadius: BorderRadius.circular(15)),
+                        ),
                       ),
                     ],
                   ),

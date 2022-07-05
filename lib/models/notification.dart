@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-enum NotificationType { waiting, message }
+enum NotificationType { waiting, joined, message }
 
 class Notification extends Equatable {
   final String messagingToken;

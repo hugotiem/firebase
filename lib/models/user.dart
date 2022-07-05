@@ -7,39 +7,42 @@ class User extends Equatable {
   final AuthService authService = AuthService();
   final FireStoreServices fireStoreServices = FireStoreServices("user");
 
-  String? id;
-  String? name;
-  String? surname;
-  String? gender;
-  var age;
-  var birthday;
-  bool? hasIdChecked;
-  String? phone;
-  String? email;
-  bool? verified;
-  bool? banned;
-  String? photo;
-  String? mangoPayId;
-  String? desc;
+  final String? id;
+  final String? name;
+  final String? surname;
+  final String? gender;
+  final int? age;
+  final DateTime? birthday;
+  final bool? hasIdChecked;
+  final String? phone;
+  final String? email;
+  final bool? verified;
+  final bool? banned;
+  final String? photo;
+  final String? mangoPayId;
+  final String? desc;
   final String? analyticsId;
+  final String? walletId;
+  final String? messagingToken;
 
-  User({
-    this.id,
-    this.name,
-    this.surname,
-    this.age,
-    this.birthday,
-    this.gender,
-    this.hasIdChecked,
-    this.email,
-    this.phone,
-    this.verified,
-    this.banned,
-    this.photo,
-    this.mangoPayId,
-    this.desc,
-    this.analyticsId,
-  });
+  User(
+      {this.id,
+      this.name,
+      this.surname,
+      this.age,
+      this.birthday,
+      this.gender,
+      this.hasIdChecked,
+      this.email,
+      this.phone,
+      this.verified,
+      this.banned,
+      this.photo,
+      this.mangoPayId,
+      this.desc,
+      this.analyticsId,
+      this.walletId,
+      this.messagingToken});
 
   Future<User?> get currentUser async {
     var token = await authService.getToken();
@@ -66,6 +69,7 @@ class User extends Equatable {
     var mangoPayId = data?["mangoPayId"];
     var desc = data?["desc"];
     var analyticsId = data?["analyticsId"];
+    var messagingToken = data?["messagingToken"];
 
     return User(
       id: id,
@@ -83,6 +87,7 @@ class User extends Equatable {
       mangoPayId: mangoPayId,
       desc: desc,
       analyticsId: analyticsId,
+      messagingToken: messagingToken,
     );
   }
 
@@ -102,5 +107,7 @@ class User extends Equatable {
         photo,
         mangoPayId,
         desc,
+        walletId,
+        messagingToken,
       ];
 }

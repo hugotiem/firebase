@@ -7,12 +7,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:pts/components/app_datetime.dart';
 import 'package:pts/models/city.dart';
+import 'package:pts/models/notification.dart';
 import 'package:pts/models/party.dart';
 import 'package:pts/services/auth_service.dart';
 import 'package:pts/services/firestore_service.dart';
 import 'package:pts/blocs/base/app_base_cubit.dart';
 import 'package:pts/blocs/base/app_base_state.dart';
 import 'package:pts/models/user.dart';
+import 'package:pts/services/notification_service.dart';
 
 part 'parties_state.dart';
 
@@ -219,45 +221,33 @@ class PartiesCubit extends AppBaseCubit<PartiesState> {
     emit(PartiesState.loaded(state.parties, state.filters));
   }
 
-  Future<void> addUserInWaitList(User? user, Party party) async {
+  Future<void> addUserInWaitList(
+      User? currentUser, User? partyOwner, Party party) async {
     emit(state.setRequestInProgress() as PartiesState);
     await services.setWithId(party.id, data: {
-      "waitList": FieldValue.arrayUnion([user?.id]),
+      "waitList": FieldValue.arrayUnion([currentUser?.id]),
     });
 
     await services.setWithId(party.id,
         data: {
-          "name": user?.name,
-          "surname": user?.surname,
-          "photo": user?.photo,
-          "gender": user?.gender,
+          "name": currentUser?.name,
+          "surname": currentUser?.surname,
+          "photo": currentUser?.photo,
+          "gender": currentUser?.gender,
         },
-        path: "waitListInfo.${user?.id}");
+        path: "waitListInfo.${currentUser?.id}");
     emit(PartiesState.loaded(state.parties, state.filters));
 
-    try {
-      var url =
-          "https://us-central1-pts-beta-yog.cloudfunctions.net/handleMessage";
+    if (partyOwner?.messagingToken == null) return;
 
-      print(party.name);
+    print(party.name);
 
-      var response = await http.post(
-        Uri.parse(url),
-        body: jsonEncode({
-          "token":
-              "eSVP0ZqdYklZu2NtNzFQ7p:APA91bGsiZm1lP5y7PABV9fIdo0RnA4F3V-WS76DFpUla68Zr5eX6Stb9w5BMZN0QpfN0UImtUHJM_VmumqbNlA2zIpLQMI3hw58CtWsbujuTjBpR7UUR3bR2YX5kmE4V23kgPrLO2lo",
-          "type": "waiting",
-          "name": "Jean",
-          "partyName": party.name,
-        }),
-      );
-
-      var json = jsonDecode(response.body);
-
-      print(json);
-    } catch (error) {
-      print(error);
-    }
+    NotificationService.sendNotification(body: {
+      "token": partyOwner?.messagingToken,
+      "type": NotificationType.waiting,
+      "name": currentUser?.name,
+      "partyName": party.name,
+    });
   }
 
   Future<void> addUserInValidatedList(

@@ -7,6 +7,8 @@ admin.initializeApp();
 
 exports.handleMessage = functions.https.onRequest(async (req, res) => {
 
+  console.log(req.body);
+
   const jsonBody = JSON.parse(req.body);
 
   const registrationToken = jsonBody.token;
@@ -15,15 +17,17 @@ exports.handleMessage = functions.https.onRequest(async (req, res) => {
   
   const notificationType = jsonBody.type ?? "";
 
-  const title = jsonBody.partyName;
+  let title;
 
   let body;
 
   switch(notificationType) {
     case "joined":
+      title = jsonBody.partyName;
       body = `${senderName} à rejoint ta soirée !`;
       break;
     case "waiting": 
+      title = jsonBody.partyName;
       body = `${senderName} souhaite rejoindre ta soirée !`;
       break;
     case "message":

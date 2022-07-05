@@ -1,5 +1,6 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
+import 'package:pts/models/user.dart';
 import 'package:pts/services/auth_service.dart';
 import 'package:pts/services/user_service.dart';
 
@@ -18,17 +19,14 @@ class FirebaseAnalyticsImplementation extends AnalyticsInterface {
   }
 
   @override
-  Future<void> init() async {
+  Future<void> init({User? user}) async {
     FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
-    var id = await authService.getToken();
-    if (id == null) return;
-    var user = await userService.getUser(id);
-
+    if (user == null) return;
     if (user.analyticsId == null) return;
 
     analytics.setUserId(id: user.analyticsId);
-    analytics.setUserProperty(name: "age", value: user.age);
+    analytics.setUserProperty(name: "age", value: user.age.toString());
     analytics.setUserProperty(name: "gender", value: user.gender);
     analytics.setUserProperty(
         name: "verified", value: user.verified.toString());

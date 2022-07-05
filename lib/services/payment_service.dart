@@ -537,7 +537,23 @@ class PaymentService {
     return null;
   }
 
-  Future<List<Transaction>?> getUserTransactions(String walletId, String userId,
+  Future<Wallet?> getWalletById(String walletId) async {
+    final String _url = "$url/wallets/$walletId";
+
+    var request = http.Request('GET', Uri.parse(_url));
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      var wallet = json.decode(await response.stream.bytesToString());
+      return Wallet.fromJson(wallet);
+    }
+    return null;
+  }
+
+  Future<List<Transaction>?> getUserTransactions(String walletId,
       {int? page}) async {
     final String _url =
         "$url/wallets/$walletId/transactions?Sort=CreationDate:DESC";

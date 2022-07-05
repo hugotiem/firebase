@@ -1,3 +1,4 @@
+import 'package:pts/blocs/application/application_cubit.dart';
 import 'package:pts/components/party_card/party_export.dart';
 import 'package:pts/pages/Planning/subpage/list_user_party_page.dart';
 import 'package:pts/pages/Planning/subpage/waitlist_guest_page.dart';
@@ -9,6 +10,9 @@ class ManagePartyOPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (BlocProvider.of<ApplicationCubit>(context).state.user == null) {
+      return Connect();
+    }
     return Scaffold(
       appBar: CustomAppBar(
         title: "Soirées",

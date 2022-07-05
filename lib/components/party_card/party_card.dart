@@ -1,4 +1,6 @@
 import 'package:intl/intl.dart';
+import 'package:pts/blocs/application/application_cubit.dart';
+import 'package:pts/blocs/transactions/transactions_cubit.dart';
 
 import 'party_export.dart';
 
@@ -150,9 +152,9 @@ class PartyCard extends StatelessWidget {
         List<CreditCard> listCreditcard,
         User? connectedUser,
         User? ownerPartyUser,
-        Wallet? wallet) {
-      String selectedId = wallet?.id ?? listCreditcard[0].id;
-      String selectedType = wallet?.id == null ? "CARD" : "WALLET";
+        String? walletId) {
+      String selectedId = walletId ?? listCreditcard[0].id;
+      String selectedType = walletId == null ? "CARD" : "WALLET";
       return customShowModalBottomSheet(
         context,
         child: BlocProvider(
@@ -283,13 +285,13 @@ class PartyCard extends StatelessWidget {
                   ),
                   InsideLineText(text: "ou"),
                   Builder(builder: (context) {
-                    if (wallet?.id == null) return Container();
-                    bool _selected = selectedId == wallet?.id;
+                    if (walletId == null) return Container();
+                    bool _selected = selectedId == walletId;
 
                     return GestureDetector(
                       onTap: () {
                         setState(() {
-                          selectedId = wallet!.id;
+                          selectedId = walletId;
                         });
                       },
                       child: Badge(
@@ -321,11 +323,20 @@ class PartyCard extends StatelessWidget {
                             ],
                           ),
                           padding: EdgeInsets.symmetric(vertical: 16),
-                          child: Center(
-                            child: Text(
-                              "Portfeuille: ${wallet?.amount.toString()}€",
-                              style: TextStyle(fontSize: 17, color: SECONDARY_COLOR),
-                            ),
+                          child: BlocProvider(
+                            create: (context) =>
+                                UserCubit()..getMainUserWallet(walletId),
+                            child: BlocBuilder<UserCubit, UserState>(
+                                builder: (context, state) {
+                              var wallet = state.wallet;
+                              return Center(
+                                child: Text(
+                                  "Portfeuille: ${wallet?.amount.toString() ?? "--,--"}€",
+                                  style: TextStyle(
+                                      fontSize: 17, color: SECONDARY_COLOR),
+                                ),
+                              );
+                            }),
                           ),
                         ),
                       ),
@@ -513,186 +524,177 @@ class PartyCard extends StatelessWidget {
                   },
                   openBuilder: (context, returnValue) {
                     return BlocProvider(
-                      create: (context) => UserCubit()..init(),
-                      child: BlocBuilder<UserCubit, UserState>(
-                          builder: (context, connectUserState) {
-                        return BlocProvider(
-                          create: (context) => PartiesCubit()
-                            ..fetchPartiesWithWhereIsEqualTo(
-                                "party owner", state.user!.id),
-                          child: BlocBuilder<PartiesCubit, PartiesState>(
-                              builder: (context, partyOwnerState) {
-                            if (partyOwnerState.parties == null)
-                              return Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            return CustomSliverCard(
-                              party: party,
-                              user: connectUserState.user,
-                              image: image,
-                              color: color,
-                              date:
-                                  '${DateFormat.E('fr').format(party.startTime!).inCaps} ${DateFormat.d('fr').format(party.startTime!)} ${DateFormat.MMMM('fr').format(party.startTime!)}',
-                              startHour:
-                                  "${DateFormat.Hm('fr').format(party.startTime!).split(":")[0]}h${DateFormat.Hm('fr').format(party.startTime!).split(":")[1]}",
-                              endHour:
-                                  "${DateFormat.Hm('fr').format(party.endTime!).split(':')[0]}h${DateFormat.Hm('fr').format(party.endTime!).split(':')[1]}",
-                              body: SizedBox.expand(
-                                child: SingleChildScrollView(
-                                  child: CardBody(
-                                    user: connectUserState.user,
-                                    nombre: party.number?.toString(),
-                                    desc: party.desc != null ? party.desc : '',
-                                    nomOrganisateur:
-                                        "${user?.name} ${user?.surname}",
-                                    partyOwner: partyOwnerState.parties,
-                                    animal: party.animals!,
-                                    smoke: party.smoke!,
-                                    list: list,
-                                    nameList: nameList,
-                                    contacter: () => contact(
-                                        user?.name, connectUserState.user),
-                                    photoUserProfile: user?.photo,
-                                    acceptedUserInfo: party.validatedListInfo,
-                                    gender: gender,
-                                  ),
-                                ),
+                      create: (context) => PartiesCubit()
+                        ..fetchPartiesWithWhereIsEqualTo(
+                            "party owner", state.user!.id),
+                      child: BlocBuilder<PartiesCubit, PartiesState>(
+                          builder: (context, partyOwnerState) {
+                        var currentUser =
+                            context.read<ApplicationCubit>().state.user;
+                        if (partyOwnerState.parties == null)
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        return CustomSliverCard(
+                          party: party,
+                          user: currentUser,
+                          image: image,
+                          color: color,
+                          date:
+                              '${DateFormat.E('fr').format(party.startTime!).inCaps} ${DateFormat.d('fr').format(party.startTime!)} ${DateFormat.MMMM('fr').format(party.startTime!)}',
+                          startHour:
+                              "${DateFormat.Hm('fr').format(party.startTime!).split(":")[0]}h${DateFormat.Hm('fr').format(party.startTime!).split(":")[1]}",
+                          endHour:
+                              "${DateFormat.Hm('fr').format(party.endTime!).split(':')[0]}h${DateFormat.Hm('fr').format(party.endTime!).split(':')[1]}",
+                          body: SizedBox.expand(
+                            child: SingleChildScrollView(
+                              child: CardBody(
+                                user: currentUser,
+                                nombre: party.number?.toString(),
+                                desc: party.desc != null ? party.desc : '',
+                                nomOrganisateur:
+                                    "${user?.name} ${user?.surname}",
+                                partyOwner: partyOwnerState.parties,
+                                animal: party.animals!,
+                                smoke: party.smoke!,
+                                list: list,
+                                nameList: nameList,
+                                contacter: () =>
+                                    contact(user?.name, currentUser),
+                                photoUserProfile: user?.photo,
+                                acceptedUserInfo: party.validatedListInfo,
+                                gender: gender,
                               ),
-                              bottomNavigationBar: CardBNB(
-                                prix: party.price.toString(),
-                                onTap: connectUserState.user == null
-                                    ? GestureDetector(
-                                        onTap: () async {
-                                          showModalBottomSheet(
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(25.0),
-                                                topRight: Radius.circular(25.0),
-                                              ),
-                                            ),
-                                            context: context,
-                                            builder: (context) {
-                                              return Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Center(
-                                                    child: Padding(
-                                                      padding: const EdgeInsets
-                                                              .symmetric(
-                                                          vertical: 22,
-                                                          horizontal: 18),
-                                                      child: Text(
-                                                        "Tu dois être connecté pour rejoindre une soirée",
-                                                        style: TextStyle(
-                                                          fontSize: 22,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            bottom: 22),
-                                                    child: Connect(
-                                                      text: false,
-                                                    ),
-                                                  ),
-                                                ],
-                                              );
-                                            },
-                                          );
-                                        },
-                                        child: Container(
-                                          padding: EdgeInsets.all(15),
-                                          decoration: BoxDecoration(
-                                            color: SECONDARY_COLOR,
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(15),
-                                            ),
+                            ),
+                          ),
+                          bottomNavigationBar: CardBNB(
+                            prix: party.price.toString(),
+                            onTap: currentUser == null
+                                ? GestureDetector(
+                                    onTap: () async {
+                                      showModalBottomSheet(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(25.0),
+                                            topRight: Radius.circular(25.0),
                                           ),
-                                          child: CText('Rejoindre',
-                                              color: PRIMARY_COLOR,
-                                              fontSize: 16),
                                         ),
-                                      )
-                                    : BlocProvider(
-                                        create: (context) => PartiesCubit(),
-                                        child: BlocBuilder<PartiesCubit,
-                                                PartiesState>(
-                                            builder: (context, state) {
-                                          return BlocProvider(
-                                            create: (context) =>
-                                                CardRegistrationCubit()
-                                                  ..loadData(connectUserState
-                                                      .user!.mangoPayId),
-                                            child: BlocBuilder<
-                                                    CardRegistrationCubit,
-                                                    CardRegistrationState>(
-                                                builder: (context,
-                                                    paymentCardState) {
-                                              return GestureDetector(
-                                                onTap: () async {
-                                                  if (party.price == 0) {
-                                                    final uid = connectUserState
-                                                        .user!.id;
-
-                                                    if (uid == null) {
-                                                      throw Error();
-                                                    }
-
-                                                    await BlocProvider.of<
-                                                                PartiesCubit>(
-                                                            context)
-                                                        .addUserInWaitList(
-                                                            user, party);
-
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            JoinParty(),
-                                                      ),
-                                                    );
-                                                  } else {
-                                                    print(party.price);
-                                                    joinPartyBottomSheet(
-                                                      party.price!,
-                                                      paymentCardState.cards!,
-                                                      connectUserState.user,
-                                                      user,
-                                                      connectUserState.wallet,
-                                                    );
-                                                  }
-                                                },
-                                                child: Container(
-                                                  padding: EdgeInsets.all(15),
-                                                  decoration: BoxDecoration(
-                                                    color: SECONDARY_COLOR,
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                      Radius.circular(15),
+                                        context: context,
+                                        builder: (context) {
+                                          return Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Center(
+                                                child: Padding(
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      vertical: 22,
+                                                      horizontal: 18),
+                                                  child: Text(
+                                                    "Tu dois être connecté pour rejoindre une soirée",
+                                                    style: TextStyle(
+                                                      fontSize: 22,
+                                                      fontWeight:
+                                                          FontWeight.w500,
                                                     ),
-                                                  ),
-                                                  child: CText(
-                                                    'Rejoindre',
-                                                    color: PRIMARY_COLOR,
-                                                    fontSize: 16,
                                                   ),
                                                 ),
-                                              );
-                                            }),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    bottom: 22),
+                                                child: Connect(
+                                                  text: false,
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.all(15),
+                                      decoration: BoxDecoration(
+                                        color: SECONDARY_COLOR,
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(15),
+                                        ),
+                                      ),
+                                      child: CText('Rejoindre',
+                                          color: PRIMARY_COLOR, fontSize: 16),
+                                    ),
+                                  )
+                                : BlocProvider(
+                                    create: (context) => PartiesCubit(),
+                                    child:
+                                        BlocBuilder<PartiesCubit, PartiesState>(
+                                            builder: (context, state) {
+                                      return BlocProvider(
+                                        create: (context) =>
+                                            CardRegistrationCubit()
+                                              ..loadData(
+                                                  currentUser.mangoPayId),
+                                        child: BlocBuilder<
+                                                CardRegistrationCubit,
+                                                CardRegistrationState>(
+                                            builder:
+                                                (context, paymentCardState) {
+                                          return GestureDetector(
+                                            onTap: () async {
+                                              if (party.price == 0) {
+                                                final uid = currentUser.id;
+
+                                                if (uid == null) {
+                                                  throw Error();
+                                                }
+
+                                                await BlocProvider.of<
+                                                        PartiesCubit>(context)
+                                                    .addUserInWaitList(currentUser,
+                                                        user, party);
+
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        JoinParty(),
+                                                  ),
+                                                );
+                                              } else {
+                                                print(party.price);
+                                                joinPartyBottomSheet(
+                                                  party.price!,
+                                                  paymentCardState.cards!,
+                                                  currentUser,
+                                                  user,
+                                                  currentUser.walletId,
+                                                );
+                                              }
+                                            },
+                                            child: Container(
+                                              padding: EdgeInsets.all(15),
+                                              decoration: BoxDecoration(
+                                                color: SECONDARY_COLOR,
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(15),
+                                                ),
+                                              ),
+                                              child: CText(
+                                                'Rejoindre',
+                                                color: PRIMARY_COLOR,
+                                                fontSize: 16,
+                                              ),
+                                            ),
                                           );
                                         }),
-                                      ),
-                              ),
-                            );
-                          }),
+                                      );
+                                    }),
+                                  ),
+                          ),
                         );
                       }),
                     );

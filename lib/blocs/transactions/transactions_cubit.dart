@@ -27,7 +27,7 @@ class TransactionsCubit extends AppBaseCubit<TransactionsState> {
 
   Future<void> getUserTransactions(String walletId, String userId) async {
     _paymentService
-        .getUserTransactions(walletId, userId)
+        .getUserTransactions(walletId)
         .then((transactions) async {
       if (transactions == null) return;
       emit(TransactionsState.transactionsLoaded(state.wallet, transactions));

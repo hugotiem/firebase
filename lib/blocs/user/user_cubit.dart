@@ -39,6 +39,16 @@ class UserCubit extends AppBaseCubit<UserState> {
     });
   }
 
+  Future<void> getMainUserWallet(String walletId) async {
+    await _paymentService.getWalletById(walletId).then((wallet) {
+      if (wallet == null) {
+        return emit(UserState.failed());
+      }
+      return emit(UserState.dataLoaded(
+          user: state.user, token: state.token, wallet: wallet));
+    });
+  }
+
   Future<void> loadData({auth.User? user}) async {
     var token = user?.uid ?? state.token;
     print("USER LOGGED");
@@ -69,8 +79,6 @@ class UserCubit extends AppBaseCubit<UserState> {
       emit(UserState.dataLoaded());
     }
   }
-
-
 
   Future<void> updateUserInfo(String? token,
       {String? name,
