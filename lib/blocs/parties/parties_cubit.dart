@@ -240,8 +240,6 @@ class PartiesCubit extends AppBaseCubit<PartiesState> {
 
     if (partyOwner?.messagingToken == null) return;
 
-    print(party.name);
-
     NotificationService.sendNotification(body: {
       "token": partyOwner?.messagingToken,
       "type": NotificationType.waiting,
@@ -269,6 +267,13 @@ class PartiesCubit extends AppBaseCubit<PartiesState> {
         path: "validatedListInfo.${infos['id']}");
 
     removeUserFromWaitList(party, infos['id'], fromBloc: true);
+
+    NotificationService.sendNotification(body: {
+      // "token": partyOwner?.messagingToken,
+      "type": NotificationType.joined,
+      "name": infos['name'],
+      "partyName": party.name,
+    });
   }
 
   Future<void> removeUserFromWaitList(Party party, String userId,
