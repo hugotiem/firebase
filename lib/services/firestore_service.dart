@@ -83,10 +83,9 @@ class FireStoreServices {
     return this
         ._firestore
         .collection(collection)
-        .where("mangoPayId", isEqualTo: mangopayId).startAt([])
-        .get();
+        .where("mangoPayId", isEqualTo: mangopayId)
+        .startAt([]).get();
   }
-
 
   Future<int> getCountOf(String key, dynamic value) async {
     var data = await this
@@ -210,6 +209,13 @@ class FireStoreServices {
         .doc(currentUserID)
         .collection(otherUserID)
         .orderBy("date")
+        .snapshots();
+  }
+
+  Stream<DocumentSnapshot> getMessagesListStreamSnapshot(
+      String currentUserId) async* {
+    yield* FirebaseFirestore.instance
+        .collection(collection).doc(currentUserId)
         .snapshots();
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pts/managers/analytics_manager.dart';
 import 'package:pts/widgets/app_text_field.dart';
 import 'package:pts/components/inside_line_text.dart';
 import 'package:pts/const.dart';
@@ -44,9 +45,11 @@ class _LoginPageState extends State<LoginPage>
       child: BlocListener<LoginCubit, LoginState>(
         listener: (context, state) {
           if (state.status == LoginStatus.logged) {
+             AnalyticsManager.of(context).logEvent("login");
             Navigator.of(context).pop(true);
           }
           if (state.status == LoginStatus.signedUp) {
+            AnalyticsManager.of(context).logEvent("sign_up");
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
                 builder: (context) =>

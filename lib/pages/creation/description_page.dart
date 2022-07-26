@@ -5,6 +5,7 @@ import 'package:pts/blocs/application/application_cubit.dart';
 import 'package:pts/components/form/background_form.dart';
 import 'package:pts/components/form/custom_text_form.dart';
 import 'package:pts/const.dart';
+import 'package:pts/managers/analytics_manager.dart';
 import 'package:pts/models/party.dart';
 import 'package:pts/pages/creation/end_page.dart';
 import 'package:pts/services/firestore_service.dart';
@@ -125,6 +126,8 @@ class _DescriptionPageState extends State<DescriptionPage> {
         // ..addItem("comment", {});
 
         await BlocProvider.of<BuildPartiesCubit>(context).addToFireStore();
+
+        AnalyticsManager.of(context).logEvent("create_event");
 
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => EndPage()));

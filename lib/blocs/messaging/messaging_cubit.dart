@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:pts/blocs/base/app_base_cubit.dart';
 import 'package:pts/blocs/base/app_base_state.dart';
+import 'package:pts/models/chat.dart';
 import 'package:pts/models/message.dart';
 import 'package:pts/services/firestore_service.dart';
 
@@ -15,17 +16,33 @@ class MessagingCubit extends AppBaseCubit<MessagingState> {
   FireStoreServices chatServices = FireStoreServices("chat");
   FireStoreServices userServices = FireStoreServices("user");
 
-  Stream fetchMessage({required currentUserID, required otherUserID}) async* {
-    var messagesSnapshot =
-        chatServices.getMessageStreamSnapshot(currentUserID, otherUserID);
-    List<Message> messages = await messagesSnapshot
-        .map((event) => Message.fromSnapShots(event))
-        .toList();
-    emit(MessagingState.loaded(messages));
+  void fetchMessage({required currentUserID, required otherUserID}) {
+    chatServices
+        .getMessageStreamSnapshot(currentUserID, otherUserID)
+        .listen((event) {
+      print(event.docs);
+    });
+
+    //emit(MessagingState.loaded(messages));
+  }
+
+  void fetchMessageList(String? currentUserId) {
+    if (currentUserId == null) return;
+    chatServices.getMessagesListStreamSnapshot(currentUserId).listen((event) {
+      var data = event.data() as Map<String, dynamic>;
+      print(data["userid"]);
+      var list = data["userid"] as List;
+      print(list);
+      var chats = list.map((e) => Chat.fromJson(e)).toList();
+
+      emit(MessagingState.chatLoaded(chats));
+    });
   }
 
   Future<void> sendMessage(
-      {required String nameSender, required String recipientId, String? type}) async {
+      {required String nameSender,
+      required String recipientId,
+      String? type}) async {
     var recipientToken = await userServices.getDataById(recipientId);
     final url =
         "https://us-central1-pts-beta-yog.cloudfunctions.net/handleMessage";

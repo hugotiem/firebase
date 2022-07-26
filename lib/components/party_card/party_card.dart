@@ -78,7 +78,7 @@ class PartyCard extends StatelessWidget {
       textColor = PRIMARY_COLOR;
     }
 
-    void contact(String? ownerName, User? connectUser) async {
+    void contact(String? ownerName, String? ownerMessagingToken, User? connectUser) async {
       FirebaseFirestore firestore = FirebaseFirestore.instance;
       var chatCollection = firestore.collection('chat');
       var currentUserID = connectUser?.id;
@@ -88,8 +88,8 @@ class PartyCard extends StatelessWidget {
       List otherUIDList = [];
       List emptyList = [];
 
-      currentUIDList.add({'uid': currentUserID, 'name': currentUserName});
-      otherUIDList.add({'uid': party.ownerId, 'name': ownerName});
+      currentUIDList.add({'uid': currentUserID, 'name': currentUserName, 'messagingToken': connectUser?.messagingToken});
+      otherUIDList.add({'uid': party.ownerId, 'name': ownerName, 'messagingToken': ownerMessagingToken});
 
       chatCollection
           .doc(party.ownerId)
@@ -560,7 +560,7 @@ class PartyCard extends StatelessWidget {
                                 list: list,
                                 nameList: nameList,
                                 contacter: () =>
-                                    contact(user?.name, currentUser),
+                                    contact(user?.name, user?.messagingToken, currentUser),
                                 photoUserProfile: user?.photo,
                                 acceptedUserInfo: party.validatedListInfo,
                                 gender: gender,

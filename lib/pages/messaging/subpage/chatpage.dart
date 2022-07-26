@@ -19,8 +19,9 @@ import 'package:pts/services/storage_service.dart';
 class ChatPage extends StatelessWidget {
   final otherUserID;
   final otherUserName;
+  final String? otherUserMessagingToken;
 
-  const ChatPage(String this.otherUserID, {this.otherUserName, Key? key})
+  const ChatPage(String this.otherUserID, {this.otherUserName, this.otherUserMessagingToken, Key? key})
       : super(key: key);
 
   @override

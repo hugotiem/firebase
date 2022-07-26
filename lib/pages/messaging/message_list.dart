@@ -1,4 +1,5 @@
 import 'package:pts/blocs/application/application_cubit.dart';
+import 'package:pts/blocs/messaging/messaging_cubit.dart';
 import 'package:pts/components/party_card/party_export.dart';
 import 'package:pts/services/auth_service.dart';
 import 'package:pts/widgets/widgets_export.dart';
@@ -11,26 +12,16 @@ class MessagePage extends StatelessWidget {
     if (BlocProvider.of<ApplicationCubit>(context).state.user == null) {
       return Connect();
     }
-    return BlocProvider(
-      create: (context) => UserCubit()..init(),
-      child: BlocBuilder<UserCubit, UserState>(
-        builder: (context, state) {
-          bool isLogged = state.token != null;
 
-          return Scaffold(
-            backgroundColor: PRIMARY_COLOR,
-            appBar: !isLogged
-                ? null
-                : CustomAppBar(
-                    title: "Messages",
-                  ),
-            body: Container(
-                decoration: BoxDecoration(
-                    gradient:
-                        LinearGradient(colors: [SECONDARY_COLOR, ICONCOLOR])),
-                child: ListMessage()),
-          );
-        },
+    return Scaffold(
+      backgroundColor: PRIMARY_COLOR,
+      appBar: CustomAppBar(
+        title: "Messages",
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+            gradient: LinearGradient(colors: [SECONDARY_COLOR, ICONCOLOR])),
+        child: ListMessage(),
       ),
     );
   }
@@ -55,68 +46,61 @@ class _ListMessageState extends State<ListMessage> {
       decoration: BoxDecoration(
           color: PRIMARY_COLOR,
           borderRadius: BorderRadius.vertical(top: Radius.circular(40))),
-      child: BlocProvider(
-        create: (context) => UserCubit()..init(),
-        child: BlocBuilder<UserCubit, UserState>(builder: (context, state) {
-          if (state.token == null) {
-            return Connect();
-          }
+      child: Builder(builder: (context) {
+        var user = BlocProvider.of<ApplicationCubit>(context).state.user;
 
-          var user = state.user;
-          if (user == null) {
-            return Center(child: CircularProgressIndicator());
-          }
+        currentUserId = user?.id;
+        currentUserName = user?.name;
 
-          currentUserId = AuthService().currentUser!.uid;
-          currentUserName = AuthService().currentUser!.displayName;
-
-          return StreamBuilder(
-            stream: getmessageStreamSnapshot(context),
-            builder: (BuildContext context,
-                AsyncSnapshot<DocumentSnapshot> snapshot) {
-              if (!snapshot.hasData)
+        return BlocProvider(
+          create: (context) =>
+              MessagingCubit()..fetchMessageList(currentUserId),
+          child: BlocBuilder<MessagingCubit, MessagingState>(
+            builder: (context, state) {
+              var chats = state.chats;
+              if (chats == null)
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
-              _docs = snapshot.data;
-              if (_docs.exists == false) return EmptyList();
-              List listUser = snapshot.data!['userid'];
+              if (chats.isEmpty) return EmptyList();
+              //List listUser = chats.;
               return Container(
                 margin: const EdgeInsets.only(bottom: 40, top: 10),
                 child: Column(
-                  children: listUser.map(
-                    (doc) {
+                  children: chats.map(
+                    (chat) {
                       return InkWell(
-                        onTap: () => openChat(doc['uid'], doc['name']),
+                        onTap: () => openChat(chat.recipient.id, chat.recipient.name, chat.recipient.messagingToken),
                         child: UserLineDesign(
-                            userID: doc['uid'], userName: doc['name']),
+                            userID: chat.recipient.id, userName: chat.recipient.name),
                       );
                     },
                   ).toList(),
                 ),
               );
             },
-          );
-        }),
-      ),
+          ),
+        );
+      }),
     );
   }
 
-  Stream<DocumentSnapshot> getmessageStreamSnapshot(
-      BuildContext context) async* {
-    yield* FirebaseFirestore.instance
-        .collection('chat')
-        .doc(currentUserId)
-        .snapshots();
-  }
+  // Stream<DocumentSnapshot> getmessageStreamSnapshot(
+  //     BuildContext context) async* {
+  //   yield* FirebaseFirestore.instance
+  //       .collection('chat')
+  //       .doc(currentUserId)
+  //       .snapshots();
+  // }
 
-  void openChat(String? userID, String? userName) {
+  void openChat(String? userID, String? userName, String? messagingToken) {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => ChatPage(
           userID!,
           otherUserName: userName,
+          otherUserMessagingToken: messagingToken,
         ),
       ),
     );

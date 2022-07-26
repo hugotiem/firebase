@@ -7,6 +7,7 @@ import 'package:pts/components/custom_container.dart';
 import 'package:pts/components/profile_photo.dart';
 
 import 'package:pts/const.dart';
+import 'package:pts/managers/analytics_manager.dart';
 import 'package:pts/models/party.dart';
 import 'package:pts/services/firestore_service.dart';
 import 'package:pts/widgets/widgets_export.dart';
@@ -109,6 +110,7 @@ Widget buildValidationCard(
                     infos['id'] = doc;
                     await BlocProvider.of<PartiesCubit>(context)
                         .addUserInValidatedList(infos, party);
+                    AnalyticsManager.of(context).logEvent("join_event");
                   },
                   icon: Icon(
                     Ionicons.checkmark_outline,
